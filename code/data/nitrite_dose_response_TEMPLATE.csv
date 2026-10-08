@@ -1,0 +1,10 @@
+# HKU iGEM 2026 -- V14 dose vs nitrite (Griess), RAW 264.7
+# Drop your measured values in here, rename to nitrite_dose_response.csv,
+# and re-run figures/fig13_nitrite_fit.py.  Nothing else needs to change.
+#
+# C_V14_uM   : V14 concentration applied to the cells (micromolar)
+# nitrite_uM : accumulated nitrite from the Griess assay (micromolar)
+# replicate  : 1, 2, 3 ... (one row per well; the script averages them)
+# lps_ng_mL  : LPS concentration used (record it -- the IC50 is only
+#              interpretable at a stated [L])
+C_V14_uM,nitrite_uM,replicate,lps_ng_mL
