@@ -96,10 +96,6 @@ document.querySelectorAll('.modelmap a').forEach(function(a){
 </script>"""
 
     out = ("<title>HKU iGEM 2026 Modelling</title>\n"
-           '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?'
-           'family=IBM+Plex+Mono:wght@400;500&'
-           'family=IBM+Plex+Sans:wght@500;600;700&'
-           'family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap">\n'
            f"<style>\n{css}\n</style>\n{body}\n{script}\n")
 
     path = os.path.join(ROOT, "index.html")
