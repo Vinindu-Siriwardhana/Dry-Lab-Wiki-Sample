@@ -1,22 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>HKU iGEM 2026 Modelling</title>
 <style>
 /* Layout: single measured column for prose, figures breaking out wider,
-   a numbered act rail on the left at desk width. The chrome follows the
+   act numbers sit inline beside each heading. The chrome follows the
    HKU iGEM 2025 white-and-green wiki style; the model's own arm colours
    (blue/red/gold) stay so the page and every figure share one language. */
 :root{
   --bg:#FFFFFF; --surface:#FFFFFF; --surface-2:#F8F9FA;
-  --ink:#212529; --ink-2:#495057; --ink-3:#6C757D;
+  --ink:#212529; --ink-2:#495057; --ink-3:#5C646C;
   --rule:#DEE2E6; --rule-strong:#ADB5BD;
   --brand:#225322; --brand-strong:#1D432B; --brand-wash:#E6F7EC;
   --v14:#2166AC; --v14-wash:#E8F0F8;
   --fgf:#B2182B; --fgf-wash:#FBECEE;
-  --gold:#C9761A; --gold-wash:#FBEEDF;
+  --gold:#C9761A; --gold-wash:#FBEEDF; --gold-ink:#8A4B0C;
   --good:#3C7A1E; --good-wash:#EDF5E6;
   --bad:#6D2C8A; --bad-wash:#F3EBF7;
   --figure-ground:#FFFFFF;
-  --font-d:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
-  --font-b:"New York","Iowan Old Style",Georgia,"Times New Roman",serif;
+  --font-sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Segoe UI","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --font-serif:"New York","Iowan Old Style",Georgia,"Times New Roman",serif;
   --font-m:ui-monospace,"SF Mono","SFMono-Regular",Menlo,Monaco,"Cascadia Mono","Segoe UI Mono",Consolas,monospace;
   --measure:68ch;
   --shadow-sm:0 1px 3px rgba(17,24,28,.06);
@@ -27,23 +32,23 @@
 html{scroll-behavior:smooth;scroll-padding-top:70px}
 *{box-sizing:border-box}
 ::selection{background:var(--brand-wash);color:var(--ink)}
-body{background:var(--bg);color:var(--ink);font-family:var(--font-b);
-  font-size:16.5px;line-height:1.62;margin:0;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-sans);
+  font-size:1.03125rem;line-height:1.62;margin:0;-webkit-text-size-adjust:100%}
 .wrap{max-width:1180px;margin:0 auto;padding-inline:20px;padding-block:0}
 .col{max-width:var(--measure)}
-h1,h2,h3,h4,.eyebrow,.num,nav,figcaption,table,.chip,.claim h3{font-family:var(--font-d)}
+h1,h2,h3,.num,.claim h3{font-family:var(--font-serif)}
 h1{font-size:clamp(2.1rem,5.4vw,3.5rem);line-height:1.04;letter-spacing:-.022em;
   font-weight:600;margin:.1em 0 .3em;text-wrap:balance;max-width:16ch}
 h2{font-size:clamp(1.5rem,3.1vw,2.1rem);line-height:1.12;letter-spacing:-.016em;
   font-weight:600;margin:0 0 .35em;text-wrap:balance}
-h3{font-size:1.14rem;line-height:1.28;font-weight:600;margin:2.1em 0 .4em;
+h3{font-size:1.25rem;line-height:1.28;font-weight:600;margin:1.8em 0 .4em;
   letter-spacing:-.008em;text-wrap:balance}
 p{margin:0 0 1.05em;max-width:var(--measure)}
 a{color:var(--brand);text-decoration-thickness:1px;text-underline-offset:2px}
 a:hover{color:var(--brand-strong)}
 a:focus-visible,summary:focus-visible,button:focus-visible{outline:2.5px solid var(--brand);
   outline-offset:3px;border-radius:3px}
-code,kbd{font-family:var(--font-m);font-size:.88em;background:var(--surface-2);
+code{font-family:var(--font-m);font-size:.88em;background:var(--surface-2);
   padding:.1em .34em;border-radius:3px}
 .eyebrow{font-size:.735rem;letter-spacing:.14em;text-transform:uppercase;
   font-weight:600;color:var(--ink-3);margin:0 0 .5em}
@@ -64,7 +69,7 @@ code,kbd{font-family:var(--font-m);font-size:.88em;background:var(--surface-2);
 .mast .kicker{font-family:var(--font-m);font-size:.78rem;letter-spacing:.06em;
   color:var(--brand);font-weight:500;margin:0 0 .9em}
 .lede{font-size:1.22rem;line-height:1.5;color:var(--ink-2);max-width:60ch;margin-bottom:1.4em}
-.thesis{font-family:var(--font-d);font-weight:600;font-size:1.06rem;color:var(--ink);
+.thesis{font-family:var(--font-sans);font-weight:600;font-size:1.06rem;color:var(--ink);
   border-left:3px solid var(--brand);padding:.5em 0 .5em 1em;max-width:58ch;margin:0 0 1.8em}
 
 .keystrip{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));
@@ -72,20 +77,21 @@ code,kbd{font-family:var(--font-m);font-size:.88em;background:var(--surface-2);
   overflow:hidden;margin:1.8em 0 0;box-shadow:var(--shadow-sm)}
 .keystrip div{background:var(--surface);padding:16px 18px;min-width:0;transition:background .2s ease}
 .keystrip div:hover{background:var(--brand-wash)}
-.keystrip .v{font-family:var(--font-d);font-weight:700;font-size:1.42rem;
+.keystrip .v{font-family:var(--font-sans);font-weight:700;font-size:1.42rem;
   letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.15;color:var(--ink)}
 .keystrip .k{font-size:.775rem;color:var(--ink-3);line-height:1.35;margin-top:.3em;
-  font-family:var(--font-d)}
+  font-family:var(--font-sans)}
 
 /* ---------- nav ---------- */
 nav.toc{position:sticky;top:0;z-index:500;
+  background:rgba(255,255,255,.9);
   background:color-mix(in srgb,var(--bg) 88%,transparent);
   backdrop-filter:blur(10px);border-bottom:1px solid var(--rule);
   margin-bottom:0;padding-block:9px;transition:box-shadow .2s ease}
 nav.toc.scrolled{box-shadow:0 4px 18px rgba(17,24,28,.07)}
 nav.toc ul{display:flex;gap:4px;list-style:none;margin:0;padding:0;
   overflow-x:auto;scrollbar-width:thin}
-nav.toc a{font-size:.8rem;font-weight:550;text-decoration:none;color:var(--ink-2);
+nav.toc a{font-size:.8rem;font-weight:600;text-decoration:none;color:var(--ink-2);
   padding:6px 12px;border-radius:999px;white-space:nowrap;display:block;
   transition:background .15s ease,color .15s ease}
 nav.toc a:hover{background:var(--brand-wash);color:var(--ink)}
@@ -101,27 +107,30 @@ nav.toc a.active{background:var(--brand);color:#fff}
   .act-head{grid-template-columns:1fr;gap:2px}
   .num{font-size:1.5rem}}
 
-.claim{background:var(--v14-wash);border:1px solid color-mix(in srgb,var(--v14) 20%,transparent);
+.claim{background:var(--v14-wash);border:1px solid #D3E0EE;
+  border:1px solid color-mix(in srgb,var(--v14) 20%,transparent);
   border-left:4px solid var(--v14);border-radius:10px;padding:18px 22px;margin:0 0 1.5em;
   max-width:var(--measure);box-shadow:var(--shadow-sm)}
 .claim h3{margin:0 0 .3em;font-size:1.02rem;color:var(--v14);letter-spacing:.005em}
 .claim p{margin:0;font-size:1rem}
-.claim.warn{background:var(--fgf-wash);border-color:color-mix(in srgb,var(--fgf) 24%,transparent);
+.claim.warn{background:var(--fgf-wash);border-color:#EDC8CC;
+  border-color:color-mix(in srgb,var(--fgf) 24%,transparent);
   border-left-color:var(--fgf)}
 .claim.warn h3{color:var(--fgf)}
-.claim.gold{background:var(--gold-wash);border-color:color-mix(in srgb,var(--gold) 26%,transparent);
+.claim.gold{background:var(--gold-wash);border-color:#F1DBC3;
+  border-color:color-mix(in srgb,var(--gold) 26%,transparent);
   border-left-color:var(--gold)}
-.claim.gold h3{color:var(--gold)}
+.claim.gold h3{color:var(--gold-ink)}
 
 /* ---------- figures ---------- */
-figure{margin:2.2em 0;max-width:100%}
+figure{margin:2.2em 0;max-width:760px}
 figure.wide{max-width:1000px}
 .figbox{background:var(--figure-ground);border:1px solid var(--rule);border-radius:12px;
   padding:16px;overflow-x:auto;box-shadow:var(--shadow-sm);transition:box-shadow .25s ease}
 .figbox:hover{box-shadow:var(--shadow-md)}
 .figbox img{display:block;width:100%;height:auto;max-width:100%}
 figcaption{font-size:.845rem;line-height:1.52;color:var(--ink-2);margin-top:.8em;
-  max-width:78ch;font-family:var(--font-d)}
+  max-width:78ch;font-family:var(--font-sans)}
 figcaption .fid{font-weight:700;color:var(--brand);letter-spacing:.01em}
 figcaption .caveat{color:var(--ink-3)}
 figcaption .src{font-family:var(--font-m);font-size:.78rem;color:var(--ink-3)}
@@ -129,7 +138,7 @@ figcaption .src{font-family:var(--font-m);font-size:.78rem;color:var(--ink-3)}
 /* ---------- details / maths ---------- */
 details.math{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
   margin:1.5em 0;max-width:var(--measure)}
-details.math>summary{cursor:pointer;padding:.7em 0;font-family:var(--font-d);
+details.math>summary{cursor:pointer;padding:.7em 0;font-family:var(--font-sans);
   font-weight:600;font-size:.9rem;color:var(--ink-2);list-style:none;
   display:flex;align-items:center;gap:.55em;transition:color .15s ease}
 details.math>summary:hover{color:var(--ink)}
@@ -141,33 +150,28 @@ details.math[open]>summary::before{content:"\2212"}
 details.math .inner{padding-bottom:1.1em}
 .eq{background:var(--surface-2);border-left:3px solid var(--brand);padding:12px 16px;
   margin:1em 0;font-family:var(--font-m);font-size:.9rem;overflow-x:auto;border-radius:0 5px 5px 0}
+.eq-inline{display:inline-block;background:var(--surface-2);border-left:2px solid var(--brand);
+  padding:2px 8px;margin:0;font-family:var(--font-m);font-size:.9em;border-radius:0 3px 3px 0}
 
 /* ---------- tables ---------- */
 .tablewrap{overflow-x:auto;margin:1.5em 0;max-width:1000px;box-shadow:var(--shadow-sm);
   border-radius:10px;border:1px solid var(--rule)}
 table{border-collapse:collapse;font-size:.86rem;width:100%;min-width:480px}
 th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--rule);vertical-align:top}
-thead th{font-weight:650;font-size:.76rem;letter-spacing:.055em;text-transform:uppercase;
+thead th{font-weight:600;font-size:.76rem;letter-spacing:.055em;text-transform:uppercase;
   color:var(--ink-2);background:var(--surface-2);border-bottom:1.5px solid var(--rule-strong)}
 tbody tr:nth-child(even){background:var(--surface-2)}
 td.num-c{font-variant-numeric:tabular-nums;font-family:var(--font-m);font-size:.82rem}
 tbody tr{transition:background .15s ease}
 tbody tr:hover{background:var(--brand-wash)}
 
-.chip{display:inline-block;font-size:.69rem;font-weight:650;letter-spacing:.05em;
-  text-transform:uppercase;padding:2.5px 7px;border-radius:4px;white-space:nowrap}
-.chip-t1{background:var(--good-wash);color:var(--good)}
-.chip-t4{background:var(--fgf-wash);color:var(--fgf)}
-.chip-ok{background:var(--good-wash);color:var(--good)}
-.chip-no{background:var(--bad-wash);color:var(--bad)}
-
 /* ---------- lists ---------- */
 .corr{counter-reset:c;list-style:none;padding:0;margin:1.4em 0;max-width:var(--measure)}
 .corr li{counter-increment:c;position:relative;padding-left:46px;margin-bottom:1.15em}
 .corr li::before{content:counter(c);position:absolute;left:0;top:1px;width:30px;height:30px;
-  border-radius:50%;background:var(--bad-wash);color:var(--bad);font-family:var(--font-d);
+  border-radius:50%;background:var(--bad-wash);color:var(--bad);font-family:var(--font-sans);
   font-weight:700;font-size:.88rem;display:flex;align-items:center;justify-content:center}
-.corr b{font-family:var(--font-d)}
+.corr b{font-family:var(--font-sans)}
 .asks{list-style:none;padding:0;margin:1.3em 0;max-width:var(--measure)}
 .asks li{display:grid;grid-template-columns:auto 1fr;gap:12px;padding:12px 0;
   border-bottom:1px solid var(--rule);align-items:start}
@@ -182,21 +186,21 @@ tbody tr:hover{background:var(--brand-wash)}
 .mm-data{fill:var(--gold-wash);stroke:var(--gold);stroke-width:2.2}
 .mm-hyp{fill:var(--surface-2);stroke:var(--rule-strong);stroke-dasharray:5 4}
 .mm-out{fill:var(--surface-2)}
-.mm-t{font-family:var(--font-d);font-size:13.5px;font-weight:600;fill:var(--ink);text-anchor:middle}
-.mm-s{font-family:var(--font-d);font-size:10.5px;font-weight:500;fill:var(--ink-3);
+.mm-t{font-family:var(--font-sans);font-size:13.5px;font-weight:600;fill:var(--ink);text-anchor:middle}
+.mm-s{font-family:var(--font-sans);font-size:10.5px;font-weight:500;fill:var(--ink-3);
   text-anchor:middle;letter-spacing:.045em;text-transform:uppercase}
-.mm-arm{font-family:var(--font-d);font-size:12px;font-weight:700;text-anchor:middle;
+.mm-arm{font-family:var(--font-sans);font-size:12px;font-weight:700;text-anchor:middle;
   letter-spacing:.09em;text-transform:uppercase}
 .mm-arm-v{fill:var(--v14)} .mm-arm-f{fill:var(--fgf)}
-.mm-del{font-family:var(--font-d);font-size:10.5px;fill:var(--rule-strong);
+.mm-del{font-family:var(--font-sans);font-size:10.5px;fill:var(--rule-strong);
   text-anchor:middle;letter-spacing:.07em;text-decoration:line-through}
-.mm-junc{font-family:var(--font-d);font-size:10px;font-weight:700;fill:var(--gold);
+.mm-junc{font-family:var(--font-sans);font-size:10px;font-weight:700;fill:var(--gold-ink);
   text-anchor:middle;letter-spacing:.08em}
 .modelmap a{cursor:pointer}
 .modelmap a:hover .mm-box{stroke-width:2.6}
 .maplegend{list-style:none;padding:0;margin:1.1em auto 0;max-width:760px;
   display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:5px 20px;
-  font-size:.8rem;color:var(--ink-2);font-family:var(--font-d)}
+  font-size:.8rem;color:var(--ink-2);font-family:var(--font-sans)}
 .maplegend li{display:flex;gap:9px;align-items:center}
 .sw{width:15px;height:15px;border-radius:3px;flex:0 0 auto;border:1.4px solid var(--rule-strong)}
 .sw-now{background:var(--good-wash);border-color:var(--good)}
@@ -208,11 +212,11 @@ tbody tr:hover{background:var(--brand-wash)}
 .ref-banner{background:var(--surface-2);border:1px dashed var(--rule-strong);
   border-radius:10px;padding:20px 22px;margin:0 0 2em}
 .ref-banner p{margin:0;max-width:none}
-.ref-banner .tag{display:inline-block;background:var(--bad);color:#fff;font-family:var(--font-d);
+.ref-banner .tag{display:inline-block;background:var(--bad);color:#fff;font-family:var(--font-sans);
   font-size:.7rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
   padding:3px 9px;border-radius:4px;margin-bottom:.7em}
 .dl{display:inline-flex;align-items:center;gap:9px;background:var(--brand);color:#fff;
-  font-family:var(--font-d);font-weight:600;font-size:.92rem;text-decoration:none;
+  font-family:var(--font-sans);font-weight:600;font-size:.92rem;text-decoration:none;
   padding:12px 20px;border-radius:8px;margin:.5em 0;box-shadow:0 3px 10px rgba(34,83,34,.28);
   transition:background .2s ease,transform .2s ease,box-shadow .2s ease}
 .dl:hover{background:var(--brand-strong);transform:translateY(-1px);box-shadow:0 6px 18px rgba(34,83,34,.34)}
@@ -223,7 +227,7 @@ tbody tr:hover{background:var(--brand-wash)}
 .filecard:hover{border-color:var(--brand);box-shadow:var(--shadow-sm);transform:translateY(-1px)}
 .filecard .fn{font-family:var(--font-m);font-size:.85rem;font-weight:500;color:var(--brand);
   word-break:break-all}
-.filecard .fd{font-size:.79rem;color:var(--ink-3);margin-top:.22em;font-family:var(--font-d);
+.filecard .fd{font-size:.79rem;color:var(--ink-3);margin-top:.22em;font-family:var(--font-sans);
   line-height:1.4}
 details.code{border:1px solid var(--rule);border-radius:8px;margin:9px 0;background:var(--surface);
   overflow:hidden;transition:border-color .2s ease,box-shadow .2s ease}
@@ -231,15 +235,18 @@ details.code:hover{border-color:var(--rule-strong)}
 details.code[open]{border-color:var(--rule-strong);box-shadow:var(--shadow-sm)}
 details.code>summary{cursor:pointer;padding:11px 15px;font-family:var(--font-m);
   font-size:.85rem;font-weight:500;color:var(--brand);list-style:none;display:flex;
-  justify-content:space-between;gap:12px;align-items:center}
+  align-items:center;gap:10px}
 details.code>summary::-webkit-details-marker{display:none}
-details.code>summary .meta{font-family:var(--font-d);font-size:.74rem;color:var(--ink-3);
-  font-weight:500;text-align:right;flex:0 0 auto}
+details.code>summary::before{content:"+";font-family:var(--font-m);color:var(--brand);
+  font-weight:700;font-size:1rem;line-height:1;width:1em;flex:0 0 auto}
+details.code[open]>summary::before{content:"\2212"}
+details.code>summary .meta{font-family:var(--font-sans);font-size:.74rem;color:var(--ink-3);
+  font-weight:500;text-align:right;margin-left:auto;flex:0 0 auto}
 details.code pre{margin:0;padding:15px;overflow-x:auto;background:var(--surface-2);
   border-top:1px solid var(--rule);border-radius:0;font-size:.785rem;
   line-height:1.55;max-height:600px}
 details.code code{background:none;padding:0;font-size:inherit;white-space:pre}
-.copybtn{font-family:var(--font-d);font-size:.74rem;font-weight:600;background:var(--surface);
+.copybtn{font-family:var(--font-sans);font-size:.74rem;font-weight:600;background:var(--surface);
   color:var(--ink-2);border:1px solid var(--rule-strong);border-radius:5px;padding:4px 10px;
   cursor:pointer;transition:background .15s ease,color .15s ease}
 .copybtn:hover{background:var(--surface-2);color:var(--ink)}
@@ -247,13 +254,14 @@ details.code code{background:none;padding:0;font-size:inherit;white-space:pre}
 footer{padding-block:38px 64px;color:var(--ink-3);font-size:.85rem}
 footer p{max-width:70ch}
 hr.soft{border:0;border-top:1px solid var(--rule);margin:2.4em 0;max-width:var(--measure)}
-.pullnum{font-family:var(--font-d);font-weight:700;font-size:clamp(1.6rem,3.4vw,2.3rem);
-  letter-spacing:-.025em;color:var(--brand);line-height:1.1;margin:.2em 0 .1em}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *{animation:none!important;transition:none!important}
 }
+
 </style>
+</head>
+<body>
 <div class="progressbar" id="progressbar" aria-hidden="true"></div>
 <header class="wrap mast">
   <p class="kicker">HKU iGEM 2026 &#183; Dry Lab &#183; Mathematical Model V3</p>
@@ -449,7 +457,7 @@ hr.soft{border:0;border-top:1px solid var(--rule);margin:2.4em 0;max-width:var(-
   whether the architecture could have worked at all.</p>
 
   <p>NO diffusing through a porous layer while being consumed has a steady penetration depth
-  <span class="eq" style="display:inline-block;padding:2px 8px;margin:0;border-left-width:2px">L<sub>d</sub> = &#8730;(D<sub>eff</sub> / k<sub>decay</sub>)</span>.
+  <span class="eq-inline">L<sub>d</sub> = &#8730;(D<sub>eff</sub> / k<sub>decay</sub>)</span>.
   With a biological half-life of 3&#8211;10&#160;s and the tortuosity group swept across its
   full plausible range, <b>L<sub>d</sub> is 65&#8211;217&#160;&#181;m</b> &#8212; against a
   bacterial-cellulose plus hydrogel stack of 0.5&#8211;3&#160;mm.</p>
@@ -927,7 +935,7 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
   <h3>Browse the source</h3>
   <p style="font-size:.9rem;color:var(--ink-2);max-width:var(--measure)">Expand any file to read
   it here, or use the copy button.</p>
-  <details class="code"><summary><span>params.py</span><span class="meta">88 lines &#183; params.py -- the single source of truth for every parameter used in the </span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+  <details class="code"><summary><span>params.py</span><span class="meta">88 lines &#183; params.py -- the single source of truth for every parameter used in the figures.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 params.py -- the single source of truth for every parameter used in the figures.
 
 No value is hard-coded inside a solver; everything enters through this file, so
@@ -1742,7 +1750,7 @@ def verify(verbose=True):
 if __name__ == &quot;__main__&quot;:
     verify()
 </code></pre></details>
-<details class="code"><summary><span>sa_run.py</span><span class="meta">209 lines &#183; sa_run.py -- global sensitivity analysis: Morris screening and Sobol ind</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>sa_run.py</span><span class="meta">209 lines &#183; sa_run.py -- global sensitivity analysis: Morris screening and Sobol indices.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 sa_run.py -- global sensitivity analysis: Morris screening and Sobol indices.
 
 HKU iGEM 2026, Dry Lab.  TEAM REFERENCE COPY.
@@ -2287,7 +2295,7 @@ cb.outline.set_visible(False)
 S.save(fig, &quot;fig02_ld_heatmap&quot;)
 print(f&quot;  L_d spans {G.min():.0f}-{G.max():.0f} um; stack is 500-3000 um&quot;)
 </code></pre></details>
-<details class="code"><summary><span>figures/fig03_release.py</span><span class="meta">60 lines &#183; F3 -- Release is a bolus, not a sustained delivery, and the two molecule</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>figures/fig03_release.py</span><span class="meta">60 lines &#183; F3 -- Release is a bolus, not a sustained delivery, and the two molecules do not arrive together.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 F3 -- Release is a bolus, not a sustained delivery, and the two molecules do
 not arrive together.
 
@@ -2347,7 +2355,7 @@ for k, v in t95.items():
     print(f&quot;  95% release {k[0]:8s} L={k[1]*1e4:4.0f}um : {v/60:6.1f} min&quot;)
 print(f&quot;  separation factor {b/a:.2f}x&quot;)
 </code></pre></details>
-<details class="code"><summary><span>figures/fig04_verification.py</span><span class="meta">82 lines &#183; F4 -- Solver verification.  Nothing downstream is worth reading if this </span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>figures/fig04_verification.py</span><span class="meta">82 lines &#183; F4 -- Solver verification.  Nothing downstream is worth reading if this panel is not right.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 F4 -- Solver verification.  Nothing downstream is worth reading if this panel
 is not right, so it appears above the fold rather than in an appendix.
 
@@ -2477,7 +2485,7 @@ fig.suptitle(&quot;Protease resistance, not gel chemistry, decides how long the 
              fontsize=11, weight=&quot;bold&quot;, y=1.0)
 S.save(fig, &quot;fig05_tissue_profiles&quot;)
 </code></pre></details>
-<details class="code"><summary><span>figures/fig06_hindrance.py</span><span class="meta">24 lines &#183; F6 -- Steric hindrance: the transport coefficients were derived, not ass</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;F6 -- Steric hindrance: the transport coefficients were derived, not assumed.&quot;&quot;&quot;
+<details class="code"><summary><span>figures/fig06_hindrance.py</span><span class="meta">24 lines &#183; F6 -- Steric hindrance: the transport coefficients were derived, not assumed.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;F6 -- Steric hindrance: the transport coefficients were derived, not assumed.&quot;&quot;&quot;
 import sys, os, numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import matplotlib.pyplot as plt
@@ -2501,7 +2509,7 @@ S.save(fig, &quot;fig06_hindrance&quot;)
 print(f&quot;  at xi=10 nm: V14 {m.D_eff(P.D0_V14,P.A_V14_NM,10,P.EPS_GEL)/P.D0_V14:.2f}, &quot;
       f&quot;FGF {m.D_eff(P.D0_FGF,P.A_FGF_NM,10,P.EPS_GEL)/P.D0_FGF:.2f}&quot;)
 </code></pre></details>
-<details class="code"><summary><span>figures/fig07_retention.py</span><span class="meta">95 lines &#183; F7 -- Retention has an OPTIMUM, not a maximum.  The headline design resu</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>figures/fig07_retention.py</span><span class="meta">95 lines &#183; F7 -- Retention has an OPTIMUM, not a maximum.  The headline design result.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 F7 -- Retention has an OPTIMUM, not a maximum.  The headline design result.
 
 Holding the TOTAL loading at the solubility ceiling, raising the retardation
@@ -3070,7 +3078,7 @@ S.save(fig, &quot;fig14_no_vs_nitrite&quot;)
 print(f&quot;  nitrite at 24 h {NO2[-1]/P.UM:.1f} uM; free NO {freeNO[-1]/P.UM*1000:.2f} nM; &quot;
       f&quot;ratio {NO2[-1]/freeNO[-1]:,.0f}x&quot;)
 </code></pre></details>
-<details class="code"><summary><span>figures/fig15_sobol.py</span><span class="meta">64 lines &#183; F15 -- Global sensitivity: the analysis refutes two of our own predictio</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>figures/fig15_sobol.py</span><span class="meta">64 lines &#183; F15 -- Global sensitivity: the analysis refutes two of our own predictions.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 F15 -- Global sensitivity: the analysis refutes two of our own predictions.
 
 Paired first-order (S1) and total-order (ST) Sobol indices for the two outputs
@@ -3357,3 +3365,5 @@ document.querySelectorAll('.modelmap a').forEach(function(a){
   update();
 })();
 </script>
+</body>
+</html>
