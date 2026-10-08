@@ -1,10 +1,12 @@
 /* Layout: single measured column for prose, figures breaking out wider,
-   a numbered act rail on the left at desk width. Colour tokens are the
-   model's own semantics, so the page and every figure share one language. */
+   a numbered act rail on the left at desk width. The chrome follows the
+   HKU iGEM 2025 white-and-green wiki style; the model's own arm colours
+   (blue/red/gold) stay so the page and every figure share one language. */
 :root{
-  --bg:#FAFAF8; --surface:#FFFFFF; --surface-2:#F2F3F6;
-  --ink:#16181D; --ink-2:#444952; --ink-3:#6E7480;
-  --rule:#D9DCE3; --rule-strong:#9AA1AE;
+  --bg:#FFFFFF; --surface:#FFFFFF; --surface-2:#F8F9FA;
+  --ink:#212529; --ink-2:#495057; --ink-3:#6C757D;
+  --rule:#DEE2E6; --rule-strong:#ADB5BD;
+  --brand:#225322; --brand-strong:#1D432B; --brand-wash:#E6F7EC;
   --v14:#2166AC; --v14-wash:#E8F0F8;
   --fgf:#B2182B; --fgf-wash:#FBECEE;
   --gold:#C9761A; --gold-wash:#FBEEDF;
@@ -15,35 +17,13 @@
   --font-b:"New York","Iowan Old Style",Georgia,"Times New Roman",serif;
   --font-m:ui-monospace,"SF Mono","SFMono-Regular",Menlo,Monaco,"Cascadia Mono","Segoe UI Mono",Consolas,monospace;
   --measure:68ch;
-}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#13151A; --surface:#1B1E25; --surface-2:#22262F;
-  --ink:#ECEEF2; --ink-2:#B8BEC9; --ink-3:#8A91A0;
-  --rule:#333945; --rule-strong:#5C6472;
-  --v14:#7FB3DD; --v14-wash:#1B2A38;
-  --fgf:#E8808F; --fgf-wash:#331A1F;
-  --gold:#E9A862; --gold-wash:#352513;
-  --good:#8EC46B; --good-wash:#1D2A16;
-  --bad:#C79BE0; --bad-wash:#2A1C33;
-  --figure-ground:#FFFFFF;
-  color-scheme:dark;
-}}
-:root[data-theme="dark"]{
-  --bg:#13151A; --surface:#1B1E25; --surface-2:#22262F;
-  --ink:#ECEEF2; --ink-2:#B8BEC9; --ink-3:#8A91A0;
-  --rule:#333945; --rule-strong:#5C6472;
-  --v14:#7FB3DD; --v14-wash:#1B2A38;
-  --fgf:#E8808F; --fgf-wash:#331A1F;
-  --gold:#E9A862; --gold-wash:#352513;
-  --good:#8EC46B; --good-wash:#1D2A16;
-  --bad:#C79BE0; --bad-wash:#2A1C33;
-  --figure-ground:#FFFFFF;
-  color-scheme:dark;
+  color-scheme:light;
 }
 
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--font-b);
-  font-size:16.5px;line-height:1.62;margin:0;-webkit-text-size-adjust:100%}
+  font-size:16.5px;line-height:1.62;margin:0;-webkit-text-size-adjust:100%;
+  border-top:4px solid var(--brand)}
 .wrap{max-width:1180px;margin:0 auto;padding-inline:20px;padding-block:0}
 .col{max-width:var(--measure)}
 h1,h2,h3,h4,.eyebrow,.num,nav,figcaption,table,.chip,.claim h3{font-family:var(--font-d)}
@@ -54,8 +34,8 @@ h2{font-size:clamp(1.5rem,3.1vw,2.1rem);line-height:1.12;letter-spacing:-.016em;
 h3{font-size:1.14rem;line-height:1.28;font-weight:600;margin:2.1em 0 .4em;
   letter-spacing:-.008em;text-wrap:balance}
 p{margin:0 0 1.05em;max-width:var(--measure)}
-a{color:var(--v14)}
-a:focus-visible,summary:focus-visible,button:focus-visible{outline:2.5px solid var(--gold);
+a{color:var(--brand)}
+a:focus-visible,summary:focus-visible,button:focus-visible{outline:2.5px solid var(--brand);
   outline-offset:3px;border-radius:3px}
 code,kbd{font-family:var(--font-m);font-size:.88em;background:var(--surface-2);
   padding:.1em .34em;border-radius:3px}
@@ -65,10 +45,10 @@ code,kbd{font-family:var(--font-m);font-size:.88em;background:var(--surface-2);
 /* ---------- masthead ---------- */
 .mast{border-bottom:1px solid var(--rule);padding-block:34px 26px;margin-bottom:0}
 .mast .kicker{font-family:var(--font-m);font-size:.78rem;letter-spacing:.06em;
-  color:var(--fgf);font-weight:500;margin:0 0 .9em}
+  color:var(--brand);font-weight:500;margin:0 0 .9em}
 .lede{font-size:1.2rem;line-height:1.5;color:var(--ink-2);max-width:60ch;margin-bottom:1.4em}
 .thesis{font-family:var(--font-d);font-weight:600;font-size:1.06rem;color:var(--ink);
-  border-left:3px solid var(--gold);padding:.5em 0 .5em 1em;max-width:58ch;margin:0 0 1.6em}
+  border-left:3px solid var(--brand);padding:.5em 0 .5em 1em;max-width:58ch;margin:0 0 1.6em}
 
 .keystrip{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));
   gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:8px;
@@ -88,7 +68,7 @@ nav.toc ul{display:flex;gap:4px;list-style:none;margin:0;padding:0;
   overflow-x:auto;scrollbar-width:thin}
 nav.toc a{font-size:.8rem;font-weight:550;text-decoration:none;color:var(--ink-2);
   padding:5px 11px;border-radius:5px;white-space:nowrap;display:block}
-nav.toc a:hover{background:var(--surface-2);color:var(--ink)}
+nav.toc a:hover{background:var(--brand-wash);color:var(--ink)}
 
 /* ---------- acts ---------- */
 .act{padding-block:52px;border-bottom:1px solid var(--rule)}
@@ -127,11 +107,11 @@ details.math>summary{cursor:pointer;padding:.7em 0;font-family:var(--font-d);
   font-weight:600;font-size:.9rem;color:var(--ink-2);list-style:none;
   display:flex;align-items:center;gap:.55em}
 details.math>summary::-webkit-details-marker{display:none}
-details.math>summary::before{content:"+";font-family:var(--font-m);color:var(--gold);
+details.math>summary::before{content:"+";font-family:var(--font-m);color:var(--brand);
   font-weight:700;font-size:1.05rem;line-height:1}
 details.math[open]>summary::before{content:"\2212"}
 details.math .inner{padding-bottom:1.1em}
-.eq{background:var(--surface-2);border-left:3px solid var(--v14);padding:12px 16px;
+.eq{background:var(--surface-2);border-left:3px solid var(--brand);padding:12px 16px;
   margin:1em 0;font-family:var(--font-m);font-size:.9rem;overflow-x:auto;border-radius:0 5px 5px 0}
 
 /* ---------- tables ---------- */
@@ -141,7 +121,7 @@ th,td{text-align:left;padding:8px 13px;border-bottom:1px solid var(--rule);verti
 th{font-weight:650;font-size:.76rem;letter-spacing:.055em;text-transform:uppercase;
   color:var(--ink-3);border-bottom:1.5px solid var(--rule-strong)}
 td.num-c{font-variant-numeric:tabular-nums;font-family:var(--font-m);font-size:.82rem}
-tbody tr:hover{background:var(--surface-2)}
+tbody tr:hover{background:var(--brand-wash)}
 
 .chip{display:inline-block;font-size:.69rem;font-weight:650;letter-spacing:.05em;
   text-transform:uppercase;padding:2.5px 7px;border-radius:4px;white-space:nowrap}
@@ -200,21 +180,21 @@ tbody tr:hover{background:var(--surface-2)}
 .ref-banner .tag{display:inline-block;background:var(--bad);color:#fff;font-family:var(--font-d);
   font-size:.7rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
   padding:3px 9px;border-radius:4px;margin-bottom:.7em}
-.dl{display:inline-flex;align-items:center;gap:9px;background:var(--v14);color:#fff;
+.dl{display:inline-flex;align-items:center;gap:9px;background:var(--brand);color:#fff;
   font-family:var(--font-d);font-weight:600;font-size:.92rem;text-decoration:none;
   padding:11px 19px;border-radius:7px;margin:.5em 0}
-.dl:hover{filter:brightness(1.1)}
+.dl:hover{background:var(--brand-strong)}
 .filelist{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
   gap:9px;margin:1.4em 0}
 .filecard{background:var(--surface);border:1px solid var(--rule);border-radius:7px;
   padding:11px 14px;min-width:0}
-.filecard .fn{font-family:var(--font-m);font-size:.85rem;font-weight:500;color:var(--v14);
+.filecard .fn{font-family:var(--font-m);font-size:.85rem;font-weight:500;color:var(--brand);
   word-break:break-all}
 .filecard .fd{font-size:.79rem;color:var(--ink-3);margin-top:.22em;font-family:var(--font-d);
   line-height:1.4}
 details.code{border:1px solid var(--rule);border-radius:8px;margin:9px 0;background:var(--surface)}
 details.code>summary{cursor:pointer;padding:11px 15px;font-family:var(--font-m);
-  font-size:.85rem;font-weight:500;color:var(--v14);list-style:none;display:flex;
+  font-size:.85rem;font-weight:500;color:var(--brand);list-style:none;display:flex;
   justify-content:space-between;gap:12px;align-items:center}
 details.code>summary::-webkit-details-marker{display:none}
 details.code>summary .meta{font-family:var(--font-d);font-size:.74rem;color:var(--ink-3);
@@ -232,5 +212,5 @@ footer{padding-block:38px 56px;color:var(--ink-3);font-size:.85rem}
 footer p{max-width:70ch}
 hr.soft{border:0;border-top:1px solid var(--rule);margin:2.4em 0;max-width:var(--measure)}
 .pullnum{font-family:var(--font-d);font-weight:700;font-size:clamp(1.6rem,3.4vw,2.3rem);
-  letter-spacing:-.025em;color:var(--gold);line-height:1.1;margin:.2em 0 .1em}
+  letter-spacing:-.025em;color:var(--brand);line-height:1.1;margin:.2em 0 .1em}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
