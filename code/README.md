@@ -54,8 +54,10 @@ These are in the code as comments too, but they are worth saying once here.
    the loading as free silently loads `R_V`× more drug than solubility allows
    and over-predicts sustained release by orders of magnitude.
 
-3. **Clearance is distributed *or* at the deep boundary, never both.** Both
-   represent drug leaving into the circulation.
+3. **Clearance is at the deep boundary only, never also distributed.** A
+   volumetric `k_cl` term and the Dirichlet sink both represent drug leaving
+   into the circulation, so V3 keeps only the sink. No tissue PDE, and no
+   surrogate in `sa_run.py`, carries `k_cl`.
 
 4. **Track the closure front at `0.5 n_ss`, not `0.5 K`.** With a death term the
    state behind the front is `n_ss = K(1 − d/r_p) < K`, so a threshold fixed at

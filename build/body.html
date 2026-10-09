@@ -187,9 +187,11 @@ C&#7495;(0,t) = K_p C&#7511;(0,t)              partition at the interface
 &#949;&#7495; D&#7495; &#8706;C&#7495;/&#8706;x|_0&#8314; = &#949;&#7511; D&#7511; &#8706;C&#7511;/&#8706;x|_0&#8315;    flux matching, per total area
 C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base</div>
     <p>These four spatial conditions close the two coupled second-order domains, which we solve
-    together as one system. Clearance is either distributed through the tissue <em>or</em> imposed
-    at the deep boundary, never both, because they describe the same physics. Our earlier version
-    imposed both, which suppressed the tissue concentration twice.</p>
+    together as one system. Clearance to the circulation is imposed only at the deep boundary, so
+    neither tissue equation carries a distributed clearance term: the two would describe the same
+    physics. Our earlier version imposed both, which suppressed the tissue concentration twice.
+    The only volumetric losses in the tissue are proteolysis, plus thermal denaturation and
+    receptor uptake for FGF2-G3.</p>
   </div></details>
 
   <div class="claim">
@@ -412,8 +414,8 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
     <b>do not support</b> either expectation. <span class="caveat">There are two caveats. First, a
     Sobol ranking reflects the width of the priors as well as the physics, and K<sub>D,P</sub> and
     C<sub>V,0</sub> have the widest ranges. Second, the share of variance is not the same as what
-    we can change: gel thickness L<sub>gel</sub> ranks third for delivered dose and is a design
-    variable we control directly.</span>
+    we can change: gel thickness L<sub>gel</sub> ranks fourth for delivered dose, close behind
+    &#948;, and is a design variable we control directly.</span>
     <span class="src">fig15_sobol.py &#183; sa_run.py</span></figcaption>
   </figure>
 
@@ -428,10 +430,10 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
   </figure>
 
   <figure>
-    <div class="figbox"><img src="assets/fig17_slider.svg" alt="Two horizontal stacked bars showing the share of output variance reachable by a one-parameter-at-a-time sweep: 41 percent for delivered dose and 51 percent for closure time, with the remainder in interactions."></div>
+    <div class="figbox"><img src="assets/fig17_slider.svg" alt="Two horizontal stacked bars showing the share of output variance reachable by a one-parameter-at-a-time sweep: 50 percent for delivered dose and 51 percent for closure time, with the remainder in interactions."></div>
     <figcaption><span class="fid">Figure&#160;17.</span> A one-parameter-at-a-time sweep is
     what a slider performs, and it captures only the first-order variance. For delivered dose
-    this is 41&#160;%, and the other 59&#160;% comes from interactions that a slider cannot show.
+    this is 50&#160;%, and the other 50&#160;% comes from interactions that a slider cannot show.
     <span class="caveat">Our design-space explorer (Interactive&#160;1) is therefore a
     presentation tool and not a sensitivity analysis, and it carries this warning inside the
     widget.</span>

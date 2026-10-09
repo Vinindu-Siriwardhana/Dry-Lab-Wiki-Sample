@@ -787,9 +787,11 @@ C&#7495;(0,t) = K_p C&#7511;(0,t)              partition at the interface
 &#949;&#7495; D&#7495; &#8706;C&#7495;/&#8706;x|_0&#8314; = &#949;&#7511; D&#7511; &#8706;C&#7511;/&#8706;x|_0&#8315;    flux matching, per total area
 C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base</div>
     <p>These four spatial conditions close the two coupled second-order domains, which we solve
-    together as one system. Clearance is either distributed through the tissue <em>or</em> imposed
-    at the deep boundary, never both, because they describe the same physics. Our earlier version
-    imposed both, which suppressed the tissue concentration twice.</p>
+    together as one system. Clearance to the circulation is imposed only at the deep boundary, so
+    neither tissue equation carries a distributed clearance term: the two would describe the same
+    physics. Our earlier version imposed both, which suppressed the tissue concentration twice.
+    The only volumetric losses in the tissue are proteolysis, plus thermal denaturation and
+    receptor uptake for FGF2-G3.</p>
   </div></details>
 
   <div class="claim">
@@ -1010,7 +1012,7 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
     </div>
   </div>
   <p class="w-foot"><b>Read this before trusting a slider.</b> A one-parameter-at-a-time sweep can only
-  reach the first-order share of the variance (41&#160;% for delivered dose, Figure&#160;17); every
+  reach the first-order share of the variance (50&#160;% for delivered dose, Figure&#160;17); every
   interaction between parameters is invisible here, so this is a presentation tool and not a sensitivity
   analysis. The longest workable change interval does not depend on wound size: whether a wound closes at
   all is set by whether the time-averaged drug effect keeps cells growing faster than they die, which is
@@ -1123,8 +1125,8 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
     <b>do not support</b> either expectation. <span class="caveat">There are two caveats. First, a
     Sobol ranking reflects the width of the priors as well as the physics, and K<sub>D,P</sub> and
     C<sub>V,0</sub> have the widest ranges. Second, the share of variance is not the same as what
-    we can change: gel thickness L<sub>gel</sub> ranks third for delivered dose and is a design
-    variable we control directly.</span>
+    we can change: gel thickness L<sub>gel</sub> ranks fourth for delivered dose, close behind
+    &#948;, and is a design variable we control directly.</span>
     <span class="src">fig15_sobol.py &#183; sa_run.py</span></figcaption>
   </figure>
 
@@ -1139,10 +1141,10 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
   </figure>
 
   <figure>
-    <div class="figbox"><img src="assets/fig17_slider.svg" alt="Two horizontal stacked bars showing the share of output variance reachable by a one-parameter-at-a-time sweep: 41 percent for delivered dose and 51 percent for closure time, with the remainder in interactions."></div>
+    <div class="figbox"><img src="assets/fig17_slider.svg" alt="Two horizontal stacked bars showing the share of output variance reachable by a one-parameter-at-a-time sweep: 50 percent for delivered dose and 51 percent for closure time, with the remainder in interactions."></div>
     <figcaption><span class="fid">Figure&#160;17.</span> A one-parameter-at-a-time sweep is
     what a slider performs, and it captures only the first-order variance. For delivered dose
-    this is 41&#160;%, and the other 59&#160;% comes from interactions that a slider cannot show.
+    this is 50&#160;%, and the other 50&#160;% comes from interactions that a slider cannot show.
     <span class="caveat">Our design-space explorer (Interactive&#160;1) is therefore a
     presentation tool and not a sensitivity analysis, and it carries this warning inside the
     widget.</span>
@@ -1406,8 +1408,8 @@ D_TIS_FGF    = 5e-7     # cm2/s                                            T4
 K_PROT_V14   = LN2 / T_HALF_V14  # 1/s (3.15e-5) -- HIGHEST-PRIORITY GAP   T4
 K_PROT_FGF   = LN2 / T_HALF_FGF  # 1/s (1.15e-6)                           T4
 K_PROT_RANGE = (1e-3, 1e-4, K_PROT_V14, 1e-6)   # register sweep 1e-6..1e-3
-K_CL_FGF     = 0.000115 # 1/s  NOT in the PDE (Dirichlet sink replaces it) T3
-K_CL_V14     = 0.0035   # 1/s  NOT in the PDE; unverified                  T4
+K_CL_FGF     = 0.000115 # 1/s  register value only: NOT used anywhere (Dirichlet sink) T3
+K_CL_V14     = 0.0035   # 1/s  register value only: NOT used anywhere; unverified T4
 
 # --- dosing (Model 7) -------------------------------------------------------
 C_TARGET_V14 = 25 * UM     # mol/cm3  efficacious tissue concentration    T4
@@ -2222,7 +2224,7 @@ def verify(verbose=True):
 if __name__ == &quot;__main__&quot;:
     verify()
 </code></pre></details>
-<details class="code"><summary><span>sa_run.py</span><span class="meta">209 lines &#183; sa_run.py -- global sensitivity analysis: Morris screening and Sobol ind</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>sa_run.py</span><span class="meta">210 lines &#183; sa_run.py -- global sensitivity analysis: Morris screening and Sobol ind</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 sa_run.py -- global sensitivity analysis: Morris screening and Sobol indices.
 
 HKU iGEM 2026, Dry Lab.  TEAM REFERENCE COPY.
@@ -2281,7 +2283,6 @@ PRIORS_A = [
     (r&quot;$\delta$&quot;,        0.03,       0.10),         # register sweep 300-1000 um
     (&quot;$k_{prot,V}$&quot;,     1e-6,       1e-3),          # 3 decades, T4 (register sweep)
     (&quot;$L_{gel}$&quot;,        100e-4,     500e-4),        # around the 150 um as built
-    (&quot;$k_{cl,V}$&quot;,       1e-7,       1e-5),          # T4
     (&quot;$D_{0,V}$&quot;,        2.5e-6,     4.5e-6),        # doc band to Stokes-Einstein
     (r&quot;$\varepsilon_g$&quot;, 0.55,       0.70),          # T3, around 0.618
     (r&quot;$\xi$&quot;,           5.0,        50.0),          # T3
@@ -2314,9 +2315,11 @@ def _scale(U, priors):
 
 def model_A(X):
     &quot;&quot;&quot;Scaled dose psi delivered to the macrophage plane.&quot;&quot;&quot;
-    KD, CV0, delta, kprot, Lgel, kcl, D0V, epsg, xi = X.T
+    KD, CV0, delta, kprot, Lgel, D0V, epsg, xi = X.T
     Deff_t = m.D_eff(D0V, P.A_V14_NM, xi, epsg) * 0.4      # tissue is tighter
-    lam = np.sqrt(Deff_t / (kprot + kcl))
+    # No distributed clearance: loss to the circulation is the Dirichlet sink
+    # at the deep boundary, so only proteolysis sets the penetration depth.
+    lam = np.sqrt(Deff_t / kprot)
     M = epsg * Lgel * CV0                                   # mol per cm^2
     C_bar = M / (P.EPS_TIS * delta) * (1 - np.exp(-delta / lam)) * (lam / delta)
     return C_bar / KD

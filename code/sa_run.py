@@ -57,7 +57,6 @@ PRIORS_A = [
     (r"$\delta$",        0.03,       0.10),         # register sweep 300-1000 um
     ("$k_{prot,V}$",     1e-6,       1e-3),          # 3 decades, T4 (register sweep)
     ("$L_{gel}$",        100e-4,     500e-4),        # around the 150 um as built
-    ("$k_{cl,V}$",       1e-7,       1e-5),          # T4
     ("$D_{0,V}$",        2.5e-6,     4.5e-6),        # doc band to Stokes-Einstein
     (r"$\varepsilon_g$", 0.55,       0.70),          # T3, around 0.618
     (r"$\xi$",           5.0,        50.0),          # T3
@@ -90,9 +89,11 @@ def _scale(U, priors):
 
 def model_A(X):
     """Scaled dose psi delivered to the macrophage plane."""
-    KD, CV0, delta, kprot, Lgel, kcl, D0V, epsg, xi = X.T
+    KD, CV0, delta, kprot, Lgel, D0V, epsg, xi = X.T
     Deff_t = m.D_eff(D0V, P.A_V14_NM, xi, epsg) * 0.4      # tissue is tighter
-    lam = np.sqrt(Deff_t / (kprot + kcl))
+    # No distributed clearance: loss to the circulation is the Dirichlet sink
+    # at the deep boundary, so only proteolysis sets the penetration depth.
+    lam = np.sqrt(Deff_t / kprot)
     M = epsg * Lgel * CV0                                   # mol per cm^2
     C_bar = M / (P.EPS_TIS * delta) * (1 - np.exp(-delta / lam)) * (lam / delta)
     return C_bar / KD

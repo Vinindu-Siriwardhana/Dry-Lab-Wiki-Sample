@@ -72,8 +72,8 @@ D_TIS_FGF    = 5e-7     # cm2/s                                            T4
 K_PROT_V14   = LN2 / T_HALF_V14  # 1/s (3.15e-5) -- HIGHEST-PRIORITY GAP   T4
 K_PROT_FGF   = LN2 / T_HALF_FGF  # 1/s (1.15e-6)                           T4
 K_PROT_RANGE = (1e-3, 1e-4, K_PROT_V14, 1e-6)   # register sweep 1e-6..1e-3
-K_CL_FGF     = 0.000115 # 1/s  NOT in the PDE (Dirichlet sink replaces it) T3
-K_CL_V14     = 0.0035   # 1/s  NOT in the PDE; unverified                  T4
+K_CL_FGF     = 0.000115 # 1/s  register value only: NOT used anywhere (Dirichlet sink) T3
+K_CL_V14     = 0.0035   # 1/s  register value only: NOT used anywhere; unverified T4
 
 # --- dosing (Model 7) -------------------------------------------------------
 C_TARGET_V14 = 25 * UM     # mol/cm3  efficacious tissue concentration    T4
