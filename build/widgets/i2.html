@@ -2,17 +2,20 @@
   <header class="w-head">
     <span class="w-badge">Interactive 2</span>
     <h3 id="i2-title">Wound-closure animation</h3>
-    <p>Watch the fibroblast density n(r,t) advance across the wound bed. Switch between an untreated
-    chronic wound and a treated one, and change how long the treatment lasts. A pulse that is too
-    short lets the front advance and then <em>recede</em>.</p>
+    <p>Watch the fibroblast density n(r,t) advance across the wound bed. Apply a fresh patch on a
+    schedule and watch each one top up the drug effect, compare a single long treatment pulse, or
+    leave the wound untreated. Too little drug lets the front advance and then <em>recede</em>.</p>
   </header>
   <div class="w-body">
     <div class="w-controls">
       <div class="seg" role="group" aria-label="Treatment">
-        <button type="button" class="seg-b on" id="i2-trt" aria-pressed="true">Treated</button>
+        <button type="button" class="seg-b on" id="i2-pat" aria-pressed="true">Patches</button>
+        <button type="button" class="seg-b" id="i2-trt" aria-pressed="false">One pulse</button>
         <button type="button" class="seg-b" id="i2-unt" aria-pressed="false">Untreated</button>
       </div>
-      <label class="ctl"><span class="ctl-top"><span>Treatment duration</span><output id="i2-T-v">14.0 d</output></span>
+      <label class="ctl" id="i2-iv-c"><span class="ctl-top"><span>New patch every</span><output id="i2-iv-v">12 h</output></span>
+        <input type="range" id="i2-iv" min="6" max="24" step="1" value="12"></label>
+      <label class="ctl" id="i2-T-c" style="display:none"><span class="ctl-top"><span>Treatment duration</span><output id="i2-T-v">14.0 d</output></span>
         <input type="range" id="i2-T" min="1" max="30" step="0.5" value="14"></label>
       <label class="ctl"><span class="ctl-top"><span>Wound radius R<sub>w</sub></span><output id="i2-rw-v">2.0 mm</output></span>
         <input type="range" id="i2-rw" min="1" max="5" step="0.5" value="2"></label>
@@ -21,7 +24,7 @@
         <button type="button" class="w-btn w-btn-ghost" id="i2-restart">Restart</button>
       </div>
       <label class="ctl"><span class="ctl-top"><span>Day</span><output id="i2-d-v">0.0 d</output></span>
-        <input type="range" id="i2-d" min="0" max="60" step="0.25" value="0"></label>
+        <input type="range" id="i2-d" min="0" max="90" step="0.25" value="0"></label>
       <div class="status" id="i2-status" role="status" aria-live="polite">Day 0.0: front at <b>1.97 mm</b></div>
     </div>
     <div class="w-out">
@@ -29,12 +32,15 @@
         <canvas id="i2-disc" aria-label="Top-down view of the wound bed" role="img"></canvas>
         <canvas id="i2-prof" aria-label="Fibroblast density against radius" role="img"></canvas>
       </div>
-      <div class="w-chart"><canvas id="i2-time" aria-label="Front position against time" role="img"></canvas></div>
+      <div class="w-chart"><canvas id="i2-time" aria-label="Front position and drug effect against time" role="img"></canvas></div>
     </div>
   </div>
-  <p class="w-foot">Static version: Figure&#160;9. Every rate comes from the Tier-4 closure functions
-  of the constants register (chronic r<sub>p</sub> = 0.50, d = 0.51&#160;d<sup>&#8722;1</sup>; treated
-  r<sub>p</sub> = 1.11, d = 0.45&#160;d<sup>&#8722;1</sup>), and the drug effect relaxes with an 18&#160;h time
-  constant after the pulse ends. The animation stops when the front reaches the centre, because the model
-  describes a chronic wound bed.</p>
+  <p class="w-foot">Static versions: Figures&#160;9 and 10. In <b>Patches</b> mode each patch is the
+  500&#160;&#181;m alginate patch of Interactive&#160;1, which keeps tissue above target for about 7.2&#160;h; the
+  drug effect then fades with an 18&#160;h time constant until the next patch (green saw-tooth on the
+  timeline). The longest interval that still closes is about 21.8&#160;h, so a daily change stalls just
+  short. Every rate comes from the Tier-4 closure functions of the constants register (chronic
+  r<sub>p</sub> = 0.50, d = 0.51&#160;d<sup>&#8722;1</sup>; treated r<sub>p</sub> = 1.11,
+  d = 0.45&#160;d<sup>&#8722;1</sup>). The animation stops when the front reaches the centre, because the
+  model describes a chronic wound bed.</p>
 </section>

@@ -1,12 +1,15 @@
-/* Interactive 2 -- closure animation: radial Fisher-KPP, n(r,t). */
+/* Interactive 2 -- closure animation: radial Fisher-KPP, n(r,t).
+   Three modes: repeated patch changes (each patch covers COV h, the effect
+   compartment fades in between), one long pulse, or untreated. */
 (function () {
   "use strict";
   var disc = document.getElementById("i2-disc");
   if (!disc) return;
   var C = Plot.COL, S = Sim, prof = document.getElementById("i2-prof"), tl = document.getElementById("i2-time");
-  var DAYMAX = 60, FE = 0.25;
-  var st = { treated: true, T: 14, Rw: 0.2, res: null, rf: [], endDay: DAYMAX, day: 0, playing: false, last: 0,
-             visible: false, parked: false, drawn: -1, autoplayed: false };
+  var DAYMAX = 90, FE = 0.25, SDT = 60;
+  var st = { mode: "patch", T: 14, iv: 12, Rw: 0.2, res: null, rf: [], s: null, endDay: DAYMAX, day: 0,
+             playing: false, last: 0, visible: false, parked: false, drawn: -1, autoplayed: false };
+  var COV = null;   // hours one patch keeps tissue above target (500 um alginate, defaults of Interactive 1)
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function el(id) { return document.getElementById(id); }
@@ -17,13 +20,17 @@
     if (n < 0.5) { u = n / 0.5; f = A; g = B; } else { u = (n - 0.5) / 0.5; f = B; g = D; }
     return "rgb(" + mix(f[0], g[0], u) + "," + mix(f[1], g[1], u) + "," + mix(f[2], g[2], u) + ")";
   }
+  function coverage() {
+    if (COV === null) COV = S.twoDomain({ CVtotUM: S.P.C_SOL_UM, Lgel: S.P.L_GEL, RV: 1, kprot: S.P.K_PROT }).hoursAbove;
+    return COV;
+  }
 
   function simulate() {
-    var T = st.T, res = S.fisher({
-      Rw: st.Rw, nr: 300, tEndDays: DAYMAX, frameEvery: FE,
-      sFn: st.treated ? S.pulseS(T) : function () { return 0; }
-    });
-    var dr = res.Rinf / 300, thr = S.RATES.thr;
+    var o = { Rw: st.Rw, nr: 300, tEndDays: DAYMAX, frameEvery: FE };
+    if (st.mode === "patch") { st.s = S.scheduleS(st.iv, coverage(), DAYMAX); o.sGrid = st.s; o.sdt = SDT; }
+    else if (st.mode === "pulse") { st.s = null; o.sFn = S.pulseS(st.T); }
+    else { st.s = null; o.sFn = function () { return 0; }; }
+    var res = S.fisher(o), dr = res.Rinf / 300, thr = S.RATES.thr;
     st.res = res;
     st.rf = res.frames.map(function (n) { return S.frontAt(n, thr, res.r, dr, 300); });
     st.endDay = res.closed ? res.tc / S.DAY : (res.frames.length - 1) * FE;
@@ -32,6 +39,7 @@
   }
 
   function frameIdx() { return Math.max(0, Math.min(st.res.frames.length - 1, Math.round(st.day / FE))); }
+  function patchesBy(day) { return Math.floor(day * 24 / st.iv) + 1; }
 
   function draw() {
     if (!st.res) return;
@@ -78,17 +86,27 @@
   }
 
   function drawTimeline() {
-    var s = Plot.setup(tl, 0.34), ts = [], ys = [], i, ymax = st.Rw * 10 * 1.12;
+    // keep a front that drifts past the original edge (relapse) inside the chart
+    var rfMax = Math.max.apply(null, st.rf) * 10;
+    var s = Plot.setup(tl, 0.34), ts = [], ys = [], i, xt = [],
+        ymax = Math.min(st.res.Rinf * 10, Math.max(st.Rw * 10, rfMax)) * 1.12;
+    for (var d = 0; d <= DAYMAX; d += 15) xt.push([d, String(d)]);
     var ax = Plot.Axes(s, { l: 50, t: 10, r: 14, b: 38 }, [0, DAYMAX], [0, ymax], {
-      xlabel: "time (days)", ylabel: "front (mm)",
-      xticks: [[0, "0"], [10, "10"], [20, "20"], [30, "30"], [40, "40"], [50, "50"], [60, "60"]],
+      xlabel: "time (days)", ylabel: "front (mm)", xticks: xt,
       yticks: [[0, "0"], [st.Rw * 10, (st.Rw * 10).toFixed(0)]]
     });
     ax.frame();
-    if (st.treated) {
+    ax.hline(st.Rw * 10, "#8C6A57", [4, 4], 1);   // original wound edge
+    if (st.mode === "pulse") {
       ax.c.fillStyle = "rgba(77,146,33,.10)";
       ax.c.fillRect(ax.X(0), ax.y1, ax.X(Math.min(st.T, DAYMAX)) - ax.X(0), ax.y0 - ax.y1);
       ax.text("treatment", ax.X(0) + 6, ax.y1 + 11, C.good, "left", "600 10.5px Inter, system-ui, sans-serif");
+    } else if (st.mode === "patch" && st.s) {
+      // drug-effect saw-tooth s(t), drawn in the top band of the chart (0 at mid-height, 1 at the top)
+      var sx = [], sy = [], stepS = Math.max(1, Math.round(0.02 * S.DAY / SDT)), lim = Math.min(st.s.length, Math.ceil(st.endDay * S.DAY / SDT));
+      for (i = 0; i < lim; i += stepS) { sx.push(i * SDT / S.DAY); sy.push(ymax * (0.5 + 0.5 * st.s[i])); }
+      ax.line(sx, sy, "rgba(77,146,33,.55)", 1.2);
+      ax.text("drug effect (each tooth = a new patch)", ax.X(0) + 6, ax.y1 + 11, C.good, "left", "600 10.5px Inter, system-ui, sans-serif");
     }
     for (i = 0; i < st.rf.length; i++) { ts.push(i * FE); ys.push(st.rf[i] * 10); }
     if (st.res.closed) { ts.push(st.endDay); ys.push(0); }
@@ -101,13 +119,27 @@
   function status(k) {
     var rf = st.rf[k] * 10, closed = st.res.closed, done = st.day >= st.endDay - 1e-6, msg;
     var minRf = Math.min.apply(null, st.rf.slice(0, k + 1));
-    if (closed && done) msg = "<b>Closed on day " + st.endDay.toFixed(1) + ".</b> The front reached the centre.";
-    else if (!closed && done) {
-      msg = st.rf[k] > minRf * 1.25 + 1e-3
-        ? "<b>Relapse.</b> The front advanced to " + (minRf * 10).toFixed(1) + " mm, then receded to " + rf.toFixed(1) + " mm once the drug effect faded."
-        : "<b>Stalled</b> at " + rf.toFixed(1) + " mm. The wound has not closed by day " + DAYMAX + ".";
-    } else msg = "Day " + st.day.toFixed(1) + ": front at <b>" + rf.toFixed(2) + " mm</b>" +
-      (st.treated && st.day > st.T ? " (treatment ended, drug effect relaxing)" : "");
+    var duty = st.mode === "patch" ? coverage() / st.iv : 0;
+    var centre = Math.round(st.res.frames[k][0] * 100), thrPct = Math.round(S.RATES.thr * 100);
+    if (closed && done) {
+      msg = "<b>Closed on day " + st.endDay.toFixed(1) + ".</b> The front reached the centre" +
+        (st.mode === "patch" ? " after " + patchesBy(st.endDay) + " patches, one every " + st.iv + " h." : ".");
+    } else if (!closed && done) {
+      if (st.mode === "patch") {
+        msg = "<b>Not closed.</b> A patch every " + st.iv + " h gives drug " + Math.round(duty * 100) +
+          " % of the time; the wound needs ~33 %. Cells fill in but level off at " + centre +
+          " % density, under the " + thrPct + " % that counts as closed.";
+      } else {
+        msg = st.rf[k] > minRf * 1.25 + 1e-3
+          ? "<b>Relapse.</b> The front advanced to " + (minRf * 10).toFixed(1) + " mm, then receded to " + rf.toFixed(1) + " mm once the drug effect faded."
+          : "<b>Stalled</b> at " + rf.toFixed(1) + " mm. The wound has not closed by day " + DAYMAX + ".";
+      }
+    } else {
+      msg = "Day " + st.day.toFixed(1) + ": front at <b>" + rf.toFixed(2) + " mm</b>";
+      if (st.mode === "patch") msg += " · patch #" + patchesBy(st.day) + " · centre density " +
+        centre + " % (closed at " + thrPct + " %)";
+      else if (st.mode === "pulse" && st.day > st.T) msg += " (treatment ended, drug effect relaxing)";
+    }
     el("i2-status").innerHTML = msg;
   }
 
@@ -131,29 +163,33 @@
 
   function refresh(autoplay) {
     el("i2-T-v").textContent = st.T.toFixed(1) + " d";
+    el("i2-iv-v").textContent = st.iv + " h";
     el("i2-rw-v").textContent = (st.Rw * 10).toFixed(1) + " mm";
-    el("i2-T").disabled = !st.treated; el("i2-T").parentNode.style.opacity = st.treated ? 1 : 0.4;
+    el("i2-iv-c").style.display = st.mode === "patch" ? "" : "none";
+    el("i2-T-c").style.display = st.mode === "pulse" ? "" : "none";
     simulate(); el("i2-d").value = 0; draw();
     if (autoplay && !reduce) play(true); else play(false);
   }
   var refreshSoon = Plot.debounce(function () { refresh(true); }, 140);
 
   el("i2-T").addEventListener("input", function () { st.T = parseFloat(this.value); el("i2-T-v").textContent = st.T.toFixed(1) + " d"; refreshSoon(); });
+  el("i2-iv").addEventListener("input", function () { st.iv = parseFloat(this.value); el("i2-iv-v").textContent = st.iv + " h"; refreshSoon(); });
   el("i2-rw").addEventListener("input", function () { st.Rw = parseFloat(this.value) / 10; el("i2-rw-v").textContent = (st.Rw * 10).toFixed(1) + " mm"; refreshSoon(); });
-  function pick(treated) {
-    st.treated = treated;
-    el("i2-trt").classList.toggle("on", treated); el("i2-unt").classList.toggle("on", !treated);
-    el("i2-trt").setAttribute("aria-pressed", treated); el("i2-unt").setAttribute("aria-pressed", !treated);
+  var MODES = { patch: "i2-pat", pulse: "i2-trt", none: "i2-unt" };
+  function pick(mode) {
+    st.mode = mode;
+    for (var m in MODES) { el(MODES[m]).classList.toggle("on", m === mode); el(MODES[m]).setAttribute("aria-pressed", m === mode); }
     refresh(true);
   }
-  el("i2-trt").addEventListener("click", function () { pick(true); });
-  el("i2-unt").addEventListener("click", function () { pick(false); });
+  el("i2-pat").addEventListener("click", function () { pick("patch"); });
+  el("i2-trt").addEventListener("click", function () { pick("pulse"); });
+  el("i2-unt").addEventListener("click", function () { pick("none"); });
   el("i2-play").addEventListener("click", function () { play(!st.playing); });
   el("i2-restart").addEventListener("click", function () { st.day = 0; el("i2-d").value = 0; draw(); if (!reduce) play(true); });
   el("i2-d").addEventListener("input", function () { play(false); st.day = parseFloat(this.value); draw(); });
   window.addEventListener("resize", Plot.debounce(draw, 120));
 
-  // the 60-day solve only runs once the widget is about a screen away
+  // the 90-day solve only runs once the widget is about a screen away
   Plot.whenNear(el("i2"), function () {
     refresh(false);
     if ("IntersectionObserver" in window) {
