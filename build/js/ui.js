@@ -11,26 +11,44 @@
   top.setAttribute("aria-label", "Back to top"); top.innerHTML = "&#8593;"; doc.body.appendChild(top);
   top.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); });
   var nav = $("nav.toc");
-  function onScroll() {
-    var h = doc.documentElement, max = h.scrollHeight - h.clientHeight, y = window.scrollY || h.scrollTop;
-    bar.style.width = (max > 0 ? Math.min(100, y / max * 100) : 0) + "%";
+  // read layout once per frame at most, and draw the bar with a transform
+  // (compositor only) instead of animating its width
+  var ticking = false, maxScroll = 0;
+  function measure() { var h = doc.documentElement; maxScroll = h.scrollHeight - h.clientHeight; }
+  function paint() {
+    ticking = false;
+    var y = window.scrollY;
+    bar.style.transform = "scaleX(" + (maxScroll > 0 ? Math.min(1, y / maxScroll) : 0) + ")";
     top.classList.toggle("show", y > 700);
     if (nav) nav.classList.toggle("scrolled", y > 80);
   }
-  window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+  function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(paint); } }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", function () { measure(); onScroll(); });
+  window.addEventListener("load", function () { measure(); onScroll(); });
+  if ("ResizeObserver" in window) new ResizeObserver(function () { measure(); onScroll(); }).observe(doc.body);
+  measure(); paint();
 
   // scrollspy
-  var links = $$("nav.toc a"), map = {};
+  // Only the nav strip itself is scrolled sideways to keep the active pill in
+  // view. Element.scrollIntoView() must NOT be used here: it also scrolls the
+  // page, which yanked the reader backwards at every section boundary.
+  var links = $$("nav.toc a"), map = {}, strip = $("nav.toc ul"), current = null;
   links.forEach(function (a) { map[a.getAttribute("href").slice(1)] = a; });
   var secs = Object.keys(map).map(function (id) { return doc.getElementById(id); }).filter(Boolean);
+  function activate(id) {
+    var a = map[id];
+    if (!a || a === current) return;
+    if (current) current.classList.remove("active");
+    a.classList.add("active"); current = a;
+    if (strip && strip.scrollWidth > strip.clientWidth + 1) {
+      var left = a.offsetLeft - (strip.clientWidth - a.offsetWidth) / 2;
+      strip.scrollTo({ left: Math.max(0, left), behavior: reduce ? "auto" : "smooth" });
+    }
+  }
   if ("IntersectionObserver" in window && secs.length) {
     var spy = new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (e.isIntersecting) {
-          links.forEach(function (l) { l.classList.remove("active"); });
-          var a = map[e.target.id]; if (a) { a.classList.add("active"); a.scrollIntoView({ block: "nearest", inline: "center" }); }
-        }
-      });
+      es.forEach(function (e) { if (e.isIntersecting) activate(e.target.id); });
     }, { rootMargin: "-30% 0px -60% 0px" });
     secs.forEach(function (s) { spy.observe(s); });
   }
@@ -50,7 +68,12 @@
   lb.innerHTML = '<button class="lb-x" type="button" aria-label="Close">&times;</button><img alt=""><p></p>';
   doc.body.appendChild(lb);
   var lbImg = $("img", lb), lbCap = $("p", lb);
-  function closeLb() { lb.classList.remove("open"); doc.body.classList.remove("noscroll"); }
+  var lastFocus = null;
+  function closeLb() {
+    if (!lb.classList.contains("open")) return;
+    lb.classList.remove("open"); doc.body.classList.remove("noscroll");
+    if (lastFocus) lastFocus.focus({ preventScroll: true });
+  }
   $$(".figbox img").forEach(function (img) {
     img.setAttribute("tabindex", "0"); img.setAttribute("role", "button");
     img.setAttribute("aria-label", "Enlarge figure: " + (img.alt || "").slice(0, 70));
@@ -58,7 +81,8 @@
       lbImg.src = img.src; lbImg.alt = img.alt;
       var cap = img.closest("figure") && img.closest("figure").querySelector(".fid");
       lbCap.textContent = cap ? cap.textContent.replace(/ /g, " ") + " Click anywhere or press Esc to close." : "";
-      lb.classList.add("open"); doc.body.classList.add("noscroll"); $(".lb-x", lb).focus();
+      lastFocus = img;
+      lb.classList.add("open"); doc.body.classList.add("noscroll"); $(".lb-x", lb).focus({ preventScroll: true });
     }
     img.addEventListener("click", open);
     img.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });

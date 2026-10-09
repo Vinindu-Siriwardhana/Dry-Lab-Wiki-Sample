@@ -320,19 +320,24 @@ a{color:var(--brand)}
 .hero .keystrip .k{color:rgba(255,255,255,.8);font-size:.8rem;margin-top:.45em}
 
 /* ---------- navigation ---------- */
-nav.toc{background:rgba(255,255,255,.8);-webkit-backdrop-filter:saturate(1.5) blur(16px);
-  backdrop-filter:saturate(1.5) blur(16px);border-bottom:1px solid rgba(15,40,28,.07);padding-block:10px}
+nav.toc{background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(8px);
+  backdrop-filter:blur(8px);border-bottom:1px solid rgba(15,40,28,.07);padding-block:10px}
+nav.toc ul{scrollbar-width:none;overscroll-behavior-x:contain}
+nav.toc ul::-webkit-scrollbar{display:none}
 nav.toc ul{justify-content:safe center;gap:2px}
 nav.toc a{font-size:.8rem;font-weight:600;padding:7px 13px;color:var(--ink-2)}
 nav.toc a:hover{background:var(--brand-wash);color:var(--brand-strong)}
 nav.toc a.active{background:var(--brand);color:#fff;box-shadow:0 4px 12px -3px rgba(27,107,69,.5)}
-.progressbar{height:3px;background:linear-gradient(90deg,var(--brand),var(--accent))}
+.progressbar{height:3px;width:100%;background:linear-gradient(90deg,var(--brand),var(--accent));
+  transform:scaleX(0);transform-origin:0 50%;transition:none;will-change:transform}
+html{scrollbar-gutter:stable;scroll-padding-top:76px}
 .totop{background:var(--brand);box-shadow:0 10px 24px -8px rgba(15,74,47,.6)}
 
 /* ---------- sections ---------- */
 .act{padding-block:92px;border-bottom:0}
-.act:nth-of-type(even){background:var(--bg-soft);box-shadow:0 0 0 100vmax var(--bg-soft);
-  clip-path:inset(0 -100vmax)}
+/* full-bleed band: border-image paints outside the box without the huge
+   box-shadow + clip-path layers that made long sections expensive to scroll */
+.act:nth-of-type(even){border-image:linear-gradient(var(--bg-soft),var(--bg-soft)) fill 0/0/0 100vmax}
 .act-head{grid-template-columns:auto 1fr;align-items:center;gap:20px;margin-bottom:1.8em}
 .num{width:60px;height:60px;border-radius:18px;display:grid;place-items:center;
   background:linear-gradient(140deg,var(--brand-strong),#2E8B57);color:#fff;
@@ -353,7 +358,7 @@ nav.toc a.active{background:var(--brand);color:#fff;box-shadow:0 4px 12px -3px r
 /* ---------- figures ---------- */
 .figbox{border-radius:20px;padding:24px;border:1px solid var(--rule);box-shadow:var(--shadow-sm);
   transition:box-shadow .3s ease,transform .3s ease;background:#fff}
-.figbox:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.figbox:hover{box-shadow:var(--shadow-md);transform:none}
 .figbox img{cursor:zoom-in;border-radius:6px}
 .modelmap a,.figbox .modelmap{cursor:pointer}
 figcaption{font-size:.87rem;color:var(--ink-2);max-width:82ch;margin-top:1em}
@@ -376,14 +381,14 @@ details.math,.tablewrap,details.code,.filecard,.ref-banner{border-radius:14px}
 #conclusion .col p:last-child{margin-bottom:0}
 #conclusion .num{background:linear-gradient(140deg,#B8802B,var(--accent))}
 
-footer{background:var(--brand-deep);color:#B8D2C2;box-shadow:0 0 0 100vmax var(--brand-deep);
-  clip-path:inset(0 -100vmax);padding-block:52px 72px;margin-top:0}
+footer{color:#B8D2C2;padding-block:52px 72px;margin-top:0;
+  border-image:linear-gradient(var(--brand-deep),var(--brand-deep)) fill 0/0/0 100vmax}
 footer b{color:#fff}
 hr.soft{border-top-color:rgba(255,255,255,.16)}
 
 /* ---------- motion ---------- */
-.reveal{opacity:0;transform:translateY(20px);
-  transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.reveal{opacity:0;transform:translateY(16px);
+  transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.2,1)}
 .reveal.in{opacity:1;transform:none}
 .keystrip>div:nth-child(2){transition-delay:.06s}.keystrip>div:nth-child(3){transition-delay:.12s}
 .keystrip>div:nth-child(4){transition-delay:.18s}
@@ -459,8 +464,17 @@ body.noscroll{overflow:hidden}
 .seg-b{flex:1;font:600 .84rem var(--font-sans);border:0;background:transparent;color:var(--ink-2);
   padding:9px 14px;border-radius:999px;cursor:pointer;transition:background .2s ease,color .2s ease}
 .seg-b.on{background:var(--brand);color:#fff;box-shadow:0 6px 14px -6px rgba(15,74,47,.7)}
+/* fixed height: this text changes every animation frame, and a box that grew
+   and shrank with it shifted everything below while the reader scrolled */
 .status{font-size:.86rem;line-height:1.45;background:var(--bg-soft);border:1px solid var(--rule);
-  border-radius:14px;padding:12px 14px;min-height:4.4em;color:var(--ink-2)}
+  border-radius:14px;padding:12px 14px;height:7.6em;overflow:hidden;color:var(--ink-2)}
+.tk{min-height:2.76em}
+.tiles-4 .tile-key .tk{min-height:2.76em;display:flex;align-items:center}
+.widget{contain:layout paint}
+/* reserve each canvas's height before its first draw, so a widget that
+   initialises lazily never pushes the page down */
+#i1-cv-c{aspect-ratio:1/0.52}#i3-cv{aspect-ratio:1/0.62}
+#i2-disc,#i2-prof{aspect-ratio:1/1}#i2-time{aspect-ratio:1/0.34}
 
 .w-chart{background:#fff;border:1px solid var(--rule);border-radius:16px;padding:10px 8px 4px}
 .w-chart canvas,.i2-grid canvas{display:block;width:100%}
@@ -899,17 +913,17 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
         <button type="button" class="seg-b on" id="i2-trt" aria-pressed="true">Treated</button>
         <button type="button" class="seg-b" id="i2-unt" aria-pressed="false">Untreated</button>
       </div>
-      <label class="ctl"><span class="ctl-top"><span>Treatment duration</span><output id="i2-T-v"></output></span>
+      <label class="ctl"><span class="ctl-top"><span>Treatment duration</span><output id="i2-T-v">14.0 d</output></span>
         <input type="range" id="i2-T" min="1" max="30" step="0.5" value="14"></label>
-      <label class="ctl"><span class="ctl-top"><span>Wound radius R<sub>w</sub></span><output id="i2-rw-v"></output></span>
+      <label class="ctl"><span class="ctl-top"><span>Wound radius R<sub>w</sub></span><output id="i2-rw-v">2.0 mm</output></span>
         <input type="range" id="i2-rw" min="1" max="5" step="0.5" value="2"></label>
       <div class="player">
         <button type="button" class="w-btn" id="i2-play">&#9654; Play</button>
         <button type="button" class="w-btn w-btn-ghost" id="i2-restart">Restart</button>
       </div>
-      <label class="ctl"><span class="ctl-top"><span>Day</span><output id="i2-d-v"></output></span>
+      <label class="ctl"><span class="ctl-top"><span>Day</span><output id="i2-d-v">0.0 d</output></span>
         <input type="range" id="i2-d" min="0" max="60" step="0.25" value="0"></label>
-      <div class="status" id="i2-status" role="status" aria-live="polite"></div>
+      <div class="status" id="i2-status" role="status" aria-live="polite">Day 0.0: front at <b>1.97 mm</b></div>
     </div>
     <div class="w-out">
       <div class="i2-grid">
@@ -961,24 +975,24 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
   </header>
   <div class="w-body">
     <div class="w-controls">
-      <label class="ctl"><span class="ctl-top"><span>Total V14 loading C<sub>V,0</sub></span><output id="i1-cv-v"></output></span>
+      <label class="ctl"><span class="ctl-top"><span>Total V14 loading C<sub>V,0</sub></span><output id="i1-cv-v">738 &#181;M</output></span>
         <input type="range" id="i1-cv" min="20" max="1500" step="1" value="738"></label>
-      <label class="ctl"><span class="ctl-top"><span>Gel thickness L<sub>gel</sub></span><output id="i1-lg-v"></output></span>
+      <label class="ctl"><span class="ctl-top"><span>Gel thickness L<sub>gel</sub></span><output id="i1-lg-v">150 &#181;m</output></span>
         <input type="range" id="i1-lg" min="50" max="1000" step="10" value="150"></label>
-      <label class="ctl"><span class="ctl-top"><span>Retardation factor R<sub>V</sub></span><output id="i1-rv-v"></output></span>
+      <label class="ctl"><span class="ctl-top"><span>Retardation factor R<sub>V</sub></span><output id="i1-rv-v">1.0</output></span>
         <input type="range" id="i1-rv" min="0" max="1.4771" step="0.005" value="0"></label>
-      <label class="ctl"><span class="ctl-top"><span>Tissue proteolysis k<sub>prot</sub></span><output id="i1-kp-v"></output></span>
+      <label class="ctl"><span class="ctl-top"><span>Tissue proteolysis k<sub>prot</sub></span><output id="i1-kp-v">3.2&#215;10&#8315;&#8309; s&#8315;&#185;</output></span>
         <input type="range" id="i1-kp" min="-6" max="-3" step="0.01" value="-4.5"></label>
-      <label class="ctl"><span class="ctl-top"><span>Wound radius R<sub>w</sub></span><output id="i1-rw-v"></output></span>
+      <label class="ctl"><span class="ctl-top"><span>Wound radius R<sub>w</sub></span><output id="i1-rw-v">2.0 mm</output></span>
         <input type="range" id="i1-rw" min="1" max="5" step="0.5" value="2"></label>
       <button type="button" class="w-btn" id="i1-reset">Reset to the gel as built</button>
     </div>
     <div class="w-out">
       <div class="tiles tiles-4">
-        <div class="tile"><div class="tv" id="i1-hours"></div><div class="tk">hours above the 25&#160;&#181;M target</div></div>
-        <div class="tile"><div class="tv" id="i1-peak"></div><div class="tk">peak depth-averaged tissue concentration</div></div>
-        <div class="tile" id="i1-sol-tile"><div class="tv" id="i1-sol"></div><div class="tk" id="i1-sol-k"></div></div>
-        <div class="tile tile-key" id="i1-int-tile"><div class="tv" id="i1-int"></div><div class="tk" id="i1-int-k"></div></div>
+        <div class="tile"><div class="tv" id="i1-hours">2.59 h</div><div class="tk">hours above the 25&#160;&#181;M target</div></div>
+        <div class="tile"><div class="tv" id="i1-peak">113 &#181;M</div><div class="tk">peak depth-averaged tissue concentration</div></div>
+        <div class="tile" id="i1-sol-tile"><div class="tv" id="i1-sol">100 %</div><div class="tk" id="i1-sol-k">of the 738 &#181;M solubility ceiling</div></div>
+        <div class="tile tile-key" id="i1-int-tile"><div class="tv" id="i1-int">&#8804; 7.8 h</div><div class="tk" id="i1-int-k">longest patch-change interval that closes a 2.0 mm wound; a daily change does not close it</div></div>
       </div>
       <div class="w-chart"><canvas id="i1-cv-c" aria-label="Depth-averaged V14 concentration in tissue against time" role="img"></canvas></div>
     </div>
@@ -4048,6 +4062,26 @@ var Sim = (function () {
     }
     return lo;
   }
+  /* Same bisection as maxInterval, but one closure solve per task (~20 ms
+     each) so the browser can keep scrolling between steps. Returns a cancel
+     function; done(hours) is called once with the result. */
+  function maxIntervalAsync(Rw, covH, done, hi, nr) {
+    hi = hi || 24; nr = nr || 300;
+    var cancelled = false, lo = covH, stage = 0;
+    function ok(h) { return isFinite(closureTimeInterval(Rw, h, covH, 120, nr)); }
+    function later(f) { setTimeout(function () { if (!cancelled) f(); }, 0); }
+    function step() {
+      if (!(covH > 0)) return done(0);
+      if (stage === 0) { stage = 1; if (ok(hi)) return done(hi); return later(step); }
+      if (stage === 1) { stage = 2; if (!ok(lo * 1.0001)) return done(0); return later(step); }
+      if (hi - lo <= 0.25) return done(lo);
+      var mid = 0.5 * (lo + hi);
+      if (ok(mid)) lo = mid; else hi = mid;
+      later(step);
+    }
+    later(step);
+    return function () { cancelled = true; };
+  }
   function pulseS(Tdays) {
     var T = Tdays * DAY, tau = 1 / P.KE0;
     return function (t) { return t <= T ? 1 : Math.exp(-(t - T) / tau); };
@@ -4064,7 +4098,7 @@ var Sim = (function () {
   return {
     P: P, UM: UM, DAY: DAY, HOUR: HOUR, RATES: RATES, gelD: gelD, twoDomain: twoDomain,
     fisher: fisher, frontAt: frontAt, scheduleS: scheduleS, closureTimeInterval: closureTimeInterval,
-    maxInterval: maxInterval, pulseS: pulseS, suppression: suppression,
+    maxInterval: maxInterval, maxIntervalAsync: maxIntervalAsync, pulseS: pulseS, suppression: suppression,
     thetaLps: thetaLps, p65: p65
   };
 })();
@@ -4078,11 +4112,15 @@ var Plot = (function () {
     bad: "#762A83", ink: "#2B3137", mute: "#6B747D", grid: "#E6EAED", axis: "#9AA3AB"
   };
 
+  /* Size the canvas from its CSS width. The backing store and the CSS height are
+     only written when they actually change: rewriting them on every animation
+     frame forced a full page re-layout 60 times a second and made scrolling
+     stutter while the closure animation played. */
   function setup(canvas, aspect) {
-    var dpr = window.devicePixelRatio || 1, w = Math.max(240, canvas.clientWidth),
-        h = Math.round(w * aspect);
-    canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
-    canvas.style.height = h + "px";
+    var dpr = window.devicePixelRatio || 1, w = Math.max(240, Math.round(canvas.clientWidth)),
+        h = Math.round(w * aspect), bw = Math.round(w * dpr), bh = Math.round(h * dpr);
+    if (canvas._h !== h) { canvas.style.height = h + "px"; canvas._h = h; }
+    if (canvas.width !== bw || canvas.height !== bh) { canvas.width = bw; canvas.height = bh; }
     var c = canvas.getContext("2d");
     c.setTransform(dpr, 0, 0, dpr, 0, 0);
     c.clearRect(0, 0, w, h);
@@ -4174,7 +4212,21 @@ var Plot = (function () {
     return function () { var a = arguments; clearTimeout(h); h = setTimeout(function () { fn.apply(null, a); }, ms); };
   }
 
-  return { COL: COL, setup: setup, Axes: Axes, slider: slider, fmt: fmt, debounce: debounce };
+  /* run fn once, when `el` comes within ~1 screen of the viewport, and in an
+     idle moment, so widget start-up never blocks the first scroll */
+  function whenNear(el, fn) {
+    var go = function () {
+      var ric = window.requestIdleCallback || function (f) { return setTimeout(f, 1); };
+      ric(fn, { timeout: 400 });
+    };
+    if (!el || !("IntersectionObserver" in window)) { go(); return; }
+    var io = new IntersectionObserver(function (es) {
+      if (es[0].isIntersecting) { io.disconnect(); go(); }
+    }, { rootMargin: "900px 0px" });
+    io.observe(el);
+  }
+
+  return { COL: COL, setup: setup, Axes: Axes, slider: slider, fmt: fmt, debounce: debounce, whenNear: whenNear };
 })();
 
 /* ui.js -- page chrome: progress bar, scrollspy, back-to-top, lightbox, reveal, copy buttons. */
@@ -4190,26 +4242,44 @@ var Plot = (function () {
   top.setAttribute("aria-label", "Back to top"); top.innerHTML = "&#8593;"; doc.body.appendChild(top);
   top.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); });
   var nav = $("nav.toc");
-  function onScroll() {
-    var h = doc.documentElement, max = h.scrollHeight - h.clientHeight, y = window.scrollY || h.scrollTop;
-    bar.style.width = (max > 0 ? Math.min(100, y / max * 100) : 0) + "%";
+  // read layout once per frame at most, and draw the bar with a transform
+  // (compositor only) instead of animating its width
+  var ticking = false, maxScroll = 0;
+  function measure() { var h = doc.documentElement; maxScroll = h.scrollHeight - h.clientHeight; }
+  function paint() {
+    ticking = false;
+    var y = window.scrollY;
+    bar.style.transform = "scaleX(" + (maxScroll > 0 ? Math.min(1, y / maxScroll) : 0) + ")";
     top.classList.toggle("show", y > 700);
     if (nav) nav.classList.toggle("scrolled", y > 80);
   }
-  window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+  function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(paint); } }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", function () { measure(); onScroll(); });
+  window.addEventListener("load", function () { measure(); onScroll(); });
+  if ("ResizeObserver" in window) new ResizeObserver(function () { measure(); onScroll(); }).observe(doc.body);
+  measure(); paint();
 
   // scrollspy
-  var links = $$("nav.toc a"), map = {};
+  // Only the nav strip itself is scrolled sideways to keep the active pill in
+  // view. Element.scrollIntoView() must NOT be used here: it also scrolls the
+  // page, which yanked the reader backwards at every section boundary.
+  var links = $$("nav.toc a"), map = {}, strip = $("nav.toc ul"), current = null;
   links.forEach(function (a) { map[a.getAttribute("href").slice(1)] = a; });
   var secs = Object.keys(map).map(function (id) { return doc.getElementById(id); }).filter(Boolean);
+  function activate(id) {
+    var a = map[id];
+    if (!a || a === current) return;
+    if (current) current.classList.remove("active");
+    a.classList.add("active"); current = a;
+    if (strip && strip.scrollWidth > strip.clientWidth + 1) {
+      var left = a.offsetLeft - (strip.clientWidth - a.offsetWidth) / 2;
+      strip.scrollTo({ left: Math.max(0, left), behavior: reduce ? "auto" : "smooth" });
+    }
+  }
   if ("IntersectionObserver" in window && secs.length) {
     var spy = new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (e.isIntersecting) {
-          links.forEach(function (l) { l.classList.remove("active"); });
-          var a = map[e.target.id]; if (a) { a.classList.add("active"); a.scrollIntoView({ block: "nearest", inline: "center" }); }
-        }
-      });
+      es.forEach(function (e) { if (e.isIntersecting) activate(e.target.id); });
     }, { rootMargin: "-30% 0px -60% 0px" });
     secs.forEach(function (s) { spy.observe(s); });
   }
@@ -4229,7 +4299,12 @@ var Plot = (function () {
   lb.innerHTML = '<button class="lb-x" type="button" aria-label="Close">&times;</button><img alt=""><p></p>';
   doc.body.appendChild(lb);
   var lbImg = $("img", lb), lbCap = $("p", lb);
-  function closeLb() { lb.classList.remove("open"); doc.body.classList.remove("noscroll"); }
+  var lastFocus = null;
+  function closeLb() {
+    if (!lb.classList.contains("open")) return;
+    lb.classList.remove("open"); doc.body.classList.remove("noscroll");
+    if (lastFocus) lastFocus.focus({ preventScroll: true });
+  }
   $$(".figbox img").forEach(function (img) {
     img.setAttribute("tabindex", "0"); img.setAttribute("role", "button");
     img.setAttribute("aria-label", "Enlarge figure: " + (img.alt || "").slice(0, 70));
@@ -4237,7 +4312,8 @@ var Plot = (function () {
       lbImg.src = img.src; lbImg.alt = img.alt;
       var cap = img.closest("figure") && img.closest("figure").querySelector(".fid");
       lbCap.textContent = cap ? cap.textContent.replace(/ /g, " ") + " Click anywhere or press Esc to close." : "";
-      lb.classList.add("open"); doc.body.classList.add("noscroll"); $(".lb-x", lb).focus();
+      lastFocus = img;
+      lb.classList.add("open"); doc.body.classList.add("noscroll"); $(".lb-x", lb).focus({ preventScroll: true });
     }
     img.addEventListener("click", open);
     img.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
@@ -4386,9 +4462,18 @@ var Plot = (function () {
     closure(o, r);
   }
 
+  var cancelSearch = null;
   var closure = Plot.debounce(function (o, r) {
     if (r !== last) return;
-    var h = S.maxInterval(o.Rw, r.hoursAbove, 24, 300), tile = document.getElementById("i1-int-tile");
+    if (cancelSearch) cancelSearch();
+    cancelSearch = S.maxIntervalAsync(o.Rw, r.hoursAbove, function (h) {
+      cancelSearch = null;
+      if (r === last) showInterval(o, h);
+    }, 24, 200);          // 200-point grid: same interval as 300 (7.78 h), half the cost
+  }, 220);
+
+  function showInterval(o, h) {
+    var tile = document.getElementById("i1-int-tile");
     var mm = (o.Rw * 10).toFixed(1) + " mm wound";
     if (h <= 0) {
       text("i1-int", "never");
@@ -4401,7 +4486,7 @@ var Plot = (function () {
       text("i1-int", "≤ " + h.toFixed(1) + " h");
       text("i1-int-k", "longest patch-change interval that closes a " + mm + "; a daily change does not close it");
     }
-  }, 220);
+  }
 
   ["i1-cv", "i1-lg", "i1-rv", "i1-kp", "i1-rw"].forEach(function (id) { Plot.slider(id, update); });
   document.getElementById("i1-reset").addEventListener("click", function () {
@@ -4409,7 +4494,7 @@ var Plot = (function () {
     update();
   });
   window.addEventListener("resize", Plot.debounce(function () { if (last) drawChart(last); }, 120));
-  update();
+  Plot.whenNear(document.getElementById("i1"), update);
 })();
 
 /* Interactive 2 -- closure animation: radial Fisher-KPP, n(r,t). */
@@ -4419,7 +4504,8 @@ var Plot = (function () {
   if (!disc) return;
   var C = Plot.COL, S = Sim, prof = document.getElementById("i2-prof"), tl = document.getElementById("i2-time");
   var DAYMAX = 60, FE = 0.25;
-  var st = { treated: true, T: 14, Rw: 0.2, res: null, rf: [], endDay: DAYMAX, day: 0, playing: false, last: 0 };
+  var st = { treated: true, T: 14, Rw: 0.2, res: null, rf: [], endDay: DAYMAX, day: 0, playing: false, last: 0,
+             visible: false, parked: false, drawn: -1, autoplayed: false };
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function el(id) { return document.getElementById(id); }
@@ -4458,11 +4544,11 @@ var Plot = (function () {
 
   function drawDisc(n, r, Rinf, rfk) {
     var s = Plot.setup(disc, 1), c = s.c, cx = s.w / 2, cy = s.h / 2 - 8, R = s.w / 2 - 16, i;
-    c.fillStyle = "#fff"; c.beginPath(); c.arc(cx, cy, R + 4, 0, 6.2832); c.fill();
-    for (i = r.length - 1; i >= 0; i--) {
-      c.beginPath(); c.fillStyle = colour(n[i]);
-      c.arc(cx, cy, Math.max(0.5, (r[i] + (r[1] - r[0]) * 0.5) / Rinf * R), 0, 6.2832); c.fill();
-    }
+    // one radial-gradient fill sampled from n(r) -- the previous version filled
+    // 300 stacked discs per frame (~10^8 pixels) and stalled the page
+    var g = c.createRadialGradient(cx, cy, 0, cx, cy, R), N = r.length - 1, STOPS = 96;
+    for (i = 0; i <= STOPS; i++) g.addColorStop(i / STOPS, colour(n[Math.round(i / STOPS * N)]));
+    c.beginPath(); c.fillStyle = g; c.arc(cx, cy, R, 0, 6.2832); c.fill();
     ring(c, cx, cy, st.Rw / Rinf * R, "#8C6A57", [4, 4], 1.3);
     if (rfk > 0) ring(c, cx, cy, rfk / Rinf * R, "#B2182B", [], 2.2);
     c.strokeStyle = "#D5DBE0"; c.lineWidth = 1.5; c.beginPath(); c.arc(cx, cy, R + 3, 0, 6.2832); c.stroke();
@@ -4526,12 +4612,18 @@ var Plot = (function () {
 
   function play(on) {
     st.playing = on; el("i2-play").innerHTML = on ? "&#10074;&#10074; Pause" : "&#9654; Play";
-    if (on) { if (st.day >= st.endDay - 1e-6) st.day = 0; st.last = performance.now(); requestAnimationFrame(tick); }
+    if (on) { if (st.day >= st.endDay - 1e-6) st.day = 0; st.parked = false; st.drawn = -1; st.last = performance.now(); requestAnimationFrame(tick); }
   }
+  // The loop only runs while the widget is on screen, and only repaints when
+  // the stored frame changes (one frame per 0.25 d), so it costs nothing while
+  // the reader scrolls past.
   function tick(now) {
     if (!st.playing) return;
+    if (!st.visible) { st.parked = true; return; }
     st.day = Math.min(st.endDay, st.day + (now - st.last) / 1000 * 6); st.last = now;
-    el("i2-d").value = st.day; draw();
+    el("i2-d").value = st.day;
+    var k = frameIdx();
+    if (k !== st.drawn || st.day >= st.endDay - 1e-6) { draw(); st.drawn = k; }
     if (st.day >= st.endDay - 1e-6) { play(false); return; }
     requestAnimationFrame(tick);
   }
@@ -4560,13 +4652,20 @@ var Plot = (function () {
   el("i2-d").addEventListener("input", function () { play(false); st.day = parseFloat(this.value); draw(); });
   window.addEventListener("resize", Plot.debounce(draw, 120));
 
-  refresh(false);
-  if ("IntersectionObserver" in window && !reduce) {
-    var io = new IntersectionObserver(function (es) {
-      if (es[0].isIntersecting) { io.disconnect(); if (st.day === 0) play(true); }
-    }, { threshold: 0.45 });
-    io.observe(el("i2"));
-  }
+  // the 60-day solve only runs once the widget is about a screen away
+  Plot.whenNear(el("i2"), function () {
+    refresh(false);
+    if ("IntersectionObserver" in window) {
+      // track visibility for the whole session: autoplay once on first view,
+      // park the loop when scrolled away, resume it when scrolled back
+      new IntersectionObserver(function (es) {
+        st.visible = es[0].isIntersecting;
+        if (!st.visible) return;
+        if (!st.autoplayed && !reduce) { st.autoplayed = true; if (st.day === 0) play(true); return; }
+        if (st.playing && st.parked) { st.parked = false; st.last = performance.now(); requestAnimationFrame(tick); }
+      }, { threshold: 0.3 }).observe(el("i2"));
+    } else st.visible = true;
+  });
 })();
 
 </script>

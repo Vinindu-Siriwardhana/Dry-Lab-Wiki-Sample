@@ -189,6 +189,26 @@ var Sim = (function () {
     }
     return lo;
   }
+  /* Same bisection as maxInterval, but one closure solve per task (~20 ms
+     each) so the browser can keep scrolling between steps. Returns a cancel
+     function; done(hours) is called once with the result. */
+  function maxIntervalAsync(Rw, covH, done, hi, nr) {
+    hi = hi || 24; nr = nr || 300;
+    var cancelled = false, lo = covH, stage = 0;
+    function ok(h) { return isFinite(closureTimeInterval(Rw, h, covH, 120, nr)); }
+    function later(f) { setTimeout(function () { if (!cancelled) f(); }, 0); }
+    function step() {
+      if (!(covH > 0)) return done(0);
+      if (stage === 0) { stage = 1; if (ok(hi)) return done(hi); return later(step); }
+      if (stage === 1) { stage = 2; if (!ok(lo * 1.0001)) return done(0); return later(step); }
+      if (hi - lo <= 0.25) return done(lo);
+      var mid = 0.5 * (lo + hi);
+      if (ok(mid)) lo = mid; else hi = mid;
+      later(step);
+    }
+    later(step);
+    return function () { cancelled = true; };
+  }
   function pulseS(Tdays) {
     var T = Tdays * DAY, tau = 1 / P.KE0;
     return function (t) { return t <= T ? 1 : Math.exp(-(t - T) / tau); };
@@ -205,7 +225,7 @@ var Sim = (function () {
   return {
     P: P, UM: UM, DAY: DAY, HOUR: HOUR, RATES: RATES, gelD: gelD, twoDomain: twoDomain,
     fisher: fisher, frontAt: frontAt, scheduleS: scheduleS, closureTimeInterval: closureTimeInterval,
-    maxInterval: maxInterval, pulseS: pulseS, suppression: suppression,
+    maxInterval: maxInterval, maxIntervalAsync: maxIntervalAsync, pulseS: pulseS, suppression: suppression,
     thetaLps: thetaLps, p65: p65
   };
 })();

@@ -6,11 +6,15 @@ var Plot = (function () {
     bad: "#762A83", ink: "#2B3137", mute: "#6B747D", grid: "#E6EAED", axis: "#9AA3AB"
   };
 
+  /* Size the canvas from its CSS width. The backing store and the CSS height are
+     only written when they actually change: rewriting them on every animation
+     frame forced a full page re-layout 60 times a second and made scrolling
+     stutter while the closure animation played. */
   function setup(canvas, aspect) {
-    var dpr = window.devicePixelRatio || 1, w = Math.max(240, canvas.clientWidth),
-        h = Math.round(w * aspect);
-    canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
-    canvas.style.height = h + "px";
+    var dpr = window.devicePixelRatio || 1, w = Math.max(240, Math.round(canvas.clientWidth)),
+        h = Math.round(w * aspect), bw = Math.round(w * dpr), bh = Math.round(h * dpr);
+    if (canvas._h !== h) { canvas.style.height = h + "px"; canvas._h = h; }
+    if (canvas.width !== bw || canvas.height !== bh) { canvas.width = bw; canvas.height = bh; }
     var c = canvas.getContext("2d");
     c.setTransform(dpr, 0, 0, dpr, 0, 0);
     c.clearRect(0, 0, w, h);
@@ -102,5 +106,19 @@ var Plot = (function () {
     return function () { var a = arguments; clearTimeout(h); h = setTimeout(function () { fn.apply(null, a); }, ms); };
   }
 
-  return { COL: COL, setup: setup, Axes: Axes, slider: slider, fmt: fmt, debounce: debounce };
+  /* run fn once, when `el` comes within ~1 screen of the viewport, and in an
+     idle moment, so widget start-up never blocks the first scroll */
+  function whenNear(el, fn) {
+    var go = function () {
+      var ric = window.requestIdleCallback || function (f) { return setTimeout(f, 1); };
+      ric(fn, { timeout: 400 });
+    };
+    if (!el || !("IntersectionObserver" in window)) { go(); return; }
+    var io = new IntersectionObserver(function (es) {
+      if (es[0].isIntersecting) { io.disconnect(); go(); }
+    }, { rootMargin: "900px 0px" });
+    io.observe(el);
+  }
+
+  return { COL: COL, setup: setup, Axes: Axes, slider: slider, fmt: fmt, debounce: debounce, whenNear: whenNear };
 })();

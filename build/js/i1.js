@@ -75,9 +75,18 @@
     closure(o, r);
   }
 
+  var cancelSearch = null;
   var closure = Plot.debounce(function (o, r) {
     if (r !== last) return;
-    var h = S.maxInterval(o.Rw, r.hoursAbove, 24, 300), tile = document.getElementById("i1-int-tile");
+    if (cancelSearch) cancelSearch();
+    cancelSearch = S.maxIntervalAsync(o.Rw, r.hoursAbove, function (h) {
+      cancelSearch = null;
+      if (r === last) showInterval(o, h);
+    }, 24, 200);          // 200-point grid: same interval as 300 (7.78 h), half the cost
+  }, 220);
+
+  function showInterval(o, h) {
+    var tile = document.getElementById("i1-int-tile");
     var mm = (o.Rw * 10).toFixed(1) + " mm wound";
     if (h <= 0) {
       text("i1-int", "never");
@@ -90,7 +99,7 @@
       text("i1-int", "≤ " + h.toFixed(1) + " h");
       text("i1-int-k", "longest patch-change interval that closes a " + mm + "; a daily change does not close it");
     }
-  }, 220);
+  }
 
   ["i1-cv", "i1-lg", "i1-rv", "i1-kp", "i1-rw"].forEach(function (id) { Plot.slider(id, update); });
   document.getElementById("i1-reset").addEventListener("click", function () {
@@ -98,5 +107,5 @@
     update();
   });
   window.addEventListener("resize", Plot.debounce(function () { if (last) drawChart(last); }, 120));
-  update();
+  Plot.whenNear(document.getElementById("i1"), update);
 })();

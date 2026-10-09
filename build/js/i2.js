@@ -5,7 +5,8 @@
   if (!disc) return;
   var C = Plot.COL, S = Sim, prof = document.getElementById("i2-prof"), tl = document.getElementById("i2-time");
   var DAYMAX = 60, FE = 0.25;
-  var st = { treated: true, T: 14, Rw: 0.2, res: null, rf: [], endDay: DAYMAX, day: 0, playing: false, last: 0 };
+  var st = { treated: true, T: 14, Rw: 0.2, res: null, rf: [], endDay: DAYMAX, day: 0, playing: false, last: 0,
+             visible: false, parked: false, drawn: -1, autoplayed: false };
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function el(id) { return document.getElementById(id); }
@@ -44,11 +45,11 @@
 
   function drawDisc(n, r, Rinf, rfk) {
     var s = Plot.setup(disc, 1), c = s.c, cx = s.w / 2, cy = s.h / 2 - 8, R = s.w / 2 - 16, i;
-    c.fillStyle = "#fff"; c.beginPath(); c.arc(cx, cy, R + 4, 0, 6.2832); c.fill();
-    for (i = r.length - 1; i >= 0; i--) {
-      c.beginPath(); c.fillStyle = colour(n[i]);
-      c.arc(cx, cy, Math.max(0.5, (r[i] + (r[1] - r[0]) * 0.5) / Rinf * R), 0, 6.2832); c.fill();
-    }
+    // one radial-gradient fill sampled from n(r) -- the previous version filled
+    // 300 stacked discs per frame (~10^8 pixels) and stalled the page
+    var g = c.createRadialGradient(cx, cy, 0, cx, cy, R), N = r.length - 1, STOPS = 96;
+    for (i = 0; i <= STOPS; i++) g.addColorStop(i / STOPS, colour(n[Math.round(i / STOPS * N)]));
+    c.beginPath(); c.fillStyle = g; c.arc(cx, cy, R, 0, 6.2832); c.fill();
     ring(c, cx, cy, st.Rw / Rinf * R, "#8C6A57", [4, 4], 1.3);
     if (rfk > 0) ring(c, cx, cy, rfk / Rinf * R, "#B2182B", [], 2.2);
     c.strokeStyle = "#D5DBE0"; c.lineWidth = 1.5; c.beginPath(); c.arc(cx, cy, R + 3, 0, 6.2832); c.stroke();
@@ -112,12 +113,18 @@
 
   function play(on) {
     st.playing = on; el("i2-play").innerHTML = on ? "&#10074;&#10074; Pause" : "&#9654; Play";
-    if (on) { if (st.day >= st.endDay - 1e-6) st.day = 0; st.last = performance.now(); requestAnimationFrame(tick); }
+    if (on) { if (st.day >= st.endDay - 1e-6) st.day = 0; st.parked = false; st.drawn = -1; st.last = performance.now(); requestAnimationFrame(tick); }
   }
+  // The loop only runs while the widget is on screen, and only repaints when
+  // the stored frame changes (one frame per 0.25 d), so it costs nothing while
+  // the reader scrolls past.
   function tick(now) {
     if (!st.playing) return;
+    if (!st.visible) { st.parked = true; return; }
     st.day = Math.min(st.endDay, st.day + (now - st.last) / 1000 * 6); st.last = now;
-    el("i2-d").value = st.day; draw();
+    el("i2-d").value = st.day;
+    var k = frameIdx();
+    if (k !== st.drawn || st.day >= st.endDay - 1e-6) { draw(); st.drawn = k; }
     if (st.day >= st.endDay - 1e-6) { play(false); return; }
     requestAnimationFrame(tick);
   }
@@ -146,11 +153,18 @@
   el("i2-d").addEventListener("input", function () { play(false); st.day = parseFloat(this.value); draw(); });
   window.addEventListener("resize", Plot.debounce(draw, 120));
 
-  refresh(false);
-  if ("IntersectionObserver" in window && !reduce) {
-    var io = new IntersectionObserver(function (es) {
-      if (es[0].isIntersecting) { io.disconnect(); if (st.day === 0) play(true); }
-    }, { threshold: 0.45 });
-    io.observe(el("i2"));
-  }
+  // the 60-day solve only runs once the widget is about a screen away
+  Plot.whenNear(el("i2"), function () {
+    refresh(false);
+    if ("IntersectionObserver" in window) {
+      // track visibility for the whole session: autoplay once on first view,
+      // park the loop when scrolled away, resume it when scrolled back
+      new IntersectionObserver(function (es) {
+        st.visible = es[0].isIntersecting;
+        if (!st.visible) return;
+        if (!st.autoplayed && !reduce) { st.autoplayed = true; if (st.day === 0) play(true); return; }
+        if (st.playing && st.parked) { st.parked = false; st.last = performance.now(); requestAnimationFrame(tick); }
+      }, { threshold: 0.3 }).observe(el("i2"));
+    } else st.visible = true;
+  });
 })();

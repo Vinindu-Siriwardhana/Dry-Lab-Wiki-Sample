@@ -8,24 +8,24 @@
   </header>
   <div class="w-body">
     <div class="w-controls">
-      <label class="ctl"><span class="ctl-top"><span>Total V14 loading C<sub>V,0</sub></span><output id="i1-cv-v"></output></span>
+      <label class="ctl"><span class="ctl-top"><span>Total V14 loading C<sub>V,0</sub></span><output id="i1-cv-v">738 &#181;M</output></span>
         <input type="range" id="i1-cv" min="20" max="1500" step="1" value="738"></label>
-      <label class="ctl"><span class="ctl-top"><span>Gel thickness L<sub>gel</sub></span><output id="i1-lg-v"></output></span>
+      <label class="ctl"><span class="ctl-top"><span>Gel thickness L<sub>gel</sub></span><output id="i1-lg-v">150 &#181;m</output></span>
         <input type="range" id="i1-lg" min="50" max="1000" step="10" value="150"></label>
-      <label class="ctl"><span class="ctl-top"><span>Retardation factor R<sub>V</sub></span><output id="i1-rv-v"></output></span>
+      <label class="ctl"><span class="ctl-top"><span>Retardation factor R<sub>V</sub></span><output id="i1-rv-v">1.0</output></span>
         <input type="range" id="i1-rv" min="0" max="1.4771" step="0.005" value="0"></label>
-      <label class="ctl"><span class="ctl-top"><span>Tissue proteolysis k<sub>prot</sub></span><output id="i1-kp-v"></output></span>
+      <label class="ctl"><span class="ctl-top"><span>Tissue proteolysis k<sub>prot</sub></span><output id="i1-kp-v">3.2&#215;10&#8315;&#8309; s&#8315;&#185;</output></span>
         <input type="range" id="i1-kp" min="-6" max="-3" step="0.01" value="-4.5"></label>
-      <label class="ctl"><span class="ctl-top"><span>Wound radius R<sub>w</sub></span><output id="i1-rw-v"></output></span>
+      <label class="ctl"><span class="ctl-top"><span>Wound radius R<sub>w</sub></span><output id="i1-rw-v">2.0 mm</output></span>
         <input type="range" id="i1-rw" min="1" max="5" step="0.5" value="2"></label>
       <button type="button" class="w-btn" id="i1-reset">Reset to the gel as built</button>
     </div>
     <div class="w-out">
       <div class="tiles tiles-4">
-        <div class="tile"><div class="tv" id="i1-hours"></div><div class="tk">hours above the 25&#160;&#181;M target</div></div>
-        <div class="tile"><div class="tv" id="i1-peak"></div><div class="tk">peak depth-averaged tissue concentration</div></div>
-        <div class="tile" id="i1-sol-tile"><div class="tv" id="i1-sol"></div><div class="tk" id="i1-sol-k"></div></div>
-        <div class="tile tile-key" id="i1-int-tile"><div class="tv" id="i1-int"></div><div class="tk" id="i1-int-k"></div></div>
+        <div class="tile"><div class="tv" id="i1-hours">2.59 h</div><div class="tk">hours above the 25&#160;&#181;M target</div></div>
+        <div class="tile"><div class="tv" id="i1-peak">113 &#181;M</div><div class="tk">peak depth-averaged tissue concentration</div></div>
+        <div class="tile" id="i1-sol-tile"><div class="tv" id="i1-sol">100 %</div><div class="tk" id="i1-sol-k">of the 738 &#181;M solubility ceiling</div></div>
+        <div class="tile tile-key" id="i1-int-tile"><div class="tv" id="i1-int">&#8804; 7.8 h</div><div class="tk" id="i1-int-k">longest patch-change interval that closes a 2.0 mm wound; a daily change does not close it</div></div>
       </div>
       <div class="w-chart"><canvas id="i1-cv-c" aria-label="Depth-averaged V14 concentration in tissue against time" role="img"></canvas></div>
     </div>
