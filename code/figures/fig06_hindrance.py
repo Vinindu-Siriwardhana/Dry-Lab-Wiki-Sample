@@ -7,8 +7,8 @@ import style as S, params as P, v3model as m
 S.apply()
 xi = np.linspace(3, 50, 400)
 fig, ax = plt.subplots(figsize=(5.0, 3.4))
-for name, a, D0, col in (("V14  (0.87 nm)", P.A_V14_NM, P.D0_V14, S.C_V14),
-                         ("FGF2-G3  (2.34 nm)", P.A_FGF_NM, P.D0_FGF, S.C_FGF)):
+for name, a, D0, col in ((f"V14  ({P.A_V14_NM:g} nm)", P.A_V14_NM, P.D0_V14, S.C_V14),
+                         (f"FGF2-G3  ({P.A_FGF_NM:g} nm)", P.A_FGF_NM, P.D0_FGF, S.C_FGF)):
     ax.plot(xi, m.D_eff(D0, a, xi, P.EPS_GEL) / D0, color=col, label=name)
 ax.axvline(P.XI_NM, color=S.C_GREY, ls=":", lw=1.4)
 ax.text(P.XI_NM + 0.7, 0.30, f"$\\xi$ = {P.XI_NM:.0f} nm\nused throughout\n(MEASURE THIS)",

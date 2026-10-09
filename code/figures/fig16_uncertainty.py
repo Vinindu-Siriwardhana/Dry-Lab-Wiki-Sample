@@ -50,7 +50,7 @@ ax.plot([], [], color=S.C_BAD, lw=1.2, alpha=0.6,
 ax.set_xlabel("time  (days)")
 ax.set_ylabel("area closure  $\\mathcal{A}_c(t)$")
 ax.set_ylim(0, 1.02); ax.set_xlim(0, 60)
-ax.set_title(f"Nearly a fifth of the prior never heals at all  ($R_w$ = {R_w*10:.0f} mm)")
+ax.set_title(f"{stalled.mean():.0%} of the prior never heals at all  ($R_w$ = {R_w*10:.0f} mm)")
 ax.legend(loc="lower right", fontsize=8.4)
 S.tier4_note(ax, "every Model 6 parameter is Tier-4", (0.98, 0.52))
 S.save(fig, "fig16_uncertainty")

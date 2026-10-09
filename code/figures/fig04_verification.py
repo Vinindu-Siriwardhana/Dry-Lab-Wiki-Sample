@@ -17,7 +17,7 @@ fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9.2, 3.9))
 
 # ---- (a) spatial convergence ----------------------------------------------
 D = m.D_eff(P.D0_V14, P.A_V14_NM, P.XI_NM, P.EPS_GEL)
-L = P.L_GEL_THIN
+L = P.L_GEL_ALT          # 500 um, the benchmark geometry of verify.py
 times = np.array([30., 60., 120., 300., 600., 900.])
 nxs = np.array([100, 200, 400, 800, 1600])
 errs = []
@@ -38,7 +38,7 @@ ax1.text(830, np.sqrt(ref[2] * ref[3]), "2", color=S.C_DERIVED, fontsize=9,
 ax1.text(430, ref[2] * 1.25, "1", color=S.C_DERIVED, fontsize=9, weight="bold")
 for nx, e in zip(nxs, errs):
     pass
-ax1.text(0.03, 0.06, f"observed order 2.00\nfinal error {errs[-1]:.2e}",
+ax1.text(0.03, 0.06, f"observed order {np.log2(errs[-2] / errs[-1]):.2f}\nfinal error {errs[-1]:.2e}",
          transform=ax1.transAxes, fontsize=9, weight="bold", color=S.C_V14)
 ax1.set_xlabel("grid points $n_x$")
 ax1.set_ylabel(r"max $|C_{num}-C_{exact}|\,/\,C_0$")

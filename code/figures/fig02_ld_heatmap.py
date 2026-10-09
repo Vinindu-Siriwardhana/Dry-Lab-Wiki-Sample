@@ -17,13 +17,13 @@ G = np.array([[np.sqrt(P.D0_NO * H * it / (np.log(2) / th)) * 1e4
                for th in t_half] for it in inv_tau])
 
 fig, ax = plt.subplots(figsize=(4.3, 3.1))
-im = ax.imshow(G, cmap="Blues", vmin=0, vmax=260, aspect="auto")
+im = ax.imshow(G, cmap="Blues", vmin=0, vmax=G.max() * 1.2, aspect="auto")
 for i in range(len(inv_tau)):
     for j in range(len(t_half)):
         ax.text(j, i, f"{G[i,j]:.0f}", ha="center", va="center",
-                color="white" if G[i, j] > 150 else "#1a1a1a",
+                color="white" if G[i, j] > 0.6 * G.max() else "#1a1a1a",
                 fontsize=10, weight="bold")
-ax.set_xticks(range(len(t_half)), [f"{t:.0f} s" for t in t_half])
+ax.set_xticks(range(len(t_half)), [f"{t:g} s" for t in t_half])
 ax.set_yticks(range(len(inv_tau)), [f"{v:.1f}" for v in inv_tau])
 ax.set_xlabel("NO biological half-life $t_{1/2}$")
 ax.set_ylabel(r"$1/\tau$  (tortuosity group)")

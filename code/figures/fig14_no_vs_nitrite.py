@@ -1,7 +1,7 @@
 """
 F14 -- Free NO and accumulated nitrite are not the same observable.
 
-Free NO is quasi-steady within seconds (1/k_scav ~ 4-14 s) and sits at nanomolar
+Free NO is quasi-steady within minutes (1/k_scav = 100 s) and sits at nanomolar
 levels; nitrite accumulates all day and reaches micromolar.  The Griess assay
 measures the second one.  Fitting the model's instantaneous free-NO expression
 to a Griess curve compares two quantities that differ by orders of magnitude.
@@ -14,10 +14,12 @@ import style as S, params as P, v3model as m
 S.apply()
 t = np.linspace(0, 24 * 3600, 4000)
 N_cell = 1e6            # cells cm^-3  (2e5 cells in 200 uL)
-q_max = 5e-19           # mol cell^-1 s^-1, re-derived from Griess data
+q_max = P.Q_CHRONIC     # mol cell^-1 s^-1, sustained iNOS rate (register)
 p65 = 0.85              # normalised, LPS-stimulated
 
-R, freeNO, NO2 = m.inos_response(t, p65, N_cell, q_max)
+R, freeNO, NO2 = m.inos_response(t, p65, N_cell, q_max, K_iNOS_rel=P.K_INOS_REL,
+                                 p=P.P_INOS, k_turn=P.K_TURN, k_scav=P.K_SCAV,
+                                 phi=P.PHI_NO2)
 
 fig, ax = plt.subplots(figsize=(6.4, 3.8))
 ax2 = ax.twinx()

@@ -1,8 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>HKU iGEM 2026 Modelling</title>
 <style>
 /* Layout: single measured column for prose, figures breaking out wider,
@@ -260,9 +255,6 @@ hr.soft{border:0;border-top:1px solid var(--rule);margin:2.4em 0;max-width:var(-
 }
 
 </style>
-</head>
-<body>
-<div class="progressbar" id="progressbar" aria-hidden="true"></div>
 <header class="wrap mast">
   <p class="kicker">HKU iGEM 2026 &#183; Dry Lab &#183; Mathematical Model V3</p>
   <h1>Modelling</h1>
@@ -272,10 +264,10 @@ hr.soft{border:0;border-top:1px solid var(--rule);margin:2.4em 0;max-width:var(-
   <p class="thesis">Every number in our device specification came out of the model
   before it came out of the lab.</p>
   <div class="keystrip">
-    <div><div class="v">65&#8211;217 &#181;m</div><div class="k">NO penetration depth, against a 0.5&#8211;3&#160;mm stack &#8212; why the sensor could never have worked</div></div>
-    <div><div class="v">14.5 min</div><div class="k">to 95&#160;% release of V14. The patch is a bolus, not a sustained delivery</div></div>
-    <div><div class="v">R<sub>V</sub> &#8776; 10</div><div class="k">retention optimum. More retention is worse, not better</div></div>
-    <div><div class="v">2.05&#215;10<sup>&#8722;7</sup></div><div class="k">solver error against the closed form, converging at second order</div></div>
+    <div><div class="v">11&#8211;92 &#181;m</div><div class="k">NO penetration depth, against a 0.5&#8211;3&#160;mm stack &#8212; why the sensor could never have worked</div></div>
+    <div><div class="v">1.3 min</div><div class="k">to 95&#160;% release of V14 from the 150&#160;&#181;m gel. The patch is a bolus, not a sustained delivery</div></div>
+    <div><div class="v">&#8804; 7.8 h</div><div class="k">patch-change interval needed for closure; one patch holds tissue above target for 2.6&#160;h</div></div>
+    <div><div class="v">2.03&#215;10<sup>&#8722;7</sup></div><div class="k">solver error against the closed form, converging at second order</div></div>
   </div>
 </header>
 
@@ -446,8 +438,8 @@ hr.soft{border:0;border-top:1px solid var(--rule);margin:2.4em 0;max-width:var(-
 
   <div class="claim">
     <h3>The NO-sensing design failed for geometric reasons, before any biology</h3>
-    <p>NO would have been attenuated by two to seven orders of magnitude before reaching the
-    chassis. No promoter, however sensitive, could have read a signal that small.</p>
+    <p>NO would have been attenuated by at least two orders of magnitude before reaching even the
+    thinnest chassis stack. No promoter, however sensitive, could have read a signal that small.</p>
   </div>
 
   <div class="col">
@@ -457,17 +449,17 @@ hr.soft{border:0;border-top:1px solid var(--rule);margin:2.4em 0;max-width:var(-
   whether the architecture could have worked at all.</p>
 
   <p>NO diffusing through a porous layer while being consumed has a steady penetration depth
-  <span class="eq-inline">L<sub>d</sub> = &#8730;(D<sub>eff</sub> / k<sub>decay</sub>)</span>.
-  With a biological half-life of 3&#8211;10&#160;s and the tortuosity group swept across its
-  full plausible range, <b>L<sub>d</sub> is 65&#8211;217&#160;&#181;m</b> &#8212; against a
+  <span class="eq" style="display:inline-block;padding:2px 8px;margin:0;border-left-width:2px">L<sub>d</sub> = &#8730;(D<sub>eff</sub> / k<sub>decay</sub>)</span>.
+  With a biological half-life of 0.09&#8211;2&#160;s and the tortuosity group swept across its
+  full plausible range, <b>L<sub>d</sub> is 11&#8211;92&#160;&#181;m</b> &#8212; against a
   bacterial-cellulose plus hydrogel stack of 0.5&#8211;3&#160;mm.</p>
   </div>
 
   <figure class="wide">
-    <div class="figbox"><img src="assets/fig01_no_attenuation.svg" alt="Semi-log plot of the fraction of wound nitric oxide reaching the chassis against depth into the patch stack. The curve falls from 1 at the surface to below 10 to the minus 7 at 2 millimetres, with a shaded band spanning the swept penetration depths and a grey band marking the actual 0.5 to 3 millimetre device stack."></div>
+    <div class="figbox"><img src="assets/fig01_no_attenuation.svg" alt="Semi-log plot of the fraction of wound nitric oxide reaching the chassis against depth into the patch stack. The curve falls from 1 at the surface to below 10 to the minus 12 by 1 millimetre, with a shaded band spanning the swept penetration depths and a grey band marking the actual 0.5 to 3 millimetre device stack."></div>
     <figcaption><span class="fid">Figure&#160;1.</span> Across the whole swept parameter range,
-    NO arriving at the chassis is 10<sup>&#8722;2</sup> to 10<sup>&#8722;7</sup> of wound NO at
-    1&#160;mm &#8212; far below any plausible NorR activation threshold.
+    NO arriving at the chassis is at most 5&#215;10<sup>&#8722;3</sup> of wound NO even at the
+    thinnest 0.5&#160;mm stack, and far less at depth &#8212; far below any plausible NorR activation threshold.
     <span class="caveat">The converse bound points the same way: measured in&#160;vivo wound NO
     (~3.18&#160;&#181;M) sits above the promoter's likely half-activation constant, so had NO
     reached the chassis the promoter would have been saturated and effectively always-on.
@@ -476,10 +468,10 @@ hr.soft{border:0;border-top:1px solid var(--rule);margin:2.4em 0;max-width:var(-
   </figure>
 
   <figure>
-    <div class="figbox"><img src="assets/fig02_ld_heatmap.svg" alt="Three by three heatmap of nitric oxide penetration depth in micrometres against the tortuosity group and the NO half-life, with values ranging from 65 to 217 micrometres."></div>
+    <div class="figbox"><img src="assets/fig02_ld_heatmap.svg" alt="Three by three heatmap of nitric oxide penetration depth in micrometres against the tortuosity group and the NO half-life, with values ranging from 11 to 92 micrometres."></div>
     <figcaption><span class="fid">Figure&#160;2.</span> The conclusion is not a parameter
-    choice. L<sub>d</sub> stays between 65 and 217&#160;&#181;m everywhere in the swept box,
-    an order of magnitude below the thinnest stack we could have built.
+    choice. L<sub>d</sub> stays between 11 and 92&#160;&#181;m everywhere in the swept box,
+    several-fold below even the thinnest stack we could have built.
     <span class="src">fig02_ld_heatmap.py</span></figcaption>
   </figure>
 
@@ -500,18 +492,19 @@ hr.soft{border:0;border-top:1px solid var(--rule);margin:2.4em 0;max-width:var(-
 
   <div class="claim warn">
     <h3>This is a bolus, not a sustained release &#8212; and the two molecules do not arrive together</h3>
-    <p>V14 reaches 95&#160;% release in 14.5&#160;minutes and FGF2-G3 in 41&#160;minutes from a
-    500&#160;&#181;m gel, against a wound-closure timescale of 7&#8211;21 days. The 2.8&#215;
-    gap between them is pure size difference: the heparin-free gel retains neither active.</p>
+    <p>From the 150&#160;&#181;m gel as built, V14 reaches 95&#160;% release in 1.3&#160;minutes and
+    FGF2-G3 in 3.1&#160;minutes (14&#160;and 34&#160;minutes from a 500&#160;&#181;m gel), against a
+    wound-closure timescale of 7&#8211;21 days. The 2.5&#215; gap between them is pure size
+    difference: the heparin-free gel retains neither active.</p>
   </div>
 
   <figure class="wide">
-    <div class="figbox"><img src="assets/fig03_release.svg" alt="Cumulative fractional release against log time for V14 and FGF2-G3 at two gel thicknesses. All four curves reach 95 percent within about three hours, while a shaded band marking the 7 to 21 day wound closure window sits far to the right with no curve activity near it."></div>
+    <div class="figbox"><img src="assets/fig03_release.svg" alt="Cumulative fractional release against log time for V14 and FGF2-G3 at two gel thicknesses. All four curves reach 95 percent within about an hour, while a shaded band marking the 7 to 21 day wound closure window sits far to the right with no curve activity near it."></div>
     <figcaption><span class="fid">Figure&#160;3.</span> The empty space between the release
     curves and the closure window <i>is</i> the result: a timescale separation of roughly
-    60&#8211;5000&#215;. <span class="caveat">Computed from the closed-form Crank series, so it
+    3000&#8211;25&#8239;000&#215; for the as-built gel. <span class="caveat">Computed from the closed-form Crank series, so it
     carries no numerical error at all. Consequence for the assay: sample on a log grid from
-    ~5&#160;min &#8212; hourly sampling would miss the entire kinetics.</span>
+    ~10&#160;s &#8212; even minute-scale sampling would miss most of the kinetics.</span>
     <span class="src">fig03_release.py</span></figcaption>
   </figure>
 
@@ -521,7 +514,8 @@ hr.soft{border:0;border-top:1px solid var(--rule);margin:2.4em 0;max-width:var(-
   fitted from the release assay. Second, the model honestly predicts a <em>small</em> closure
   benefit for an unmodified gel &#8212; a prediction, not a modelling failure. Third, if
   release kinetics are to matter for efficacy at all, retention has to be
-  <em>added</em>. Act&#160;3 asks what that would buy.</p>
+  <em>added</em>. Act&#160;3 asks what that would buy &#8212; and the register has since locked the
+  gel as heparin-free, so the answer is a counterfactual.</p>
   </div>
 
   <details class="math"><summary>The transport equations, and why porosity cancels</summary>
@@ -538,8 +532,10 @@ hr.soft{border:0;border-top:1px solid var(--rule);margin:2.4em 0;max-width:var(-
 &#160;&#160;&#160;&#160;&#964; = &#949;^(&#8722;1/2)   (Bruggeman closure, replaced by a fitted &#964; at the first opportunity)</div>
     <p>Porosity enters in exactly two places: interfacial flux matching, and converting loaded
     mass to concentration. At &#958;&#160;=&#160;10&#160;nm this gives
-    D<sub>eff</sub>&#160;=&#160;3.25&#215;10<sup>&#8722;6</sup> (V14) and
-    1.15&#215;10<sup>&#8722;6</sup>&#160;cm&#178;s<sup>&#8722;1</sup> (FGF2-G3).</p>
+    D<sub>eff</sub>&#160;=&#160;3.38&#215;10<sup>&#8722;6</sup> (V14) and
+    1.38&#215;10<sup>&#8722;6</sup>&#160;cm&#178;s<sup>&#8722;1</sup> (FGF2-G3), using the register's
+    Stokes&#8211;Einstein diffusivities, hydrodynamic radii of 0.73 and 1.68&#160;nm, and a 5&#160;% GelMA
+    porosity of 0.618.</p>
     <div class="eq">gel:     &#8706;C&#7495;/&#8706;t = D_eff&#7495; &#8706;&#178;C&#7495;/&#8706;x&#178; &#8722; k_deg&#7495; C&#7495;        0 &lt; x &lt; L_gel
 tissue:  &#8706;C&#7511;/&#8706;t = D_eff&#7511; &#8706;&#178;C&#7511;/&#8706;x&#178; &#8722; k_prot C&#7511;      &#8722;L_tis &lt; x &lt; 0
 
@@ -572,12 +568,13 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
   </figure>
 
   <figure class="wide">
-    <div class="figbox"><img src="assets/fig05_tissue_profiles.svg" alt="Two panels showing free V14 concentration against tissue depth at seven times from 15 minutes to 12 days, for fast and slow proteolysis. Profiles decay with depth; the slow-proteolysis panel stays above the 25 micromolar target line far longer."></div>
+    <div class="figbox"><img src="assets/fig05_tissue_profiles.svg" alt="Two panels showing free V14 concentration against tissue depth at seven times from 1 minute to 8 hours, for the register proteolysis rate and for slow proteolysis. Profiles decay with depth and fall below the 25 micromolar target line within a few hours in both panels."></div>
     <figcaption><span class="fid">Figure&#160;5.</span> Where the drug actually is. The
-    penetration depth &#923; and the proteolysis rate, not the gel, set how long tissue stays
-    above target. <span class="caveat">Shown at R<sub>V</sub>&#160;=&#160;10 and the solubility
-    ceiling. The macrophage target sits in a thin surface band where concentration is always
-    above the depth average, so days-above-target computed this way is a lower bound.</span>
+    1.5&#160;mm dermis drains the thin reservoir into the systemic sink within hours, whatever the
+    proteolysis rate. <span class="caveat">Shown for the gel as built (R<sub>V</sub>&#160;=&#160;1,
+    150&#160;&#181;m) loaded at the solubility ceiling. The macrophage target sits in a thin surface
+    band where concentration is always above the depth average, so time-above-target computed this
+    way is a lower bound.</span>
     <span class="src">fig05_tissue_profiles.py</span></figcaption>
   </figure>
 
@@ -599,44 +596,47 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
   </div></div>
 
   <div class="claim gold">
-    <h3>Retention has an optimum, not a maximum &#8212; and we expected the opposite</h3>
-    <p>Because retention works by binding, the free concentration that drives delivery is
-    C<sub>total</sub>/R<sub>V</sub>. Residence time is bought and driving concentration is spent
-    in exact proportion. Past R<sub>V</sub>&#160;&#8776;&#160;30 the tissue concentration never
-    reaches the therapeutic target at all and coverage collapses to <b>zero</b>.</p>
+    <h3>One patch holds tissue above target for hours, and retention cannot fix that</h3>
+    <p>The gel as built is heparin-free (R<sub>V</sub>&#160;=&#160;1, locked). It keeps tissue above
+    the 25&#160;&#181;M target for <b>2.6&#160;h</b> (1.2&#8211;4.5&#160;h across the sink-depth and
+    diffusivity ranges). As a counterfactual, retention works by binding, so the free concentration
+    that drives delivery is C<sub>total</sub>/R<sub>V</sub>: residence time is bought and driving
+    concentration is spent in exact proportion. It gains only about 10&#160;% in duration near
+    R<sub>V</sub>&#160;&#8776;&#160;4 and, past R<sub>V</sub>&#160;&#8776;&#160;17, coverage collapses
+    to <b>zero</b>.</p>
   </div>
 
   <figure class="wide">
-    <div class="figbox"><img src="assets/fig07_retention.svg" alt="Upper panel: days above the 25 micromolar target against retardation factor on a log axis, three curves for different proteolysis rates each rising to a peak near R_V equals 10 then falling sharply to zero beyond 30, with uncertainty bands. Lower panel: peak tissue concentration falling steadily with R_V and crossing the 25 micromolar target near R_V equals 26."></div>
-    <figcaption><span class="fid">Figure&#160;7.</span> The headline design result. The lower
-    panel explains the upper one: peak tissue concentration falls as 1/R<sub>V</sub>, and once
-    it crosses the target the duration is zero by definition.
-    <span class="caveat">The band spans L<sub>tis</sub>&#160;=&#160;2&#8211;4&#160;mm and
+    <div class="figbox"><img src="assets/fig07_retention.svg" alt="Upper panel: hours above the 25 micromolar target against retardation factor on a log axis, three curves for different proteolysis rates, each starting between 2 and 3 hours at R_V equals 1, rising only slightly to a shallow peak near R_V equals 4 and then falling sharply to zero beyond about 17, with uncertainty bands. Lower panel: peak tissue concentration falling steadily with R_V from about 110 micromolar and crossing the 25 micromolar target near R_V equals 17."></div>
+    <figcaption><span class="fid">Figure&#160;7.</span> Single-patch coverage and the retention
+    counterfactual. The lower panel explains the upper one: peak tissue concentration falls as
+    1/R<sub>V</sub>, and once it crosses the target the duration is zero by definition.
+    <span class="caveat">The band spans L<sub>tis</sub>&#160;=&#160;1&#8211;2&#160;mm and
     D<sub>t</sub>&#160;=&#160;0.7&#8211;1.8&#215;10<sup>&#8722;6</sup>&#160;cm&#178;s<sup>&#8722;1</sup>,
-    the two parameters we only know as ranges. The <i>location</i> of the optimum and the
-    collapse are robust to both; the absolute number of days is not, and we do not claim it is.</span>
+    the two parameters we only know as ranges. The collapse of coverage is robust to both; the
+    absolute number of hours is not.</span>
     <span class="src">fig07_retention.py</span></figcaption>
   </figure>
 
   <div class="col">
-  <p>Two consequences reorder our design priorities. <b>Protease resistance outranks hydrogel
-  functionalisation</b>: improving k<sub>prot</sub> by two decades roughly triples coverage and
-  costs nothing in loading capacity, whereas retention trades one against the other. And
+  <p>Two consequences shape our design priorities. <b>Gel thickness and dermal drainage, not
+  retention, set the single-patch window</b>: a 150&#160;&#181;m gel is a small reservoir, and
+  improving k<sub>prot</sub> by a factor of 30 only lengthens cover from 2.6 to 3.1&#160;h. And
   heparin cannot help V14 at all &#8212; it is strongly anionic, V14 carries net charge
   &#8722;2 with no Lys, Arg or His, so it is electrostatically repelled. The two arms need
   different chemistry.</p>
   </div>
 
   <figure class="wide">
-    <div class="figbox"><img src="assets/fig08_solubility.svg" alt="Log-log plot of required total V14 loading against retardation factor, rising linearly and crossing a horizontal saturation ceiling at 738 micromolar near R_V equals 13, with marked points at R_V of 1, 3, 10 and 30, the last labelled impossible."></div>
-    <figcaption><span class="fid">Figure&#160;8.</span> The same optimum, reached from an
-    independent direction. A 25&#160;&#181;M target at 1&#160;mm depth needs
-    <b>55.6&#160;&#181;M free</b> (75&#160;&#181;g&#160;mL<sup>&#8722;1</sup>) &#8212; but
-    556&#160;&#181;M <i>total</i> at R<sub>V</sub>&#160;=&#160;10, which is 75&#160;% of the
-    solubility ceiling, and 1.67&#160;mM at R<sub>V</sub>&#160;=&#160;30, which exceeds it
-    outright. <span class="caveat">Two routes converging on R<sub>V</sub>&#160;&#8776;&#160;3&#8211;10
-    is why we believe the result. Solubility, not potency, is the binding constraint on the
-    whole device.</span> <span class="src">fig08_solubility.py</span></figcaption>
+    <div class="figbox"><img src="assets/fig08_solubility.svg" alt="Log-log plot of required total V14 loading against retardation factor, rising linearly and crossing a horizontal saturation ceiling at 738 micromolar near R_V equals 2.7, with marked points at R_V of 1, 2, 3 and 10, the last two labelled impossible."></div>
+    <figcaption><span class="fid">Figure&#160;8.</span> A second, independent limit on retention.
+    A 25&#160;&#181;M target at 500&#160;&#181;m depth from a 150&#160;&#181;m gel needs
+    <b>270&#160;&#181;M free</b> (366&#160;&#181;g&#160;mL<sup>&#8722;1</sup>), which is already
+    37&#160;% of the solubility ceiling at R<sub>V</sub>&#160;=&#160;1. The <i>total</i> that must
+    dissolve is 539&#160;&#181;M at R<sub>V</sub>&#160;=&#160;2 (73&#160;%) and 809&#160;&#181;M at
+    R<sub>V</sub>&#160;=&#160;3, which exceeds the ceiling outright.
+    <span class="caveat">Retention above R<sub>V</sub>&#160;&#8776;&#160;2.7 cannot be formulated at
+    all. Solubility, not potency, is the binding constraint on the device.</span> <span class="src">fig08_solubility.py</span></figcaption>
   </figure>
 
   <div class="claim warn">
@@ -648,13 +648,14 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
   </div>
 
   <figure class="wide">
-    <div class="figbox"><img src="assets/fig09_recession.svg" alt="Left panel: front position against time for four pulse durations against a chronic baseline. The 5-day pulse advances from 2 millimetres to about 1 millimetre then reverses and leaves the domain; the longer pulses reach zero and close. Right panel: minimum pulse duration for permanent closure rising roughly linearly with wound radius from 4 days at 1 millimetre to 22 days at 5 millimetres."></div>
-    <figcaption><span class="fid">Figure&#160;9.</span> Left: a 5-day pulse produces transient
-    apparent healing followed by complete relapse. Right: the minimum pulse grows roughly
+    <div class="figbox"><img src="assets/fig09_recession.svg" alt="Left panel: front position against time for four pulse durations against a chronic baseline. The 5-day and 10-day pulses advance from 2 millimetres to about 1.5 and 0.8 millimetres then reverse and leave the domain; the 14-day and 20-day pulses reach zero and close. Right panel: minimum pulse duration for permanent closure rising roughly linearly with wound radius from 7 days at 1 millimetre to 34 days at 5 millimetres."></div>
+    <figcaption><span class="fid">Figure&#160;9.</span> Left: a 5-day or 10-day pulse produces
+    transient apparent healing followed by complete relapse; 14 days closes a 2&#160;mm wound. Right: the minimum pulse grows roughly
     linearly with wound radius. <span class="caveat">The model describes a chronic wound bed, so
     it is not run past closure &#8212; t<sub>c</sub> is defined as the first time the front
     reaches the centre. Every rate in this figure is a Tier-4 phenomenological closure with no
-    planned experiment behind it.</span> <span class="src">fig09_recession.py</span></figcaption>
+    planned experiment behind it; the chronic and treated rates are computed from the register
+    closures (chronic r<sub>p</sub>&#160;=&#160;0.50, d&#160;=&#160;0.51&#160;d<sup>&#8722;1</sup>).</span> <span class="src">fig09_recession.py</span></figcaption>
   </figure>
 
   <div class="col">
@@ -663,20 +664,23 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
   </div>
 
   <figure class="wide">
-    <div class="figbox"><img src="assets/fig10_envelope.svg" alt="Days of therapeutic cover against wound radius. A rising dashed demand curve crosses a horizontal single-patch supply line at about 2.5 millimetres, with a shaded one-patch region below and left, and a replacement-required region to the right."></div>
-    <figcaption><span class="fid">Figure&#160;10.</span> One patch closes wounds up to roughly
-    <b>2.5&#160;mm radius</b>; everything larger needs replacement at ~11-day intervals, which
-    is within normal wound-dressing practice and is therefore a specification rather than an
-    obstacle. <span class="caveat">The range is wide &#8212; 1.0 to 5.0&#160;mm &#8212; because
-    the supply band carries the L<sub>tis</sub> and D<sub>t</sub> uncertainty of Figure&#160;7
-    and the demand curve rests entirely on Tier-4 closures. The <i>structure</i> of the result
-    (a bounded coverage window, an optimum in R<sub>V</sub>, a wound size above which repeat
-    dosing is mandatory) is robust; the absolute radius is not.</span>
+    <div class="figbox"><img src="assets/fig10_envelope.svg" alt="Two panels. Left: days of therapeutic cover against wound radius on a log axis; a rising dashed demand curve from about 7 to 34 days sits two orders of magnitude above a flat single-patch supply band of 1 to 4.5 hours. Right: closure time against patch change interval for 1, 2 and 3 millimetre wounds; closure times rise from about 7 to 44 days as the interval lengthens to 7 hours, and no wound closes at 8 hours or longer, including a daily change."></div>
+    <figcaption><span class="fid">Figure&#160;10.</span> No wound in the 1&#8211;5&#160;mm range closes
+    on a single patch: the continuous cover needed is 60&#8211;320 times what one patch supplies.
+    Repeat dosing is therefore the specification. Passing each patch's 2.6&#160;h of cover
+    through the 18&#160;h drug-effect delay, the patch must be changed at least every
+    <b>7.8&#160;h</b>; a daily dressing change never closes the wound.
+    <span class="caveat">The closure side rests entirely on Tier-4 closures, and the treated state
+    (FGF2-G3 at EC<sub>50</sub>, V14 at &#968;<sub>50</sub>) is a scenario choice. The
+    <i>structure</i> of the result (cover of hours against a need of weeks, and a maximum change
+    interval) is robust; the exact interval is not.</span>
     <span class="src">fig10_envelope.py</span></figcaption>
   </figure>
 
   <p class="col">Repeat dosing is not a fallback for a device that failed to achieve sustained
-  release. On these numbers it is <b>structural</b>, and the model sets the interval.</p>
+  release. On these numbers it is <b>structural</b>, and the model sets the interval. It also
+  tells the wet lab where the leverage is: a thicker reservoir or a slower-draining formulation,
+  not retention, is what would stretch the interval.</p>
 </section>
 
 <!-- ================= ACT 4 ================= -->
@@ -714,15 +718,15 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
 
   <div class="claim gold">
     <h3>The Griess assay measures accumulated nitrite, not free NO</h3>
-    <p>The two differ by three to four orders of magnitude. Fitting the model's instantaneous
+    <p>The two differ by roughly three orders of magnitude. Fitting the model's instantaneous
     free-NO expression to a Griess curve compares two different quantities &#8212; so the
     integral, not the quasi-steady concentration, is what gets fitted.</p>
   </div>
 
   <figure class="wide">
-    <div class="figbox"><img src="assets/fig14_no_vs_nitrite.svg" alt="Accumulated nitrite rising to about 21 micromolar over 24 hours on the left axis, against free nitric oxide plateauing near 3 nanomolar on the right axis, a ratio of several thousand."></div>
-    <figcaption><span class="fid">Figure&#160;14.</span> Free NO is quasi-steady within seconds
-    (1/k<sub>scav</sub>&#160;&#8776;&#160;4&#8211;14&#160;s) and sits at nanomolar; nitrite
+    <div class="figbox"><img src="assets/fig14_no_vs_nitrite.svg" alt="Accumulated nitrite rising to about 26 micromolar over 24 hours on the left axis, against free nitric oxide plateauing near 44 nanomolar on the right axis, a ratio of about 600."></div>
+    <figcaption><span class="fid">Figure&#160;14.</span> Free NO is quasi-steady within minutes
+    (1/k<sub>scav</sub>&#160;=&#160;100&#160;s) and sits at tens of nanomolar; nitrite
     accumulates all day and reaches micromolar. <span class="caveat">This is also how we caught
     that V2's per-cell iNOS rate was ~10<sup>4</sup>&#215; too high: it produced a
     plausible-looking steady-state NO concentration only because the scavenging term acts on
@@ -752,16 +756,16 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
     dominate delivery and D<sub>n</sub> to dominate closure. Both are <b>refuted</b> by the
     computed indices. <span class="caveat">Two caveats we would rather state than have a reader
     find. A Sobol ranking reflects prior width as well as physics, and K<sub>D,P</sub> and
-    C<sub>V,0</sub> carry the widest ranges. And variance is not leverage: k<sub>prot,V</sub>
-    carries little output variance yet remains the parameter we can most profitably
-    <i>act</i> on, because improving it costs nothing in loading capacity.</span>
+    C<sub>V,0</sub> carry the widest ranges. And variance is not the same as what we can act on:
+    gel thickness L<sub>gel</sub> ranks third for delivered dose and is the design variable we
+    control directly.</span>
     <span class="src">fig15_sobol.py &#183; sa_run.py</span></figcaption>
   </figure>
 
   <figure class="wide">
     <div class="figbox"><img src="assets/fig16_uncertainty.svg" alt="Area closure fraction against time with a median curve and a wide 5th to 95th percentile ribbon, plus many flat traces along the bottom representing samples that never close."></div>
     <figcaption><span class="fid">Figure&#160;16.</span> Under the current priors
-    <b>18.7&#160;% of sampled wounds never close at all</b>. That is the strongest available
+    <b>18.5&#160;% of sampled wounds never close at all</b>. That is the strongest available
     argument for keeping the death term: a model without it would have returned a finite closure
     time for every one of those samples. <span class="caveat">A statement about the prior, not a
     prediction about any particular wound.</span>
@@ -769,10 +773,10 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
   </figure>
 
   <figure>
-    <div class="figbox"><img src="assets/fig17_slider.svg" alt="Two horizontal stacked bars showing the share of output variance reachable by a one-parameter-at-a-time sweep: 37 percent for delivered dose and 55 percent for closure time, with the remainder in interactions."></div>
+    <div class="figbox"><img src="assets/fig17_slider.svg" alt="Two horizontal stacked bars showing the share of output variance reachable by a one-parameter-at-a-time sweep: 41 percent for delivered dose and 51 percent for closure time, with the remainder in interactions."></div>
     <figcaption><span class="fid">Figure&#160;17.</span> A one-parameter-at-a-time sweep is
     exactly what a slider performs, and it reaches only the first-order variance. For delivered
-    dose that is 37&#160;%; the other 63&#160;% lives in interactions a slider cannot reach.
+    dose that is 41&#160;%; the other 59&#160;% lives in interactions a slider cannot reach.
     <span class="caveat">Our interactive explorer is presentation, not analysis. This is a
     measured deficit, not a stylistic preference.</span>
     <span class="src">fig17_slider.py</span></figcaption>
@@ -822,22 +826,24 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
     <li><b>The planar closure estimate is a lower bound, not an upper bound.</b> Curvature does
     accelerate the front, by 5&#8211;21&#160;% relative to Cartesian &#8212; but the formula
     R<sub>w</sub>/c neglects the time to <i>form</i> the travelling front, and that transient
-    outweighs the curvature gain. Radial closure exceeds R<sub>w</sub>/c by 4&#8211;15&#160;%.</li>
+    outweighs the curvature gain. Radial closure exceeds R<sub>w</sub>/c by 4&#8211;15&#160;%
+    (found with the earlier parameter set; not recomputed for the register update).</li>
 
     <li><b>The far-field boundary condition fails exactly where the device works.</b> A zero-flux
-    deep boundary needs L<sub>tis</sub>&#160;&#8811;&#160;&#923;, but &#923; is 1.2&#160;mm at
-    k&#160;=&#160;10<sup>&#8722;4</sup>&#160;s<sup>&#8722;1</sup> and 12&#160;mm at
-    10<sup>&#8722;6</sup>, against a dermis of 1&#8211;4&#160;mm. V3 therefore uses a Dirichlet
+    deep boundary needs L<sub>tis</sub>&#160;&#8811;&#160;&#923;, but &#923; is 1.1&#160;mm at
+    k&#160;=&#160;10<sup>&#8722;4</sup>&#160;s<sup>&#8722;1</sup> and 11&#160;mm at
+    10<sup>&#8722;6</sup>, against a dermis of 1&#8211;2&#160;mm. V3 therefore uses a Dirichlet
     systemic sink, with no distributed clearance term as well.</li>
 
     <li><b>The Jensen gap was quoted at 15&#160;%; recomputed for this geometry it is
     0.2&#8211;36&#160;%, median 2.7&#160;%.</b> The inherited figure was neither typical nor an
     upper bound. The gap is small in most of the parameter space but reaches 36&#160;% in the
-    corner that matters most, and it is always in the optimistic direction.</li>
+    corner that matters most, and it is always in the optimistic direction (again from the
+    earlier parameter set).</li>
 
-    <li><b>Retention has an optimum, not a maximum.</b> We wrote it up as a lever to be
-    maximised. Running the coupled solve showed R<sub>V</sub>&#160;&#8805;&#160;30 gives zero
-    days above target.</li>
+    <li><b>Retention is not a lever worth pulling.</b> We wrote it up as something to be
+    maximised. Running the coupled solve showed it adds about 10&#160;% to the window at best,
+    and R<sub>V</sub>&#160;&#8805;&#160;17 gives zero hours above target.</li>
 
     <li><b>A sub-threshold pulse causes relapse, not stalling.</b> We had assumed a transient
     crossing of the r<sub>p</sub>&#160;&gt;&#160;d threshold would simply fail to finish. It
@@ -865,10 +871,11 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
 
   <ul class="asks">
     <li><span class="st">&#9633;</span><div><b>V14 stability in serum or with recombinant MMP-9 / neutrophil elastase, by HPLC.</b>
-      Fixes k<sub>prot,V</sub>, which Act&#160;3 identifies as the dominant <i>design</i> lever
-      &#8212; it outranks gel functionalisation and costs nothing in loading capacity. One day of work.</div></li>
+      Fixes k<sub>prot,V</sub>, the highest-priority unmeasured parameter in the register
+      (currently a serum half-life proxy of 6.1&#160;h). One day of work.</div></li>
     <li><span class="st">&#9633;</span><div><b>Saturation solubility of V14 in the casting buffer.</b>
-      Sets C<sub>total,0</sub>, the binding constraint on the entire sustained-release envelope.
+      Sets C<sub>total,0</sub>; at 270&#160;&#181;M free V14 the gel already needs 37&#160;% of the
+      assumed ceiling.
       Trivial, cheap, and currently unplanned.</div></li>
     <li><span class="st">&#9633;</span><div><b>Run the release assay against a RAW&#160;264.7 layer rather than a stirred bath.</b>
       Every planned experiment probes one module in isolation, so a seam error &#8212; a wrong
@@ -877,7 +884,7 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
       and&#160;5 at once.</div></li>
     <li><span class="st">&#9633;</span><div><b>The same release assay for FGF2-G3.</b>
       Every FGF gel parameter is otherwise unconstrained, and it tests the predicted
-      2.8&#215; arrival separation directly.</div></li>
+      2.5&#215; arrival separation directly.</div></li>
     <li><span class="st">&#9633;</span><div><b>Scratch assay on fibroblasts &#177; FGF2-G3, &#177; mitomycin C, reporting front width.</b>
       One assay that supplies an otherwise entirely unsupported module and breaks the
       D<sub>n</sub>&#160;/&#160;r<sub>p</sub> degeneracy.</div></li>
@@ -887,9 +894,13 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
       the whole V14 arm assumes.</div></li>
     <li><span class="st">&#9633;</span><div><b><i>Nos2</i> as one of the two pro-inflammatory qPCR markers.</b>
       It is the only marker that parameterises an equation already in the model.</div></li>
-    <li><span class="st">&#9633;</span><div><b>Sample the release assay on a log grid from ~5&#160;min.</b>
-      Release is ~95&#160;% complete in tens of minutes; hourly sampling would miss the entire
-      kinetics.</div></li>
+    <li><span class="st">&#9633;</span><div><b>Sample the release assay on a log grid from ~10&#160;s.</b>
+      Release from the 150&#160;&#181;m gel is ~95&#160;% complete in a few minutes; minute-scale
+      sampling would miss most of the kinetics.</div></li>
+    <li><span class="st">&#9633;</span><div><b>Test a patch-change protocol, not a single patch.</b>
+      The model puts the longest change interval that still closes a wound at about 7.8&#160;h and
+      says a daily dressing change never closes it. A thicker or slower-draining formulation is
+      the lever that would relax this.</div></li>
   </ul>
 
   <p class="col"><b>One limitation we cannot design away.</b> If FGF2 is assayed on fibroblasts
@@ -935,92 +946,167 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
   <h3>Browse the source</h3>
   <p style="font-size:.9rem;color:var(--ink-2);max-width:var(--measure)">Expand any file to read
   it here, or use the copy button.</p>
-  <details class="code"><summary><span>params.py</span><span class="meta">88 lines &#183; params.py -- the single source of truth for every parameter used in the figures.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+  <details class="code"><summary><span>params.py</span><span class="meta">163 lines &#183; params.py -- the single source of truth for every parameter used in the </span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 params.py -- the single source of truth for every parameter used in the figures.
 
 No value is hard-coded inside a solver; everything enters through this file, so
 changing a number here changes every figure that depends on it.  Each entry
-carries its provenance TIER, following Appendix &quot;Parameter provenance&quot;:
+carries its provenance TIER, following the team constants register
+(constants_register.xlsx, updated 2026-10-09):
 
     T1  measured in house
     T2  mechanistic correlation
     T3  named literature analogue, matching criterion stated
     T4  order-of-magnitude prior (&gt;= 1 decade)
+    D   derived from other entries
+    L   locked design assumption
 
 Units: cm, s, mol cm^-3.  1 uM = 1e-9 mol cm^-3.
 &quot;&quot;&quot;
+import math
 
 UM = 1e-9
 DAY = 86400.0
+HOUR = 3600.0
+LN2 = math.log(2.0)
+
+# --- physical constants (register sheet 0) ---------------------------------
+T_BODY       = 310.0        # K    37 C                                    D
+K_B          = 1.380649e-23 # J/K                                          D
+ETA_WATER    = 0.00069      # Pa s water at 37 C                           T3
 
 # --- geometry ---------------------------------------------------------------
-L_GEL        = 0.1      # cm   (1 mm) gel thickness                       design
-L_GEL_THIN   = 500e-4   # cm   (500 um) thin-gel case                     design
-L_TIS        = 0.3      # cm   (3 mm) dermal depth to the systemic sink   T3
-DELTA        = 0.1      # cm   (1 mm) fibroblast-active / target depth    T4 (choice)
-R_W_DEFAULT  = 0.5      # cm   (5 mm) wound radius                        design
+L_GEL        = 0.015    # cm   (150 um) as-manufactured 5% GelMA          T1
+L_GEL_ALT    = 0.05     # cm   (500 um) V3-document baseline, comparison  design
+L_TIS        = 0.15     # cm   (1.5 mm) dermal depth to the systemic sink T3
+L_TIS_RANGE  = (0.10, 0.20)   # cm, band carried as sensitivity           T3
+DELTA        = 0.05     # cm   (500 um) fibroblast-active / target depth  T4 (sweep 300-1000 um)
+R_W_DEFAULT  = 0.2      # cm   (2 mm) wound radius (grid 1-5 mm)          T4
 
-# --- transport --------------------------------------------------------------
-D0_V14       = 3.6e-6   # cm2/s free-solution diffusivity, 37 C           T2
-D0_FGF       = 1.5e-6   # cm2/s                                           T2
-A_V14_NM     = 0.87     # nm   hydrodynamic radius                        T2
-A_FGF_NM     = 2.34     # nm                                              T2
-A_FIBRE_NM   = 0.6      # nm   gelatin chain radius                       T3
-XI_NM        = 10.0     # nm   mesh size (range 5-50 swept)               T3
-EPS_GEL      = 0.90     # --   10% w/v GelMA at equilibrium hydration     T3
-EPS_TIS      = 0.20     # --   tissue interstitial volume fraction        T3
-K_P          = 1.0      # --   gel/tissue partition coefficient           T4
-D_TIS_V14    = 1.2e-6   # cm2/s tissue diffusivity (range 0.7-1.8e-6)     T2
+# --- species ----------------------------------------------------------------
+MW_V14       = 1355.59  # Da                                               T1
+MW_FGF       = 16487.87 # Da                                               T1
+A_V14_NM     = 0.73     # nm   hydrodynamic radius (0.87 = sensitivity)    T2
+A_FGF_NM     = 1.68     # nm   (2.34 = sensitivity bound)                  T2
+
+
+def stokes_einstein(a_nm):
+    &quot;&quot;&quot;Free diffusivity in cm2/s from the Stokes-Einstein relation at 37 C.&quot;&quot;&quot;
+    return K_B * T_BODY / (6 * math.pi * ETA_WATER * a_nm * 1e-9) * 1e4
+
+
+D0_V14       = 4.5e-6   # cm2/s Stokes-Einstein from A_V14_NM, ETA     D  (doc band 2.5-4.5e-6)
+D0_FGF       = 2.0e-6   # cm2/s Stokes-Einstein from A_FGF_NM, ETA     D  (doc 1.3-1.7e-6)
+T_HALF_V14   = 6.1 * HOUR   # s  serum half-life proxy                     T4
+T_HALF_FGF   = 168 * HOUR   # s  functional half-life at 37 C              T1
+
+# --- hydrogel (Model 1) -----------------------------------------------------
+A_FIBRE_NM   = 0.6      # nm   gelatin chain radius                        T3
+XI_NM        = 10.0     # nm   mesh size (range 5-50 swept)                T4
+EPS_GEL      = 0.618    # --   5% GelMA porosity                           T3
+TAU_GEL      = EPS_GEL ** -0.5   # 1.27, Bruggeman                         T2
+K_DEG_GEL    = LN2 / T_HALF_V14  # 1/s  in-gel degradation V14 (3.15e-5)   D
+K_DEG_GEL_F  = LN2 / T_HALF_FGF  # 1/s  in-gel degradation FGF (1.15e-6)   D
+S_MAX        = 0.0      # mol/cm3 heparin/HS site density -- LOCKED: no heparin   L
+R_V          = 1.0      # --   V14 sorption retardation -- LOCKED            L
+
+# --- tissue (Model 2) -------------------------------------------------------
+EPS_TIS      = 0.80     # --   tissue porosity                             T3
+K_P          = 1.0      # --   gel/tissue partition coefficient            T4
+D_TIS_V14    = 1.2e-6   # cm2/s tissue diffusivity (range 0.7-1.8e-6)      T3
 D_TIS_V14_LO = 0.7e-6
 D_TIS_V14_HI = 1.8e-6
+D_TIS_FGF    = 5e-7     # cm2/s                                            T4
+K_PROT_V14   = LN2 / T_HALF_V14  # 1/s (3.15e-5) -- HIGHEST-PRIORITY GAP   T4
+K_PROT_FGF   = LN2 / T_HALF_FGF  # 1/s (1.15e-6)                           T4
+K_PROT_RANGE = (1e-3, 1e-4, K_PROT_V14, 1e-6)   # register sweep 1e-6..1e-3
+K_CL_FGF     = 0.000115 # 1/s  NOT in the PDE (Dirichlet sink replaces it) T3
+K_CL_V14     = 0.0035   # 1/s  NOT in the PDE; unverified                  T4
 
-# --- loss rates -------------------------------------------------------------
-K_DEG_GEL    = 1e-5     # 1/s  in-gel degradation (1e-5 to 1e-4)          T4
-K_PROT_V14   = 1e-5     # 1/s  tissue proteolysis -- HIGHEST-PRIORITY GAP T4
-K_PROT_RANGE = (1e-4, 1e-5, 1e-6)
-
-# --- dosing -----------------------------------------------------------------
+# --- dosing (Model 7) -------------------------------------------------------
 C_TARGET_V14 = 25 * UM     # mol/cm3  efficacious tissue concentration    T4
 C_SOLUBILITY = 738 * UM    # mol/cm3  1 mg/mL saturation ceiling          T4 -- MEASURE THIS
-MW_V14       = 1355.59     # Da
 F_REL        = 0.5         # --  fraction of loaded dose released         T4
+REAPPLY_D    = 1.0         # d   dressing-change interval                 T4
 
-# --- nitric oxide (Learning Cycle 1) ---------------------------------------
-D0_NO        = 3.3e-5   # cm2/s                                           T3
-NO_HALFLIFE  = (3.0, 5.0, 10.0)   # s, report as a RANGE: autoxidation is
-                                  # second order, so t_1/2 is concentration
-                                  # dependent                             T3
-INV_TAU      = (1.0, 0.5, 0.3)    # swept group 1/tau                     T2
-
-# --- closure (Model 6) -- every entry here is Tier 4 ------------------------
-D_N          = 1e-9     # cm2/s fibroblast random motility                T4
-D_N_RANGE    = (1e-10, 1e-8)
-R0           = 1.0 / DAY   # 1/s basal proliferation                      T4
-D0_DEATH     = 0.3 / DAY   # 1/s basal death                              T4
-K_CARRY      = 1.0         # normalised carrying capacity
-W_SMOOTH     = 75e-4       # cm  IC smoothing width (50-100 um)
-
-# chronic baseline and therapeutic pulse used in the durability section
-R_CHRONIC    = 0.8 / DAY
-D_CHRONIC    = 1.0 / DAY
-R_PULSE      = 2.0 / DAY
-D_PULSE      = 0.4 / DAY
-TAU_RELAX    = 0.5 * DAY   # s, drug-effect relaxation time constant
-
-# --- receptor / signalling --------------------------------------------------
-A_LPS        = 10.0     # --  scaled endotoxin load [L]/KD_L              T4
-GAMMA        = 10.0     # --  scaled receptor density                     T4
-HILL_H       = 1.5      # --                                              T4
+# --- receptor / signalling (Models 3-4) -------------------------------------
+KD_L         = 6.5e-11  # mol/cm3 (65 nM) LPS-MD2                          T3
+L_LPS        = 1.0 * UM # mol/cm3 (1 uM) wound endotoxin load              T4
+A_LPS        = L_LPS / KD_L   # -- scaled endotoxin load, 15.4             D
+THETA_UNTREATED = A_LPS / (1 + A_LPS)   # 0.94, closure calibration anchor D
+TLR4_TOT     = 1.0      # nM                                               T4
+GAMMA        = 10.0     # --  scaled receptor density                      T4
+HILL_H       = 2.0      # --  NF-kB p65 Hill coefficient                   T3
+K_NF         = 10.0     # nM                                               T4
+P65_BAS, P65_MAX = 0.5, 50.0   # nM                                        T4
 PSI_RANGE    = (1e-2, 1e4)
 
+# --- nitric oxide (Learning Cycle 1 and Model 5) ---------------------------
+D0_NO        = 3.0e-5   # cm2/s NO in water                                T3
+NO_HALFLIFE  = (0.09, 0.5, 2.0)   # s, normoxic tissue, report as a RANGE:
+                                  # autoxidation is second order, so t_1/2 is
+                                  # concentration dependent                T3
+INV_TAU      = (1.0, 0.5, 0.3)    # swept group 1/tau                      T2
+STACK_MM     = (0.5, 3.0)         # V2 cellulose + hydrogel stack, mm      design (V2)
+K_SCAV       = 0.01     # 1/s  NO scavenging                               T3
+Q_CHRONIC    = 5.0e-19  # mol/cell/s sustained iNOS rate (3.5-8.1e-19)     T3
+Q_MAX_ACUTE  = 8.17e-17 # mol/cell/s                                       T3
+N_MAC        = 262      # cells/mm2 chronic baseline M1 density            T3
+MAC_BAND     = 0.005    # cm                                               T4
+K_TURN       = LN2 / (4 * HOUR)   # 1/s iNOS turnover                      T4
+K_INOS_REL   = 0.3      # x p65_max                                        T4
+P_INOS       = 2.0      # --                                               T4
+PHI_NO2      = 0.9      # --  NO -&gt; nitrite yield                          T4
+
+# --- closure (Model 6) -- every entry here is Tier 4 ------------------------
+D_N          = 1e-9     # cm2/s fibroblast random motility                 T4
+D_N_RANGE    = (1e-10, 1e-8)
+K_CARRY      = 1.0      # normalised carrying capacity (5e6 cells/cm3)
+R0           = 0.8 / DAY   # 1/s basal proliferation, chronic              T4
+D0_DEATH     = 0.24 / DAY  # 1/s basal death, chronic (calibrated 2026-10-09, was 1.0)
+DELTA_D      = 0.3 / DAY   # 1/s max death increment (calibrated, was 0.7) T4
+E_MAX        = 2.0         # --  FGF max efficacy                          T4
+EC50_F       = 0.5         # ng/mL                                         T4
+BETA_R       = 0.5         # --  inflammation penalty on proliferation     T4
+K_I_R        = 0.3         # --                                            T4
+K_I_D        = 0.3         # --                                            T4
+S_I          = 2.0         # --  death Hill exponent                       T4
+KE0          = 1.0 / (18 * HOUR)  # 1/s effect-compartment rate            T4
+W_SMOOTH     = 75e-4       # cm  IC smoothing width (50-100 um)            T4
+
+
+def rp_of(C_e, I_e):
+    &quot;&quot;&quot;Proliferation r_p(C_e, I_e) in 1/s, register closures.&quot;&quot;&quot;
+    return R0 * (1 + E_MAX * C_e / (EC50_F + C_e)) * (1 - BETA_R * I_e / (K_I_R + I_e))
+
+
+def d_of(I_e):
+    &quot;&quot;&quot;Death d(I_e) in 1/s, register closures.&quot;&quot;&quot;
+    return D0_DEATH + DELTA_D * I_e ** S_I / (K_I_D ** S_I + I_e ** S_I)
+
+
+# chronic baseline: untreated wound, no FGF, theta_LPS = 0.94
+I_CHRONIC    = THETA_UNTREATED
+R_CHRONIC    = rp_of(0.0, I_CHRONIC)      # 0.497 /d
+D_CHRONIC    = d_of(I_CHRONIC)            # 0.512 /d  -&gt; net -0.015 /d: stall
+# therapeutic state (scenario): FGF2-G3 at EC50, V14 at psi_50 (half the
+# active receptor suppressed, so I_e = theta_0 / 2)
+I_TREATED    = THETA_UNTREATED / 2
+R_PULSE      = rp_of(EC50_F, I_TREATED)   # 1.11 /d
+D_PULSE      = d_of(I_TREATED)            # 0.45 /d
+TAU_RELAX    = 1.0 / KE0                  # s, drug-effect relaxation (18 h)
+
 PROVENANCE = {
-    # module: (T1, T2, T3, T4, no_planned_experiment)
-    &quot;M1 release&quot;:      dict(T1=2, T2=4, T3=3, T4=2, unplanned=1),
-    &quot;M2 tissue&quot;:       dict(T1=0, T2=3, T3=2, T4=4, unplanned=3),
-    &quot;M3 receptor&quot;:     dict(T1=1, T2=0, T3=0, T4=3, unplanned=2),
-    &quot;M4 signalling&quot;:   dict(T1=0, T2=0, T3=0, T4=5, unplanned=4),
-    &quot;M5 NO readout&quot;:   dict(T1=1, T2=0, T3=2, T4=3, unplanned=2),
-    &quot;M6 closure&quot;:      dict(T1=0, T2=0, T3=0, T4=11, unplanned=11),
+    # module: counts of T1-T4 entries in the constants register, and how many
+    # of them have no planned experiment.  D (derived) and L (locked) rows are
+    # not counted.
+    &quot;M1 release&quot;:      dict(T1=4, T2=3, T3=3, T4=3, unplanned=1),
+    &quot;M2 tissue&quot;:       dict(T1=0, T2=0, T3=4, T4=6, unplanned=5),
+    &quot;M3 receptor&quot;:     dict(T1=0, T2=0, T3=2, T4=3, unplanned=2),
+    &quot;M4 signalling&quot;:   dict(T1=0, T2=0, T3=1, T4=4, unplanned=4),
+    &quot;M5 NO readout&quot;:   dict(T1=0, T2=0, T3=9, T4=5, unplanned=5),
+    &quot;M6 closure&quot;:      dict(T1=0, T2=0, T3=0, T4=15, unplanned=15),
+    &quot;M7 design&quot;:       dict(T1=0, T2=0, T3=0, T4=3, unplanned=2),
 }
 </code></pre></details>
 <details class="code"><summary><span>v3model.py</span><span class="meta">442 lines &#183; v3model.py -- reference implementation of Mathematical Model V3.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
@@ -1750,7 +1836,7 @@ def verify(verbose=True):
 if __name__ == &quot;__main__&quot;:
     verify()
 </code></pre></details>
-<details class="code"><summary><span>sa_run.py</span><span class="meta">209 lines &#183; sa_run.py -- global sensitivity analysis: Morris screening and Sobol indices.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>sa_run.py</span><span class="meta">209 lines &#183; sa_run.py -- global sensitivity analysis: Morris screening and Sobol ind</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 sa_run.py -- global sensitivity analysis: Morris screening and Sobol indices.
 
 HKU iGEM 2026, Dry Lab.  TEAM REFERENCE COPY.
@@ -1806,12 +1892,12 @@ CAP_DAYS = 365.0
 PRIORS_A = [
     (&quot;$K_{D,P}$&quot;,        1.0 * UM,   100.0 * UM),    # 2 decades, T4
     (&quot;$C_{V,0}$&quot;,        20.0 * UM,  800.0 * UM),    # 40x, design variable
-    (r&quot;$\delta$&quot;,        0.03,       0.15),          # modelling choice
-    (&quot;$k_{prot,V}$&quot;,     1e-6,       1e-4),          # 2 decades, T4
-    (&quot;$L_{gel}$&quot;,        300e-4,     2000e-4),       # design variable
+    (r&quot;$\delta$&quot;,        0.03,       0.10),         # register sweep 300-1000 um
+    (&quot;$k_{prot,V}$&quot;,     1e-6,       1e-3),          # 3 decades, T4 (register sweep)
+    (&quot;$L_{gel}$&quot;,        100e-4,     500e-4),        # around the 150 um as built
     (&quot;$k_{cl,V}$&quot;,       1e-7,       1e-5),          # T4
-    (&quot;$D_{0,V}$&quot;,        2.5e-6,     4.5e-6),        # T2
-    (r&quot;$\varepsilon_g$&quot;, 0.88,       0.93),          # T3
+    (&quot;$D_{0,V}$&quot;,        2.5e-6,     4.5e-6),        # doc band to Stokes-Einstein
+    (r&quot;$\varepsilon_g$&quot;, 0.55,       0.70),          # T3, around 0.618
     (r&quot;$\xi$&quot;,           5.0,        50.0),          # T3
 ]
 
@@ -2060,14 +2146,14 @@ FIGDIR = os.path.join(HERE, &quot;figures&quot;)
 ORDER = [
     (&quot;01&quot;, &quot;fig01_no_attenuation.py&quot;,  &quot;NO attenuation -- why sensing failed&quot;),
     (&quot;02&quot;, &quot;fig02_ld_heatmap.py&quot;,      &quot;penetration depth across the swept range&quot;),
-    (&quot;03&quot;, &quot;fig03_release.py&quot;,         &quot;release is a bolus; 2.8x arrival separation&quot;),
+    (&quot;03&quot;, &quot;fig03_release.py&quot;,         &quot;release is a bolus; arrival separation&quot;),
     (&quot;04&quot;, &quot;fig04_verification.py&quot;,    &quot;solver verification (run this one first)&quot;),
     (&quot;05&quot;, &quot;fig05_tissue_profiles.py&quot;, &quot;V14 depth profiles in tissue&quot;),
     (&quot;06&quot;, &quot;fig06_hindrance.py&quot;,       &quot;steric hindrance vs mesh size&quot;),
-    (&quot;07&quot;, &quot;fig07_retention.py&quot;,       &quot;THE retention optimum&quot;),
+    (&quot;07&quot;, &quot;fig07_retention.py&quot;,       &quot;single-patch coverage; retention counterfactual&quot;),
     (&quot;08&quot;, &quot;fig08_solubility.py&quot;,      &quot;solubility ceiling&quot;),
     (&quot;09&quot;, &quot;fig09_recession.py&quot;,       &quot;front recession + minimum pulse (SLOW, ~4 min)&quot;),
-    (&quot;10&quot;, &quot;fig10_envelope.py&quot;,        &quot;device envelope (needs 09 first)&quot;),
+    (&quot;10&quot;, &quot;fig10_envelope.py&quot;,        &quot;patch-change protocol (needs 07 and 09 first, ~2 min)&quot;),
     (&quot;11&quot;, &quot;fig11_universal_dose.py&quot;,  &quot;universal scaled dose-response&quot;),
     (&quot;12&quot;, &quot;fig12_dose_correction.py&quot;, &quot;V2 dose-equation correction&quot;),
     (&quot;13&quot;, &quot;fig13_nitrite_fit.py&quot;,     &quot;nitrite fit -- NEEDS THE WET-LAB CSV&quot;),
@@ -2102,7 +2188,7 @@ def main(which=None):
 if __name__ == &quot;__main__&quot;:
     sys.exit(main(sys.argv[1:] or None))
 </code></pre></details>
-<details class="code"><summary><span>style.py</span><span class="meta">98 lines &#183; style.py — the single visual system for every V3 model figure.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>style.py</span><span class="meta">116 lines &#183; style.py — the single visual system for every V3 model figure.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 style.py — the single visual system for every V3 model figure.
 
 Import this first in every figure script. It fixes the colour semantics so a
@@ -2192,8 +2278,26 @@ def save(fig, name):
     for ext in (&quot;svg&quot;, &quot;png&quot;):
         p = os.path.join(FIGDIR, f&quot;{name}.{ext}&quot;)
         fig.savefig(p, format=ext)
+        if ext == &quot;svg&quot;:
+            _strip_dtd(p)
     print(f&quot;  wrote {name}.svg / .png&quot;)
     plt.close(fig)
+
+
+def _strip_dtd(path):
+    &quot;&quot;&quot;
+    Remove the XML prolog and DOCTYPE that matplotlib writes.
+
+    Wiki and artifact hosting both reject XML supporting files carrying DTD
+    machinery, and nothing in these figures needs it -- the SVG renders
+    identically without it.
+    &quot;&quot;&quot;
+    with open(path, encoding=&quot;utf-8&quot;) as fh:
+        txt = fh.read()
+    i = txt.find(&quot;&lt;svg&quot;)
+    if i &gt; 0:
+        with open(path, &quot;w&quot;, encoding=&quot;utf-8&quot;) as fh:
+            fh.write(txt[i:])
 
 
 def tier4_note(ax, text=&quot;dashed = Tier-4 prior&quot;, loc=(0.98, 0.02)):
@@ -2201,7 +2305,7 @@ def tier4_note(ax, text=&quot;dashed = Tier-4 prior&quot;, loc=(0.98, 0.02)):
             fontsize=7.5, color=&quot;#777777&quot;, style=&quot;italic&quot;)
 </code></pre></details>
 <h3 style="font-size:1rem">figures/</h3>
-<details class="code"><summary><span>figures/fig01_no_attenuation.py</span><span class="meta">58 lines &#183; F1 -- Why NO-responsive sensing was geometrically infeasible.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>figures\fig01_no_attenuation.py</span><span class="meta">60 lines &#183; F1 -- Why NO-responsive sensing was geometrically infeasible.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 F1 -- Why NO-responsive sensing was geometrically infeasible.
 
 Steady penetration depth for diffusion with first-order consumption,
@@ -2229,11 +2333,11 @@ ld_lo, ld_hi = min(lds), max(lds)
 ax.fill_between(L * 10, np.exp(-L / ld_lo), np.exp(-L / ld_hi),
                 color=S.C_V14_L, alpha=0.45, lw=0,
                 label=f&quot;$L_d$ = {ld_lo*1e4:.0f}–{ld_hi*1e4:.0f} µm (swept)&quot;)
-ax.plot(L * 10, np.exp(-L / Ld(0.5, 5.0)), color=S.C_V14,
-        label=&quot;central case, $L_d$ = %.0f µm&quot; % (Ld(0.5, 5.0) * 1e4))
+ax.plot(L * 10, np.exp(-L / Ld(0.5, P.NO_HALFLIFE[1])), color=S.C_V14,
+        label=&quot;central case, $L_d$ = %.0f µm&quot; % (Ld(0.5, P.NO_HALFLIFE[1]) * 1e4))
 
-ax.axvspan(0.5, 3.0, color=S.C_GREY, alpha=0.35, lw=0)
-ax.text(1.75, 2e-3, &quot;actual device stack\n0.5 – 3 mm&quot;, ha=&quot;center&quot;, va=&quot;center&quot;,
+ax.axvspan(*P.STACK_MM, color=S.C_GREY, alpha=0.35, lw=0)
+ax.text(1.75, 1e-6, &quot;actual device stack\n0.5 – 3 mm&quot;, ha=&quot;center&quot;, va=&quot;center&quot;,
         fontsize=9, color=&quot;#555555&quot;, weight=&quot;bold&quot;)
 
 ax.axhline(1e-2, color=S.C_THRESH, ls=&quot;:&quot;, lw=1.4)
@@ -2242,14 +2346,16 @@ ax.text(0.04, 1.3e-2, &quot;most optimistic NorR activation threshold&quot;,
 
 for Lx, lab in ((0.1, None), (0.2, None)):
     pass
-a_lo, a_hi = np.exp(-0.1 / ld_hi), np.exp(-0.1 / ld_lo)
-ax.annotate(&quot;&quot;, xy=(1.0, a_lo), xytext=(1.0, a_hi),
+Ls = P.STACK_MM[0] / 10                    # thinnest stack, cm
+a_hi, a_lo = np.exp(-Ls / ld_hi), max(np.exp(-Ls / ld_lo), 1e-12)
+ax.annotate(&quot;&quot;, xy=(Ls * 10, a_lo), xytext=(Ls * 10, a_hi),
             arrowprops=dict(arrowstyle=&quot;&lt;-&gt;&quot;, color=S.C_DERIVED, lw=1.3))
-ax.text(1.08, np.sqrt(a_lo * a_hi), &quot;at 1 mm:\n$10^{-2}$ to $10^{-7}$&quot;,
+ax.text(Ls * 10 + 0.08, a_hi * 1e-2,
+        &quot;at %.1f mm:\n$\\leq 10^{%d}$&quot; % (Ls * 10, int(np.ceil(np.log10(a_hi)))),
         fontsize=8.5, va=&quot;center&quot;, color=S.C_DERIVED, weight=&quot;bold&quot;)
 
 ax.set_yscale(&quot;log&quot;)
-ax.set_ylim(1e-9, 2)
+ax.set_ylim(1e-12, 2)
 ax.set_xlim(0, 3.2)
 ax.set_xlabel(&quot;depth into the patch stack, $L$  (mm)&quot;)
 ax.set_ylabel(&quot;fraction of wound NO reaching the chassis,  $e^{-L/L_d}$&quot;)
@@ -2257,9 +2363,9 @@ ax.set_title(&quot;NO could never have reached the sensor&quot;)
 ax.legend(loc=&quot;upper right&quot;)
 S.save(fig, &quot;fig01_no_attenuation&quot;)
 print(f&quot;  L_d range {ld_lo*1e4:.0f}-{ld_hi*1e4:.0f} um; &quot;
-      f&quot;attenuation at 1 mm: {np.exp(-0.1/ld_hi):.1e} to {np.exp(-0.1/ld_lo):.1e}&quot;)
+      f&quot;attenuation at {Ls*1e4:.0f} um: {np.exp(-Ls/ld_hi):.1e} to {np.exp(-Ls/ld_lo):.1e}&quot;)
 </code></pre></details>
-<details class="code"><summary><span>figures/fig02_ld_heatmap.py</span><span class="meta">36 lines &#183; F2 -- Penetration depth across the whole swept parameter range.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>figures\fig02_ld_heatmap.py</span><span class="meta">36 lines &#183; F2 -- Penetration depth across the whole swept parameter range.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 F2 -- Penetration depth across the whole swept parameter range.
 
 Shows the Act-1 conclusion does not depend on one parameter choice: L_d stays
@@ -2278,13 +2384,13 @@ G = np.array([[np.sqrt(P.D0_NO * H * it / (np.log(2) / th)) * 1e4
                for th in t_half] for it in inv_tau])
 
 fig, ax = plt.subplots(figsize=(4.3, 3.1))
-im = ax.imshow(G, cmap=&quot;Blues&quot;, vmin=0, vmax=260, aspect=&quot;auto&quot;)
+im = ax.imshow(G, cmap=&quot;Blues&quot;, vmin=0, vmax=G.max() * 1.2, aspect=&quot;auto&quot;)
 for i in range(len(inv_tau)):
     for j in range(len(t_half)):
         ax.text(j, i, f&quot;{G[i,j]:.0f}&quot;, ha=&quot;center&quot;, va=&quot;center&quot;,
-                color=&quot;white&quot; if G[i, j] &gt; 150 else &quot;#1a1a1a&quot;,
+                color=&quot;white&quot; if G[i, j] &gt; 0.6 * G.max() else &quot;#1a1a1a&quot;,
                 fontsize=10, weight=&quot;bold&quot;)
-ax.set_xticks(range(len(t_half)), [f&quot;{t:.0f} s&quot; for t in t_half])
+ax.set_xticks(range(len(t_half)), [f&quot;{t:g} s&quot; for t in t_half])
 ax.set_yticks(range(len(inv_tau)), [f&quot;{v:.1f}&quot; for v in inv_tau])
 ax.set_xlabel(&quot;NO biological half-life $t_{1/2}$&quot;)
 ax.set_ylabel(r&quot;$1/\tau$  (tortuosity group)&quot;)
@@ -2295,7 +2401,7 @@ cb.outline.set_visible(False)
 S.save(fig, &quot;fig02_ld_heatmap&quot;)
 print(f&quot;  L_d spans {G.min():.0f}-{G.max():.0f} um; stack is 500-3000 um&quot;)
 </code></pre></details>
-<details class="code"><summary><span>figures/fig03_release.py</span><span class="meta">60 lines &#183; F3 -- Release is a bolus, not a sustained delivery, and the two molecules do not arrive together.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>figures\fig03_release.py</span><span class="meta">61 lines &#183; F3 -- Release is a bolus, not a sustained delivery, and the two molecule</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 F3 -- Release is a bolus, not a sustained delivery, and the two molecules do
 not arrive together.
 
@@ -2313,17 +2419,18 @@ Dv = m.D_eff(P.D0_V14, P.A_V14_NM, P.XI_NM, P.EPS_GEL, P.A_FIBRE_NM)
 Df = m.D_eff(P.D0_FGF, P.A_FGF_NM, P.XI_NM, P.EPS_GEL, P.A_FIBRE_NM)
 
 fig, ax = plt.subplots(figsize=(7.0, 4.2))
-t = np.logspace(0, np.log10(25 * 86400), 900)
+t = np.logspace(0.5, np.log10(25 * 86400), 900)
 
-cases = [(&quot;V14&quot;,      Dv, P.L_GEL_THIN, S.C_V14, &quot;-&quot;,  2.1),
-         (&quot;FGF2-G3&quot;,  Df, P.L_GEL_THIN, S.C_FGF, &quot;-&quot;,  2.1),
-         (&quot;V14&quot;,      Dv, P.L_GEL,      S.C_V14, &quot;--&quot;, 1.4),
-         (&quot;FGF2-G3&quot;,  Df, P.L_GEL,      S.C_FGF, &quot;--&quot;, 1.4)]
+cases = [(&quot;V14&quot;,      Dv, P.L_GEL,     S.C_V14, &quot;-&quot;,  2.1),
+         (&quot;FGF2-G3&quot;,  Df, P.L_GEL,     S.C_FGF, &quot;-&quot;,  2.1),
+         (&quot;V14&quot;,      Dv, P.L_GEL_ALT, S.C_V14, &quot;--&quot;, 1.4),
+         (&quot;FGF2-G3&quot;,  Df, P.L_GEL_ALT, S.C_FGF, &quot;--&quot;, 1.4)]
 
 t95 = {}
 for name, D, L, col, ls, lw in cases:
     f = m.crank_cumulative(t, D, L)
-    lab = f&quot;{name}, $L_{{gel}}$ = {L*1e4:.0f} µm&quot;
+    lab = f&quot;{name}, $L_{{gel}}$ = {L*1e4:.0f} µm&quot; + \
+        (&quot;  (as built)&quot; if L == P.L_GEL else &quot;&quot;)
     ax.plot(t / 60, f, color=col, ls=ls, lw=lw, label=lab)
     tt = m.release_time(0.95, D, L); t95[(name, L)] = tt
     ax.plot([tt / 60], [0.95], &quot;o&quot;, color=col, ms=5, zorder=5)
@@ -2332,20 +2439,20 @@ ax.axvspan(7 * 1440, 21 * 1440, color=S.C_GOOD, alpha=0.13, lw=0)
 ax.text(12.5 * 1440, 0.46, &quot;wound closure\nhappens here\n(7 – 21 days)&quot;,
         ha=&quot;center&quot;, va=&quot;center&quot;, fontsize=9.5, color=&quot;#36691a&quot;, weight=&quot;bold&quot;)
 
-a, b = t95[(&quot;V14&quot;, P.L_GEL_THIN)] / 60, t95[(&quot;FGF2-G3&quot;, P.L_GEL_THIN)] / 60
+a, b = t95[(&quot;V14&quot;, P.L_GEL)] / 60, t95[(&quot;FGF2-G3&quot;, P.L_GEL)] / 60
 ax.annotate(&quot;&quot;, xy=(a, 0.80), xytext=(b, 0.80),
             arrowprops=dict(arrowstyle=&quot;&lt;-&gt;&quot;, color=S.C_DERIVED, lw=1.5))
-ax.text(np.sqrt(a * b), 0.845, f&quot;{b/a:.1f}× arrival separation\n(pure size effect)&quot;,
-        ha=&quot;center&quot;, fontsize=8.6, color=S.C_DERIVED, weight=&quot;bold&quot;)
+ax.text(b * 1.3, 0.80, f&quot;{b/a:.1f}× arrival separation\n(pure size effect)&quot;,
+        ha=&quot;left&quot;, va=&quot;center&quot;, fontsize=8.6, color=S.C_DERIVED, weight=&quot;bold&quot;)
 
 ax.axhline(0.95, color=S.C_GREY, lw=0.9, ls=&quot;:&quot;)
-ax.text(1.15, 0.965, &quot;95 % released&quot;, fontsize=7.8, color=&quot;#777777&quot;)
+ax.text(0.12, 0.965, &quot;95 % released&quot;, fontsize=7.8, color=&quot;#777777&quot;)
 
 ax.set_xscale(&quot;log&quot;)
-ax.set_xlim(1, 25 * 1440)
+ax.set_xlim(0.1, 25 * 1440)
 ax.set_ylim(0, 1.04)
-ticks = [1, 10, 60, 240, 1440, 10080, 10080 * 3]
-ax.set_xticks(ticks, [&quot;1 min&quot;, &quot;10 min&quot;, &quot;1 h&quot;, &quot;4 h&quot;, &quot;1 d&quot;, &quot;1 wk&quot;, &quot;3 wk&quot;])
+ticks = [0.1, 1, 10, 60, 240, 1440, 10080, 10080 * 3]
+ax.set_xticks(ticks, [&quot;6 s&quot;, &quot;1 min&quot;, &quot;10 min&quot;, &quot;1 h&quot;, &quot;4 h&quot;, &quot;1 d&quot;, &quot;1 wk&quot;, &quot;3 wk&quot;])
 ax.set_xlabel(&quot;time after application&quot;)
 ax.set_ylabel(&quot;cumulative fractional release  $f_i(t)$&quot;)
 ax.set_title(&quot;Both actives are gone before healing begins&quot;)
@@ -2355,7 +2462,7 @@ for k, v in t95.items():
     print(f&quot;  95% release {k[0]:8s} L={k[1]*1e4:4.0f}um : {v/60:6.1f} min&quot;)
 print(f&quot;  separation factor {b/a:.2f}x&quot;)
 </code></pre></details>
-<details class="code"><summary><span>figures/fig04_verification.py</span><span class="meta">82 lines &#183; F4 -- Solver verification.  Nothing downstream is worth reading if this panel is not right.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>figures\fig04_verification.py</span><span class="meta">82 lines &#183; F4 -- Solver verification.  Nothing downstream is worth reading if this </span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 F4 -- Solver verification.  Nothing downstream is worth reading if this panel
 is not right, so it appears above the fold rather than in an appendix.
 
@@ -2374,7 +2481,7 @@ fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9.2, 3.9))
 
 # ---- (a) spatial convergence ----------------------------------------------
 D = m.D_eff(P.D0_V14, P.A_V14_NM, P.XI_NM, P.EPS_GEL)
-L = P.L_GEL_THIN
+L = P.L_GEL_ALT          # 500 um, the benchmark geometry of verify.py
 times = np.array([30., 60., 120., 300., 600., 900.])
 nxs = np.array([100, 200, 400, 800, 1600])
 errs = []
@@ -2395,7 +2502,7 @@ ax1.text(830, np.sqrt(ref[2] * ref[3]), &quot;2&quot;, color=S.C_DERIVED, fontsi
 ax1.text(430, ref[2] * 1.25, &quot;1&quot;, color=S.C_DERIVED, fontsize=9, weight=&quot;bold&quot;)
 for nx, e in zip(nxs, errs):
     pass
-ax1.text(0.03, 0.06, f&quot;observed order 2.00\nfinal error {errs[-1]:.2e}&quot;,
+ax1.text(0.03, 0.06, f&quot;observed order {np.log2(errs[-2] / errs[-1]):.2f}\nfinal error {errs[-1]:.2e}&quot;,
          transform=ax1.transAxes, fontsize=9, weight=&quot;bold&quot;, color=S.C_V14)
 ax1.set_xlabel(&quot;grid points $n_x$&quot;)
 ax1.set_ylabel(r&quot;max $|C_{num}-C_{exact}|\,/\,C_0$&quot;)
@@ -2437,11 +2544,12 @@ S.save(fig, &quot;fig04_verification&quot;)
 print(&quot;  convergence errors:&quot;, &quot; &quot;.join(f&quot;{e:.2e}&quot; for e in errs))
 print(&quot;  front-speed errors:&quot;, &quot; &quot;.join(f&quot;{abs(n_-a)/a:.2%}&quot; for a, n_ in zip(an, nu)))
 </code></pre></details>
-<details class="code"><summary><span>figures/fig05_tissue_profiles.py</span><span class="meta">48 lines &#183; F5 -- V14 concentration profiles in tissue, from the two-domain solver.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>figures\fig05_tissue_profiles.py</span><span class="meta">64 lines &#183; F5 -- V14 concentration profiles in tissue, from the two-domain solver.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 F5 -- V14 concentration profiles in tissue, from the two-domain solver.
 
 Shows where the drug actually is over time, the penetration depth Lambda, and
-how little of the window sits above the 25 uM therapeutic target.
+how little of the window sits above the 25 uM therapeutic target.  Run for the
+gel AS BUILT: 150 um, heparin-free (R_V = 1), loaded at the solubility ceiling.
 &quot;&quot;&quot;
 import sys, os, numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -2452,40 +2560,55 @@ from twodomain import TwoDomain, free_from_total, UM, DAY
 S.apply()
 Dg = m.D_eff(P.D0_V14, P.A_V14_NM, P.XI_NM, P.EPS_GEL)
 fig, axes = plt.subplots(1, 2, figsize=(9.4, 3.9), sharey=True)
+SEG = [(0.5, 120), (5.0, 108), (30.0, 1400)]          # resolve to ~12 h
 
-for ax, kprot in zip(axes, (1e-4, 1e-6)):
+peak = 0.0
+for ax, kprot in zip(axes, (P.K_PROT_V14, 1e-6)):
     td = TwoDomain(D_gel=Dg, D_tis=P.D_TIS_V14, L_gel=P.L_GEL, L_tis=P.L_TIS,
                    nx_gel=60, nx_tis=200, eps_gel=P.EPS_GEL, eps_tis=P.EPS_TIS,
-                   K_p=P.K_P, k_prot=kprot, R_V=10.0)
-    res = td.run(free_from_total(P.C_SOLUBILITY, 10.0), t_end=12 * DAY)
+                   K_p=P.K_P, k_prot=kprot, k_deg_gel=P.K_DEG_GEL, R_V=P.R_V)
+    res = td.run(free_from_total(P.C_SOLUBILITY, P.R_V), t_end=12 * 3600,
+                 segments=SEG)
     depth = np.concatenate([[0.0], -td.xt[1:]]) * 10          # mm
+    peak = max(peak, res[&quot;C_tis&quot;].max() / UM)
 
-    want = [0.25, 1, 4, 24, 72, 168, 288]                      # hours
+    want = [1, 5, 15, 60, 120, 240, 480]                        # minutes
     cmap = plt.cm.viridis(np.linspace(0.08, 0.88, len(want)))
-    for h, col in zip(want, cmap):
-        i = int(np.argmin(np.abs(res[&quot;t&quot;] - h * 3600)))
+    for mn, col in zip(want, cmap):
+        i = int(np.argmin(np.abs(res[&quot;t&quot;] - mn * 60)))
         ax.plot(depth, res[&quot;C_tis&quot;][i] / UM, color=col, lw=1.7,
-                label=f&quot;{h:g} h&quot; if h &lt; 24 else f&quot;{h/24:g} d&quot;)
+                label=f&quot;{mn:g} min&quot; if mn &lt; 60 else f&quot;{mn/60:g} h&quot;)
 
     lam = m.penetration_depth(P.D_TIS_V14, kprot) * 10
-    ax.axvline(lam, color=S.C_DERIVED, ls=&quot;-.&quot;, lw=1.1)
-    ax.text(lam + 0.05, 320, f&quot;$\\Lambda$ = {lam:.1f} mm&quot;, fontsize=8.4,
-            color=S.C_DERIVED, rotation=90, va=&quot;top&quot;)
+    if lam &lt; P.L_TIS * 10:
+        ax.axvline(lam, color=S.C_DERIVED, ls=&quot;-.&quot;, lw=1.1)
+        ax.text(lam + 0.03, 330, f&quot;$\\Lambda$ = {lam:.2f} mm&quot;, fontsize=8.4,
+                color=S.C_DERIVED, rotation=90, va=&quot;top&quot;)
+    else:
+        ax.text(0.97, 0.6, f&quot;$\\Lambda$ = {lam:.0f} mm\n(beyond the sink)&quot;,
+                transform=ax.transAxes, ha=&quot;right&quot;, fontsize=8.4,
+                color=S.C_DERIVED)
+    ax.axvline(P.DELTA * 10, color=S.C_GREY, ls=&quot;--&quot;, lw=1.0)
     ax.axhline(25, color=S.C_THRESH, ls=&quot;:&quot;, lw=1.6)
     ax.set_xlabel(&quot;depth into tissue  (mm)&quot;)
-    ax.set_title(f&quot;$k_{{prot}}$ = {kprot:.0e} s$^{{-1}}$&quot;, loc=&quot;left&quot;)
+    ax.set_title(f&quot;$k_{{prot}}$ = {kprot:.2g} s$^{{-1}}$&quot;, loc=&quot;left&quot;)
     ax.set_xlim(0, P.L_TIS * 10)
 
 axes[0].set_ylabel(&quot;free V14 in tissue  (µM)&quot;)
-axes[0].text(0.55, 27, &quot;25 µM target&quot;, fontsize=8.4, color=S.C_THRESH)
-axes[0].set_ylim(0, 340)
+axes[0].text(P.L_TIS * 10 * 0.62, 30, &quot;25 µM target&quot;, fontsize=8.4, color=S.C_THRESH)
+axes[0].text(P.DELTA * 10 + 0.02, 230, &quot;target depth\n$\\delta$ = %.0f µm&quot; % (P.DELTA * 1e4),
+             fontsize=7.8, color=&quot;#777777&quot;)
+axes[0].set_ylim(0, 360)
 axes[1].legend(ncol=2, loc=&quot;upper right&quot;, title=&quot;time after application&quot;,
                title_fontsize=8)
-fig.suptitle(&quot;Protease resistance, not gel chemistry, decides how long the dose lasts&quot;,
+fig.suptitle(&quot;The as-built gel empties in minutes; the dermal sink drains it in hours&quot;,
              fontsize=11, weight=&quot;bold&quot;, y=1.0)
 S.save(fig, &quot;fig05_tissue_profiles&quot;)
+print(f&quot;  peak free V14 in tissue {peak:.0f} uM; &quot;
+      f&quot;Lambda at k_prot={P.K_PROT_V14:.2e}: &quot;
+      f&quot;{m.penetration_depth(P.D_TIS_V14, P.K_PROT_V14)*1e4:.0f} um&quot;)
 </code></pre></details>
-<details class="code"><summary><span>figures/fig06_hindrance.py</span><span class="meta">24 lines &#183; F6 -- Steric hindrance: the transport coefficients were derived, not assumed.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;F6 -- Steric hindrance: the transport coefficients were derived, not assumed.&quot;&quot;&quot;
+<details class="code"><summary><span>figures\fig06_hindrance.py</span><span class="meta">24 lines &#183; F6 -- Steric hindrance: the transport coefficients were derived, not ass</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;F6 -- Steric hindrance: the transport coefficients were derived, not assumed.&quot;&quot;&quot;
 import sys, os, numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import matplotlib.pyplot as plt
@@ -2494,8 +2617,8 @@ import style as S, params as P, v3model as m
 S.apply()
 xi = np.linspace(3, 50, 400)
 fig, ax = plt.subplots(figsize=(5.0, 3.4))
-for name, a, D0, col in ((&quot;V14  (0.87 nm)&quot;, P.A_V14_NM, P.D0_V14, S.C_V14),
-                         (&quot;FGF2-G3  (2.34 nm)&quot;, P.A_FGF_NM, P.D0_FGF, S.C_FGF)):
+for name, a, D0, col in ((f&quot;V14  ({P.A_V14_NM:g} nm)&quot;, P.A_V14_NM, P.D0_V14, S.C_V14),
+                         (f&quot;FGF2-G3  ({P.A_FGF_NM:g} nm)&quot;, P.A_FGF_NM, P.D0_FGF, S.C_FGF)):
     ax.plot(xi, m.D_eff(D0, a, xi, P.EPS_GEL) / D0, color=col, label=name)
 ax.axvline(P.XI_NM, color=S.C_GREY, ls=&quot;:&quot;, lw=1.4)
 ax.text(P.XI_NM + 0.7, 0.30, f&quot;$\\xi$ = {P.XI_NM:.0f} nm\nused throughout\n(MEASURE THIS)&quot;,
@@ -2509,19 +2632,24 @@ S.save(fig, &quot;fig06_hindrance&quot;)
 print(f&quot;  at xi=10 nm: V14 {m.D_eff(P.D0_V14,P.A_V14_NM,10,P.EPS_GEL)/P.D0_V14:.2f}, &quot;
       f&quot;FGF {m.D_eff(P.D0_FGF,P.A_FGF_NM,10,P.EPS_GEL)/P.D0_FGF:.2f}&quot;)
 </code></pre></details>
-<details class="code"><summary><span>figures/fig07_retention.py</span><span class="meta">95 lines &#183; F7 -- Retention has an OPTIMUM, not a maximum.  The headline design result.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
-F7 -- Retention has an OPTIMUM, not a maximum.  The headline design result.
+<details class="code"><summary><span>figures\fig07_retention.py</span><span class="meta">105 lines &#183; F7 -- What the as-built gel supplies, and why adding retention would not</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+F7 -- What the as-built gel supplies, and why adding retention would not rescue it.
 
-Holding the TOTAL loading at the solubility ceiling, raising the retardation
-factor R_V buys residence time and spends driving concentration in exact
-proportion (C_free,0 = C_total,0 / R_V).  The result is a sharp optimum near
-R_V ~ 10 and a collapse to ZERO coverage beyond R_V ~ 30.
+The gel is heparin-free, so R_V = 1 is LOCKED (constants register) and the
+retention lever is out of the design space.  This figure shows the
+counterfactual anyway, because it is the reason the lever was dropped:
+holding the TOTAL loading at the solubility ceiling, raising R_V buys residence
+time and spends driving concentration in exact proportion
+(C_free,0 = C_total,0 / R_V).  With a 150 um gel the reservoir is so small that
+the peak tissue concentration falls below the 25 uM target after only a few-fold
+retention, and coverage collapses to ZERO.
 
 The duration is plotted as a BAND, because it is sensitive to two parameters
-the equation reference quotes only as ranges: the depth to the systemic sink
-(L_tis = 2-4 mm) and the tissue diffusivity (D_t = 0.7-1.8e-6 cm2/s).  The
-LOCATION of the optimum and the collapse are robust to both; the absolute
-number of days is not, and is not claimed to be.
+known only as ranges: the depth to the systemic sink (L_tis = 1-2 mm) and the
+tissue diffusivity (D_t = 0.7-1.8e-6 cm2/s).
+
+Writes _coverage.npy (hours above target at R_V = 1, central/low/high, for the
+register k_prot) -- fig10 reads it.
 &quot;&quot;&quot;
 import sys, os, numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -2531,87 +2659,93 @@ from twodomain import TwoDomain, free_from_total, UM, DAY
 
 S.apply()
 Dg = m.D_eff(P.D0_V14, P.A_V14_NM, P.XI_NM, P.EPS_GEL)
+SEG = [(0.5, 120), (5.0, 108), (30.0, 2800), (300.0, 600)]   # ~24 h at 30 s, then 2 d
 
 
 def run(R_V, k_prot, L_tis, D_tis):
     td = TwoDomain(D_gel=Dg, D_tis=D_tis, L_gel=P.L_GEL, L_tis=L_tis,
                    nx_gel=60, nx_tis=200, eps_gel=P.EPS_GEL,
-                   eps_tis=P.EPS_TIS, K_p=P.K_P, k_prot=k_prot, R_V=R_V)
-    res = td.run(free_from_total(P.C_SOLUBILITY, R_V), t_end=32 * DAY)
-    return td.days_above(res, P.DELTA, P.C_TARGET_V14)
+                   eps_tis=P.EPS_TIS, K_p=P.K_P, k_prot=k_prot,
+                   k_deg_gel=P.K_DEG_GEL, R_V=R_V)
+    res = td.run(free_from_total(P.C_SOLUBILITY, R_V), t_end=3 * DAY, segments=SEG)
+    d, pk = td.days_above(res, P.DELTA, P.C_TARGET_V14)
+    return d * 24.0, pk
 
 
-RVs = np.logspace(0, 2, 13)
+RVs = np.logspace(0, np.log10(30), 13)
 fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(6.6, 6.2), sharex=True,
                                gridspec_kw=dict(hspace=0.12, height_ratios=[1.35, 1]))
 
+KPS = (1e-4, P.K_PROT_V14, 1e-6)
 summary = {}
-for k_prot, col in zip(P.K_PROT_RANGE, (S.C_V14_L, S.C_V14, &quot;#0B3C5D&quot;)):
+for k_prot, col in zip(KPS, (S.C_V14_L, S.C_V14, &quot;#0B3C5D&quot;)):
     cen, lo, hi, pk = [], [], [], []
     for R in RVs:
-        d0, p0 = run(R, k_prot, P.L_TIS, P.D_TIS_V14)
-        dl, _ = run(R, k_prot, 0.2, P.D_TIS_V14_HI)     # fastest drain
-        dh, _ = run(R, k_prot, 0.4, P.D_TIS_V14_LO)     # slowest drain
-        cen.append(d0); lo.append(dl); hi.append(dh); pk.append(p0 / UM)
+        h0, p0 = run(R, k_prot, P.L_TIS, P.D_TIS_V14)
+        hl, _ = run(R, k_prot, P.L_TIS_RANGE[0], P.D_TIS_V14_HI)   # fastest drain
+        hh, _ = run(R, k_prot, P.L_TIS_RANGE[1], P.D_TIS_V14_LO)   # slowest drain
+        cen.append(h0); lo.append(hl); hi.append(hh); pk.append(p0 / UM)
     cen, lo, hi, pk = map(np.array, (cen, lo, hi, pk))
-    lab = f&quot;$k_{{prot}}$ = {k_prot:.0e} s$^{{-1}}$&quot;
+    lab = f&quot;$k_{{prot}}$ = {k_prot:.2g} s$^{{-1}}$&quot; + \
+        (&quot;  (register value)&quot; if k_prot == P.K_PROT_V14 else &quot;&quot;)
     ax1.fill_between(RVs, lo, hi, color=col, alpha=0.16, lw=0)
     ax1.plot(RVs, cen, color=col, label=lab)
     ax2.plot(RVs, pk, color=col, label=lab)
     summary[k_prot] = (RVs, cen, lo, hi, pk)
 
-# mark the optimum on the slowest-proteolysis curve
-RVo, ceno = summary[1e-6][0], summary[1e-6][1]
-io = int(np.argmax(ceno))
-ax1.plot([RVo[io]], [ceno[io]], &quot;*&quot;, ms=15, color=S.C_THRESH, zorder=6)
-ax1.annotate(f&quot;optimum\n$R_V$ ≈ {RVo[io]:.0f},  {ceno[io]:.1f} d&quot;,
-             (RVo[io], ceno[io]), textcoords=&quot;offset points&quot;, xytext=(14, -6),
-             fontsize=9, weight=&quot;bold&quot;, color=S.C_THRESH)
+# the device as built
+c0 = summary[P.K_PROT_V14]
+ax1.plot([1.0], [c0[1][0]], &quot;*&quot;, ms=15, color=S.C_THRESH, zorder=6)
+ax1.annotate(f&quot;the gel as built\n(no heparin, $R_V$ = 1):  {c0[1][0]:.1f} h\n&quot;
+             f&quot;(band {c0[2][0]:.1f}–{c0[3][0]:.1f} h)&quot;,
+             (1.0, c0[1][0]), textcoords=&quot;offset points&quot;, xytext=(16, 62),
+             fontsize=9, weight=&quot;bold&quot;, color=S.C_THRESH,
+             bbox=dict(boxstyle=&quot;round,pad=0.25&quot;, fc=&quot;white&quot;, ec=&quot;none&quot;, alpha=0.85),
+             arrowprops=dict(arrowstyle=&quot;-&gt;&quot;, color=S.C_THRESH, lw=1))
 
-first_zero = RVs[np.argmax(summary[1e-6][1] &lt;= 0)] if np.any(summary[1e-6][1] &lt;= 0) else None
+z = summary[1e-6][1]
+first_zero = RVs[np.argmax(z &lt;= 0)] if np.any(z &lt;= 0) else None
 if first_zero:
     for ax in (ax1, ax2):
-        ax.axvspan(first_zero, 100, color=S.C_BAD, alpha=0.09, lw=0)
-    ax1.text(np.sqrt(first_zero * 100), ax1.get_ylim()[1] * 0.62,
+        ax.axvspan(first_zero, RVs[-1], color=S.C_BAD, alpha=0.09, lw=0)
+    ax1.text(np.sqrt(first_zero * RVs[-1]), max(c0[3].max(), 1) * 0.55,
              &quot;coverage\ncollapses\nto ZERO&quot;, ha=&quot;center&quot;, fontsize=9.5,
              weight=&quot;bold&quot;, color=S.C_BAD)
-
-ax1.annotate(&quot;the gel as built\n(no heparin, $R_V$ = 1)&quot;, (1.0, summary[1e-5][1][0]),
-             textcoords=&quot;offset points&quot;, xytext=(10, 26), fontsize=8.5,
-             color=S.C_DERIVED,
-             arrowprops=dict(arrowstyle=&quot;-&gt;&quot;, color=S.C_DERIVED, lw=1))
 
 ax2.axhline(P.C_TARGET_V14 / UM, color=S.C_THRESH, ls=&quot;:&quot;, lw=1.6)
 ax2.text(1.05, 28, &quot;25 µM therapeutic target&quot;, fontsize=8.4, color=S.C_THRESH)
 ax2.set_yscale(&quot;log&quot;)
 ax2.set_xscale(&quot;log&quot;)
-ax2.set_xlabel(&quot;retardation factor  $R_V$   (retention strength)&quot;)
+ax2.set_xlabel(&quot;retardation factor  $R_V$   (counterfactual: locked at 1 in the device)&quot;)
 ax2.set_ylabel(&quot;peak tissue conc.  (µM)&quot;)
-ax1.set_ylabel(&quot;days above the 25 µM target&quot;)
-ax1.set_title(&quot;More retention is not better: $R_V$ has a sharp optimum&quot;)
-ax1.legend(loc=&quot;upper left&quot;)
+ax1.set_ylabel(&quot;hours above the 25 µM target&quot;)
+ax1.set_title(&quot;One patch covers hours, not days, and retention cannot fix it&quot;)
+ax1.legend(loc=&quot;upper right&quot;, fontsize=8.2)
 ax1.set_ylim(bottom=0)
 for ax in (ax1, ax2):
-    ax.set_xticks([1, 3, 10, 30, 100], [&quot;1&quot;, &quot;3&quot;, &quot;10&quot;, &quot;30&quot;, &quot;100&quot;])
-S.tier4_note(ax1, &quot;band = L$_{tis}$ 2–4 mm, D$_t$ 0.7–1.8e-6 cm²/s&quot;, (0.98, 0.52))
+    ax.set_xticks([1, 2, 3, 5, 10, 30], [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;5&quot;, &quot;10&quot;, &quot;30&quot;])
+    ax.set_xlim(1, RVs[-1])
+S.tier4_note(ax1, &quot;band = L$_{tis}$ 1–2 mm, D$_t$ 0.7–1.8e-6 cm²/s&quot;, (0.70, 0.02))
 S.save(fig, &quot;fig07_retention&quot;)
 
-print(f&quot;{&#x27;R_V&#x27;:&gt;6} &quot; + &quot; &quot;.join(f&quot;{k:&gt;22}&quot; for k in P.K_PROT_RANGE))
+np.save(os.path.join(os.path.dirname(__file__), &quot;_coverage.npy&quot;),
+        np.array([c0[1][0], c0[2][0], c0[3][0]]) / 24.0)      # days
+print(f&quot;{&#x27;R_V&#x27;:&gt;6} &quot; + &quot; &quot;.join(f&quot;{k:&gt;24.2g}&quot; for k in KPS))
 for i, R in enumerate(RVs):
-    if R in RVs[[0, 3, 6, 9, 12]]:
-        row = &quot; &quot;.join(f&quot;{summary[k][1][i]:6.1f} d [{summary[k][2][i]:4.1f}-&quot;
-                       f&quot;{summary[k][3][i]:4.1f}] {summary[k][4][i]:5.0f}uM&quot;
-                       for k in P.K_PROT_RANGE)
-        print(f&quot;{R:6.1f} {row}&quot;)
+    row = &quot; &quot;.join(f&quot;{summary[k][1][i]:5.2f} h [{summary[k][2][i]:4.2f}-&quot;
+                   f&quot;{summary[k][3][i]:5.2f}] {summary[k][4][i]:5.0f}uM&quot;
+                   for k in KPS)
+    print(f&quot;{R:6.2f} {row}&quot;)
 </code></pre></details>
-<details class="code"><summary><span>figures/fig08_solubility.py</span><span class="meta">60 lines &#183; F8 -- Solubility, not potency, is the binding constraint.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>figures\fig08_solubility.py</span><span class="meta">61 lines &#183; F8 -- Solubility, not potency, is the binding constraint.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 F8 -- Solubility, not potency, is the binding constraint.
 
 Eq. (dosing) bounds the FREE loading.  With sorptive retention the TOTAL that
 must actually dissolve in the casting buffer is R_V times larger, because
 C_free,0 = C_total,0 / R_V.  Plotting that against the saturation ceiling
-recovers the R_V ~ 3-10 optimum of F7 from a completely independent direction --
-two routes, same answer.
+gives a second, independent bound on retention.  For the as-built 150 um gel
+it is the tighter of the two: the R_V = 1 gel already needs a third of the
+ceiling, so the counterfactual retention lever of F7 is closed off twice.
 &quot;&quot;&quot;
 import sys, os, numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -2622,54 +2756,60 @@ S.apply()
 UM = P.UM
 C_free_req = m.loading_required(P.C_TARGET_V14, P.DELTA, P.L_GEL,
                                 P.F_REL, P.EPS_GEL, eps_tis=1.0)
-R = np.logspace(0, 2, 300)
+R = np.logspace(0, np.log10(30), 300)
 C_tot = R * C_free_req
 
 fig, ax = plt.subplots(figsize=(6.3, 4.0))
 ax.plot(R, C_tot / UM, color=S.C_V14, lw=2.2,
         label=&quot;total V14 that must dissolve  $= R_V \\times C_{free,0}$&quot;)
 ax.axhline(P.C_SOLUBILITY / UM, color=S.C_FGF, lw=2.0)
-ax.text(1.06, P.C_SOLUBILITY / UM * 1.1,
+ax.text(4.0, P.C_SOLUBILITY / UM * 0.88,
         f&quot;saturation ceiling ≈ {P.C_SOLUBILITY/UM:.0f} µM  (1 mg mL$^{{-1}}$)&quot;,
-        color=S.C_FGF, fontsize=8.8, weight=&quot;bold&quot;)
+        color=S.C_FGF, fontsize=8.8, weight=&quot;bold&quot;, va=&quot;top&quot;)
 
 Rmax = P.C_SOLUBILITY / C_free_req
 ax.fill_between(R, 1, np.minimum(C_tot / UM, P.C_SOLUBILITY / UM),
                 where=(R &lt;= Rmax), color=S.C_GOOD, alpha=0.13, lw=0)
 ax.axvline(Rmax, color=S.C_DERIVED, ls=&quot;--&quot;, lw=1.2)
-ax.text(Rmax * 1.05, 2.3e1, f&quot;formulable only\nbelow $R_V$ = {Rmax:.0f}&quot;,
+ax.text(4.0, 1.4e2, f&quot;formulable only\nbelow $R_V$ = {Rmax:.1f}&quot;,
         fontsize=8.6, color=S.C_DERIVED, weight=&quot;bold&quot;)
 
-for Rv in (1, 3, 10, 30):
+for Rv in (1, 2, 3, 10):
     c = Rv * C_free_req / UM
     ok = c &lt;= P.C_SOLUBILITY / UM
     ax.plot([Rv], [c], &quot;o&quot;, ms=7, color=S.C_V14 if ok else S.C_BAD, zorder=5)
     ax.annotate(f&quot;$R_V$={Rv}\n{c:.0f} µM&quot; + (&quot;&quot; if ok else &quot;\nIMPOSSIBLE&quot;),
-                (Rv, c), textcoords=&quot;offset points&quot;, xytext=(-6, 12),
-                fontsize=8.2, ha=&quot;right&quot;,
+                (Rv, c), textcoords=&quot;offset points&quot;, xytext={1: (8, -30), 2: (8, -36), 3: (8, 8), 10: (-8, -34)}[Rv],
+                fontsize=8.2, ha=&quot;right&quot; if Rv == 10 else &quot;left&quot;,
                 color=S.C_V14 if ok else S.C_BAD,
                 weight=&quot;normal&quot; if ok else &quot;bold&quot;)
 
 ax.set_xscale(&quot;log&quot;); ax.set_yscale(&quot;log&quot;)
-ax.set_xlim(1, 100); ax.set_ylim(20, 4000)
-ax.set_xticks([1, 3, 10, 30, 100], [&quot;1&quot;, &quot;3&quot;, &quot;10&quot;, &quot;30&quot;, &quot;100&quot;])
+ax.set_xlim(1, 30); ax.set_ylim(100, 10000)
+ax.set_xticks([1, 2, 3, 10, 30], [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;10&quot;, &quot;30&quot;])
 ax.set_xlabel(&quot;retardation factor  $R_V$&quot;)
 ax.set_ylabel(&quot;required total loading  (µM)&quot;)
 ax.set_title(&quot;Retention is paid for in solubility&quot;)
-ax.legend(loc=&quot;lower right&quot;)
+ax.legend(loc=&quot;upper left&quot;, fontsize=8.4)
 S.save(fig, &quot;fig08_solubility&quot;)
 print(f&quot;  free loading required: {C_free_req/UM:.1f} uM &quot;
       f&quot;({C_free_req/UM*P.MW_V14/1000:.0f} ug/mL)&quot;)
-for Rv in (1, 3, 10, 30):
+for Rv in (1, 2, 3, 10):
     print(f&quot;   R_V={Rv:3d} -&gt; total {Rv*C_free_req/UM:6.0f} uM &quot;
           f&quot;({Rv*C_free_req/P.C_SOLUBILITY:.0%} of ceiling)&quot;)
 </code></pre></details>
-<details class="code"><summary><span>figures/fig09_recession.py</span><span class="meta">104 lines &#183; F9 -- An insufficient pulse is worse than it looks: the wound REOPENS.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>figures\fig09_recession.py</span><span class="meta">110 lines &#183; F9 -- An insufficient pulse is worse than it looks: the wound REOPENS.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 F9 -- An insufficient pulse is worse than it looks: the wound REOPENS.
 
-A chronic baseline (r_0 = 0.8/d, d = 1.0/d, so r_eff &lt; 0 and the untreated wound
-never closes) is driven by a therapeutic pulse (r_p = 2.0/d, d = 0.4/d) of
-duration T, after which the drug effect relaxes with a 0.5 d time constant.
+Rates come from the register closures, not from hand-picked numbers:
+
+  chronic baseline   C_e = 0, I_e = theta_LPS(0) = 0.94 (1 uM LPS, K_D,L 65 nM)
+                     r_p = 0.50/d, d = 0.51/d  -&gt; r_eff ~ -0.015/d, never closes
+  therapeutic pulse  FGF2-G3 at EC50, V14 at psi_50 (I_e halved to 0.47)
+                     r_p = 1.11/d, d = 0.45/d  -&gt; r_eff = +0.66/d
+
+The pulse lasts T days, after which the drug effect relaxes with the
+effect-compartment time constant 1/k_e0 = 18 h.
 
 When r_eff returns negative the front does not merely stall.  The stable state
 behind it, n_ss = K(1 - d/r_p), becomes zero, so the repopulated tissue dies
@@ -2707,7 +2847,7 @@ def closes(R_w_cm, T_days, t_end_days=110, nr=700):
     return res
 
 
-def min_pulse(R_w_cm, lo=1.0, hi=45.0, tol=0.6):
+def min_pulse(R_w_cm, lo=1.0, hi=60.0, tol=0.4):
     while hi - lo &gt; tol:
         mid = 0.5 * (lo + hi)
         if closes(R_w_cm, mid)[&quot;closed&quot;]:
@@ -2722,8 +2862,8 @@ fig, (ax, ax2) = plt.subplots(1, 2, figsize=(9.6, 4.1),
                               gridspec_kw=dict(width_ratios=[1.45, 1]))
 
 R_w = 0.2
-for T, col in zip((5, 9, 12, 20), (S.C_BAD, &quot;#C97BB0&quot;, S.C_V14_L, S.C_V14)):
-    res = closes(R_w, T, t_end_days=90)
+for T, col in zip((5, 10, 14, 20), (S.C_BAD, &quot;#C97BB0&quot;, S.C_V14_L, S.C_V14)):
+    res = closes(R_w, T, t_end_days=60)
     rf = res[&quot;r_front&quot;].copy()
     # The model describes a CHRONIC WOUND BED.  Once the front reaches the
     # centre the wound is closed and the bed no longer exists, so the equations
@@ -2738,15 +2878,15 @@ for T, col in zip((5, 9, 12, 20), (S.C_BAD, &quot;#C97BB0&quot;, S.C_V14_L, S.C_
     ax.axvline(T, color=col, ls=&quot;:&quot;, lw=0.8, alpha=0.55)
 
 ax.axhline(R_w * 10, color=S.C_GREY, ls=&quot;--&quot;, lw=1.1)
-ax.text(62, R_w * 10 + 0.06, &quot;original wound edge&quot;, fontsize=8, color=&quot;#777777&quot;)
-ax.annotate(&quot;front advances,\nthen RECEDES&quot;, (36, 1.45), fontsize=9.5,
+ax.text(40, R_w * 10 + 0.06, &quot;original wound edge&quot;, fontsize=8, color=&quot;#777777&quot;)
+ax.annotate(&quot;front advances,\nthen RECEDES&quot;, (14, 2.35), fontsize=9.5,
             weight=&quot;bold&quot;, color=S.C_BAD, ha=&quot;center&quot;)
 ax.set_xlabel(&quot;time  (days)&quot;)
 ax.set_ylabel(&quot;front position  $r_f$  (mm)&quot;)
 ax.set_title(&quot;Wound radius 2 mm, chronic baseline&quot;, loc=&quot;left&quot;, fontsize=10)
 ax.legend(loc=&quot;lower right&quot;, fontsize=8.4)
 ax.set_ylim(0, 2.75)
-ax.text(46, 2.63, &quot;trace leaves the domain: complete die-back&quot;,
+ax.text(28, 2.63, &quot;trace leaves the domain: complete die-back&quot;,
         fontsize=7.6, color=&quot;#888888&quot;, style=&quot;italic&quot;)
 
 # ---- panel: minimum pulse vs wound radius ----------------------------------
@@ -2768,79 +2908,140 @@ np.save(os.path.join(os.path.dirname(__file__), &quot;_minpulse.npy&quot;),
 for r, t in zip(radii_mm, mins):
     print(f&quot;  R_w = {r:.0f} mm -&gt; minimum pulse {t:.1f} d&quot;)
 </code></pre></details>
-<details class="code"><summary><span>figures/fig10_envelope.py</span><span class="meta">72 lines &#183; F10 -- The device specification: which wounds this patch can close.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
-F10 -- The device specification: which wounds this patch can close.
+<details class="code"><summary><span>figures\fig10_envelope.py</span><span class="meta">133 lines &#183; F10 -- The device specification: how often the patch must be changed.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+F10 -- The device specification: how often the patch must be changed.
 
-Joins the two halves of the answer.  The RISING line is what Model 6 demands:
-the pulse duration needed for permanent closure at a given wound radius (F9).
-The HORIZONTAL band is what Models 1-2 can supply: days above the 25 uM target
-from a single patch at the optimal R_V ~ 10 (F7).
+Joins the two halves of the answer.
 
-Where the demand curve crosses the supply band is the largest wound one patch
-can close.  Everything larger needs periodic replacement.
+(a) The rising line is what Model 6 demands: the CONTINUOUS therapeutic pulse
+    needed for permanent closure at a given wound radius (F9).  The horizontal
+    band is what Models 1-2 supply: hours above the 25 uM target from one
+    as-built patch (150 um, R_V = 1; F7).  The gap is two orders of magnitude,
+    so no wound in the 1-5 mm range closes on one patch.
 
-The crossing is reported as a RANGE, not a point.  The supply band carries the
-L_tis and D_t uncertainty of F7; the demand line rests entirely on Tier-4
-coupling closures with no planned experiment.  The ORDERING and the existence of
-a crossover are robust; the absolute radius is not.
+(b) Repeat dosing, run through the register&#x27;s effect compartment
+    (k_e0 = 1/18 h).  A patch applied every `interval` hours drives the effect
+    state s(t) toward 1 for the hours it keeps tissue above target and lets it
+    relax toward 0 otherwise:
+
+        ds/dt = k_e0 (u(t) - s),   u = 1 while the latest patch is above target
+
+    r_p and d interpolate between the chronic and therapeutic rates of F9 with
+    s, and the front is tracked at the same pinned threshold.  This gives the
+    longest change interval that still closes the wound -- the number the
+    protocol actually needs.
+
+Everything on the demand side rests on Tier-4 closures with no planned
+experiment.  The ordering and the existence of a maximum interval are robust;
+the absolute numbers are not.
 &quot;&quot;&quot;
 import sys, os, numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import matplotlib.pyplot as plt
-import style as S, params as P
+import style as S, params as P, v3model as m
 
 S.apply()
-mp = np.load(os.path.join(os.path.dirname(__file__), &quot;_minpulse.npy&quot;))
+DAY = P.DAY
+HERE = os.path.dirname(__file__)
+mp = np.load(os.path.join(HERE, &quot;_minpulse.npy&quot;))
 radii, pulses = mp[0], mp[1]
+COV_CEN, COV_LO, COV_HI = np.load(os.path.join(HERE, &quot;_coverage.npy&quot;))   # days
 
-# single-patch coverage at the R_V ~ 10 optimum (central, and band) -- from F7
-COV_CEN, COV_LO, COV_HI = 11.2, 4.5, 25.9
+THR = 0.5 * P.K_CARRY * (1 - P.D_PULSE / P.R_PULSE)      # as in F9
 
-fig, ax = plt.subplots(figsize=(7.0, 4.4))
-rr = np.linspace(1.0, 5.0, 200)   # only where F9 actually computed
+
+def closure_time(interval_h, R_w_cm, cov_d=COV_CEN, t_end_days=120, dt=60.0):
+    &quot;&quot;&quot;Closure time (days) when a fresh patch is applied every interval_h.&quot;&quot;&quot;
+    t = np.arange(0.0, t_end_days * DAY + dt, dt)
+    u = ((t / 3600.0) % interval_h) &lt; cov_d * 24.0
+    s = np.zeros_like(t)
+    a = np.exp(-dt * P.KE0)
+    for i in range(1, len(t)):                 # exact step of the linear ODE
+        s[i] = u[i - 1] + (s[i - 1] - u[i - 1]) * a
+    rp = lambda tt: P.R_CHRONIC + (P.R_PULSE - P.R_CHRONIC) * s[min(int(tt / dt), len(s) - 1)]
+    dd = lambda tt: P.D_CHRONIC + (P.D_PULSE - P.D_CHRONIC) * s[min(int(tt / dt), len(s) - 1)]
+    sol = m.FisherKPP(P.D_N, K=P.K_CARRY, R_inf=R_w_cm * 2.2, nr=500)
+    res = sol.run(R_w_cm, rp, dd, t_end=t_end_days * DAY, record_every=40,
+                  fixed_threshold=THR, w=P.W_SMOOTH)
+    return res[&quot;t_c&quot;] / DAY
+
+
+def max_interval(R_w_cm, lo=None, hi=24.0, tol=0.25):
+    lo = lo or COV_CEN * 24.0
+    if np.isfinite(closure_time(hi, R_w_cm)):
+        return hi
+    while hi - lo &gt; tol:
+        mid = 0.5 * (lo + hi)
+        if np.isfinite(closure_time(mid, R_w_cm)):
+            lo = mid
+        else:
+            hi = mid
+    return lo
+
+
+fig, (ax, ax2) = plt.subplots(1, 2, figsize=(10.0, 4.3),
+                              gridspec_kw=dict(width_ratios=[1, 1.15]))
+
+# ---- (a) supply vs demand ---------------------------------------------------
+rr = np.linspace(radii.min(), radii.max(), 200)
 dem = np.interp(rr, radii, pulses)
-
-ax.fill_between(rr, COV_LO, COV_HI, color=S.C_V14, alpha=0.14, lw=0,
-                label=f&quot;one patch supplies {COV_LO:.0f}–{COV_HI:.0f} d above target&quot;)
+ax.fill_between(rr, COV_LO, COV_HI, color=S.C_V14, alpha=0.16, lw=0,
+                label=f&quot;one patch: {COV_LO*24:.1f}–{COV_HI*24:.1f} h above target&quot;)
 ax.axhline(COV_CEN, color=S.C_V14, lw=2.0,
-           label=f&quot;one patch, central estimate: {COV_CEN:.1f} d&quot;)
+           label=f&quot;one patch, central: {COV_CEN*24:.1f} h&quot;)
 ax.plot(rr, dem, color=S.C_FGF, lw=2.2, ls=&quot;--&quot;,
-        label=&quot;pulse required for permanent closure (Tier-4)&quot;)
-
-cross = lambda cov: float(np.interp(cov, dem, rr))
-x_cen, x_lo, x_hi = cross(COV_CEN), cross(COV_LO), cross(COV_HI)
-x_hi = min(x_hi, 5.0)   # F9 was only computed out to 5 mm
-
-ax.fill_between(rr, 0, dem, where=(rr &lt;= x_cen), color=S.C_GOOD, alpha=0.12, lw=0)
-ax.axvline(x_cen, color=S.C_DERIVED, lw=1.3)
-ax.plot([x_lo, x_hi], [COV_LO, COV_HI], &quot;|&quot;, color=S.C_DERIVED, ms=11, mew=1.6)
-ax.plot([x_cen], [COV_CEN], &quot;*&quot;, ms=16, color=S.C_THRESH, zorder=6)
-
-ax.annotate(f&quot;one patch closes wounds up to\n&quot;
-            f&quot;$R_w$ ≈ {x_cen:.1f} mm  (range {x_lo:.1f}–{x_hi:.1f} mm)&quot;,
-            (x_cen, COV_CEN), textcoords=&quot;offset points&quot;, xytext=(14, 18),
-            fontsize=9.5, weight=&quot;bold&quot;, color=S.C_DERIVED)
-
-for n, lo_r in ((2, x_cen), (3, 3.6)):
-    pass
-ax.text(1.5, 2.0, &quot;ONE PATCH&quot;, fontsize=11, weight=&quot;bold&quot;, color=&quot;#3b7a1c&quot;,
-        ha=&quot;center&quot;)
-ax.text(4.0, 5.0, &quot;REPLACEMENT REQUIRED\nevery ~%.0f days&quot; % COV_CEN,
-        fontsize=10, weight=&quot;bold&quot;, color=S.C_FGF, ha=&quot;center&quot;)
-
+        label=&quot;continuous pulse needed to close (Tier-4)&quot;)
+for r, p in zip(radii, pulses):
+    ax.annotate(f&quot;{p/COV_CEN:.0f}×&quot;, (r, p), textcoords=&quot;offset points&quot;,
+                xytext=(2, 8), fontsize=8.2, color=S.C_DERIVED, ha=&quot;left&quot; if r &lt; 3 else &quot;right&quot;,
+                weight=&quot;bold&quot;)
+ax.set_yscale(&quot;log&quot;)
+ax.set_ylim(0.02, 100)
+ax.set_xlim(radii.min() - 0.2, radii.max() + 0.2)
 ax.set_xlabel(&quot;wound radius  $R_w$  (mm)&quot;)
-ax.set_ylabel(&quot;days of therapeutic cover required / supplied&quot;)
-ax.set_title(&quot;What this device can and cannot close&quot;)
-ax.set_xlim(1.0, 5.0); ax.set_ylim(0, 28)
-ax.legend(loc=&quot;upper left&quot;, fontsize=8.4)
+ax.set_ylabel(&quot;days of therapeutic cover&quot;)
+ax.set_title(&quot;(a)  one patch: hours; closure: weeks&quot;, loc=&quot;left&quot;,
+             fontsize=10)
+ax.legend(loc=&quot;center right&quot;, fontsize=7.8)
+
+# ---- (b) closure time vs change interval -----------------------------------
+intervals = np.array([COV_CEN * 24, 3, 4, 5, 6, 7, 8, 10, 12, 24])
+summary = {}
+for R_mm, col in ((1.0, S.C_V14_L), (2.0, S.C_V14), (3.0, &quot;#0B3C5D&quot;)):
+    tc = np.array([closure_time(h, R_mm / 10) for h in intervals])
+    hmax = max_interval(R_mm / 10)
+    summary[R_mm] = (tc, hmax)
+    fin = np.isfinite(tc)
+    ax2.plot(intervals[fin], tc[fin], &quot;o-&quot;, color=col, ms=5,
+             label=f&quot;$R_w$ = {R_mm:g} mm&quot;)
+    ax2.plot(intervals[~fin], np.full((~fin).sum(), 118), &quot;x&quot;, color=col, ms=7)
+    ax2.axvline(hmax, color=col, ls=&quot;:&quot;, lw=1.0)
+
+ax2.axvline(P.REAPPLY_D * 24, color=S.C_BAD, lw=1.4)
+ax2.text(P.REAPPLY_D * 24 * 0.97, 60, &quot;daily dressing\nchange:\nnever closes&quot;,
+         ha=&quot;right&quot;, fontsize=8.4, color=S.C_BAD, weight=&quot;bold&quot;)
+hm = summary[2.0][1]
+ax2.text(hm * 0.97, 70, f&quot;longest interval\nthat closes:\n{hm:.1f} h&quot;, ha=&quot;right&quot;,
+         fontsize=8.4, color=S.C_DERIVED, weight=&quot;bold&quot;)
+ax2.text(9.0, 104, &quot;× = never closes\n(within 120 d)&quot;, fontsize=7.8, color=&quot;#777777&quot;)
+ax2.set_xscale(&quot;log&quot;)
+ax2.set_xticks([3, 4, 6, 8, 12, 24], [&quot;3&quot;, &quot;4&quot;, &quot;6&quot;, &quot;8&quot;, &quot;12&quot;, &quot;24&quot;])
+ax2.set_xlim(2.3, 27)
+ax2.set_ylim(0, 125)
+ax2.set_xlabel(&quot;patch change interval  (h)&quot;)
+ax2.set_ylabel(&quot;closure time  $t_c$  (days)&quot;)
+ax2.set_title(&quot;(b)  the protocol the model asks for&quot;, loc=&quot;left&quot;, fontsize=10)
+ax2.legend(loc=&quot;upper left&quot;, fontsize=8)
+S.tier4_note(ax2, &quot;every closure rate here is Tier-4&quot;, (0.98, 0.02))
 S.save(fig, &quot;fig10_envelope&quot;)
-print(f&quot;  single-patch crossover: central {x_cen:.2f} mm, range {x_lo:.2f}-{x_hi:.2f} mm&quot;)
-for r in (1, 2, 3, 5):
-    need = np.interp(r, radii, pulses)
-    print(f&quot;   R_w={r} mm: needs {need:.1f} d -&gt; &quot;
-          f&quot;{max(1, int(np.ceil(need/COV_CEN)))} patch(es) at the central estimate&quot;)
+
+for r, p in zip(radii, pulses):
+    print(f&quot;   R_w={r:.0f} mm: needs {p:.1f} d continuous = {p/COV_CEN:.0f} patch-lifetimes&quot;)
+for R_mm, (tc, hmax) in summary.items():
+    row = &quot; &quot;.join(f&quot;{h:.1f}h:{t:.1f}d&quot; for h, t in zip(intervals, tc))
+    print(f&quot;   R_w={R_mm:g} mm: max interval {hmax:.1f} h | {row}&quot;)
 </code></pre></details>
-<details class="code"><summary><span>figures/fig11_universal_dose.py</span><span class="meta">38 lines &#183; F11 -- The V14 arm runs before K_D,P is ever measured.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>figures\fig11_universal_dose.py</span><span class="meta">38 lines &#183; F11 -- The V14 arm runs before K_D,P is ever measured.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 F11 -- The V14 arm runs before K_D,P is ever measured.
 
 In the scaled variables psi = C_V/K_D,P and a = [L]/K_D,L the whole of Models
@@ -2878,7 +3079,7 @@ ax.set_ylim(0, 1.03)
 ax.legend(loc=&quot;lower left&quot;, fontsize=8.3)
 S.save(fig, &quot;fig11_universal_dose&quot;)
 </code></pre></details>
-<details class="code"><summary><span>figures/fig12_dose_correction.py</span><span class="meta">50 lines &#183; F12 -- V3 corrects a SCALING LAW in V2, not just a prefactor.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>figures\fig12_dose_correction.py</span><span class="meta">50 lines &#183; F12 -- V3 corrects a SCALING LAW in V2, not just a prefactor.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 F12 -- V3 corrects a SCALING LAW in V2, not just a prefactor.
 
 Inverting for the required dose needs psi isolated ADDITIVELY; V2 factored out
@@ -2928,7 +3129,7 @@ ax2.text(0.5, 0.92, f&quot;{ratio.min():.1f}× to {ratio.max():.0f}×&quot;,
 S.save(fig, &quot;fig12_dose_correction&quot;)
 print(f&quot;  over-estimate spans {ratio.min():.1f}x to {ratio.max():.0f}x&quot;)
 </code></pre></details>
-<details class="code"><summary><span>figures/fig13_nitrite_fit.py</span><span class="meta">106 lines &#183; F13 -- The one place the model meets data already in hand.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>figures\fig13_nitrite_fit.py</span><span class="meta">106 lines &#183; F13 -- The one place the model meets data already in hand.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 F13 -- The one place the model meets data already in hand.
 
 The Griess assay measures ACCUMULATED NITRITE, so the quantity to fit is the
@@ -3034,10 +3235,10 @@ print(f&quot;  {&#x27;SYNTHETIC&#x27; if SYNTHETIC else &#x27;MEASURED&#x27;} da
 print(f&quot;  IC50 = {ic50:.3f} +/- {perr[0]:.3f} uM,  n_app = {n_app:.3f} +/- {perr[1]:.3f}&quot;)
 print(f&quot;  RMS residual = {np.sqrt((resid**2).mean()):.4f}&quot;)
 </code></pre></details>
-<details class="code"><summary><span>figures/fig14_no_vs_nitrite.py</span><span class="meta">44 lines &#183; F14 -- Free NO and accumulated nitrite are not the same observable.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>figures\fig14_no_vs_nitrite.py</span><span class="meta">46 lines &#183; F14 -- Free NO and accumulated nitrite are not the same observable.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 F14 -- Free NO and accumulated nitrite are not the same observable.
 
-Free NO is quasi-steady within seconds (1/k_scav ~ 4-14 s) and sits at nanomolar
+Free NO is quasi-steady within minutes (1/k_scav = 100 s) and sits at nanomolar
 levels; nitrite accumulates all day and reaches micromolar.  The Griess assay
 measures the second one.  Fitting the model&#x27;s instantaneous free-NO expression
 to a Griess curve compares two quantities that differ by orders of magnitude.
@@ -3050,10 +3251,12 @@ import style as S, params as P, v3model as m
 S.apply()
 t = np.linspace(0, 24 * 3600, 4000)
 N_cell = 1e6            # cells cm^-3  (2e5 cells in 200 uL)
-q_max = 5e-19           # mol cell^-1 s^-1, re-derived from Griess data
+q_max = P.Q_CHRONIC     # mol cell^-1 s^-1, sustained iNOS rate (register)
 p65 = 0.85              # normalised, LPS-stimulated
 
-R, freeNO, NO2 = m.inos_response(t, p65, N_cell, q_max)
+R, freeNO, NO2 = m.inos_response(t, p65, N_cell, q_max, K_iNOS_rel=P.K_INOS_REL,
+                                 p=P.P_INOS, k_turn=P.K_TURN, k_scav=P.K_SCAV,
+                                 phi=P.PHI_NO2)
 
 fig, ax = plt.subplots(figsize=(6.4, 3.8))
 ax2 = ax.twinx()
@@ -3078,7 +3281,7 @@ S.save(fig, &quot;fig14_no_vs_nitrite&quot;)
 print(f&quot;  nitrite at 24 h {NO2[-1]/P.UM:.1f} uM; free NO {freeNO[-1]/P.UM*1000:.2f} nM; &quot;
       f&quot;ratio {NO2[-1]/freeNO[-1]:,.0f}x&quot;)
 </code></pre></details>
-<details class="code"><summary><span>figures/fig15_sobol.py</span><span class="meta">64 lines &#183; F15 -- Global sensitivity: the analysis refutes two of our own predictions.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>figures\fig15_sobol.py</span><span class="meta">64 lines &#183; F15 -- Global sensitivity: the analysis refutes two of our own predictio</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 F15 -- Global sensitivity: the analysis refutes two of our own predictions.
 
 Paired first-order (S1) and total-order (ST) Sobol indices for the two outputs
@@ -3142,7 +3345,7 @@ S.save(fig, &quot;fig15_sobol&quot;)
 print(f&quot;  A: sum S1 = {R[&#x27;A&#x27;][&#x27;S1&#x27;].sum():.3f}&quot;)
 print(f&quot;  B: sum S1 = {R[&#x27;B&#x27;][&#x27;S1&#x27;].sum():.3f}, stall fraction {R[&#x27;B&#x27;][&#x27;stall&#x27;]:.1%}&quot;)
 </code></pre></details>
-<details class="code"><summary><span>figures/fig16_uncertainty.py</span><span class="meta">59 lines &#183; F16 -- Closure under the full joint prior, not a single best guess.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>figures\fig16_uncertainty.py</span><span class="meta">59 lines &#183; F16 -- Closure under the full joint prior, not a single best guess.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 F16 -- Closure under the full joint prior, not a single best guess.
 
 Monte Carlo over the Model 6 priors of sa_run.PRIORS_B.  The ribbon is the
@@ -3194,14 +3397,14 @@ ax.plot([], [], color=S.C_BAD, lw=1.2, alpha=0.6,
 ax.set_xlabel(&quot;time  (days)&quot;)
 ax.set_ylabel(&quot;area closure  $\\mathcal{A}_c(t)$&quot;)
 ax.set_ylim(0, 1.02); ax.set_xlim(0, 60)
-ax.set_title(f&quot;Nearly a fifth of the prior never heals at all  ($R_w$ = {R_w*10:.0f} mm)&quot;)
+ax.set_title(f&quot;{stalled.mean():.0%} of the prior never heals at all  ($R_w$ = {R_w*10:.0f} mm)&quot;)
 ax.legend(loc=&quot;lower right&quot;, fontsize=8.4)
 S.tier4_note(ax, &quot;every Model 6 parameter is Tier-4&quot;, (0.98, 0.52))
 S.save(fig, &quot;fig16_uncertainty&quot;)
 print(f&quot;  stall fraction {stalled.mean():.1%}; median closure &quot;
       f&quot;{np.median(tc[~stalled]):.1f} d&quot;)
 </code></pre></details>
-<details class="code"><summary><span>figures/fig17_slider.py</span><span class="meta">36 lines &#183; F17 -- Why the interactive slider is NOT the uncertainty analysis.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>figures\fig17_slider.py</span><span class="meta">36 lines &#183; F17 -- Why the interactive slider is NOT the uncertainty analysis.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 F17 -- Why the interactive slider is NOT the uncertainty analysis.
 
 A one-parameter-at-a-time sweep is exactly what a slider performs, and it can
@@ -3237,7 +3440,7 @@ ax.legend(loc=&quot;upper center&quot;, bbox_to_anchor=(0.5, -0.42), ncol=2, fon
 ax.grid(False)
 S.save(fig, &quot;fig17_slider&quot;)
 </code></pre></details>
-<details class="code"><summary><span>figures/fig18_provenance.py</span><span class="meta">47 lines &#183; F18 -- Where every parameter comes from, module by module.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>figures\fig18_provenance.py</span><span class="meta">47 lines &#183; F18 -- Where every parameter comes from, module by module.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 F18 -- Where every parameter comes from, module by module.
 
 T1 measured in house / T2 mechanistic correlation / T3 named literature
@@ -3290,15 +3493,13 @@ S.save(fig, &quot;fig18_provenance&quot;)
   <hr class="soft">
   <p><b>HKU iGEM 2026 &#183; Dry Lab.</b> Model V3. Solvers verified against closed-form
   benchmarks; all parameters carry a provenance tier; non-identifiable combinations are declared
-  and not fitted. Figures regenerated 08 October 2026.</p>
+  and not fitted. Figures regenerated 09 October 2026.</p>
   <p style="margin-top:1em">Equations, boundary conditions and the full assumption register are
   in the V3 equation-reference document. Where a value is Tier&#160;3 or Tier&#160;4, the tier
   rather than a citation is the statement of confidence.</p>
 </footer>
 
 
-
-<button class="totop" id="totop" aria-label="Back to top">&#8593;</button>
 <script>
 document.querySelectorAll('.copybtn').forEach(function(b){
   b.addEventListener('click', function(){
@@ -3319,51 +3520,4 @@ document.querySelectorAll('.modelmap a').forEach(function(a){
     if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth',block:'start'}); }
   });
 });
-
-// --- reading progress bar ---
-(function(){
-  var bar = document.getElementById('progressbar');
-  var h = document.documentElement;
-  function update(){
-    if(!bar) return;
-    var max = h.scrollHeight - h.clientHeight;
-    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
-  }
-  window.addEventListener('scroll', update, {passive:true});
-  window.addEventListener('resize', update);
-  update();
-})();
-
-// --- back to top ---
-(function(){
-  var btn = document.getElementById('totop');
-  if(!btn) return;
-  var smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function update(){ btn.classList.toggle('show', window.scrollY > 640); }
-  btn.addEventListener('click', function(){ window.scrollTo({top:0, behavior: smooth ? 'smooth' : 'auto'}); });
-  window.addEventListener('scroll', update, {passive:true});
-  update();
-})();
-
-// --- sticky nav shadow + active section (scrollspy) ---
-(function(){
-  var nav = document.querySelector('nav.toc');
-  var links = Array.prototype.slice.call(document.querySelectorAll('nav.toc a[href^="#"]'));
-  var sections = links.map(function(a){ return document.querySelector(a.getAttribute('href')); })
-                      .filter(Boolean);
-  function update(){
-    if(nav) nav.classList.toggle('scrolled', window.scrollY > 10);
-    if(!sections.length) return;
-    var pos = window.scrollY + 96;
-    var current = sections[0];
-    sections.forEach(function(sec){ if(sec.offsetTop <= pos) current = sec; });
-    links.forEach(function(a){
-      a.classList.toggle('active', current && a.getAttribute('href') === '#' + current.id);
-    });
-  }
-  window.addEventListener('scroll', update, {passive:true});
-  update();
-})();
 </script>
-</body>
-</html>

@@ -54,12 +54,12 @@ CAP_DAYS = 365.0
 PRIORS_A = [
     ("$K_{D,P}$",        1.0 * UM,   100.0 * UM),    # 2 decades, T4
     ("$C_{V,0}$",        20.0 * UM,  800.0 * UM),    # 40x, design variable
-    (r"$\delta$",        0.03,       0.15),          # modelling choice
-    ("$k_{prot,V}$",     1e-6,       1e-4),          # 2 decades, T4
-    ("$L_{gel}$",        300e-4,     2000e-4),       # design variable
+    (r"$\delta$",        0.03,       0.10),         # register sweep 300-1000 um
+    ("$k_{prot,V}$",     1e-6,       1e-3),          # 3 decades, T4 (register sweep)
+    ("$L_{gel}$",        100e-4,     500e-4),        # around the 150 um as built
     ("$k_{cl,V}$",       1e-7,       1e-5),          # T4
-    ("$D_{0,V}$",        2.5e-6,     4.5e-6),        # T2
-    (r"$\varepsilon_g$", 0.88,       0.93),          # T3
+    ("$D_{0,V}$",        2.5e-6,     4.5e-6),        # doc band to Stokes-Einstein
+    (r"$\varepsilon_g$", 0.55,       0.70),          # T3, around 0.618
     (r"$\xi$",           5.0,        50.0),          # T3
 ]
 

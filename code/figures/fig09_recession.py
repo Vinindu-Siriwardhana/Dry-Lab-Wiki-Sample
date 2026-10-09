@@ -1,9 +1,15 @@
 """
 F9 -- An insufficient pulse is worse than it looks: the wound REOPENS.
 
-A chronic baseline (r_0 = 0.8/d, d = 1.0/d, so r_eff < 0 and the untreated wound
-never closes) is driven by a therapeutic pulse (r_p = 2.0/d, d = 0.4/d) of
-duration T, after which the drug effect relaxes with a 0.5 d time constant.
+Rates come from the register closures, not from hand-picked numbers:
+
+  chronic baseline   C_e = 0, I_e = theta_LPS(0) = 0.94 (1 uM LPS, K_D,L 65 nM)
+                     r_p = 0.50/d, d = 0.51/d  -> r_eff ~ -0.015/d, never closes
+  therapeutic pulse  FGF2-G3 at EC50, V14 at psi_50 (I_e halved to 0.47)
+                     r_p = 1.11/d, d = 0.45/d  -> r_eff = +0.66/d
+
+The pulse lasts T days, after which the drug effect relaxes with the
+effect-compartment time constant 1/k_e0 = 18 h.
 
 When r_eff returns negative the front does not merely stall.  The stable state
 behind it, n_ss = K(1 - d/r_p), becomes zero, so the repopulated tissue dies
@@ -41,7 +47,7 @@ def closes(R_w_cm, T_days, t_end_days=110, nr=700):
     return res
 
 
-def min_pulse(R_w_cm, lo=1.0, hi=45.0, tol=0.6):
+def min_pulse(R_w_cm, lo=1.0, hi=60.0, tol=0.4):
     while hi - lo > tol:
         mid = 0.5 * (lo + hi)
         if closes(R_w_cm, mid)["closed"]:
@@ -56,8 +62,8 @@ fig, (ax, ax2) = plt.subplots(1, 2, figsize=(9.6, 4.1),
                               gridspec_kw=dict(width_ratios=[1.45, 1]))
 
 R_w = 0.2
-for T, col in zip((5, 9, 12, 20), (S.C_BAD, "#C97BB0", S.C_V14_L, S.C_V14)):
-    res = closes(R_w, T, t_end_days=90)
+for T, col in zip((5, 10, 14, 20), (S.C_BAD, "#C97BB0", S.C_V14_L, S.C_V14)):
+    res = closes(R_w, T, t_end_days=60)
     rf = res["r_front"].copy()
     # The model describes a CHRONIC WOUND BED.  Once the front reaches the
     # centre the wound is closed and the bed no longer exists, so the equations
@@ -72,15 +78,15 @@ for T, col in zip((5, 9, 12, 20), (S.C_BAD, "#C97BB0", S.C_V14_L, S.C_V14)):
     ax.axvline(T, color=col, ls=":", lw=0.8, alpha=0.55)
 
 ax.axhline(R_w * 10, color=S.C_GREY, ls="--", lw=1.1)
-ax.text(62, R_w * 10 + 0.06, "original wound edge", fontsize=8, color="#777777")
-ax.annotate("front advances,\nthen RECEDES", (36, 1.45), fontsize=9.5,
+ax.text(40, R_w * 10 + 0.06, "original wound edge", fontsize=8, color="#777777")
+ax.annotate("front advances,\nthen RECEDES", (14, 2.35), fontsize=9.5,
             weight="bold", color=S.C_BAD, ha="center")
 ax.set_xlabel("time  (days)")
 ax.set_ylabel("front position  $r_f$  (mm)")
 ax.set_title("Wound radius 2 mm, chronic baseline", loc="left", fontsize=10)
 ax.legend(loc="lower right", fontsize=8.4)
 ax.set_ylim(0, 2.75)
-ax.text(46, 2.63, "trace leaves the domain: complete die-back",
+ax.text(28, 2.63, "trace leaves the domain: complete die-back",
         fontsize=7.6, color="#888888", style="italic")
 
 # ---- panel: minimum pulse vs wound radius ----------------------------------

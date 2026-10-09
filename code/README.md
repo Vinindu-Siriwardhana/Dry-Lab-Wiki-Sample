@@ -75,24 +75,23 @@ These are in the code as comments too, but they are worth saying once here.
 
 ---
 
-## ⚠ Open items — reconcile these before the wiki freeze
+## Parameters
 
-This code was written to reproduce the V3 equation-reference document. Most
-numbers match it exactly. **Four do not, and someone needs to decide which
-version is right.**
+`params.py` follows the team constants register (`constants_register.xlsx`,
+updated 2026-10-09): 150 um heparin-free GelMA (R_V = 1, locked), 1.5 mm dermis,
+Stokes-Einstein diffusivities, V14 half-life 6.1 h, NO half-life 0.09-2 s and the
+recalibrated closure rates (d0 = 0.24/d, delta_d = 0.3/d). `verify.py` is
+unchanged and still benchmarks against the 500 um geometry of the V3 equation
+reference, so its expected values do not move.
 
-| quantity | equation-reference doc | this code | why they differ |
-|---|---|---|---|
-| days above target at `R_V = 10`, `k_prot = 1e-6` | 9.5 d | 11.2 d (band 4.5–25.9 d) | The duration is very sensitive to `L_tis` (2–4 mm) and `D_t` (0.7–1.8e-6), which the doc quotes only as ranges. Over those ranges the answer spans 4.5–25.9 d. **The doc should state which values produced 9.5 d.** The *location* of the optimum and the collapse beyond `R_V ≈ 30` are robust to both. |
-| minimum pulse for closure | 5 / 12 / 20 / 30 d | 4.4 / 8.9 / 13.4 / 22.0 d | Same ordering and scale, ~20 % lower. Most likely the front-threshold convention and the closure criterion. Worth one hour with both scripts side by side. |
-| largest single-patch wound | 1.5 mm radius | 2.5 mm (range 1.0–5.0) | Follows directly from the two rows above — our coverage is longer *and* our pulse requirement is shorter, so the crossover moves out. |
-| Sobol `δ` and `k_prot,V` | S_T = 0.433 / 0.145 | 0.228 / 0.003 | **Our SA uses analytic surrogates, not the full PDE** (49 k PDE solves is not practical). The surrogates are documented in `sa_run.py`. Both analyses agree on the two conclusions that matter — `K_D,P` dominates, and `k_prot,V` and `D_n` are *not* dominant — and on ΣS₁ (0.374 vs 0.389). **If the team's own `sa_run.py` + SALib results exist, use those on the wiki and delete ours.** |
+Headline outputs with these constants: 95 % release of V14 in 1.3 min (FGF2-G3
+3.1 min); 2.6 h above 25 uM per patch (band 1.2-4.5 h); minimum continuous
+therapy for closure 6.5 / 13.9 / 20.8 / 34.4 d at R_w = 1 / 2 / 3 / 5 mm; longest
+patch-change interval that still closes a wound ~7.8 h.
 
-Everything else — `D_eff`, all four release times, the 2.8× separation, the
-Damköhler numbers, `L_d` = 65–217 µm, the attenuation range, the 55.6 µM free
-loading, 556 µM at `R_V = 10` (75 % of the ceiling), the peak tissue
-concentrations, radial/Cartesian closure ratios 0.953 and 0.896 — reproduces the
-document to within rounding.
+Not recomputed for the register update: the radial/Cartesian closure ratios and
+the Jensen-gap range quoted on the wiki. The Sobol analysis still uses analytic
+surrogates (see `sa_run.py`), not the full PDE.
 
 ---
 
