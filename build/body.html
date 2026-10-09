@@ -1,4 +1,4 @@
-<header class="wrap mast">
+<header class="hero"><div class="wrap mast">
   <p class="kicker">HKU iGEM 2026 &#183; Dry Lab &#183; Mathematical Model V3</p>
   <h1>Modelling</h1>
   <p class="lede">Our wound patch carries two molecules: the anti-inflammatory peptide V14 and the
@@ -13,16 +13,16 @@
     <div><div class="v">&#8804; 7.8 h</div><div class="k">patch-change interval needed for closure; one patch holds tissue above target for 2.6&#160;h</div></div>
     <div><div class="v">2.03&#215;10<sup>&#8722;7</sup></div><div class="k">solver error against the closed form, converging at second order</div></div>
   </div>
-</header>
+</div></header>
 
 <nav class="toc"><div class="wrap"><ul>
   <li><a href="#act0">Overview</a></li>
   <li><a href="#act1">Learning cycle</a></li>
-  <li><a href="#act2">Release and transport</a></li>
-  <li><a href="#act3">Closure and dosing</a></li>
-  <li><a href="#act4">Receptor and NO models</a></li>
-  <li><a href="#wrong">Model refinement</a></li>
-  <li><a href="#asks">Wet-lab recommendations</a></li>
+  <li><a href="#act2">Release</a></li>
+  <li><a href="#act3">Closure</a></li>
+  <li><a href="#act4">Receptor and NO</a></li>
+  <li><a href="#wrong">Refinement</a></li>
+  <li><a href="#asks">Wet lab</a></li>
   <li><a href="#conclusion">Conclusion</a></li>
   <li><a href="#code">Code</a></li>
 </ul></div></nav>
@@ -304,6 +304,8 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
     chronic and treated rates are computed from the register closures (chronic r<sub>p</sub>&#160;=&#160;0.50, d&#160;=&#160;0.51&#160;d<sup>&#8722;1</sup>).</span> <span class="src">fig09_recession.py</span></figcaption>
   </figure>
 
+  __I2__
+
   <div class="col">
   <p>Combining the delivery models with the closure model gives an end-to-end result, from the
   loaded dose to the healing outcome. It takes the form of a <em>device specification</em>:</p>
@@ -327,6 +329,8 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
   failed to release slowly. The model sets the change interval. It also shows where the leverage
   is: a thicker reservoir or a slower-draining formulation, rather than retention, is what would
   lengthen the interval.</p>
+
+  __I1__
 </section>
 
 <!-- ================= ACT 4 ================= -->
@@ -353,6 +357,8 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
     serve as a closed-form check on any numerical implementation of Models&#160;3&#8211;4.
     <span class="src">fig11_universal_dose.py</span></figcaption>
   </figure>
+
+  __I3__
 
   <figure class="wide">
     <div class="figbox"><img src="assets/fig12_dose_correction.svg" alt="Left: log-log plot of required dose against scaled endotoxin load, with the corrected V3 line linear and the V2 line quadratic, diverging increasingly. Right: the over-estimate factor rising from about 2 to about 2500."></div>
@@ -426,8 +432,9 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
     <figcaption><span class="fid">Figure&#160;17.</span> A one-parameter-at-a-time sweep is
     what a slider performs, and it captures only the first-order variance. For delivered dose
     this is 41&#160;%, and the other 59&#160;% comes from interactions that a slider cannot show.
-    <span class="caveat">Our interactive explorer is therefore a presentation tool and not a
-    sensitivity analysis.</span>
+    <span class="caveat">Our design-space explorer (Interactive&#160;1) is therefore a
+    presentation tool and not a sensitivity analysis, and it carries this warning inside the
+    widget.</span>
     <span class="src">fig17_slider.py</span></figcaption>
   </figure>
 
@@ -560,7 +567,7 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
 
 <!-- ================= CONCLUSION ================= -->
 <section class="act wrap" id="conclusion">
-  <div class="act-head"><div class="num">&#8211;</div><div>
+  <div class="act-head"><div class="num">&#10003;</div><div>
     <p class="eyebrow">Conclusion</p>
     <h2>What the models tell us</h2>
   </div></div>

@@ -1,0 +1,40 @@
+<section class="widget" id="i2" aria-labelledby="i2-title">
+  <header class="w-head">
+    <span class="w-badge">Interactive 2</span>
+    <h3 id="i2-title">Wound-closure animation</h3>
+    <p>Watch the fibroblast density n(r,t) advance across the wound bed. Switch between an untreated
+    chronic wound and a treated one, and change how long the treatment lasts. A pulse that is too
+    short lets the front advance and then <em>recede</em>.</p>
+  </header>
+  <div class="w-body">
+    <div class="w-controls">
+      <div class="seg" role="group" aria-label="Treatment">
+        <button type="button" class="seg-b on" id="i2-trt" aria-pressed="true">Treated</button>
+        <button type="button" class="seg-b" id="i2-unt" aria-pressed="false">Untreated</button>
+      </div>
+      <label class="ctl"><span class="ctl-top"><span>Treatment duration</span><output id="i2-T-v"></output></span>
+        <input type="range" id="i2-T" min="1" max="30" step="0.5" value="14"></label>
+      <label class="ctl"><span class="ctl-top"><span>Wound radius R<sub>w</sub></span><output id="i2-rw-v"></output></span>
+        <input type="range" id="i2-rw" min="1" max="5" step="0.5" value="2"></label>
+      <div class="player">
+        <button type="button" class="w-btn" id="i2-play">&#9654; Play</button>
+        <button type="button" class="w-btn w-btn-ghost" id="i2-restart">Restart</button>
+      </div>
+      <label class="ctl"><span class="ctl-top"><span>Day</span><output id="i2-d-v"></output></span>
+        <input type="range" id="i2-d" min="0" max="60" step="0.25" value="0"></label>
+      <div class="status" id="i2-status" role="status" aria-live="polite"></div>
+    </div>
+    <div class="w-out">
+      <div class="i2-grid">
+        <canvas id="i2-disc" aria-label="Top-down view of the wound bed" role="img"></canvas>
+        <canvas id="i2-prof" aria-label="Fibroblast density against radius" role="img"></canvas>
+      </div>
+      <div class="w-chart"><canvas id="i2-time" aria-label="Front position against time" role="img"></canvas></div>
+    </div>
+  </div>
+  <p class="w-foot">Static version: Figure&#160;9. Every rate comes from the Tier-4 closure functions
+  of the constants register (chronic r<sub>p</sub> = 0.50, d = 0.51&#160;d<sup>&#8722;1</sup>; treated
+  r<sub>p</sub> = 1.11, d = 0.45&#160;d<sup>&#8722;1</sup>), and the drug effect relaxes with an 18&#160;h time
+  constant after the pulse ends. The animation stops when the front reaches the centre, because the model
+  describes a chronic wound bed.</p>
+</section>

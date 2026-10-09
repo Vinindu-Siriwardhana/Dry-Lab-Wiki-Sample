@@ -78,7 +78,7 @@ def apply():
         "lines.linewidth": 1.9,
         "axes.prop_cycle": cycler(color=[C_V14, C_FGF, C_DERIVED,
                                          C_THRESH, C_GOOD, C_BAD]),
-        "svg.fonttype": "none",      # keep text selectable in the SVG
+        "svg.fonttype": "path",      # embed glyphs: identical look on any machine
     })
 
 

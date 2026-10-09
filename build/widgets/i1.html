@@ -1,0 +1,38 @@
+<section class="widget" id="i1" aria-labelledby="i1-title">
+  <header class="w-head">
+    <span class="w-badge">Interactive 1</span>
+    <h3 id="i1-title">Design-space explorer</h3>
+    <p>Change the loading, gel thickness, retention and proteolysis rate. The page re-runs the same
+    gel&#8211;tissue solver as the figures in your browser (it agrees with the Python solver to four
+    decimal places) and re-computes how often the patch would have to be changed.</p>
+  </header>
+  <div class="w-body">
+    <div class="w-controls">
+      <label class="ctl"><span class="ctl-top"><span>Total V14 loading C<sub>V,0</sub></span><output id="i1-cv-v"></output></span>
+        <input type="range" id="i1-cv" min="20" max="1500" step="1" value="738"></label>
+      <label class="ctl"><span class="ctl-top"><span>Gel thickness L<sub>gel</sub></span><output id="i1-lg-v"></output></span>
+        <input type="range" id="i1-lg" min="50" max="1000" step="10" value="150"></label>
+      <label class="ctl"><span class="ctl-top"><span>Retardation factor R<sub>V</sub></span><output id="i1-rv-v"></output></span>
+        <input type="range" id="i1-rv" min="0" max="1.4771" step="0.005" value="0"></label>
+      <label class="ctl"><span class="ctl-top"><span>Tissue proteolysis k<sub>prot</sub></span><output id="i1-kp-v"></output></span>
+        <input type="range" id="i1-kp" min="-6" max="-3" step="0.01" value="-4.5"></label>
+      <label class="ctl"><span class="ctl-top"><span>Wound radius R<sub>w</sub></span><output id="i1-rw-v"></output></span>
+        <input type="range" id="i1-rw" min="1" max="5" step="0.5" value="2"></label>
+      <button type="button" class="w-btn" id="i1-reset">Reset to the gel as built</button>
+    </div>
+    <div class="w-out">
+      <div class="tiles tiles-4">
+        <div class="tile"><div class="tv" id="i1-hours"></div><div class="tk">hours above the 25&#160;&#181;M target</div></div>
+        <div class="tile"><div class="tv" id="i1-peak"></div><div class="tk">peak depth-averaged tissue concentration</div></div>
+        <div class="tile" id="i1-sol-tile"><div class="tv" id="i1-sol"></div><div class="tk" id="i1-sol-k"></div></div>
+        <div class="tile tile-key" id="i1-int-tile"><div class="tv" id="i1-int"></div><div class="tk" id="i1-int-k"></div></div>
+      </div>
+      <div class="w-chart"><canvas id="i1-cv-c" aria-label="Depth-averaged V14 concentration in tissue against time" role="img"></canvas></div>
+    </div>
+  </div>
+  <p class="w-foot"><b>Read this before trusting a slider.</b> A one-parameter-at-a-time sweep can only
+  reach the first-order share of the variance (41&#160;% for delivered dose, Figure&#160;17); every
+  interaction between parameters is invisible here, so this is a presentation tool and not a sensitivity
+  analysis. The patch-change interval also rests on Tier-4 closure parameters and a scenario treated state
+  (FGF2-G3 at EC<sub>50</sub>, V14 at &#968;<sub>50</sub>). Static versions: Figures&#160;7, 8 and 10.</p>
+</section>

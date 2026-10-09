@@ -1,0 +1,23 @@
+<section class="widget" id="i3" aria-labelledby="i3-title">
+  <header class="w-head">
+    <span class="w-badge">Interactive 3</span>
+    <h3 id="i3-title">Scaled dose&#8211;response explorer</h3>
+    <p>Move the two sliders to see how much active receptor V14 removes. Every curve is a closed-form
+    expression, so there is no solver and nothing is fitted.</p>
+  </header>
+  <div class="w-body">
+    <div class="w-controls">
+      <label class="ctl"><span class="ctl-top"><span>Scaled dose &#968; = C<sub>V</sub>/K<sub>D,P</sub></span><output id="i3-psi-v"></output></span>
+        <input type="range" id="i3-psi" min="-2" max="4" step="0.01" value="1"></label>
+      <label class="ctl"><span class="ctl-top"><span>Scaled endotoxin load a = [L]/K<sub>D,L</sub></span><output id="i3-a-v"></output></span>
+        <input type="range" id="i3-a" min="-1" max="3" step="0.01" value="1.19"></label>
+      <div class="tiles">
+        <div class="tile"><div class="tv" id="i3-supp"></div><div class="tk">receptor still active, relative to untreated</div></div>
+        <div class="tile"><div class="tv" id="i3-theta"></div><div class="tk">fraction of MD2 occupied by LPS</div></div>
+        <div class="tile"><div class="tv" id="i3-p50"></div><div class="tk">&#968;<sub>50</sub> = 1 + a, the dose for 50&#160;% suppression</div></div>
+      </div>
+    </div>
+    <div class="w-chart"><canvas id="i3-cv" aria-label="Suppression of active receptor against scaled dose" role="img"></canvas></div>
+  </div>
+  <p class="w-foot">Static version: Figure&#160;11. This curve contains no fitted constants, so it holds whatever K<sub>D,P</sub> turns out to be; measuring it only rescales the dose axis.</p>
+</section>
