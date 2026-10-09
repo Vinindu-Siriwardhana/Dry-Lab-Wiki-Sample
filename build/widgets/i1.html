@@ -4,7 +4,8 @@
     <h3 id="i1-title">Design-space explorer</h3>
     <p>Change the loading, gel thickness, retention and proteolysis rate. The page re-runs the same
     gel&#8211;tissue solver as the figures in your browser (it agrees with the Python solver to four
-    decimal places) and re-computes how often the patch would have to be changed.</p>
+    decimal places). The treatment-protocol sliders then simulate wound closure for the patch-change
+    schedule you pick.</p>
   </header>
   <div class="w-body">
     <div class="w-controls">
@@ -16,8 +17,13 @@
         <input type="range" id="i1-rv" min="0" max="1.4771" step="0.005" value="0"></label>
       <label class="ctl"><span class="ctl-top"><span>Tissue proteolysis k<sub>prot</sub></span><output id="i1-kp-v">3.2&#215;10&#8315;&#8309; s&#8315;&#185;</output></span>
         <input type="range" id="i1-kp" min="-6" max="-3" step="0.01" value="-4.5"></label>
-      <label class="ctl"><span class="ctl-top"><span>Wound radius R<sub>w</sub></span><output id="i1-rw-v">2.0 mm</output></span>
-        <input type="range" id="i1-rw" min="1" max="5" step="0.5" value="2"></label>
+      <div class="ctl-group">
+        <span class="ctl-group-t">Treatment protocol</span>
+        <label class="ctl"><span class="ctl-top"><span>Wound radius R<sub>w</sub></span><output id="i1-rw-v">2.0 mm</output></span>
+          <input type="range" id="i1-rw" min="1" max="5" step="0.5" value="2"></label>
+        <label class="ctl"><span class="ctl-top"><span>Patch changed every</span><output id="i1-iv-v">6.0 h</output></span>
+          <input type="range" id="i1-iv" min="2" max="24" step="0.5" value="6"></label>
+      </div>
       <button type="button" class="w-btn" id="i1-reset">Reset to the gel as built</button>
     </div>
     <div class="w-out">
@@ -25,7 +31,8 @@
         <div class="tile"><div class="tv" id="i1-hours">2.59 h</div><div class="tk">hours above the 25&#160;&#181;M target</div></div>
         <div class="tile"><div class="tv" id="i1-peak">113 &#181;M</div><div class="tk">peak depth-averaged tissue concentration</div></div>
         <div class="tile" id="i1-sol-tile"><div class="tv" id="i1-sol">100 %</div><div class="tk" id="i1-sol-k">of the 738 &#181;M solubility ceiling</div></div>
-        <div class="tile tile-key" id="i1-int-tile"><div class="tv" id="i1-int">&#8804; 7.8 h</div><div class="tk" id="i1-int-k">longest patch-change interval that closes a 2.0 mm wound; a daily change does not close it</div></div>
+        <div class="tile tile-key" id="i1-tc-tile"><div class="tv" id="i1-tc">26 d</div><div class="tk" id="i1-tc-k">to close a 2.0 mm wound with the patch changed every 6.0 h</div></div>
+        <div class="tile tile-key" id="i1-int-tile"><div class="tv" id="i1-int">&#8804; 7.8 h</div><div class="tk" id="i1-int-k">longest change interval that still closes a wound, for every wound size; a daily change never does</div></div>
       </div>
       <div class="w-chart"><canvas id="i1-cv-c" aria-label="Depth-averaged V14 concentration in tissue against time" role="img"></canvas></div>
     </div>
@@ -33,6 +40,9 @@
   <p class="w-foot"><b>Read this before trusting a slider.</b> A one-parameter-at-a-time sweep can only
   reach the first-order share of the variance (41&#160;% for delivered dose, Figure&#160;17); every
   interaction between parameters is invisible here, so this is a presentation tool and not a sensitivity
-  analysis. The patch-change interval also rests on Tier-4 closure parameters and a scenario treated state
-  (FGF2-G3 at EC<sub>50</sub>, V14 at &#968;<sub>50</sub>). Static versions: Figures&#160;7, 8 and 10.</p>
+  analysis. The longest workable change interval does not depend on wound size: whether a wound closes at
+  all is set by whether the time-averaged drug effect keeps cells growing faster than they die, which is
+  the same everywhere in the wound bed. Wound size sets <i>how long</i> closure takes. Both outputs rest on
+  Tier-4 closure parameters and a scenario treated state (FGF2-G3 at EC<sub>50</sub>, V14 at
+  &#968;<sub>50</sub>). Static versions: Figures&#160;7, 8 and 10.</p>
 </section>
