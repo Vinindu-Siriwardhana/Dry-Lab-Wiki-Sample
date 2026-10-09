@@ -1,14 +1,14 @@
 """
 F7 -- What the as-built gel supplies, and why adding retention would not rescue it.
 
-The gel is heparin-free, so R_V = 1 is LOCKED (constants register) and the
-retention lever is out of the design space.  This figure shows the
+The gel is plain 1% Ca-alginate: it binds neither active, so R_V = 1 is LOCKED
+(constants register) and the retention lever is out of the design space.  This figure shows the
 counterfactual anyway, because it is the reason the lever was dropped:
 holding the TOTAL loading at the solubility ceiling, raising R_V buys residence
 time and spends driving concentration in exact proportion
-(C_free,0 = C_total,0 / R_V).  With a 150 um gel the reservoir is so small that
-the peak tissue concentration falls below the 25 uM target after only a few-fold
-retention, and coverage collapses to ZERO.
+(C_free,0 = C_total,0 / R_V).  Even with the 500 um gel the peak tissue concentration
+falls below the 25 uM target after a modest retention, and coverage collapses
+to ZERO.
 
 The duration is plotted as a BAND, because it is sensitive to two parameters
 known only as ranges: the depth to the systemic sink (L_tis = 1-2 mm) and the
@@ -62,7 +62,7 @@ for k_prot, col in zip(KPS, (S.C_V14_L, S.C_V14, "#0B3C5D")):
 # the device as built
 c0 = summary[P.K_PROT_V14]
 ax1.plot([1.0], [c0[1][0]], "*", ms=15, color=S.C_THRESH, zorder=6)
-ax1.annotate(f"the gel as built\n(no heparin, $R_V$ = 1):  {c0[1][0]:.1f} h\n"
+ax1.annotate(f"the gel as built\n(plain alginate, $R_V$ = 1):  {c0[1][0]:.1f} h\n"
              f"(band {c0[2][0]:.1f}–{c0[3][0]:.1f} h)",
              (1.0, c0[1][0]), textcoords="offset points", xytext=(16, 62),
              fontsize=9, weight="bold", color=S.C_THRESH,

@@ -3,7 +3,8 @@ F5 -- V14 concentration profiles in tissue, from the two-domain solver.
 
 Shows where the drug actually is over time, the penetration depth Lambda, and
 how little of the window sits above the 25 uM therapeutic target.  Run for the
-gel AS BUILT: 150 um, heparin-free (R_V = 1), loaded at the solubility ceiling.
+gel AS BUILT: 500 um 1% Ca-alginate, no retention (R_V = 1), loaded at the
+solubility ceiling.
 """
 import sys, os, numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

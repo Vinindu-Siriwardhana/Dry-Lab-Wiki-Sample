@@ -4,7 +4,8 @@ params.py -- the single source of truth for every parameter used in the figures.
 No value is hard-coded inside a solver; everything enters through this file, so
 changing a number here changes every figure that depends on it.  Each entry
 carries its provenance TIER, following the team constants register
-(constants_register.xlsx, updated 2026-10-09):
+(constants_register.xlsx, updated 2026-10-09; gel changed to 1% Ca-alginate,
+500 um, by the team on 2026-10-09):
 
     T1  measured in house
     T2  mechanistic correlation
@@ -28,8 +29,8 @@ K_B          = 1.380649e-23 # J/K                                          D
 ETA_WATER    = 0.00069      # Pa s water at 37 C                           T3
 
 # --- geometry ---------------------------------------------------------------
-L_GEL        = 0.015    # cm   (150 um) as-manufactured 5% GelMA          T1
-L_GEL_ALT    = 0.05     # cm   (500 um) V3-document baseline, comparison  design
+L_GEL        = 0.05     # cm   (500 um) as-manufactured 1% Ca-alginate    T1
+L_GEL_ALT    = 0.015    # cm   (150 um) earlier GelMA build, comparison   design
 L_TIS        = 0.15     # cm   (1.5 mm) dermal depth to the systemic sink T3
 L_TIS_RANGE  = (0.10, 0.20)   # cm, band carried as sensitivity           T3
 DELTA        = 0.05     # cm   (500 um) fibroblast-active / target depth  T4 (sweep 300-1000 um)
@@ -53,14 +54,19 @@ T_HALF_V14   = 6.1 * HOUR   # s  serum half-life proxy                     T4
 T_HALF_FGF   = 168 * HOUR   # s  functional half-life at 37 C              T1
 
 # --- hydrogel (Model 1) -----------------------------------------------------
-A_FIBRE_NM   = 0.6      # nm   gelatin chain radius                        T3
-XI_NM        = 10.0     # nm   mesh size (range 5-50 swept)                T4
-EPS_GEL      = 0.618    # --   5% GelMA porosity                           T3
-TAU_GEL      = EPS_GEL ** -0.5   # 1.27, Bruggeman                         T2
+# 1% w/v sodium alginate, ionically cross-linked in 100 mM CaCl2, in HBS
+# (10 mM HEPES, 150 mM NaCl, pH 7.4).  Team recipe.                         T1
+A_FIBRE_NM   = 0.6      # nm   alginate chain radius; not measured for this gel.
+                        #      0.6 -> 2 nm only lowers H(FGF) 0.93 -> 0.88   T4
+XI_NM        = 14.0     # nm   1% Ca-alginate mesh, Grassi et al. 2009,
+                        #      Molecules 14:3003 (14 mechanical, 26 release) T3
+EPS_GEL      = 0.99     # --   1% w/v polymer -> ~0.6% v/v solid           D
+TAU_GEL      = EPS_GEL ** -0.5   # 1.005, Bruggeman                        T2
 K_DEG_GEL    = LN2 / T_HALF_V14  # 1/s  in-gel degradation V14 (3.15e-5)   D
 K_DEG_GEL_F  = LN2 / T_HALF_FGF  # 1/s  in-gel degradation FGF (1.15e-6)   D
-S_MAX        = 0.0      # mol/cm3 heparin/HS site density -- LOCKED: no heparin   L
-R_V          = 1.0      # --   V14 sorption retardation -- LOCKED            L
+S_MAX        = 0.0      # mol/cm3 binding sites -- LOCKED: plain alginate does not
+                        #      bind FGFs (Freeman et al. 2008, SPR)          L
+R_V          = 1.0      # --   V14 sorption -- LOCKED: alginate is hydrophilic L
 
 # --- tissue (Model 2) -------------------------------------------------------
 EPS_TIS      = 0.80     # --   tissue porosity                             T3

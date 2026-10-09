@@ -6,8 +6,8 @@ Joins the two halves of the answer.
 (a) The rising line is what Model 6 demands: the CONTINUOUS therapeutic pulse
     needed for permanent closure at a given wound radius (F9).  The horizontal
     band is what Models 1-2 supply: hours above the 25 uM target from one
-    as-built patch (150 um, R_V = 1; F7).  The gap is two orders of magnitude,
-    so no wound in the 1-5 mm range closes on one patch.
+    as-built patch (500 um alginate, R_V = 1; F7).  The gap is about two orders
+    of magnitude, so no wound in the 1-5 mm range closes on one patch.
 
 (b) Repeat dosing, run through the register's effect compartment
     (k_e0 = 1/18 h).  A patch applied every `interval` hours drives the effect
@@ -95,7 +95,7 @@ ax.set_title("(a)  one patch: hours; closure: weeks", loc="left",
 ax.legend(loc="center right", fontsize=7.8)
 
 # ---- (b) closure time vs change interval -----------------------------------
-intervals = np.array([COV_CEN * 24, 3, 4, 5, 6, 7, 8, 10, 12, 24])
+intervals = np.array([COV_CEN * 24, 8, 10, 12, 15, 18, 20, 22, 24])
 summary = {}
 for R_mm, col in ((1.0, S.C_V14_L), (2.0, S.C_V14), (3.0, "#0B3C5D")):
     tc = np.array([closure_time(h, R_mm / 10) for h in intervals])
@@ -107,22 +107,27 @@ for R_mm, col in ((1.0, S.C_V14_L), (2.0, S.C_V14), (3.0, "#0B3C5D")):
     ax2.plot(intervals[~fin], np.full((~fin).sum(), 118), "x", color=col, ms=7)
     ax2.axvline(hmax, color=col, ls=":", lw=1.0)
 
+daily_closes = all(np.isfinite(closure_time(P.REAPPLY_D * 24, R / 10))
+                   for R in (1.0, 2.0, 3.0))
 ax2.axvline(P.REAPPLY_D * 24, color=S.C_BAD, lw=1.4)
-ax2.text(P.REAPPLY_D * 24 * 0.97, 60, "daily dressing\nchange:\nnever closes",
-         ha="right", fontsize=8.4, color=S.C_BAD, weight="bold")
+ax2.text(P.REAPPLY_D * 24 * 0.87, 104,
+         "daily dressing\nchange:\n" + ("closes" if daily_closes else "never closes"),
+         ha="right", va="top", fontsize=8.4, color=S.C_BAD, weight="bold")
 hm = summary[2.0][1]
-ax2.text(hm * 0.97, 70, f"longest interval\nthat closes:\n{hm:.1f} h", ha="right",
+ax2.text(hm * 0.97, 58, f"longest interval\nthat closes:\n{hm:.1f} h", ha="right",
          fontsize=8.4, color=S.C_DERIVED, weight="bold")
-ax2.text(9.0, 104, "× = never closes\n(within 120 d)", fontsize=7.8, color="#777777")
+ax2.text(0.02, 0.97, "× = never closes (within 120 d)", transform=ax2.transAxes,
+         va="top", fontsize=7.8, color="#777777")
 ax2.set_xscale("log")
-ax2.set_xticks([3, 4, 6, 8, 12, 24], ["3", "4", "6", "8", "12", "24"])
-ax2.set_xlim(2.3, 27)
+ax2.set_xticks([6, 8, 12, 18, 24], ["6", "8", "12", "18", "24"])
+ax2.xaxis.set_minor_formatter(plt.NullFormatter())
+ax2.set_xlim(5.5, 27)
 ax2.set_ylim(0, 125)
 ax2.set_xlabel("patch change interval  (h)")
 ax2.set_ylabel("closure time  $t_c$  (days)")
 ax2.set_title("(b)  the protocol the model asks for", loc="left", fontsize=10)
-ax2.legend(loc="upper left", fontsize=8)
-S.tier4_note(ax2, "every closure rate here is Tier-4", (0.98, 0.02))
+ax2.legend(loc="upper left", bbox_to_anchor=(0.0, 0.9), fontsize=8)
+S.tier4_note(ax2, "every closure rate here is Tier-4", (0.70, 0.02))
 S.save(fig, "fig10_envelope")
 
 for r, p in zip(radii, pulses):

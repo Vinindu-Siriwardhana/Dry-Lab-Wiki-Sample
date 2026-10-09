@@ -48,7 +48,7 @@ def amsden_H(a_solute_nm, xi_nm, a_fibre_nm=0.6):
 
     a_solute_nm : solute hydrodynamic radius  (0.87 nm V14, 2.34 nm FGF2-G3)
     xi_nm       : hydrogel mesh size
-    a_fibre_nm  : gelatin chain radius, ~0.6 nm
+    a_fibre_nm  : polymer chain radius, ~0.6 nm
     """
     a = np.asarray(a_solute_nm, dtype=float)
     xi = np.asarray(xi_nm, dtype=float)

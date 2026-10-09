@@ -503,10 +503,10 @@ body.noscroll{overflow:hidden}
   <p class="thesis">The aim of this work is not to build the most complex model possible, but one
   that is detailed enough to guide the design of the patch and the experiments of our wet lab.</p>
   <div class="keystrip">
-    <div><div class="v">11&#8211;92 &#181;m</div><div class="k">NO penetration depth, against a 0.5&#8211;3&#160;mm stack &#8212; why the sensor could never have worked</div></div>
-    <div><div class="v">1.3 min</div><div class="k">to 95&#160;% release of V14 from the 150&#160;&#181;m gel. The patch is a bolus, not a sustained delivery</div></div>
-    <div><div class="v">&#8804; 7.8 h</div><div class="k">patch-change interval needed for closure; one patch holds tissue above target for 2.6&#160;h</div></div>
-    <div><div class="v">2.03&#215;10<sup>&#8722;7</sup></div><div class="k">solver error against the closed form, converging at second order</div></div>
+    <div><div class="v">11&#8211;93 &#181;m</div><div class="k">NO penetration depth, against a 0.5&#8211;3&#160;mm stack &#8212; why the sensor could never have worked</div></div>
+    <div><div class="v">11 min</div><div class="k">to 95&#160;% release of V14 from the 500&#160;&#181;m alginate gel. The patch is a bolus, not a sustained delivery</div></div>
+    <div><div class="v">&#8804; 21.8 h</div><div class="k">patch-change interval needed for closure; one patch holds tissue above target for 7.2&#160;h</div></div>
+    <div><div class="v">1.93&#215;10<sup>&#8722;7</sup></div><div class="k">solver error against the closed form, converging at second order</div></div>
   </div>
 </div></header>
 
@@ -661,9 +661,10 @@ body.noscroll{overflow:hidden}
 
   <div class="col">
   <h3>The device</h3>
-  <p>The patch is a single acellular GelMA hydrogel layer. Its outer face is sealed by an
-  impermeable backing and its inner face sits on the wound bed. Two active molecules are mixed
-  into the gel during casting: <b>V14</b> (<code>SVQELLELLAAGL</code>, 1355.59&#160;Da), variant
+  <p>The patch is a single acellular calcium-alginate hydrogel layer, 500&#160;&#181;m thick:
+  1&#160;% w/v sodium alginate, cross-linked with 100&#160;mM calcium chloride, in HEPES-buffered
+  saline at pH&#160;7.4. Its outer face is sealed by an impermeable backing and its inner face sits
+  on the wound bed. Two active molecules are mixed into the gel during casting: <b>V14</b> (<code>SVQELLELLAAGL</code>, 1355.59&#160;Da), variant
   14 of our own <i>de novo</i> designs against the TLR4/MD2 complex, and <b>FGF2-G3</b>, an
   engineered, highly stable growth factor. The device contains no live bacteria.</p>
   </div>
@@ -692,7 +693,7 @@ body.noscroll{overflow:hidden}
   <p>For NO diffusing through a porous layer while being consumed, the steady penetration depth is
   <span class="eq" style="display:inline-block;padding:2px 8px;margin:0;border-left-width:2px">L<sub>d</sub> = &#8730;(D<sub>eff</sub> / k<sub>decay</sub>)</span>.
   Using a half-life of 0.09&#8211;2&#160;s and sweeping the tortuosity group over its plausible
-  range, we obtain <b>L<sub>d</sub> = 11&#8211;92&#160;&#181;m</b>. The bacterial-cellulose and
+  range, we obtain <b>L<sub>d</sub> = 11&#8211;93&#160;&#181;m</b>. The bacterial-cellulose and
   hydrogel stack of the earlier design was 0.5&#8211;3&#160;mm thick.</p>
   </div>
 
@@ -710,9 +711,9 @@ body.noscroll{overflow:hidden}
   </figure>
 
   <figure>
-    <div class="figbox"><img src="assets/fig02_ld_heatmap.svg" alt="Three by three heatmap of nitric oxide penetration depth in micrometres against the tortuosity group and the NO half-life, with values ranging from 11 to 92 micrometres."></div>
+    <div class="figbox"><img src="assets/fig02_ld_heatmap.svg" alt="Three by three heatmap of nitric oxide penetration depth in micrometres against the tortuosity group and the NO half-life, with values ranging from 11 to 93 micrometres."></div>
     <figcaption><span class="fid">Figure&#160;2.</span> The conclusion does not depend on a
-    single parameter choice. L<sub>d</sub> stays between 11 and 92&#160;&#181;m everywhere in the
+    single parameter choice. L<sub>d</sub> stays between 11 and 93&#160;&#181;m everywhere in the
     swept range, several times smaller than even the thinnest stack we could have built.
     <span class="src">fig02_ld_heatmap.py</span></figcaption>
   </figure>
@@ -735,17 +736,17 @@ body.noscroll{overflow:hidden}
   <div class="claim warn">
     <h3>Summary</h3>
     <p>The patch releases its load as a single burst rather than a sustained supply. From the
-    150&#160;&#181;m gel as built, V14 reaches 95&#160;% release in 1.3&#160;minutes and FGF2-G3 in
-    3.1&#160;minutes (14 and 34&#160;minutes from a 500&#160;&#181;m gel), while wound closure takes
-    7&#8211;21 days. The 2.5&#215; difference between the two molecules comes only from their
-    size, because the heparin-free gel does not retain either of them.</p>
+    500&#160;&#181;m alginate gel as built, V14 reaches 95&#160;% release in 11&#160;minutes and
+    FGF2-G3 in 25&#160;minutes, while wound closure takes 7&#8211;21 days. The 2.4&#215; difference
+    between the two molecules comes only from their size, because plain alginate binds neither of
+    them.</p>
   </div>
 
   <figure class="wide">
     <div class="figbox"><img src="assets/fig03_release.svg" alt="Cumulative fractional release against log time for V14 and FGF2-G3 at two gel thicknesses. All four curves reach 95 percent within about an hour, while a shaded band marking the 7 to 21 day wound closure window sits far to the right with no curve activity near it."></div>
     <figcaption><span class="fid">Figure&#160;3.</span> The figure below shows cumulative release
     against time. The gap between the release curves and the closure window is the main result:
-    the two timescales differ by roughly 3000&#8211;25&#8239;000&#215; for the as-built gel.
+    the two timescales differ by roughly 400&#8211;2800&#215; for the as-built gel.
     <span class="caveat">These curves come from the closed-form Crank series, so they carry no
     numerical error. For the release assay this means sampling on a log time grid starting at
     about 10&#160;s, since minute-scale sampling would miss most of the kinetics.</span>
@@ -757,8 +758,10 @@ body.noscroll{overflow:hidden}
   data and has to be fitted from the release assay. Second, the model predicts only a
   <em>small</em> closure benefit from an unmodified gel. This is a prediction of the model, not a
   failure of it. Third, if release kinetics are to matter for efficacy, retention would have to be
-  <em>added</em> to the gel. The next section asks what this would achieve. Our constants register
-  has since locked the gel as heparin-free, so that analysis is a counterfactual.</p>
+  <em>added</em> to the gel. The next section asks what this would achieve. Our gel is plain
+  alginate, which binds neither molecule: FGF-2 showed no measurable binding to unmodified
+  alginate (Freeman <i>et al.</i>, 2008), and V14 has no hydrophobic surface to stick to.
+  That analysis is therefore a counterfactual.</p>
   </div>
 
   <details class="math"><summary>The transport equations, and why porosity cancels</summary>
@@ -774,11 +777,12 @@ body.noscroll{overflow:hidden}
 &#160;&#160;&#160;&#160;H = exp[ &#8722;&#960; ( (a_i + a_f) / (&#958; + 2a_f) )&#178; ]
 &#160;&#160;&#160;&#160;&#964; = &#949;^(&#8722;1/2)   (Bruggeman closure, replaced by a fitted &#964; at the first opportunity)</div>
     <p>Porosity enters in only two places: the flux matching at the interface, and the conversion
-    of loaded mass to concentration. At &#958;&#160;=&#160;10&#160;nm this gives
-    D<sub>eff</sub>&#160;=&#160;3.38&#215;10<sup>&#8722;6</sup> (V14) and
-    1.38&#215;10<sup>&#8722;6</sup>&#160;cm&#178;s<sup>&#8722;1</sup> (FGF2-G3), using the register's
-    Stokes&#8211;Einstein diffusivities, hydrodynamic radii of 0.73 and 1.68&#160;nm, and a 5&#160;% GelMA
-    porosity of 0.618.</p>
+    of loaded mass to concentration. At &#958;&#160;=&#160;14&#160;nm, the mesh size measured for
+    1&#160;% calcium alginate (Grassi <i>et al.</i>, 2009), this gives
+    D<sub>eff</sub>&#160;=&#160;4.37&#215;10<sup>&#8722;6</sup> (V14) and
+    1.85&#215;10<sup>&#8722;6</sup>&#160;cm&#178;s<sup>&#8722;1</sup> (FGF2-G3), using the register's
+    Stokes&#8211;Einstein diffusivities, hydrodynamic radii of 0.73 and 1.68&#160;nm, and an alginate
+    porosity of 0.99. The gel barely slows either molecule.</p>
     <div class="eq">gel:     &#8706;C&#7495;/&#8706;t = D_eff&#7495; &#8706;&#178;C&#7495;/&#8706;x&#178; &#8722; k_deg&#7495; C&#7495;        0 &lt; x &lt; L_gel
 tissue:  &#8706;C&#7511;/&#8706;t = D_eff&#7511; &#8706;&#178;C&#7511;/&#8706;x&#178; &#8722; k_prot C&#7511;      &#8722;L_tis &lt; x &lt; 0
 
@@ -815,11 +819,11 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
   </figure>
 
   <figure class="wide">
-    <div class="figbox"><img src="assets/fig05_tissue_profiles.svg" alt="Two panels showing free V14 concentration against tissue depth at seven times from 1 minute to 8 hours, for the register proteolysis rate and for slow proteolysis. Profiles decay with depth and fall below the 25 micromolar target line within a few hours in both panels."></div>
+    <div class="figbox"><img src="assets/fig05_tissue_profiles.svg" alt="Two panels showing free V14 concentration against tissue depth at seven times from 1 minute to 8 hours, for the register proteolysis rate and for slow proteolysis. Profiles decay with depth and, by 8 hours, are below the 25 micromolar target line over most of the depth in both panels."></div>
     <figcaption><span class="fid">Figure&#160;5.</span> The figure below shows where the
-    drug is in the tissue over time. The 1.5&#160;mm dermis drains the thin gel reservoir into the
+    drug is in the tissue over time. The 1.5&#160;mm dermis drains the gel reservoir into the
     systemic sink within hours, whatever the proteolysis rate. <span class="caveat">Shown for the gel as built (R<sub>V</sub>&#160;=&#160;1,
-    150&#160;&#181;m) loaded at the solubility ceiling. The macrophage target sits in a thin surface
+    500&#160;&#181;m alginate) loaded at the solubility ceiling. The macrophage target sits in a thin surface
     band where concentration is always above the depth average, so time-above-target computed this
     way is a lower bound.</span>
     <span class="src">fig05_tissue_profiles.py</span></figcaption>
@@ -829,8 +833,9 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
     <div class="figbox"><img src="assets/fig06_hindrance.svg" alt="Ratio of effective to free diffusivity against hydrogel mesh size for V14 and FGF2-G3, both rising toward 1 as mesh size increases, with V14 consistently higher."></div>
     <figcaption><span class="fid">Figure&#160;6.</span> Steric hindrance is mild for V14 and
     moderate for FGF2-G3, so the gel is not the rate-limiting barrier.
-    <span class="caveat">The mesh size &#958; is assumed rather than measured. It is the cheapest
-    remaining uncertainty in Models&#160;1&#8211;2 to resolve.</span>
+    <span class="caveat">The mesh size &#958; comes from measurements on 1&#160;% calcium alginate
+    (14&#160;nm mechanically, 26&#160;nm from release), not yet from our own gel. Across the whole
+    5&#8211;50&#160;nm range the effect on release is small.</span>
     <span class="src">fig06_hindrance.py</span></figcaption>
   </figure>
 </section>
@@ -844,17 +849,17 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
 
   <div class="claim gold">
     <h3>Summary</h3>
-    <p>The gel as built is heparin-free (R<sub>V</sub>&#160;=&#160;1, locked). One patch keeps
-    tissue above the 25&#160;&#181;M target for <b>2.6&#160;h</b>, or 1.2&#8211;4.5&#160;h across the
+    <p>The gel as built is plain alginate (R<sub>V</sub>&#160;=&#160;1, locked). One patch keeps
+    tissue above the 25&#160;&#181;M target for <b>7.2&#160;h</b>, or 3.5&#8211;11.9&#160;h across the
     ranges of sink depth and diffusivity. As a counterfactual, we also asked what retention would
     do. Retention works by binding, so the free concentration that drives delivery is
     C<sub>total</sub>/R<sub>V</sub>: residence time is gained and driving concentration is lost in
-    equal proportion. The window grows by only about 10&#160;% near R<sub>V</sub>&#160;&#8776;&#160;4
-    and falls to <b>zero</b> beyond R<sub>V</sub>&#160;&#8776;&#160;17.</p>
+    equal proportion. The window grows to about 13&#160;h near R<sub>V</sub>&#160;&#8776;&#160;7
+    and falls to <b>zero</b> beyond R<sub>V</sub>&#160;&#8776;&#160;21.</p>
   </div>
 
   <figure class="wide">
-    <div class="figbox"><img src="assets/fig07_retention.svg" alt="Upper panel: hours above the 25 micromolar target against retardation factor on a log axis, three curves for different proteolysis rates, each starting between 2 and 3 hours at R_V equals 1, rising only slightly to a shallow peak near R_V equals 4 and then falling sharply to zero beyond about 17, with uncertainty bands. Lower panel: peak tissue concentration falling steadily with R_V from about 110 micromolar and crossing the 25 micromolar target near R_V equals 17."></div>
+    <div class="figbox"><img src="assets/fig07_retention.svg" alt="Upper panel: hours above the 25 micromolar target against retardation factor on a log axis, three curves for different proteolysis rates, each starting between 5 and 9 hours at R_V equals 1, rising to a peak of 10 to 15 hours near R_V equals 7 and then falling sharply to zero beyond about 21, with uncertainty bands. Lower panel: peak tissue concentration falling steadily with R_V from about 270 micromolar and crossing the 25 micromolar target near R_V equals 21."></div>
     <figcaption><span class="fid">Figure&#160;7.</span> The figure below shows single-patch
     coverage and the retention counterfactual. The lower panel explains the upper one: peak tissue
     concentration falls as 1/R<sub>V</sub>, and once it drops below the target the time above it
@@ -867,23 +872,27 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
   </figure>
 
   <div class="col">
-  <p>Two conclusions follow for the design. First, <b>gel thickness and dermal drainage, rather
-  than retention, set the single-patch window</b>. A 150&#160;&#181;m gel is a small reservoir, and
-  reducing k<sub>prot</sub> thirty-fold only lengthens the window from 2.6 to 3.1&#160;h. Second,
-  heparin cannot help V14. Heparin is strongly anionic and V14 has a net charge of &#8722;2 with
-  no Lys, Arg or His, so the two repel each other. The two arms would need different chemistry.</p>
+  <p>Two conclusions follow for the design. First, <b>gel thickness and dermal drainage set the
+  single-patch window</b>. Moving from our earlier 150&#160;&#181;m gel to the 500&#160;&#181;m alginate
+  patch nearly triples it (2.6 to 7.2&#160;h). Reducing k<sub>prot</sub> thirty-fold lengthens it
+  only to 8.4&#160;h, and retention at its optimum to about 13&#160;h; both are smaller than the
+  3.5&#8211;11.9&#160;h spread from the tissue parameters. Second, neither heparin nor
+  alginate-sulfate can help V14. Both are strongly anionic and V14 has a net charge of &#8722;2
+  with no Lys, Arg or His, so they repel each other. Retaining V14 in alginate would need covalent
+  tethering, so the two arms would need different chemistry.</p>
   </div>
 
   <figure class="wide">
-    <div class="figbox"><img src="assets/fig08_solubility.svg" alt="Log-log plot of required total V14 loading against retardation factor, rising linearly and crossing a horizontal saturation ceiling at 738 micromolar near R_V equals 2.7, with marked points at R_V of 1, 2, 3 and 10, the last two labelled impossible."></div>
+    <div class="figbox"><img src="assets/fig08_solubility.svg" alt="Log-log plot of required total V14 loading against retardation factor, rising linearly from 51 micromolar and crossing a horizontal saturation ceiling at 738 micromolar near R_V equals 14.6, with marked points at R_V of 1, 3, 10 and 20, the last labelled impossible."></div>
     <figcaption><span class="fid">Figure&#160;8.</span> The figure below shows a second,
-    independent limit on retention. A 25&#160;&#181;M target at 500&#160;&#181;m depth from a 150&#160;&#181;m gel needs
-    <b>270&#160;&#181;M free</b> (366&#160;&#181;g&#160;mL<sup>&#8722;1</sup>), which is already
-    37&#160;% of the solubility ceiling at R<sub>V</sub>&#160;=&#160;1. The <i>total</i> that must
-    dissolve is 539&#160;&#181;M at R<sub>V</sub>&#160;=&#160;2 (73&#160;%) and 809&#160;&#181;M at
-    R<sub>V</sub>&#160;=&#160;3, which exceeds the ceiling outright.
-    <span class="caveat">Retention above R<sub>V</sub>&#160;&#8776;&#160;2.7 therefore cannot be
-    formulated at all. Solubility, rather than potency, is the main constraint on the device.</span> <span class="src">fig08_solubility.py</span></figcaption>
+    independent limit on retention. A 25&#160;&#181;M target at 500&#160;&#181;m depth from the
+    500&#160;&#181;m gel needs only <b>51&#160;&#181;M free</b> (68&#160;&#181;g&#160;mL<sup>&#8722;1</sup>),
+    7&#160;% of the solubility ceiling at R<sub>V</sub>&#160;=&#160;1. The <i>total</i> that must
+    dissolve is 152&#160;&#181;M at R<sub>V</sub>&#160;=&#160;3 and 505&#160;&#181;M at
+    R<sub>V</sub>&#160;=&#160;10 (68&#160;%).
+    <span class="caveat">Retention above R<sub>V</sub>&#160;&#8776;&#160;14.6 cannot be formulated
+    at all. For the gel as built, solubility is no longer the binding constraint, but loading still
+    sets how long each patch lasts.</span> <span class="src">fig08_solubility.py</span></figcaption>
   </figure>
 
   <div class="claim warn">
@@ -954,12 +963,12 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
   </div>
 
   <figure class="wide">
-    <div class="figbox"><img src="assets/fig10_envelope.svg" alt="Two panels. Left: days of therapeutic cover against wound radius on a log axis; a rising dashed demand curve from about 7 to 34 days sits two orders of magnitude above a flat single-patch supply band of 1 to 4.5 hours. Right: closure time against patch change interval for 1, 2 and 3 millimetre wounds; closure times rise from about 7 to 44 days as the interval lengthens to 7 hours, and no wound closes at 8 hours or longer, including a daily change."></div>
+    <div class="figbox"><img src="assets/fig10_envelope.svg" alt="Two panels. Left: days of therapeutic cover against wound radius on a log axis; a rising dashed demand curve from about 7 to 34 days sits 22 to 115 times above a flat single-patch supply band of 3.5 to 12 hours. Right: closure time against patch change interval for 1, 2 and 3 millimetre wounds; closure times rise from about 7 to 46 days as the interval lengthens to 20 hours, and no wound closes at 22 hours or with a daily change."></div>
     <figcaption><span class="fid">Figure&#160;10.</span> The left panel shows that no wound in
     the 1&#8211;5&#160;mm range closes on a single patch: the continuous cover needed is
-    60&#8211;320 times what one patch supplies. The right panel passes each patch's 2.6&#160;h of
+    22&#8211;115 times what one patch supplies. The right panel passes each patch's 7.2&#160;h of
     cover through the 18&#160;h drug-effect delay. The patch must then be changed at least every
-    <b>7.8&#160;h</b>, and a daily dressing change never closes the wound.
+    <b>21.8&#160;h</b>, for every wound size, and a daily dressing change falls just short.
     <span class="caveat">The closure side rests entirely on Tier-4 closures, and the treated state
     (FGF2-G3 at EC<sub>50</sub>, V14 at &#968;<sub>50</sub>) is a scenario we chose. The
     structure of the result (hours of cover against weeks of need, and a maximum change interval)
@@ -967,10 +976,20 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
     <span class="src">fig10_envelope.py</span></figcaption>
   </figure>
 
-  <p class="col">Repeat dosing is therefore part of the design, not a fallback for a patch that
-  failed to release slowly. The model sets the change interval. It also shows where the leverage
-  is: a thicker reservoir or a slower-draining formulation, rather than retention, is what would
-  lengthen the interval.</p>
+  <div class="col">
+  <p>Repeat dosing is therefore part of the design, not a fallback for a patch that failed to
+  release slowly. The model sets the change interval, and the interval depends on the patch, not
+  on the wound: wound size only changes how long treatment lasts.</p>
+  <p>Why does a daily change just miss? The drug effect averaged over a cycle equals the fraction
+  of time a patch keeps tissue above target. Above 2.3&#160;% the wound stops getting worse. To
+  reach the density we count as closed, the average must exceed <b>33&#160;%</b>, which means
+  7.9&#160;h of cover in every 24&#160;h. One patch gives 7.2&#160;h, so a daily change reaches 90&#160;%
+  of what is needed: the wound improves and then holds just short of closure. A slightly thicker
+  gel (about 600&#8211;650&#160;&#181;m) or a loading near 1&#160;mM would close the gap.</p>
+  <p>FGF2-G3 is not the limit. Even without any retention, the 500&#160;&#181;m gel keeps it above its
+  EC<sub>50</sub> for 2&#8211;3 days, longer than the change interval. Adding alginate-sulfate to hold
+  it for weeks would be wasted when the dressing comes off every day. V14 sets the schedule.</p>
+  </div>
 
   <section class="widget" id="i1" aria-labelledby="i1-title">
   <header class="w-head">
@@ -985,8 +1004,8 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
     <div class="w-controls">
       <label class="ctl"><span class="ctl-top"><span>Total V14 loading C<sub>V,0</sub></span><output id="i1-cv-v">738 &#181;M</output></span>
         <input type="range" id="i1-cv" min="20" max="1500" step="1" value="738"></label>
-      <label class="ctl"><span class="ctl-top"><span>Gel thickness L<sub>gel</sub></span><output id="i1-lg-v">150 &#181;m</output></span>
-        <input type="range" id="i1-lg" min="50" max="1000" step="10" value="150"></label>
+      <label class="ctl"><span class="ctl-top"><span>Gel thickness L<sub>gel</sub></span><output id="i1-lg-v">500 &#181;m</output></span>
+        <input type="range" id="i1-lg" min="50" max="1000" step="10" value="500"></label>
       <label class="ctl"><span class="ctl-top"><span>Retardation factor R<sub>V</sub></span><output id="i1-rv-v">1.0</output></span>
         <input type="range" id="i1-rv" min="0" max="1.4771" step="0.005" value="0"></label>
       <label class="ctl"><span class="ctl-top"><span>Tissue proteolysis k<sub>prot</sub></span><output id="i1-kp-v">3.2&#215;10&#8315;&#8309; s&#8315;&#185;</output></span>
@@ -995,24 +1014,24 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
         <span class="ctl-group-t">Treatment protocol</span>
         <label class="ctl"><span class="ctl-top"><span>Wound radius R<sub>w</sub></span><output id="i1-rw-v">2.0 mm</output></span>
           <input type="range" id="i1-rw" min="1" max="5" step="0.5" value="2"></label>
-        <label class="ctl"><span class="ctl-top"><span>Patch changed every</span><output id="i1-iv-v">6.0 h</output></span>
-          <input type="range" id="i1-iv" min="2" max="24" step="0.5" value="6"></label>
+        <label class="ctl"><span class="ctl-top"><span>Patch changed every</span><output id="i1-iv-v">12.0 h</output></span>
+          <input type="range" id="i1-iv" min="2" max="24" step="0.5" value="12"></label>
       </div>
       <button type="button" class="w-btn" id="i1-reset">Reset to the gel as built</button>
     </div>
     <div class="w-out">
       <div class="tiles tiles-4">
-        <div class="tile"><div class="tv" id="i1-hours">2.59 h</div><div class="tk">hours above the 25&#160;&#181;M target</div></div>
-        <div class="tile"><div class="tv" id="i1-peak">113 &#181;M</div><div class="tk">peak depth-averaged tissue concentration</div></div>
+        <div class="tile"><div class="tv" id="i1-hours">7.17 h</div><div class="tk">hours above the 25&#160;&#181;M target</div></div>
+        <div class="tile"><div class="tv" id="i1-peak">274 &#181;M</div><div class="tk">peak depth-averaged tissue concentration</div></div>
         <div class="tile" id="i1-sol-tile"><div class="tv" id="i1-sol">100 %</div><div class="tk" id="i1-sol-k">of the 738 &#181;M solubility ceiling</div></div>
-        <div class="tile tile-key" id="i1-tc-tile"><div class="tv" id="i1-tc">26 d</div><div class="tk" id="i1-tc-k">to close a 2.0 mm wound with the patch changed every 6.0 h</div></div>
-        <div class="tile tile-key" id="i1-int-tile"><div class="tv" id="i1-int">&#8804; 7.8 h</div><div class="tk" id="i1-int-k">longest change interval that still closes a wound, for every wound size; a daily change never does</div></div>
+        <div class="tile tile-key" id="i1-tc-tile"><div class="tv" id="i1-tc">20 d</div><div class="tk" id="i1-tc-k">to close a 2.0 mm wound with the patch changed every 12.0 h</div></div>
+        <div class="tile tile-key" id="i1-int-tile"><div class="tv" id="i1-int">&#8804; 21.8 h</div><div class="tk" id="i1-int-k">longest change interval that still closes a wound, for every wound size; a daily change never does</div></div>
       </div>
       <div class="w-chart"><canvas id="i1-cv-c" aria-label="Depth-averaged V14 concentration in tissue against time" role="img"></canvas></div>
     </div>
   </div>
   <p class="w-foot"><b>Read this before trusting a slider.</b> A one-parameter-at-a-time sweep can only
-  reach the first-order share of the variance (50&#160;% for delivered dose, Figure&#160;17); every
+  reach the first-order share of the variance (52&#160;% for delivered dose, Figure&#160;17); every
   interaction between parameters is invisible here, so this is a presentation tool and not a sensitivity
   analysis. The longest workable change interval does not depend on wound size: whether a wound closes at
   all is set by whether the time-averaged drug effect keeps cells growing faster than they die, which is
@@ -1125,8 +1144,9 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
     <b>do not support</b> either expectation. <span class="caveat">There are two caveats. First, a
     Sobol ranking reflects the width of the priors as well as the physics, and K<sub>D,P</sub> and
     C<sub>V,0</sub> have the widest ranges. Second, the share of variance is not the same as what
-    we can change: gel thickness L<sub>gel</sub> ranks fourth for delivered dose, close behind
-    &#948;, and is a design variable we control directly.</span>
+    we can change: gel thickness L<sub>gel</sub> ranks fourth for delivered dose and is a design
+    variable we control directly, while the gel material (porosity, mesh size) contributes
+    nothing.</span>
     <span class="src">fig15_sobol.py &#183; sa_run.py</span></figcaption>
   </figure>
 
@@ -1141,10 +1161,10 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
   </figure>
 
   <figure>
-    <div class="figbox"><img src="assets/fig17_slider.svg" alt="Two horizontal stacked bars showing the share of output variance reachable by a one-parameter-at-a-time sweep: 50 percent for delivered dose and 51 percent for closure time, with the remainder in interactions."></div>
+    <div class="figbox"><img src="assets/fig17_slider.svg" alt="Two horizontal stacked bars showing the share of output variance reachable by a one-parameter-at-a-time sweep: 52 percent for delivered dose and 51 percent for closure time, with the remainder in interactions."></div>
     <figcaption><span class="fid">Figure&#160;17.</span> A one-parameter-at-a-time sweep is
     what a slider performs, and it captures only the first-order variance. For delivered dose
-    this is 50&#160;%, and the other 50&#160;% comes from interactions that a slider cannot show.
+    this is 52&#160;%, and the other 48&#160;% comes from interactions that a slider cannot show.
     <span class="caveat">Our design-space explorer (Interactive&#160;1) is therefore a
     presentation tool and not a sensitivity analysis, and it carries this warning inside the
     widget.</span>
@@ -1187,9 +1207,9 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
     <p class="eyebrow">Iteration</p>
     <h2>How running the model changed the model</h2>
   </div></div>
-  <p class="col">Running the code corrected five statements in our written equation reference and
-  did not support two of our predictions. We record them here so that future teams can see how the
-  model was refined.</p>
+  <p class="col">Running the code corrected several statements in our written equation reference
+  and did not support two of our predictions. We record them here so that future teams can see how
+  the model was refined.</p>
 
   <ol class="corr">
     <li><b>The planar closure estimate is a lower bound, not an upper bound.</b> Curvature does
@@ -1211,8 +1231,15 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
     earlier parameter set).</li>
 
     <li><b>Retention is not a lever worth pulling.</b> We wrote it up as something to be
-    maximised. Running the coupled solve showed it adds about 10&#160;% to the window at best,
-    and R<sub>V</sub>&#160;&#8805;&#160;17 gives zero hours above target.</li>
+    maximised. Running the coupled solve showed it at most doubles the window (7.2 to about
+    13&#160;h), still well short of a day, and R<sub>V</sub>&#160;&#8805;&#160;21 gives zero hours
+    above target. For V14 in alginate it would also need new tethering chemistry.</li>
+
+    <li><b>Changing the gel from GelMA to calcium alginate mattered less than its thickness.</b>
+    Alginate binds neither molecule and its 14&#160;nm mesh barely slows them, so the gel material
+    drops out of the sensitivity analysis. The 500&#160;&#181;m thickness is what moved the answer:
+    it raises one patch's cover from 2.6 to 7.2&#160;h and the longest change interval from 7.8 to
+    21.8&#160;h.</li>
 
     <li><b>A sub-threshold pulse causes relapse, not stalling.</b> We had assumed a transient
     crossing of the r<sub>p</sub>&#160;&gt;&#160;d threshold would simply fail to finish. It
@@ -1243,9 +1270,12 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
       Fixes k<sub>prot,V</sub>, the highest-priority unmeasured parameter in the register
       (currently a serum half-life proxy of 6.1&#160;h). One day of work.</div></li>
     <li><span class="st">&#9633;</span><div><b>Saturation solubility of V14 in the casting buffer.</b>
-      Sets C<sub>total,0</sub>; at 270&#160;&#181;M free V14 the gel already needs 37&#160;% of the
-      assumed ceiling.
-      Trivial, cheap, and currently unplanned.</div></li>
+      Sets C<sub>total,0</sub>, and with it how long each patch lasts: a loading near 1&#160;mM
+      would make a daily change work. Trivial, cheap, and currently unplanned.</div></li>
+    <li><span class="st">&#9633;</span><div><b>Swelling and dissolution of the alginate gel in simulated wound fluid.</b>
+      Calcium alginate absorbs exudate and slowly dissolves as sodium replaces calcium. The model
+      assumes a fixed 500&#160;&#181;m reservoir; swelling would dilute it and shorten the change
+      interval. Weighing gels over 24&#160;h is enough.</div></li>
     <li><span class="st">&#9633;</span><div><b>Run the release assay against a RAW&#160;264.7 layer rather than a stirred bath.</b>
       Every planned experiment probes one module in isolation, so a seam error &#8212; a wrong
       interface value, a wrong porosity convention at the flux match &#8212; would pass all of
@@ -1253,7 +1283,7 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
       and&#160;5 at once.</div></li>
     <li><span class="st">&#9633;</span><div><b>The same release assay for FGF2-G3.</b>
       Every FGF gel parameter is otherwise unconstrained, and it tests the predicted
-      2.5&#215; arrival separation directly.</div></li>
+      2.4&#215; arrival separation directly.</div></li>
     <li><span class="st">&#9633;</span><div><b>Scratch assay on fibroblasts &#177; FGF2-G3, &#177; mitomycin C, reporting front width.</b>
       One assay that supplies an otherwise entirely unsupported module and breaks the
       D<sub>n</sub>&#160;/&#160;r<sub>p</sub> degeneracy.</div></li>
@@ -1264,12 +1294,13 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
     <li><span class="st">&#9633;</span><div><b><i>Nos2</i> as one of the two pro-inflammatory qPCR markers.</b>
       It is the only marker that parameterises an equation already in the model.</div></li>
     <li><span class="st">&#9633;</span><div><b>Sample the release assay on a log grid from ~10&#160;s.</b>
-      Release from the 150&#160;&#181;m gel is ~95&#160;% complete in a few minutes; minute-scale
-      sampling would miss most of the kinetics.</div></li>
+      Release from the 500&#160;&#181;m gel is ~95&#160;% complete within 11&#8211;25&#160;minutes,
+      and about a third of the V14 is out in the first minute; minute-scale sampling would miss most
+      of the kinetics.</div></li>
     <li><span class="st">&#9633;</span><div><b>Test a patch-change protocol, not a single patch.</b>
-      The model puts the longest change interval that still closes a wound at about 7.8&#160;h and
-      says a daily dressing change never closes it. A thicker or slower-draining formulation is
-      the lever that would relax this.</div></li>
+      The model puts the longest change interval that still closes a wound at about 21.8&#160;h,
+      so a daily change falls 10&#160;% short. A 600&#8211;650&#160;&#181;m gel or a higher loading is
+      the lever that would close that gap.</div></li>
   </ul>
 
   <p class="col"><b>One limitation.</b> If FGF2-G3 is assayed on fibroblasts and V14 on
@@ -1285,13 +1316,14 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
     <h2>What the models tell us</h2>
   </div></div>
   <div class="col">
-  <p>Across the models, one conclusion appears consistently. With the heparin-free gel as built,
-  the patch delivers its load within minutes and keeps tissue above the V14 target for only a few
-  hours, while closing a wound takes days to weeks. A single patch therefore cannot close a
-  wound, and the patch has to be changed at least every 7.8&#160;h for closure in our model.</p>
-  <p>Retention does not rescue this design. It gains only about 10&#160;% in the window and is
-  limited by solubility, so a thicker or slower-draining formulation is the more promising
-  direction. The V14 arm can be used in scaled form before its affinity is measured, whereas the
+  <p>Across the models, one conclusion appears consistently. With the 500&#160;&#181;m alginate gel
+  as built, the patch delivers its load within minutes and keeps tissue above the V14 target for
+  about 7&#160;hours, while closing a wound takes days to weeks. A single patch therefore cannot
+  close a wound, and the patch has to be changed at least every 21.8&#160;h for closure in our
+  model, which in practice means twice a day. A slightly thicker gel or a higher loading would
+  make a daily change enough.</p>
+  <p>Retention does not rescue this design. It at most doubles the window, and for V14 it would
+  need new chemistry. FGF2-G3 already lasts 2&#8211;3 days without it, so V14 sets the schedule. The V14 arm can be used in scaled form before its affinity is measured, whereas the
   closure model remains a hypothesis built on Tier-4 parameters. The wet-lab experiments listed
   above are the ones that would most improve it.</p>
   </div>
@@ -1334,13 +1366,14 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
   <h3>Browse the source</h3>
   <p style="font-size:.9rem;color:var(--ink-2);max-width:var(--measure)">Expand any file to read
   it here, or use the copy button.</p>
-  <details class="code"><summary><span>params.py</span><span class="meta">163 lines &#183; params.py -- the single source of truth for every parameter used in the </span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+  <details class="code"><summary><span>params.py</span><span class="meta">169 lines &#183; params.py -- the single source of truth for every parameter used in the </span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 params.py -- the single source of truth for every parameter used in the figures.
 
 No value is hard-coded inside a solver; everything enters through this file, so
 changing a number here changes every figure that depends on it.  Each entry
 carries its provenance TIER, following the team constants register
-(constants_register.xlsx, updated 2026-10-09):
+(constants_register.xlsx, updated 2026-10-09; gel changed to 1% Ca-alginate,
+500 um, by the team on 2026-10-09):
 
     T1  measured in house
     T2  mechanistic correlation
@@ -1364,8 +1397,8 @@ K_B          = 1.380649e-23 # J/K                                          D
 ETA_WATER    = 0.00069      # Pa s water at 37 C                           T3
 
 # --- geometry ---------------------------------------------------------------
-L_GEL        = 0.015    # cm   (150 um) as-manufactured 5% GelMA          T1
-L_GEL_ALT    = 0.05     # cm   (500 um) V3-document baseline, comparison  design
+L_GEL        = 0.05     # cm   (500 um) as-manufactured 1% Ca-alginate    T1
+L_GEL_ALT    = 0.015    # cm   (150 um) earlier GelMA build, comparison   design
 L_TIS        = 0.15     # cm   (1.5 mm) dermal depth to the systemic sink T3
 L_TIS_RANGE  = (0.10, 0.20)   # cm, band carried as sensitivity           T3
 DELTA        = 0.05     # cm   (500 um) fibroblast-active / target depth  T4 (sweep 300-1000 um)
@@ -1389,14 +1422,19 @@ T_HALF_V14   = 6.1 * HOUR   # s  serum half-life proxy                     T4
 T_HALF_FGF   = 168 * HOUR   # s  functional half-life at 37 C              T1
 
 # --- hydrogel (Model 1) -----------------------------------------------------
-A_FIBRE_NM   = 0.6      # nm   gelatin chain radius                        T3
-XI_NM        = 10.0     # nm   mesh size (range 5-50 swept)                T4
-EPS_GEL      = 0.618    # --   5% GelMA porosity                           T3
-TAU_GEL      = EPS_GEL ** -0.5   # 1.27, Bruggeman                         T2
+# 1% w/v sodium alginate, ionically cross-linked in 100 mM CaCl2, in HBS
+# (10 mM HEPES, 150 mM NaCl, pH 7.4).  Team recipe.                         T1
+A_FIBRE_NM   = 0.6      # nm   alginate chain radius; not measured for this gel.
+                        #      0.6 -&gt; 2 nm only lowers H(FGF) 0.93 -&gt; 0.88   T4
+XI_NM        = 14.0     # nm   1% Ca-alginate mesh, Grassi et al. 2009,
+                        #      Molecules 14:3003 (14 mechanical, 26 release) T3
+EPS_GEL      = 0.99     # --   1% w/v polymer -&gt; ~0.6% v/v solid           D
+TAU_GEL      = EPS_GEL ** -0.5   # 1.005, Bruggeman                        T2
 K_DEG_GEL    = LN2 / T_HALF_V14  # 1/s  in-gel degradation V14 (3.15e-5)   D
 K_DEG_GEL_F  = LN2 / T_HALF_FGF  # 1/s  in-gel degradation FGF (1.15e-6)   D
-S_MAX        = 0.0      # mol/cm3 heparin/HS site density -- LOCKED: no heparin   L
-R_V          = 1.0      # --   V14 sorption retardation -- LOCKED            L
+S_MAX        = 0.0      # mol/cm3 binding sites -- LOCKED: plain alginate does not
+                        #      bind FGFs (Freeman et al. 2008, SPR)          L
+R_V          = 1.0      # --   V14 sorption -- LOCKED: alginate is hydrophilic L
 
 # --- tissue (Model 2) -------------------------------------------------------
 EPS_TIS      = 0.80     # --   tissue porosity                             T3
@@ -1547,7 +1585,7 @@ def amsden_H(a_solute_nm, xi_nm, a_fibre_nm=0.6):
 
     a_solute_nm : solute hydrodynamic radius  (0.87 nm V14, 2.34 nm FGF2-G3)
     xi_nm       : hydrogel mesh size
-    a_fibre_nm  : gelatin chain radius, ~0.6 nm
+    a_fibre_nm  : polymer chain radius, ~0.6 nm
     &quot;&quot;&quot;
     a = np.asarray(a_solute_nm, dtype=float)
     xi = np.asarray(xi_nm, dtype=float)
@@ -2282,9 +2320,9 @@ PRIORS_A = [
     (&quot;$C_{V,0}$&quot;,        20.0 * UM,  800.0 * UM),    # 40x, design variable
     (r&quot;$\delta$&quot;,        0.03,       0.10),         # register sweep 300-1000 um
     (&quot;$k_{prot,V}$&quot;,     1e-6,       1e-3),          # 3 decades, T4 (register sweep)
-    (&quot;$L_{gel}$&quot;,        100e-4,     500e-4),        # around the 150 um as built
+    (&quot;$L_{gel}$&quot;,        300e-4,     1000e-4),       # around the 500 um as built
     (&quot;$D_{0,V}$&quot;,        2.5e-6,     4.5e-6),        # doc band to Stokes-Einstein
-    (r&quot;$\varepsilon_g$&quot;, 0.55,       0.70),          # T3, around 0.618
+    (r&quot;$\varepsilon_g$&quot;, 0.98,       0.995),         # around 0.99, 1% alginate
     (r&quot;$\xi$&quot;,           5.0,        50.0),          # T3
 ]
 
@@ -2870,7 +2908,7 @@ fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9.2, 3.9))
 
 # ---- (a) spatial convergence ----------------------------------------------
 D = m.D_eff(P.D0_V14, P.A_V14_NM, P.XI_NM, P.EPS_GEL)
-L = P.L_GEL_ALT          # 500 um, the benchmark geometry of verify.py
+L = 500e-4               # 500 um, the benchmark geometry of verify.py
 times = np.array([30., 60., 120., 300., 600., 900.])
 nxs = np.array([100, 200, 400, 800, 1600])
 errs = []
@@ -2933,12 +2971,13 @@ S.save(fig, &quot;fig04_verification&quot;)
 print(&quot;  convergence errors:&quot;, &quot; &quot;.join(f&quot;{e:.2e}&quot; for e in errs))
 print(&quot;  front-speed errors:&quot;, &quot; &quot;.join(f&quot;{abs(n_-a)/a:.2%}&quot; for a, n_ in zip(an, nu)))
 </code></pre></details>
-<details class="code"><summary><span>figures\fig05_tissue_profiles.py</span><span class="meta">64 lines &#183; F5 -- V14 concentration profiles in tissue, from the two-domain solver.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>figures\fig05_tissue_profiles.py</span><span class="meta">65 lines &#183; F5 -- V14 concentration profiles in tissue, from the two-domain solver.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 F5 -- V14 concentration profiles in tissue, from the two-domain solver.
 
 Shows where the drug actually is over time, the penetration depth Lambda, and
 how little of the window sits above the 25 uM therapeutic target.  Run for the
-gel AS BUILT: 150 um, heparin-free (R_V = 1), loaded at the solubility ceiling.
+gel AS BUILT: 500 um 1% Ca-alginate, no retention (R_V = 1), loaded at the
+solubility ceiling.
 &quot;&quot;&quot;
 import sys, os, numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -3010,7 +3049,7 @@ for name, a, D0, col in ((f&quot;V14  ({P.A_V14_NM:g} nm)&quot;, P.A_V14_NM, P.D
                          (f&quot;FGF2-G3  ({P.A_FGF_NM:g} nm)&quot;, P.A_FGF_NM, P.D0_FGF, S.C_FGF)):
     ax.plot(xi, m.D_eff(D0, a, xi, P.EPS_GEL) / D0, color=col, label=name)
 ax.axvline(P.XI_NM, color=S.C_GREY, ls=&quot;:&quot;, lw=1.4)
-ax.text(P.XI_NM + 0.7, 0.30, f&quot;$\\xi$ = {P.XI_NM:.0f} nm\nused throughout\n(MEASURE THIS)&quot;,
+ax.text(P.XI_NM + 0.7, 0.30, f&quot;$\\xi$ = {P.XI_NM:.0f} nm\nused throughout\n(not measured for our gel)&quot;,
         fontsize=8, color=&quot;#666666&quot;)
 ax.set_xlabel(&quot;hydrogel mesh size  $\\xi$  (nm)&quot;)
 ax.set_ylabel(&quot;$D_{eff}/D_0$&quot;)
@@ -3024,14 +3063,14 @@ print(f&quot;  at xi=10 nm: V14 {m.D_eff(P.D0_V14,P.A_V14_NM,10,P.EPS_GEL)/P.D0_
 <details class="code"><summary><span>figures\fig07_retention.py</span><span class="meta">105 lines &#183; F7 -- What the as-built gel supplies, and why adding retention would not</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 F7 -- What the as-built gel supplies, and why adding retention would not rescue it.
 
-The gel is heparin-free, so R_V = 1 is LOCKED (constants register) and the
-retention lever is out of the design space.  This figure shows the
+The gel is plain 1% Ca-alginate: it binds neither active, so R_V = 1 is LOCKED
+(constants register) and the retention lever is out of the design space.  This figure shows the
 counterfactual anyway, because it is the reason the lever was dropped:
 holding the TOTAL loading at the solubility ceiling, raising R_V buys residence
 time and spends driving concentration in exact proportion
-(C_free,0 = C_total,0 / R_V).  With a 150 um gel the reservoir is so small that
-the peak tissue concentration falls below the 25 uM target after only a few-fold
-retention, and coverage collapses to ZERO.
+(C_free,0 = C_total,0 / R_V).  Even with the 500 um gel the peak tissue concentration
+falls below the 25 uM target after a modest retention, and coverage collapses
+to ZERO.
 
 The duration is plotted as a BAND, because it is sensitive to two parameters
 known only as ranges: the depth to the systemic sink (L_tis = 1-2 mm) and the
@@ -3085,7 +3124,7 @@ for k_prot, col in zip(KPS, (S.C_V14_L, S.C_V14, &quot;#0B3C5D&quot;)):
 # the device as built
 c0 = summary[P.K_PROT_V14]
 ax1.plot([1.0], [c0[1][0]], &quot;*&quot;, ms=15, color=S.C_THRESH, zorder=6)
-ax1.annotate(f&quot;the gel as built\n(no heparin, $R_V$ = 1):  {c0[1][0]:.1f} h\n&quot;
+ax1.annotate(f&quot;the gel as built\n(plain alginate, $R_V$ = 1):  {c0[1][0]:.1f} h\n&quot;
              f&quot;(band {c0[2][0]:.1f}–{c0[3][0]:.1f} h)&quot;,
              (1.0, c0[1][0]), textcoords=&quot;offset points&quot;, xytext=(16, 62),
              fontsize=9, weight=&quot;bold&quot;, color=S.C_THRESH,
@@ -3132,9 +3171,9 @@ F8 -- Solubility, not potency, is the binding constraint.
 Eq. (dosing) bounds the FREE loading.  With sorptive retention the TOTAL that
 must actually dissolve in the casting buffer is R_V times larger, because
 C_free,0 = C_total,0 / R_V.  Plotting that against the saturation ceiling
-gives a second, independent bound on retention.  For the as-built 150 um gel
-it is the tighter of the two: the R_V = 1 gel already needs a third of the
-ceiling, so the counterfactual retention lever of F7 is closed off twice.
+gives a second, independent bound on retention.  For the as-built 500 um gel
+the R_V = 1 loading sits well inside the ceiling, but retention multiplies the
+total that must dissolve, so the counterfactual lever of F7 is bounded twice.
 &quot;&quot;&quot;
 import sys, os, numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -3152,7 +3191,7 @@ fig, ax = plt.subplots(figsize=(6.3, 4.0))
 ax.plot(R, C_tot / UM, color=S.C_V14, lw=2.2,
         label=&quot;total V14 that must dissolve  $= R_V \\times C_{free,0}$&quot;)
 ax.axhline(P.C_SOLUBILITY / UM, color=S.C_FGF, lw=2.0)
-ax.text(4.0, P.C_SOLUBILITY / UM * 0.88,
+ax.text(1.08, P.C_SOLUBILITY / UM * 0.88,
         f&quot;saturation ceiling ≈ {P.C_SOLUBILITY/UM:.0f} µM  (1 mg mL$^{{-1}}$)&quot;,
         color=S.C_FGF, fontsize=8.8, weight=&quot;bold&quot;, va=&quot;top&quot;)
 
@@ -3160,21 +3199,21 @@ Rmax = P.C_SOLUBILITY / C_free_req
 ax.fill_between(R, 1, np.minimum(C_tot / UM, P.C_SOLUBILITY / UM),
                 where=(R &lt;= Rmax), color=S.C_GOOD, alpha=0.13, lw=0)
 ax.axvline(Rmax, color=S.C_DERIVED, ls=&quot;--&quot;, lw=1.2)
-ax.text(4.0, 1.4e2, f&quot;formulable only\nbelow $R_V$ = {Rmax:.1f}&quot;,
+ax.text(1.08, 1.9e2, f&quot;formulable only\nbelow $R_V$ = {Rmax:.1f}&quot;,
         fontsize=8.6, color=S.C_DERIVED, weight=&quot;bold&quot;)
 
-for Rv in (1, 2, 3, 10):
+for Rv in (1, 3, 10, 20):
     c = Rv * C_free_req / UM
     ok = c &lt;= P.C_SOLUBILITY / UM
     ax.plot([Rv], [c], &quot;o&quot;, ms=7, color=S.C_V14 if ok else S.C_BAD, zorder=5)
     ax.annotate(f&quot;$R_V$={Rv}\n{c:.0f} µM&quot; + (&quot;&quot; if ok else &quot;\nIMPOSSIBLE&quot;),
-                (Rv, c), textcoords=&quot;offset points&quot;, xytext={1: (8, -30), 2: (8, -36), 3: (8, 8), 10: (-8, -34)}[Rv],
+                (Rv, c), textcoords=&quot;offset points&quot;, xytext={1: (8, -26), 3: (8, -26), 10: (-8, -30), 20: (8, 8)}[Rv],
                 fontsize=8.2, ha=&quot;right&quot; if Rv == 10 else &quot;left&quot;,
                 color=S.C_V14 if ok else S.C_BAD,
                 weight=&quot;normal&quot; if ok else &quot;bold&quot;)
 
 ax.set_xscale(&quot;log&quot;); ax.set_yscale(&quot;log&quot;)
-ax.set_xlim(1, 30); ax.set_ylim(100, 10000)
+ax.set_xlim(1, 30); ax.set_ylim(20, 4000)
 ax.set_xticks([1, 2, 3, 10, 30], [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;10&quot;, &quot;30&quot;])
 ax.set_xlabel(&quot;retardation factor  $R_V$&quot;)
 ax.set_ylabel(&quot;required total loading  (µM)&quot;)
@@ -3183,7 +3222,7 @@ ax.legend(loc=&quot;upper left&quot;, fontsize=8.4)
 S.save(fig, &quot;fig08_solubility&quot;)
 print(f&quot;  free loading required: {C_free_req/UM:.1f} uM &quot;
       f&quot;({C_free_req/UM*P.MW_V14/1000:.0f} ug/mL)&quot;)
-for Rv in (1, 2, 3, 10):
+for Rv in (1, 3, 10, 20):
     print(f&quot;   R_V={Rv:3d} -&gt; total {Rv*C_free_req/UM:6.0f} uM &quot;
           f&quot;({Rv*C_free_req/P.C_SOLUBILITY:.0%} of ceiling)&quot;)
 </code></pre></details>
@@ -3297,7 +3336,7 @@ np.save(os.path.join(os.path.dirname(__file__), &quot;_minpulse.npy&quot;),
 for r, t in zip(radii_mm, mins):
     print(f&quot;  R_w = {r:.0f} mm -&gt; minimum pulse {t:.1f} d&quot;)
 </code></pre></details>
-<details class="code"><summary><span>figures\fig10_envelope.py</span><span class="meta">133 lines &#183; F10 -- The device specification: how often the patch must be changed.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
+<details class="code"><summary><span>figures\fig10_envelope.py</span><span class="meta">138 lines &#183; F10 -- The device specification: how often the patch must be changed.</span></summary><div style="padding:9px 15px 0;text-align:right"><button class="copybtn" type="button">copy</button></div><pre><code>&quot;&quot;&quot;
 F10 -- The device specification: how often the patch must be changed.
 
 Joins the two halves of the answer.
@@ -3305,8 +3344,8 @@ Joins the two halves of the answer.
 (a) The rising line is what Model 6 demands: the CONTINUOUS therapeutic pulse
     needed for permanent closure at a given wound radius (F9).  The horizontal
     band is what Models 1-2 supply: hours above the 25 uM target from one
-    as-built patch (150 um, R_V = 1; F7).  The gap is two orders of magnitude,
-    so no wound in the 1-5 mm range closes on one patch.
+    as-built patch (500 um alginate, R_V = 1; F7).  The gap is about two orders
+    of magnitude, so no wound in the 1-5 mm range closes on one patch.
 
 (b) Repeat dosing, run through the register&#x27;s effect compartment
     (k_e0 = 1/18 h).  A patch applied every `interval` hours drives the effect
@@ -3394,7 +3433,7 @@ ax.set_title(&quot;(a)  one patch: hours; closure: weeks&quot;, loc=&quot;left&q
 ax.legend(loc=&quot;center right&quot;, fontsize=7.8)
 
 # ---- (b) closure time vs change interval -----------------------------------
-intervals = np.array([COV_CEN * 24, 3, 4, 5, 6, 7, 8, 10, 12, 24])
+intervals = np.array([COV_CEN * 24, 8, 10, 12, 15, 18, 20, 22, 24])
 summary = {}
 for R_mm, col in ((1.0, S.C_V14_L), (2.0, S.C_V14), (3.0, &quot;#0B3C5D&quot;)):
     tc = np.array([closure_time(h, R_mm / 10) for h in intervals])
@@ -3406,22 +3445,27 @@ for R_mm, col in ((1.0, S.C_V14_L), (2.0, S.C_V14), (3.0, &quot;#0B3C5D&quot;)):
     ax2.plot(intervals[~fin], np.full((~fin).sum(), 118), &quot;x&quot;, color=col, ms=7)
     ax2.axvline(hmax, color=col, ls=&quot;:&quot;, lw=1.0)
 
+daily_closes = all(np.isfinite(closure_time(P.REAPPLY_D * 24, R / 10))
+                   for R in (1.0, 2.0, 3.0))
 ax2.axvline(P.REAPPLY_D * 24, color=S.C_BAD, lw=1.4)
-ax2.text(P.REAPPLY_D * 24 * 0.97, 60, &quot;daily dressing\nchange:\nnever closes&quot;,
-         ha=&quot;right&quot;, fontsize=8.4, color=S.C_BAD, weight=&quot;bold&quot;)
+ax2.text(P.REAPPLY_D * 24 * 0.87, 104,
+         &quot;daily dressing\nchange:\n&quot; + (&quot;closes&quot; if daily_closes else &quot;never closes&quot;),
+         ha=&quot;right&quot;, va=&quot;top&quot;, fontsize=8.4, color=S.C_BAD, weight=&quot;bold&quot;)
 hm = summary[2.0][1]
-ax2.text(hm * 0.97, 70, f&quot;longest interval\nthat closes:\n{hm:.1f} h&quot;, ha=&quot;right&quot;,
+ax2.text(hm * 0.97, 58, f&quot;longest interval\nthat closes:\n{hm:.1f} h&quot;, ha=&quot;right&quot;,
          fontsize=8.4, color=S.C_DERIVED, weight=&quot;bold&quot;)
-ax2.text(9.0, 104, &quot;× = never closes\n(within 120 d)&quot;, fontsize=7.8, color=&quot;#777777&quot;)
+ax2.text(0.02, 0.97, &quot;× = never closes (within 120 d)&quot;, transform=ax2.transAxes,
+         va=&quot;top&quot;, fontsize=7.8, color=&quot;#777777&quot;)
 ax2.set_xscale(&quot;log&quot;)
-ax2.set_xticks([3, 4, 6, 8, 12, 24], [&quot;3&quot;, &quot;4&quot;, &quot;6&quot;, &quot;8&quot;, &quot;12&quot;, &quot;24&quot;])
-ax2.set_xlim(2.3, 27)
+ax2.set_xticks([6, 8, 12, 18, 24], [&quot;6&quot;, &quot;8&quot;, &quot;12&quot;, &quot;18&quot;, &quot;24&quot;])
+ax2.xaxis.set_minor_formatter(plt.NullFormatter())
+ax2.set_xlim(5.5, 27)
 ax2.set_ylim(0, 125)
 ax2.set_xlabel(&quot;patch change interval  (h)&quot;)
 ax2.set_ylabel(&quot;closure time  $t_c$  (days)&quot;)
 ax2.set_title(&quot;(b)  the protocol the model asks for&quot;, loc=&quot;left&quot;, fontsize=10)
-ax2.legend(loc=&quot;upper left&quot;, fontsize=8)
-S.tier4_note(ax2, &quot;every closure rate here is Tier-4&quot;, (0.98, 0.02))
+ax2.legend(loc=&quot;upper left&quot;, bbox_to_anchor=(0.0, 0.9), fontsize=8)
+S.tier4_note(ax2, &quot;every closure rate here is Tier-4&quot;, (0.70, 0.02))
 S.save(fig, &quot;fig10_envelope&quot;)
 
 for r, p in zip(radii, pulses):
@@ -3897,8 +3941,8 @@ var Sim = (function () {
   var UM = 1e-9, DAY = 86400, HOUR = 3600, LN2 = Math.LN2;
 
   var P = {
-    D0_V14: 4.5e-6, A_V14: 0.73, A_FIBRE: 0.6, XI: 10, EPS_GEL: 0.618,
-    EPS_TIS: 0.8, D_TIS: 1.2e-6, L_GEL: 0.015, L_TIS: 0.15, K_P: 1,
+    D0_V14: 4.5e-6, A_V14: 0.73, A_FIBRE: 0.6, XI: 14, EPS_GEL: 0.99,
+    EPS_TIS: 0.8, D_TIS: 1.2e-6, L_GEL: 0.05, L_TIS: 0.15, K_P: 1,
     T_HALF_V14: 6.1 * HOUR, C_SOL_UM: 738, TARGET_UM: 25, DELTA: 0.05,
     // closure (Model 6)
     D_N: 1e-9, R0: 0.8 / DAY, D0: 0.24 / DAY, DD: 0.3 / DAY, E_MAX: 2, EC50: 0.5,
@@ -4409,7 +4453,7 @@ var Plot = (function () {
   var cv = document.getElementById("i1-cv-c");
   if (!cv) return;
   var C = Plot.COL, S = Sim, last = null;
-  var DEF = { cv: 738, lg: 150, rv: 0, kp: -4.5, rw: 2, iv: 6 };
+  var DEF = { cv: 738, lg: 500, rv: 0, kp: -4.5, rw: 2, iv: 12 };
 
   function val(id) { return parseFloat(document.getElementById(id).value); }
   function set(id, v) { document.getElementById(id).value = v; }
@@ -4495,7 +4539,7 @@ var Plot = (function () {
       cancelSearch = null;
       if (r !== last) return;
       maxH = h; showMax(h); protocol();
-    }, 24, 200);          // 200-point grid: same interval as 300 (7.78 h), half the cost
+    }, 24, 200);          // 200-point grid: same interval as 300, half the cost
   }, 220);
 
   function showMax(h) {

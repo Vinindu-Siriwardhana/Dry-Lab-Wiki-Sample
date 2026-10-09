@@ -56,9 +56,9 @@ PRIORS_A = [
     ("$C_{V,0}$",        20.0 * UM,  800.0 * UM),    # 40x, design variable
     (r"$\delta$",        0.03,       0.10),         # register sweep 300-1000 um
     ("$k_{prot,V}$",     1e-6,       1e-3),          # 3 decades, T4 (register sweep)
-    ("$L_{gel}$",        100e-4,     500e-4),        # around the 150 um as built
+    ("$L_{gel}$",        300e-4,     1000e-4),       # around the 500 um as built
     ("$D_{0,V}$",        2.5e-6,     4.5e-6),        # doc band to Stokes-Einstein
-    (r"$\varepsilon_g$", 0.55,       0.70),          # T3, around 0.618
+    (r"$\varepsilon_g$", 0.98,       0.995),         # around 0.99, 1% alginate
     (r"$\xi$",           5.0,        50.0),          # T3
 ]
 

@@ -4,7 +4,7 @@
   var cv = document.getElementById("i1-cv-c");
   if (!cv) return;
   var C = Plot.COL, S = Sim, last = null;
-  var DEF = { cv: 738, lg: 150, rv: 0, kp: -4.5, rw: 2, iv: 6 };
+  var DEF = { cv: 738, lg: 500, rv: 0, kp: -4.5, rw: 2, iv: 12 };
 
   function val(id) { return parseFloat(document.getElementById(id).value); }
   function set(id, v) { document.getElementById(id).value = v; }
@@ -90,7 +90,7 @@
       cancelSearch = null;
       if (r !== last) return;
       maxH = h; showMax(h); protocol();
-    }, 24, 200);          // 200-point grid: same interval as 300 (7.78 h), half the cost
+    }, 24, 200);          // 200-point grid: same interval as 300, half the cost
   }, 220);
 
   function showMax(h) {

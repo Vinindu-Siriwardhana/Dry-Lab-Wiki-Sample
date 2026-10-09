@@ -11,7 +11,7 @@ for name, a, D0, col in ((f"V14  ({P.A_V14_NM:g} nm)", P.A_V14_NM, P.D0_V14, S.C
                          (f"FGF2-G3  ({P.A_FGF_NM:g} nm)", P.A_FGF_NM, P.D0_FGF, S.C_FGF)):
     ax.plot(xi, m.D_eff(D0, a, xi, P.EPS_GEL) / D0, color=col, label=name)
 ax.axvline(P.XI_NM, color=S.C_GREY, ls=":", lw=1.4)
-ax.text(P.XI_NM + 0.7, 0.30, f"$\\xi$ = {P.XI_NM:.0f} nm\nused throughout\n(MEASURE THIS)",
+ax.text(P.XI_NM + 0.7, 0.30, f"$\\xi$ = {P.XI_NM:.0f} nm\nused throughout\n(not measured for our gel)",
         fontsize=8, color="#666666")
 ax.set_xlabel("hydrogel mesh size  $\\xi$  (nm)")
 ax.set_ylabel("$D_{eff}/D_0$")

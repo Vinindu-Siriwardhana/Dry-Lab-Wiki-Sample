@@ -80,16 +80,21 @@ These are in the code as comments too, but they are worth saying once here.
 ## Parameters
 
 `params.py` follows the team constants register (`constants_register.xlsx`,
-updated 2026-10-09): 150 um heparin-free GelMA (R_V = 1, locked), 1.5 mm dermis,
+updated 2026-10-09), with the gel changed to the team's actual patch: 500 um of
+1% w/v calcium alginate (100 mM CaCl2, HEPES-buffered saline), porosity 0.99,
+mesh 14 nm (Grassi et al. 2009), binding neither active (R_V = R_F = 1, locked;
+FGFs do not bind unmodified alginate, Freeman et al. 2008), 1.5 mm dermis,
 Stokes-Einstein diffusivities, V14 half-life 6.1 h, NO half-life 0.09-2 s and the
 recalibrated closure rates (d0 = 0.24/d, delta_d = 0.3/d). `verify.py` is
 unchanged and still benchmarks against the 500 um geometry of the V3 equation
 reference, so its expected values do not move.
 
-Headline outputs with these constants: 95 % release of V14 in 1.3 min (FGF2-G3
-3.1 min); 2.6 h above 25 uM per patch (band 1.2-4.5 h); minimum continuous
+Headline outputs with these constants: 95 % release of V14 in 10.8 min (FGF2-G3
+25.4 min); 7.2 h above 25 uM per patch (band 3.5-11.9 h); minimum continuous
 therapy for closure 6.5 / 13.9 / 20.8 / 34.4 d at R_w = 1 / 2 / 3 / 5 mm; longest
-patch-change interval that still closes a wound ~7.8 h.
+patch-change interval that still closes a wound 21.8 h for every wound size (a
+daily change is 10 % short; ~600-650 um or ~1 mM loading would reach it).
+FGF2-G3 at R_F = 1 stays above EC50 for 2.0-2.7 d.
 
 Not recomputed for the register update: the radial/Cartesian closure ratios and
 the Jensen-gap range quoted on the wiki. The Sobol analysis still uses analytic

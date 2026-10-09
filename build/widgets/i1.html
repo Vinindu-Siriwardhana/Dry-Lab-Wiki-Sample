@@ -11,8 +11,8 @@
     <div class="w-controls">
       <label class="ctl"><span class="ctl-top"><span>Total V14 loading C<sub>V,0</sub></span><output id="i1-cv-v">738 &#181;M</output></span>
         <input type="range" id="i1-cv" min="20" max="1500" step="1" value="738"></label>
-      <label class="ctl"><span class="ctl-top"><span>Gel thickness L<sub>gel</sub></span><output id="i1-lg-v">150 &#181;m</output></span>
-        <input type="range" id="i1-lg" min="50" max="1000" step="10" value="150"></label>
+      <label class="ctl"><span class="ctl-top"><span>Gel thickness L<sub>gel</sub></span><output id="i1-lg-v">500 &#181;m</output></span>
+        <input type="range" id="i1-lg" min="50" max="1000" step="10" value="500"></label>
       <label class="ctl"><span class="ctl-top"><span>Retardation factor R<sub>V</sub></span><output id="i1-rv-v">1.0</output></span>
         <input type="range" id="i1-rv" min="0" max="1.4771" step="0.005" value="0"></label>
       <label class="ctl"><span class="ctl-top"><span>Tissue proteolysis k<sub>prot</sub></span><output id="i1-kp-v">3.2&#215;10&#8315;&#8309; s&#8315;&#185;</output></span>
@@ -21,24 +21,24 @@
         <span class="ctl-group-t">Treatment protocol</span>
         <label class="ctl"><span class="ctl-top"><span>Wound radius R<sub>w</sub></span><output id="i1-rw-v">2.0 mm</output></span>
           <input type="range" id="i1-rw" min="1" max="5" step="0.5" value="2"></label>
-        <label class="ctl"><span class="ctl-top"><span>Patch changed every</span><output id="i1-iv-v">6.0 h</output></span>
-          <input type="range" id="i1-iv" min="2" max="24" step="0.5" value="6"></label>
+        <label class="ctl"><span class="ctl-top"><span>Patch changed every</span><output id="i1-iv-v">12.0 h</output></span>
+          <input type="range" id="i1-iv" min="2" max="24" step="0.5" value="12"></label>
       </div>
       <button type="button" class="w-btn" id="i1-reset">Reset to the gel as built</button>
     </div>
     <div class="w-out">
       <div class="tiles tiles-4">
-        <div class="tile"><div class="tv" id="i1-hours">2.59 h</div><div class="tk">hours above the 25&#160;&#181;M target</div></div>
-        <div class="tile"><div class="tv" id="i1-peak">113 &#181;M</div><div class="tk">peak depth-averaged tissue concentration</div></div>
+        <div class="tile"><div class="tv" id="i1-hours">7.17 h</div><div class="tk">hours above the 25&#160;&#181;M target</div></div>
+        <div class="tile"><div class="tv" id="i1-peak">274 &#181;M</div><div class="tk">peak depth-averaged tissue concentration</div></div>
         <div class="tile" id="i1-sol-tile"><div class="tv" id="i1-sol">100 %</div><div class="tk" id="i1-sol-k">of the 738 &#181;M solubility ceiling</div></div>
-        <div class="tile tile-key" id="i1-tc-tile"><div class="tv" id="i1-tc">26 d</div><div class="tk" id="i1-tc-k">to close a 2.0 mm wound with the patch changed every 6.0 h</div></div>
-        <div class="tile tile-key" id="i1-int-tile"><div class="tv" id="i1-int">&#8804; 7.8 h</div><div class="tk" id="i1-int-k">longest change interval that still closes a wound, for every wound size; a daily change never does</div></div>
+        <div class="tile tile-key" id="i1-tc-tile"><div class="tv" id="i1-tc">20 d</div><div class="tk" id="i1-tc-k">to close a 2.0 mm wound with the patch changed every 12.0 h</div></div>
+        <div class="tile tile-key" id="i1-int-tile"><div class="tv" id="i1-int">&#8804; 21.8 h</div><div class="tk" id="i1-int-k">longest change interval that still closes a wound, for every wound size; a daily change never does</div></div>
       </div>
       <div class="w-chart"><canvas id="i1-cv-c" aria-label="Depth-averaged V14 concentration in tissue against time" role="img"></canvas></div>
     </div>
   </div>
   <p class="w-foot"><b>Read this before trusting a slider.</b> A one-parameter-at-a-time sweep can only
-  reach the first-order share of the variance (50&#160;% for delivered dose, Figure&#160;17); every
+  reach the first-order share of the variance (52&#160;% for delivered dose, Figure&#160;17); every
   interaction between parameters is invisible here, so this is a presentation tool and not a sensitivity
   analysis. The longest workable change interval does not depend on wound size: whether a wound closes at
   all is set by whether the time-averaged drug effect keeps cells growing faster than they die, which is

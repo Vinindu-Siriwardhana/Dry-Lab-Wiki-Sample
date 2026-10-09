@@ -17,7 +17,7 @@ fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9.2, 3.9))
 
 # ---- (a) spatial convergence ----------------------------------------------
 D = m.D_eff(P.D0_V14, P.A_V14_NM, P.XI_NM, P.EPS_GEL)
-L = P.L_GEL_ALT          # 500 um, the benchmark geometry of verify.py
+L = 500e-4               # 500 um, the benchmark geometry of verify.py
 times = np.array([30., 60., 120., 300., 600., 900.])
 nxs = np.array([100, 200, 400, 800, 1600])
 errs = []
