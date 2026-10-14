@@ -136,18 +136,14 @@
   is <em>gated</em> by the two sequence-level modules &#8212; a peptide cannot average its way past
   a structural disqualification:</p>
 
-  <div class="eq">S = ( s_A &#183; s_B &#183; s_C )^(1/3)
-
-verdict = suitable   if  n_Cys &#8804; 1  and  s_C &#8805; 1/2
-          unsuitable otherwise</div>
+<div class="eqwrap"><div class="eqlabel">Composite score and gated verdict</div><div class="eq">S=\Bigl(\textstyle\prod_{i\in\{A,B,C\}} s_i\Bigr)^{1/3},\qquad \text{verdict}=\begin{cases}\text{suitable} & n_{\mathrm{Cys}}\le 1 \ \text{ and }\ s_C\ge\tfrac12\\[2pt]\text{unsuitable} & \text{otherwise}\end{cases}</div></div>
   </div>
 
   <h3 class="col">Module A &#183; binding suitability</h3>
   <div class="col">
   <p>The payload competes with LPS for MD2. Using the competitive-binding expression that Model&#160;3
   develops in full, the fraction of MD2 held by the inhibitor and the resulting blockade fraction are</p>
-  <div class="eq">&#966;_inhib = ([P]/K_D,P) / (1 + [L]/K_D,L + [P]/K_D,P)
-&#967;_block = &#966;_inhib / (&#966;_inhib + &#966;_LPS)</div>
+<div class="eqwrap"><div class="eqlabel">Module A &#183; competitive occupancy and the binding sub-score</div><div class="eq">\varphi_{\mathrm{inhib}}=\frac{[P]/K_{\mathrm{D},P}}{1+\dfrac{[L]}{K_{\mathrm{D},L}}+\dfrac{[P]}{K_{\mathrm{D},P}}},\qquad\chi_{\mathrm{block}}=\frac{\varphi_{\mathrm{inhib}}}{\varphi_{\mathrm{inhib}}+\varphi_{\mathrm{LPS}}},\qquad s_A=\min\!\left(1,\ \frac{C^{\mathrm{bench}}}{C_{50}^{\mathrm{cand}}}\right)</div></div>
   <p>The sub-score compares the candidate's half-maximal inhibitory concentration in a cell-based
   LPS-binding assay against a literature benchmark,
   s<sub>A</sub>&#160;=&#160;min(1,&#160;C<sup>bench</sup>/C<sub>50</sub><sup>cand</sup>) with
@@ -186,6 +182,8 @@ verdict = suitable   if  n_Cys &#8804; 1  and  s_C &#8805; 1/2
   s<sub>B,Trp</sub>&#160;=&#160;exp(&#8722;0.5&#160;n<sub>Trp</sub>), and
   s<sub>B</sub>&#160;=&#160;s<sub>B,Cys</sub>&#160;&#183;&#160;s<sub>B,Trp</sub>.</p>
 
+<div class="eqwrap"><div class="eqlabel">Module B &#183; structural burden</div><div class="eq">b_{\mathrm{Cys}}=\frac{n_{\mathrm{Cys}}}{n_{\mathrm{Cys}}+1},\quad s_{B,\mathrm{Cys}}=1-b_{\mathrm{Cys}}=\frac{1}{n_{\mathrm{Cys}}+1},\quad s_{B,\mathrm{Trp}}=e^{-0.5\,n_{\mathrm{Trp}}},\quad s_B=s_{B,\mathrm{Cys}}\cdot s_{B,\mathrm{Trp}}</div></div>
+
   <p>The gate is <b>n<sub>Cys</sub>&#160;&#8804;&#160;1</b>, and it is justified structurally rather
   than numerically: with fewer than two cysteines no intramolecular disulfide pair can form, so the
   peptide needs no oxidative-folding step and cannot suffer disulfide-pairing heterogeneity. The
@@ -199,8 +197,7 @@ verdict = suitable   if  n_Cys &#8804; 1  and  s_C &#8805; 1/2
   <p>Expected serum half-life is estimated from the sequence with the Cavaco regression, fit on 129
   unmodified peptides with experimentally determined half-lives (validation
   R&#178;&#160;&#8776;&#160;0.76; Cavaco <i>et al.</i>, 2021):</p>
-  <div class="eq">ln t_1/2,serum = 2.226 + 0.053 &#183; nNP%  &#8722; 1.515 &#183; W[0,1]
-                      + 1.290 &#183; Y[0,1] &#8722; 1.052 &#183; pI[0,1]</div>
+<div class="eqwrap"><div class="eqlabel">Module C &#183; the Cavaco half-life regression (t in minutes)</div><div class="eq">\ln t_{1/2}^{\mathrm{serum}}=2.226+0.053\,n_{\mathrm{NP}}\%-1.515\,W_{[0,1]}+1.290\,Y_{[0,1]}-1.052\,\mathrm{pI}_{[0,1]}</div></div>
   <p>where nNP% is the percentage of nonpolar residues (A, V, L, I, M, F, W, P, G),
   W<sub>[0,1]</sub> flags at least one Trp, Y<sub>[0,1]</sub> flags two or more Tyr, and
   pI<sub>[0,1]</sub> flags an isoelectric point &#8805;&#160;10. Serum is the conservative standard
@@ -210,7 +207,7 @@ verdict = suitable   if  n_Cys &#8804; 1  and  s_C &#8805; 1/2
   <p>The sub-score then races degradation against release. Model&#160;2 gives the release half-time
   of a slab of thickness L as t<sub>1/2,rel</sub>&#160;&#8776;&#160;0.196&#160;L&#178;/D<sub>eff</sub>,
   and a payload only works if it survives longer than the patch takes to let it go:</p>
-  <div class="eq">s_C = t_deg / ( t_deg + t_1/2,rel ) ,   gate:  s_C &#8805; 1/2  (i.e. t_deg &#8819; t_1/2,rel)</div>
+<div class="eqwrap"><div class="eqlabel">Module C &#183; the stability&#8211;release race</div><div class="eq">s_C=\frac{t_{1/2}^{\deg}}{t_{1/2}^{\deg}+t_{1/2,\mathrm{rel}}},\qquad\text{gate: } s_C\ge\tfrac12\iff t_{1/2}^{\deg}\gtrsim t_{1/2,\mathrm{rel}}</div></div>
   <p>For the patch as built &#8212; 500&#160;&#181;m of 1&#160;% calcium alginate,
   D<sub>eff</sub>&#160;=&#160;4.37&#215;10<sup>&#8722;6</sup>&#160;cm&#178;s<sup>&#8722;1</sup> for
   V14 &#8212; this gives <b>t<sub>1/2,rel</sub>&#160;=&#160;1.9&#160;minutes</b>, consistent with
@@ -388,9 +385,7 @@ verdict = suitable   if  n_Cys &#8804; 1  and  s_C &#8805; 1/2
     For uniform porosity &#949;, it <b>cancels and does not appear inside the PDE</b>. Our earlier
     version applied it twice, once in the diffusivity and once in the concentration basis, which
     under-predicts spreading.</p>
-    <div class="eq">D_eff,i = D_0,i &#183; H(a_i, &#958;) / &#964;
-&#160;&#160;&#160;&#160;H = exp[ &#8722;&#960; ( (a_i + a_f) / (&#958; + 2a_f) )&#178; ]
-&#160;&#160;&#160;&#160;&#964; = &#949;^(&#8722;1/2)   (Bruggeman closure, replaced by a fitted &#964; at the first opportunity)</div>
+<div class="eqwrap"><div class="eqlabel">Effective diffusivity &#183; Amsden obstruction scaling, Bruggeman tortuosity</div><div class="eq">D_{\mathrm{eff},i}=D_{0,i}\,\frac{H(a_i,\xi)}{\tau},\qquad H(a_i,\xi)=\exp\!\left[-\pi\left(\frac{a_i+a_f}{\xi+2a_f}\right)^{\!2}\right],\qquad\tau=\varepsilon^{-1/2}</div></div>
     <p>Porosity enters in only two places: the flux matching at the interface, and the conversion
     of loaded mass to concentration. At &#958;&#160;=&#160;14&#160;nm, the mesh size measured for
     1&#160;% calcium alginate (Grassi <i>et al.</i>, 2009), this gives
@@ -401,19 +396,40 @@ verdict = suitable   if  n_Cys &#8804; 1  and  s_C &#8805; 1/2
     moderate for FGF2-G3, and across the whole 5&#8211;50&#160;nm mesh range the effect on release is
     small. The mesh size is measured on 1&#160;% calcium alginate (14&#160;nm mechanically, 26&#160;nm
     from release), not yet on our own gel.</p>
-    <div class="eq">gel:     &#8706;C&#7495;/&#8706;t = D_eff&#7495; &#8706;&#178;C&#7495;/&#8706;x&#178; &#8722; k_deg&#7495; C&#7495;        0 &lt; x &lt; L_gel
-tissue:  &#8706;C&#7511;/&#8706;t = D_eff&#7511; &#8706;&#178;C&#7511;/&#8706;x&#178; &#8722; k_prot C&#7511;      &#8722;L_tis &lt; x &lt; 0
-
-&#8706;C&#7495;/&#8706;x|_Lgel = 0                    impermeable backing
-C&#7495;(0,t) = K_p C&#7511;(0,t)              partition at the interface
-&#949;&#7495; D&#7495; &#8706;C&#7495;/&#8706;x|_0&#8314; = &#949;&#7511; D&#7511; &#8706;C&#7511;/&#8706;x|_0&#8315;    flux matching, per total area
-C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base</div>
+<div class="eqwrap"><div class="eqlabel">Model 1 &#183; release from the gel</div><div class="eq">\frac{\partial C^{\mathrm g}_i}{\partial t}=D^{\mathrm g}_{\mathrm{eff},i}\frac{\partial^2 C^{\mathrm g}_i}{\partial x^2}-k^{\mathrm g}_{\deg,i}C^{\mathrm g}_i,\qquad 0<x<L_{\mathrm{gel}},\qquad i\in\{V,F\}</div></div>
+<div class="eqwrap"><div class="eqlabel">Model 2 &#183; tissue transport, &#8722;L<sub>tis</sub> &lt; x &lt; 0</div><div class="eq">\begin{aligned}\frac{\partial C^{\mathrm t}_V}{\partial t}&=D^{\mathrm t}_{\mathrm{eff},V}\frac{\partial^2 C^{\mathrm t}_V}{\partial x^2}-k_{\mathrm{prot},V}\,C^{\mathrm t}_V\\[4pt]\frac{\partial C^{\mathrm t}_F}{\partial t}&=D^{\mathrm t}_{\mathrm{eff},F}\frac{\partial^2 C^{\mathrm t}_F}{\partial x^2}-\bigl(k_{\deg,F}+k_{\mathrm{prot},F}\bigr)C^{\mathrm t}_F-\frac{V_{\max}C^{\mathrm t}_F}{K_M+C^{\mathrm t}_F}\,\rho_{\mathrm{fib}}\end{aligned}</div></div>
+<div class="eqwrap"><div class="eqlabel">Initial and boundary conditions</div><div class="eq">\begin{aligned}C^{\mathrm g}_i(x,0)&=C_{i,0}=\frac{M_{i,\mathrm{loaded}}}{\varepsilon_{\mathrm g}V_{\mathrm{gel}}},\qquad C^{\mathrm t}_i(x,0)=0&&\text{initial condition}\\[3pt]\left.\frac{\partial C^{\mathrm g}_i}{\partial x}\right|_{L_{\mathrm{gel}}}&=0&&\text{impermeable backing}\\[3pt]C^{\mathrm g}_i(0,t)&=K_{p,i}\,C^{\mathrm t}_i(0,t)&&\text{partition at the interface}\\[3pt]\varepsilon_{\mathrm g}D^{\mathrm g}_{\mathrm{eff},i}\left.\frac{\partial C^{\mathrm g}_i}{\partial x}\right|_{0^+}&=\varepsilon_{\mathrm t}D^{\mathrm t}_{\mathrm{eff},i}\left.\frac{\partial C^{\mathrm t}_i}{\partial x}\right|_{0^-}&&\text{flux matching, per total area}\\[3pt]C^{\mathrm t}_i(-L_{\mathrm{tis}},t)&=0&&\text{systemic sink at the dermal base}\end{aligned}</div></div>
     <p>These four spatial conditions close the two coupled second-order domains, which we solve
     together as one system. Clearance to the circulation is imposed only at the deep boundary, so
     neither tissue equation carries a distributed clearance term: the two would describe the same
     physics. Our earlier version imposed both, which suppressed the tissue concentration twice.
     The only volumetric losses in the tissue are proteolysis, plus thermal denaturation and
     receptor uptake for FGF2-G3.</p>
+
+    <p>Release is reported as the cumulative fraction leaving the gel face, obtained by integrating
+    the interfacial flux:</p>
+<div class="eqwrap"><div class="eqlabel">Interfacial flux, released mass, released fraction</div><div class="eq">J_i(t)=+\varepsilon_{\mathrm g}D^{\mathrm g}_{\mathrm{eff},i}\left.\frac{\partial C^{\mathrm g}_i}{\partial x}\right|_{0^+},\qquad M_i(t)=A\!\int_0^t\! J_i\,\mathrm dt^{\prime},\qquad f_i(t)=\frac{M_i(t)}{A\,\varepsilon_{\mathrm g}L_{\mathrm{gel}}C_{i,0}}</div></div>
+
+    <p>For the special case of a perfect sink with first-order loss the problem has a closed-form
+    solution &#8212; the Crank series. This is what the solver is verified against, and it is why
+    the release curves carry no numerical error:</p>
+<div class="eqwrap"><div class="eqlabel">Crank series &#183; the closed-form benchmark</div><div class="eq">C(x,t)=C_0e^{-kt}\sum_{m=0}^{\infty}\frac{4}{(2m+1)\pi}\sin\!\left[\frac{(2m+1)\pi x}{2L}\right]\exp\!\left[-\frac{D(2m+1)^2\pi^2t}{4L^2}\right]</div></div>
+<div class="eqwrap"><div class="eqlabel">Cumulative release, its early-time limit, and the late-time constant</div><div class="eq">\frac{M_t}{M_\infty}=1-\sum_{m=0}^{\infty}\frac{8}{(2m+1)^2\pi^2}\exp\!\left[-\frac{D(2m+1)^2\pi^2t}{4L^2}\right]\;\xrightarrow[\ \text{early}\ ]{}\;2\sqrt{\frac{Dt}{\pi L^2}},\qquad\tau_{\mathrm{late}}=\frac{4L^2}{\pi^2 D}</div></div>
+
+    <p>The early-time &#8730;t limit is why the release assay must be sampled logarithmically: the
+    steepest part of the curve is over before a minute-scale grid takes its second point. Two
+    dimensionless groups then say whether either loss term matters on the relevant length scale
+    &#8212; the Damk&#246;hler number for degradation inside the gel, and the penetration depth in
+    tissue:</p>
+<div class="eqwrap"><div class="eqlabel">Damk&#246;hler number and tissue penetration depth</div><div class="eq">\mathrm{Da}_i=\frac{k^{\mathrm g}_{\deg,i}L_{\mathrm{gel}}^2}{D^{\mathrm g}_{\mathrm{eff},i}},\qquad\Lambda_i=\sqrt{\frac{D^{\mathrm t}_{\mathrm{eff},i}}{k_{\mathrm{prot},i}}}</div></div>
+
+    <p>&#923; is what rules out a zero-flux deep boundary: it is 1.1&#160;mm at
+    k&#160;=&#160;10<sup>&#8722;4</sup>&#160;s<sup>&#8722;1</sup> and 11&#160;mm at
+    10<sup>&#8722;6</sup>, against a dermis of 1&#8211;2&#160;mm, so the far field is never far
+    enough. Finally, two quantities leave this section and become the inputs to the rest of the
+    chain &#8212; the interfacial V14 concentration drives Model&#160;3, and the FGF2-G3
+    concentration averaged over the active band &#948; drives Model&#160;6:</p>
+<div class="eqwrap"><div class="eqlabel">The handoff &#183; where the two arms leave the transport model</div><div class="eq">C^{\mathrm t}_V(0,t)\;\longrightarrow\;\text{Model 3},\qquad\bar C_F(t)=\frac1\delta\int_{-\delta}^{0}C^{\mathrm t}_{F,\mathrm{free}}(x,t)\,\mathrm dx\;\longrightarrow\;\text{Model 6}</div></div>
   </div></details>
 
   <div class="claim">
@@ -456,11 +472,40 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
   </div>
 
   <div class="col">
-  <p>V14 (&#945;TI-14) is a competitive antagonist: it and LPS contend for the same MD2 site. Writing
-  the occupancy in scaled form collapses the whole competition onto a single curve family indexed by
-  the scaled endotoxin load a, which for our register value of 1&#160;&#181;M wound endotoxin is
-  a&#160;=&#160;15.4. The half-suppression points are exact, which makes them a closed-form check on
-  any numerical implementation of Models&#160;3&#8211;4 &#8212; we use them as one.</p>
+  <p>V14 (&#945;TI-14) is a competitive antagonist: it and LPS contend for the same MD2 site, so
+  each occupancy carries the other's concentration in its denominator:</p>
+  </div>
+
+<div class="eqwrap"><div class="eqlabel">Competitive occupancy at MD2</div><div class="eq">\theta_{\mathrm{inhib}}=\frac{C^{\mathrm t}_V}{K_{\mathrm{D},P}\!\left(1+\dfrac{[L]}{K_{\mathrm{D},L}}\right)+C^{\mathrm t}_V}=\frac{C^{\mathrm t}_V}{K_{\mathrm D}^{\mathrm{app}}+C^{\mathrm t}_V},\qquad\theta_{\mathrm{LPS}}=\frac{[L]/K_{\mathrm{D},L}}{1+\dfrac{[L]}{K_{\mathrm{D},L}}+\dfrac{C^{\mathrm t}_V}{K_{\mathrm{D},P}}}</div></div>
+
+  <div class="col">
+  <p>What the flow-cytometry assay reports is a normalised median fluorescence, and this is where
+  the identifiability limit enters: the half-maximal point of that readout is
+  K<sub>D</sub><sup>app</sup>, not K<sub>D,P</sub>. Ratios between variants <em>are</em> clean,
+  because the endotoxin factor cancels:</p>
+  </div>
+
+<div class="eqwrap"><div class="eqlabel">The assay readout, and what it can identify</div><div class="eq">\mathrm{MFI}=\mathrm{MFI}_{\mathrm{bg}}+(\mathrm{MFI}_{\max}-\mathrm{MFI}_{\mathrm{bg}})\frac{\theta_{\mathrm{LPS}}(C^{\mathrm t}_V)}{\theta_{\mathrm{LPS}}(0)},\qquad \mathrm{IC}_{50}=K_{\mathrm D}^{\mathrm{app}},\qquad \frac{\mathrm{IC}_{50}^{(v)}}{\mathrm{IC}_{50}^{(w)}}=\frac{K_{\mathrm{D},P}^{(v)}}{K_{\mathrm{D},P}^{(w)}}</div></div>
+
+  <div class="col">
+  <p>Rescaling by the two dissociation constants now removes them from the problem entirely. The
+  whole competition collapses onto a single curve family indexed by the scaled endotoxin load a,
+  which for our register value of 1&#160;&#181;M wound endotoxin is a&#160;=&#160;15.4:</p>
+  </div>
+
+<div class="eqwrap"><div class="eqlabel">The scaled variables &#183; fourteen parameters become four</div><div class="eq">\psi=\frac{C^{\mathrm t}_V}{K_{\mathrm{D},P}},\quad a=\frac{[L]}{K_{\mathrm{D},L}},\quad\gamma=\frac{[\mathrm{TLR4}]_{\mathrm{tot}}}{K_{\mathrm{NF}}}\quad\Longrightarrow\quad\theta_{\mathrm{inhib}}=\frac{\psi}{1+a+\psi},\quad\theta_{\mathrm{LPS}}=\frac{a}{1+a+\psi}</div></div>
+
+  <div class="col">
+  <p>The suppression ratio then has no free constant left in it, and setting it to one half gives
+  the result this section exists for &#8212; a half-maximal dose with no fitted parameter anywhere
+  in it:</p>
+  </div>
+
+<div class="eqwrap"><div class="eqlabel">Half-maximal suppression, exactly</div><div class="eq">\frac{\theta_{\mathrm{LPS}}(\psi)}{\theta_{\mathrm{LPS}}(0)}=\frac{1+a}{1+a+\psi}\qquad\Longrightarrow\qquad \boxed{\;\psi_{50}=1+a\;}</div></div>
+
+  <div class="col">
+  <p>Because &#968;<sub>50</sub> is exact, it doubles as a closed-form check on any numerical
+  implementation of Models&#160;3&#8211;4, and we use it as one.</p>
 
   <p>This matters for the project schedule more than it might appear. It means the V14 arm was not
   blocked on the binding assay: the dose&#8211;response shape, the required scaled dose, and the
@@ -512,6 +557,33 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
   </div>
 
   <div class="col">
+  <p>Model&#160;4 takes the surviving active receptor through a Hill response to nuclear p65, which
+  is the transcriptional state the rest of the chain reads:</p>
+  </div>
+
+<div class="eqwrap"><div class="eqlabel">Model 4 &#183; receptor activation and the NF-&#954;B response</div><div class="eq">[\mathrm{TLR4}^{*}]=[\mathrm{TLR4}]_{\mathrm{tot}}\,\theta_{\mathrm{LPS}},\qquad[\mathrm{p65}]_{\mathrm{nuc}}=[\mathrm{p65}]_{\mathrm{bas}}+\bigl([\mathrm{p65}]_{\max}-[\mathrm{p65}]_{\mathrm{bas}}\bigr)\frac{[\mathrm{TLR4}^{*}]^{h}}{K_{\mathrm{NF}}^{h}+[\mathrm{TLR4}^{*}]^{h}}</div></div>
+
+  <div class="col">
+  <p>Inverting that chain gives the payload concentration required for a target signalling state.
+  This is the expression whose scaling law we had wrong, and it is the one place where
+  K<sub>D,P</sub> cannot be scaled away: the requirement depends on the wound's endotoxin load, and
+  it is <em>linear</em> in it, not quadratic.</p>
+  </div>
+
+<div class="eqwrap"><div class="eqlabel">The dose inversion &#183; corrected</div><div class="eq">\boxed{\;[P]_{\mathrm{req}}=K_{\mathrm{D},P}\!\left[\frac{[L]}{K_{\mathrm{D},L}}\!\left(\frac{[\mathrm{TLR4}]_{\mathrm{tot}}}{[\mathrm{TLR4}^{*}]_{\mathrm{tgt}}}-1\right)-1\right]\;}\qquad[\mathrm{TLR4}^{*}]_{\mathrm{tgt}}=K_{\mathrm{NF}}\!\left(\frac{[\mathrm{p65}]_{\mathrm{tgt}}-[\mathrm{p65}]_{\mathrm{bas}}}{[\mathrm{p65}]_{\max}-[\mathrm{p65}]_{\mathrm{tgt}}}\right)^{\!1/h}</div></div>
+
+  <div class="col">
+  <p>Model&#160;5 then drives iNOS from p65 and converts its output into the two observables, which
+  differ by about 600&#215; and must never be compared to each other:</p>
+  </div>
+
+<div class="eqwrap"><div class="eqlabel">Model 5 &#183; iNOS induction and the quasi-steady free-NO level</div><div class="eq">\frac{\mathrm{d}R_{\mathrm{rel}}}{\mathrm{d}t}=k_{\mathrm{turn}}\!\left[N_{\mathrm{cell}}q_{\max}\frac{[\mathrm{p65}]_{\mathrm{nuc}}^{\,p}}{K_{\mathrm{iNOS}}^{p}+[\mathrm{p65}]_{\mathrm{nuc}}^{\,p}}-R_{\mathrm{rel}}\right],\qquad [\mathrm{NO}]\simeq\frac{R_{\mathrm{rel}}}{k_{\mathrm{scav}}}</div></div>
+<div class="eqwrap"><div class="eqlabel">What Griess reads &#183; accumulated nitrite, and the only form we fit</div><div class="eq">\boxed{\;\frac{\mathrm{d}[\mathrm{NO}_2^-]}{\mathrm{d}t}=\phi R_{\mathrm{rel}}(t)\;\Longrightarrow\;[\mathrm{NO}_2^-](t)=\phi\!\int_0^t\! R_{\mathrm{rel}}\,\mathrm{d}t^{\prime}\;}\qquad\frac{[\mathrm{NO}_2^-](C^{\mathrm t}_V)}{[\mathrm{NO}_2^-](0)}=\frac{1}{1+\bigl(C^{\mathrm t}_V/\mathrm{IC}_{50}^{\mathrm{NO}}\bigr)^{n_{\mathrm{app}}}}</div></div>
+
+  <div class="col">
+  <p>The right-hand expression is the <em>only</em> one we fit. Everything upstream of it is
+  structure we believe but cannot identify from a sigmoid.</p>
+
   <p>Free NO reaches a quasi-steady state within minutes (1/k<sub>scav</sub>&#160;=&#160;100&#160;s)
   at tens of nanomolar &#8212; around 44&#160;nM &#8212; while nitrite accumulates across the whole
   day and reaches roughly 26&#160;&#181;M at 24&#160;h. The ratio is about 600&#215;.</p>
@@ -604,11 +676,58 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
 
   <div class="col">
   <p>The model treats the wound as a fibroblast population spreading into a defect with logistic
-  growth and a death term, giving a travelling front. Chronic behaviour is encoded by
-  r<sub>p</sub>&#160;&lt;&#160;d &#8212; the tissue cannot repopulate itself &#8212; with register
-  values of r<sub>p</sub>&#160;=&#160;0.50 and d&#160;=&#160;0.51&#160;d<sup>&#8722;1</sup>. The
-  therapy raises r<sub>eff</sub> while drug is present. We do not run the model past closure, and we
-  define t<sub>c</sub> as the first time the front reaches the centre.</p>
+  growth and a death term, giving a travelling front. In radial coordinates:</p>
+  </div>
+
+<div class="eqwrap"><div class="eqlabel">Model 6 &#183; Fisher&#8211;KPP with a death term, radial geometry</div><div class="eq">\frac{\partial n}{\partial t}=\frac1r\frac{\partial}{\partial r}\!\left(rD_n\frac{\partial n}{\partial r}\right)+r_p(C_e,I_e)\,n\!\left(1-\frac nK\right)-d(I_e)\,n</div></div>
+
+  <div class="col">
+  <p>Both arms of the patch enter here and nowhere else. FGF2-G3 raises the proliferation rate
+  through an effect compartment; the inflammatory state I<sub>e</sub>, read from the nitrite ratio
+  Model&#160;5 produces, suppresses proliferation and raises death. <b>This is the junction where
+  the V14 arm and the FGF2-G3 arm meet.</b></p>
+  </div>
+
+<div class="eqwrap"><div class="eqlabel">The coupling &#183; where the two arms meet</div><div class="eq">\begin{aligned}r_p&=r_0\!\left[1+E_{\max}\frac{C_e}{\mathrm{EC}_{50,F}+C_e}\right]\!\left[1-\beta\frac{I_e}{K_I^{r}+I_e}\right],&\qquad d&=d_0+\Delta d\,\frac{I_e^{\,s}}{(K_I^{d})^{s}+I_e^{\,s}}\\[5pt]\frac{\mathrm{d}C_e}{\mathrm{d}t}&=k_{e0}\bigl(\bar C_F-C_e\bigr),&\qquad I_e&=\frac{[\mathrm{NO}_2^-]}{[\mathrm{NO}_2^-]_{\mathrm{untr}}}\end{aligned}</div></div>
+
+  <div class="col">
+  <p>k<sub>e0</sub> is the effect-compartment rate constant, and its reciprocal is the
+  <b>18&#160;h drug-effect delay</b> that Model&#160;7 passes each patch's coverage through. It is
+  Tier&#160;4. Chronic behaviour is encoded by r<sub>p</sub>&#160;&lt;&#160;d &#8212; the tissue
+  cannot repopulate itself &#8212; with register values r<sub>p</sub>&#160;=&#160;0.50 and
+  d&#160;=&#160;0.51&#160;d<sup>&#8722;1</sup>. The therapy raises r<sub>eff</sub> while drug is
+  present. We do not run the model past closure, and we define t<sub>c</sub> as the first time the
+  front reaches the centre.</p>
+  </div>
+
+<div class="eqwrap"><div class="eqlabel">Initial and boundary conditions, and the state behind the front</div><div class="eq">n(r,0)=\tfrac K2\!\left[1+\tanh\frac{r-R_w}{w}\right],\quad\left.\frac{\partial n}{\partial r}\right|_0=0,\quad n(R_\infty)=K,\quad n_{\mathrm{ss}}=K\!\left(1-\frac{d}{r_p}\right)</div></div>
+
+  <p class="col caveat" style="display:block">A caution on the last expression. With the register's
+  chronic values, n<sub>ss</sub> is formally <em>negative</em> (&#8722;0.02K), not zero. The
+  biological floor is zero and the solver clamps there, but the formula as written is outside its
+  valid range in exactly the untreated regime we apply it to. The whole chronic classification rests
+  on d exceeding r<sub>p</sub> by <b>2&#160;%</b>, and both numbers are Tier&#160;4.</p>
+
+  <div class="col">
+  <p>Front position, the closure fraction an experimentalist would actually measure, and closure
+  time are then:</p>
+  </div>
+
+<div class="eqwrap"><div class="eqlabel">Front position, area closure fraction, closure time</div><div class="eq">r_f(t):n=\tfrac12 n_{\mathrm{ss}},\qquad\mathcal A_c(t)=1-\left(\frac{r_f}{R_w}\right)^{\!2},\qquad t_c=\min\{t:r_f=0\}</div></div>
+
+  <div class="col">
+  <p>And for a pulled front the asymptotic speed and width give the degeneracy recorded in the
+  identifiability table &#8212; D<sub>n</sub> and r<sub>eff</sub> appear only as a product in the
+  speed, so closure data alone can never separate them:</p>
+  </div>
+
+<div class="eqwrap"><div class="eqlabel">Front speed and width &#183; the D<sub>n</sub>&#8211;r<sub>eff</sub> degeneracy</div><div class="eq">c=2\sqrt{D_n r_{\mathrm{eff}}},\qquad w_f\approx\sqrt{D_n/r_{\mathrm{eff}}},\qquad r_{\mathrm{eff}}=r_p-d</div></div>
+
+  <div class="col">
+  <p>Reporting the front <em>width</em> alongside its speed breaks the degeneracy, since
+  c&#183;w<sub>f</sub>&#160;&#8733;&#160;D<sub>n</sub> and
+  c/w<sub>f</sub>&#160;&#8733;&#160;r<sub>eff</sub>. That is exactly why the scratch assay on our
+  wet-lab list asks for width and not just closure rate.</p>
   </div>
 
   <div class="claim">
@@ -658,6 +777,19 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
     The patch must be changed at least every <b>21.8&#160;h</b> &#8212; and a daily dressing change
     falls just short.</p>
   </div>
+
+  <p class="col">The loading requirement follows straight from the transport model: to hold a target
+  concentration at depth &#948; in tissue, the gel must start with enough that the released fraction,
+  diluted into the tissue pore volume, still clears it.</p>
+
+<div class="eqwrap"><div class="eqlabel">Model 7 &#183; the loading requirement</div><div class="eq">C_{V,0}\gtrsim\frac{C_{V,\mathrm{target}}\,\varepsilon_{\mathrm t}\,\delta}{f_{\mathrm{rel}}\,\varepsilon_{\mathrm g}\,L_{\mathrm{gel}}}</div></div>
+
+  <p class="col caveat" style="display:block">C<sub>V,target</sub> is set to 25&#160;&#181;M. That
+  is a Tier-4 choice, and it is numerically the same as the measured in&#160;vitro blocking
+  concentration &#8212; the two are not the same quantity. Model&#160;4's inversion says the true
+  requirement scales with the wound's endotoxin load; this section does not yet use that. Every
+  number below &#8212; 7.2&#160;h, 21.8&#160;h, 50.5&#160;&#181;M,
+  R<sub>V</sub>&#160;&#8776;&#160;14.6 &#8212; inherits that assumption.</p>
 
   <h3 class="col">Why retention is not the lever we assumed</h3>
   <div class="col">
@@ -712,6 +844,26 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
   alginate-sulfate to hold it for weeks would be wasted effort when the dressing comes off every day.
   <b>V14 sets the schedule.</b></p>
   </div>
+
+  <details class="math"><summary>Retention chemistries &#8212; the equations, and why this build
+  does not use them</summary>
+  <div class="inner">
+    <p>Retention enters as a retardation factor multiplying the time derivative. For a saturable
+    binder such as heparin-functionalised alginate it depends on concentration; for simple
+    partitioning it is a constant:</p>
+<div class="eqwrap"><div class="eqlabel">FGF2-G3 with a saturable binder (heparin-type)</div><div class="eq">R_F(C)\frac{\partial C^{\mathrm g}_F}{\partial t}=D^{\mathrm g}_{\mathrm{eff},F}\frac{\partial^2 C^{\mathrm g}_F}{\partial x^2}-k^{\mathrm g}_{\deg,F}C^{\mathrm g}_F,\qquad R_F(C)=1+\frac{S_{\max}K_{d,\mathrm{hep}}}{(K_{d,\mathrm{hep}}+C)^2}</div></div>
+<div class="eqwrap"><div class="eqlabel">V14 with linear sorption</div><div class="eq">R_V\frac{\partial C^{\mathrm g}_V}{\partial t}=D^{\mathrm g}_{\mathrm{eff},V}\frac{\partial^2 C^{\mathrm g}_V}{\partial x^2}-k^{\mathrm g}_{\deg,V}C^{\mathrm g}_V,\qquad R_V=1+K_{\mathrm{sorb}}</div></div>
+<div class="eqwrap"><div class="eqlabel">The constraint that kills it &#183; free concentration falls as 1/R<sub>V</sub></div><div class="eq">C_{\mathrm{free},0}=\frac{C_{\mathrm{tot},0}}{R_V}\le\frac{C_{\mathrm{sol}}}{R_V}</div></div>
+    <p>The last line is the whole argument against retention for this device, and it is also the
+    modelling error we made and corrected: the loaded concentration is the <b>total</b>, so the free
+    concentration driving delivery is C<sub>tot</sub>/R<sub>V</sub>. Treating the loading as free
+    puts R<sub>V</sub> times more drug into the model than solubility allows, and over-predicts
+    sustained release by orders of magnitude.</p>
+    <p><b>This build sets R<sub>V</sub>&#160;=&#160;1 and uses none of these.</b> The gel is plain
+    calcium alginate, with no heparin and no sulfation. The equations are recorded because they
+    define the counterfactual this section analyses, and because a future build using covalent
+    tethering would need them.</p>
+  </div></details>
 
   <p class="col caveat" style="display:block">The closure side of this inversion rests entirely on
   Tier-4 closures, and the treated state (FGF2-G3 at EC<sub>50</sub>, V14 at &#968;<sub>50</sub>) is

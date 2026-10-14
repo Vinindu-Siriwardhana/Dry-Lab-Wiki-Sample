@@ -141,10 +141,22 @@ details.math>summary::before{content:"+";font-family:var(--font-m);color:var(--b
   transition:transform .2s ease}
 details.math[open]>summary::before{content:"\2212"}
 details.math .inner{padding-bottom:1.1em}
-.eq{background:var(--surface-2);border-left:3px solid var(--brand);padding:12px 16px;
-  margin:1em 0;font-family:var(--font-m);font-size:.9rem;overflow-x:auto;border-radius:0 5px 5px 0}
+.eq{background:var(--surface-2);border-left:3px solid var(--brand);padding:16px 20px;
+  margin:1.5em 0;font-family:var(--font-m);font-size:.9rem;overflow-x:auto;overflow-y:hidden;
+  border-radius:0 5px 5px 0;max-width:var(--measure)}
+.eq .katex-display{margin:0}
+.eq .katex{font-size:1.05em;color:var(--ink)}
+.eq[data-rendered="error"]{border-left-color:var(--bad);white-space:pre-wrap}
+.eqi{font-family:var(--font-m);font-size:.95em}
+.eqi .katex{font-size:1em;color:inherit}
 .eq-inline{display:inline-block;background:var(--surface-2);border-left:2px solid var(--brand);
   padding:2px 8px;margin:0;font-family:var(--font-m);font-size:.9em;border-radius:0 3px 3px 0}
+/* a named equation, with the label sitting above the maths */
+.eqwrap{margin:1.6em 0;max-width:var(--measure)}
+.eqwrap > .eqlabel{font-family:var(--font-sans);font-size:.72rem;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);margin-bottom:.35em}
+.eqwrap > .eq{margin:0}
+@media (max-width:640px){.eq{padding:12px 14px;font-size:.82rem}.eq .katex{font-size:.95em}}
 
 /* ---------- tables ---------- */
 .tablewrap{overflow-x:auto;margin:1.5em 0;max-width:1000px;box-shadow:var(--shadow-sm);
