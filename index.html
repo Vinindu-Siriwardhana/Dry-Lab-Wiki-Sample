@@ -495,7 +495,7 @@ body.noscroll{overflow:hidden}
         <td>Predictive in scaled form</td></tr>
       <tr><td><b>Model 5</b> &#183; iNOS &#8594; nitrite</td>
         <td>What will the Griess assay actually read?</td>
-        <td>Data in hand &#8212; a measured curve exists to fit</td></tr>
+        <td>Structure fixed, awaiting data &#8212; the fitting routine is written and tested on synthetic data; the measured Griess curve is not yet in hand</td></tr>
       <tr><td><b>Model 6</b> &#183; Fisher&#8211;KPP closure</td>
         <td>Does the wound close, and how fast?</td>
         <td>Structured hypothesis &#8212; Tier-4 throughout, nothing planned constrains it</td></tr>
@@ -582,6 +582,15 @@ verdict = suitable   if  n_Cys &#8804; 1  and  s_C &#8805; 1/2
   A candidate that cannot match this is not competitive with the published state of the art. The cap
   at 1 encodes saturation: once a candidate matches the state of the art, further potency does not
   make it a better <em>patch payload</em>, so Module&#160;A discriminates only below the benchmark.</p>
+
+  <p>Two weaknesses in this module are worth stating plainly, because they limit how much the
+  comparison is worth. The benchmark set has <b>n&#160;=&#160;1</b>. And by Model&#160;3's own
+  algebra, a cell-assay blocking concentration is
+  K<sub>D,P</sub>(1&#160;+&#160;[L]/K<sub>D,L</sub>), so it depends on the endotoxin load of the
+  assay it was measured in &#8212; which is not reported for MD2-I and which differs from ours.
+  Comparing V14's 25&#160;&#181;M against MD2-I's 0.1&#160;mM is therefore <em>not</em> a ratio of
+  affinities, and we do not claim it as one. It says that V14 is in the right concentration range
+  for a cell-based blocking effect, and no more than that.</p>
   </div>
 
   <h3 class="col">Module B &#183; structural burden</h3>
@@ -687,10 +696,22 @@ verdict = suitable   if  n_Cys &#8804; 1  and  s_C &#8805; 1/2
       <tr><td>C</td><td>t<sub>deg</sub>&#160;&#8819;&#160;t<sub>1/2,rel</sub></td>
         <td>Pass &#8212; 0.9&#160;h vs 1.9&#160;min</td>
         <td>Pass &#8212; 6.1&#160;h vs 1.9&#160;min</td></tr>
-      <tr><td colspan="3" style="text-align:right"><b>Composite S</b></td>
-        <td><b>&#8776;&#160;1.00</b> (unsuitable verdict for TAP2 on the Module&#160;B gate)</td></tr>
+      <tr><td colspan="2" style="text-align:right"><b>Composite S</b></td>
+        <td>&#8776;&#160;<b>0.41</b></td>
+        <td>&#8776;&#160;<b>1.00</b></td></tr>
+      <tr><td colspan="2" style="text-align:right"><b>Verdict</b></td>
+        <td><b>Unsuitable</b> &#8212; Module&#160;B gate</td>
+        <td><b>Suitable</b></td></tr>
     </tbody>
   </table></div>
+
+  <p class="col caveat" style="display:block">Read the composite with care: it is close to
+  uninformative for this device. s<sub>A</sub> is capped at 1 by construction, and because the patch
+  empties in minutes s<sub>C</sub> sits between 0.95 and 0.99 for every candidate in the table. So S
+  is carried almost entirely by s<sub>B</sub>, and V14's S&#160;&#8776;&#160;1.00 restates that it
+  has no Cys and no Trp rather than adding anything. <b>The gates, not the composite, are what
+  decide a verdict here</b> &#8212; TAP2's S of 0.41 is not what disqualifies it; failing
+  n<sub>Cys</sub>&#160;&#8804;&#160;1 is.</p>
 
   <div class="col">
   <p>TAP2's activity is well documented (Park <i>et al.</i>, 2017; Park <i>et al.</i>, 2020; Yin
@@ -828,8 +849,9 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
     <b>1.93&#215;10<sup>&#8722;7</sup></b> at 1600 &#8212; a factor of 4 per refinement. The
     numerical Fisher&#8211;KPP front speed matches the analytic value to within
     1.8&#8211;6.2&#160;%, sitting just <i>below</i> the analytic line as expected for a discretised
-    pulled front. The two-domain solver is checked four ways. The full regression suite must pass
-    before any number on this page is quoted anywhere.</p>
+    pulled front. The two-domain solver is checked four ways. Verification of this kind establishes
+    that the solvers reproduce known answers; it is not validation against experiment, and we do not
+    present it as such.</p>
   </div>
 
   <div class="col">
@@ -884,10 +906,12 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
 
   <h3 class="col">What the assay can and cannot return</h3>
   <div class="col">
-  <p>The planned flow-cytometry assay returns
-  IC<sub>50</sub>&#160;=&#160;K<sub>D,P</sub>(1&#160;+&#160;[L]/K<sub>D,L</sub>), which is
-  K<sub>D</sub><sup>app</sup> &#8212; not K<sub>D,P</sub> &#8212; unless the endotoxin load is
-  varied. Two or three LPS concentrations recover it. <em>Ratios</em> between V14 variants are
+  <p>To be precise about what has and has not been done: we <b>have</b> measured a blocking
+  concentration for V14 &#8212; 25&#160;&#181;M, at a single fixed endotoxin load. We have
+  <b>not</b> measured K<sub>D,P</sub>. The flow-cytometry assay returns
+  IC<sub>50</sub>&#160;=&#160;K<sub>D,P</sub>(1&#160;+&#160;[L]/K<sub>D,L</sub>), which at one
+  fixed [L] is K<sub>D</sub><sup>app</sup> &#8212; not K<sub>D,P</sub> &#8212; unless the endotoxin
+  load is varied. Two or three LPS concentrations recover it. <em>Ratios</em> between V14 variants are
   already identifiable at a single fixed [L], so the variant screen works as planned; it is the
   absolute affinity that does not come for free. We also ask for a Schild analysis in the same run,
   because a depressed maximum would invalidate the competitive mechanism that the entire V14 arm
@@ -907,7 +931,7 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
     <h3>Summary</h3>
     <p>Model&#160;4 carries receptor blockade through to transcriptional output; Model&#160;5 turns
     that into the quantity our assay actually measures. The Griess assay reads <b>accumulated
-    nitrite</b>, not free NO, and the two differ by roughly <b>three orders of magnitude</b>.
+    nitrite</b>, not free NO, and the two differ by roughly <b>600&#215;</b>.
     Fitting the model's instantaneous free-NO expression to a Griess curve would compare two
     different quantities. We fit accumulated nitrite instead.</p>
   </div>
@@ -1071,7 +1095,7 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
   definition. At most it doubles the window &#8212; still well short of a day.</p>
 
   <p>A second, independent limit closes the door. A 25&#160;&#181;M target at 500&#160;&#181;m depth
-  needs only <b>51&#160;&#181;M free</b> (68&#160;&#181;g&#160;mL<sup>&#8722;1</sup>), which is
+  needs only <b>50.5&#160;&#181;M free</b> (68&#160;&#181;g&#160;mL<sup>&#8722;1</sup>), which is
   7&#160;% of the solubility ceiling at R<sub>V</sub>&#160;=&#160;1. But the <em>total</em> that must
   dissolve rises to 152&#160;&#181;M at R<sub>V</sub>&#160;=&#160;3 and 505&#160;&#181;M
   (68&#160;% of the ceiling) at R<sub>V</sub>&#160;=&#160;10. Above
@@ -1323,7 +1347,7 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
 
     <li>Cavaco M., Valle J., Flores I., Andreu D., Castanho M.A.R.B. Estimating peptide half-life
       in serum from tunable, sequence-related physicochemical properties. <i>Clinical and
-      Translational Science</i> 2021;14:1304&#8211;1313.
+      Translational Science</i> 2021;14(4):1349&#8211;1358.
       doi:<a href="https://doi.org/10.1111/cts.12985">10.1111/cts.12985</a>
       <span class="caveat">Source of the Module&#160;C half-life regression.</span></li>
 
