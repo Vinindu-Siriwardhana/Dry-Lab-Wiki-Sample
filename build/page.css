@@ -182,6 +182,15 @@ tbody tr:hover{background:var(--brand-wash)}
   border-bottom:1px solid var(--rule);align-items:start}
 .asks .st{font-size:1rem;line-height:1.5;color:var(--brand)}
 
+/* ---------- biology bullets ---------- */
+.bio{list-style:none;padding:0;margin:1.3em 0;max-width:var(--measure);counter-reset:bio}
+.bio li{counter-increment:bio;position:relative;padding-left:34px;margin-bottom:.95em}
+.bio li::before{content:"";position:absolute;left:9px;top:.62em;width:8px;height:8px;
+  border-radius:50%;background:var(--brand)}
+.bio li::after{content:"";position:absolute;left:12.5px;top:1.35em;bottom:-.95em;width:1px;
+  background:var(--rule)}
+.bio li:last-child::after{display:none}
+
 /* ---------- reference list ---------- */
 .refs{counter-reset:r;list-style:none;padding:0;margin:1.4em 0;max-width:var(--measure)}
 .refs li{counter-increment:r;position:relative;padding-left:42px;margin-bottom:1.05em;

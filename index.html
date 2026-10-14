@@ -195,6 +195,15 @@ tbody tr:hover{background:var(--brand-wash)}
   border-bottom:1px solid var(--rule);align-items:start}
 .asks .st{font-size:1rem;line-height:1.5;color:var(--brand)}
 
+/* ---------- biology bullets ---------- */
+.bio{list-style:none;padding:0;margin:1.3em 0;max-width:var(--measure);counter-reset:bio}
+.bio li{counter-increment:bio;position:relative;padding-left:34px;margin-bottom:.95em}
+.bio li::before{content:"";position:absolute;left:9px;top:.62em;width:8px;height:8px;
+  border-radius:50%;background:var(--brand)}
+.bio li::after{content:"";position:absolute;left:12.5px;top:1.35em;bottom:-.95em;width:1px;
+  background:var(--rule)}
+.bio li:last-child::after{display:none}
+
 /* ---------- reference list ---------- */
 .refs{counter-reset:r;list-style:none;padding:0;margin:1.4em 0;max-width:var(--measure)}
 .refs li{counter-increment:r;position:relative;padding-left:42px;margin-bottom:1.05em;
@@ -486,6 +495,40 @@ body.noscroll{overflow:hidden}
   sets the closure rate. Without that meeting point this would be two unrelated models rather than a
   model of a combination patch.</p>
 
+  <p>Before any of that is worth computing, it is worth saying what the wound is doing, because
+  every model below is a quantitative statement about one link in it.</p>
+
+  <h3>A chronic wound is arrested, not slow</h3>
+  <p>Acute wounds pass through haemostasis, inflammation, proliferation and remodelling. Chronic
+  wounds &#8212; diabetic foot ulcers, venous leg ulcers, pressure ulcers &#8212; stall between the
+  second and the third, held there by a loop that sustains itself:</p>
+
+  <ul class="bio">
+    <li><b>The receptor stays on.</b> Bacterial LPS from a colonised wound bed, together with
+    host damage-associated molecular patterns from dying tissue, engages TLR4. TLR4 cannot bind LPS
+    by itself; it needs the accessory protein <b>MD2</b>, which holds the lipid&#160;A moiety and
+    drives receptor dimerisation. In human diabetic wounds TLR4 expression and downstream signalling
+    are elevated rather than transient (Dasu &amp; Martin, 2014).</li>
+
+    <li><b>The signal drives a destructive program.</b> TLR4/MD2 dimerisation recruits MyD88 and
+    activates NF-&#954;B, raising pro-inflammatory cytokines, inducible nitric oxide synthase (iNOS)
+    and matrix metalloproteinases.</li>
+
+    <li><b>Those products prevent repair.</b> Chronic wound fluid carries roughly sevenfold higher
+    total MMP-9 than surrounding tissue, mostly activated (Moor <i>et al.</i>, 2009), together with
+    neutrophil elastase (Ai <i>et al.</i>, 2004; Yager &amp; Nwomeh, 1999). That protease load
+    degrades the provisional matrix cells migrate across, and degrades growth factors directly
+    (Yager <i>et al.</i>, 1997).</li>
+
+    <li><b>Degraded matrix and dying cells release more DAMPs back onto TLR4.</b> The loop closes.</li>
+  </ul>
+
+  <p>This is the argument for a two-payload patch rather than a simpler one. Adding growth factor
+  alone puts substrate into a compartment full of the proteases that destroy it, which is the
+  documented failure mode of exogenous growth-factor therapy in chronic wounds (Yager
+  <i>et al.</i>, 1997). The inflammatory drive has to come down <em>and</em> the proliferative drive
+  has to go up. V14 does the first, FGF2-G3 the second, and Model&#160;6 is where the two meet.</p>
+
   <p>The chain reads as follows.</p>
   </div>
 
@@ -569,6 +612,27 @@ body.noscroll{overflow:hidden}
   present (Ai <i>et al.</i>, 2004; Yager &amp; Nwomeh, 1999); and chronic wound fluid degrades
   exogenously added peptide growth factors outright (Yager <i>et al.</i>, 1997). Selecting a payload
   on target affinity alone ignores all of this.</p>
+
+  <h3>Why MD2, and why a peptide</h3>
+  <p>Of the nodes in that loop we target the receptor complex, for three reasons.</p>
+
+  <p><b>It is upstream of everything else.</b> MMP expression, iNOS induction and cytokine release
+  are all downstream of NF-&#954;B, so blocking at the receptor suppresses the whole program rather
+  than one product of it. Inhibiting a single MMP leaves the drive intact.</p>
+
+  <p><b>The node is druggable and the mechanism has in&#160;vivo support.</b> Blocking
+  TLR4&#8211;MD2 dimerisation specifically, rather than TLR4 generally, has been shown to suppress
+  inflammatory macrophage activation and improve diabetic wound healing, with the effect lost in
+  <i>Tlr4</i>-knockout animals (Liu <i>et al.</i>, 2023). That study delivered its inhibitor from a
+  hydrogel microneedle patch &#8212; close to our own delivery concept, and part of why we think the
+  route is feasible rather than merely attractive.</p>
+
+  <p><b>Competitive antagonism is a mechanism we can model exactly.</b> Because a peptide and LPS
+  contend for the same MD2 pocket, the system reduces to the competitive-occupancy expression that
+  Model&#160;3 develops, in which the required dose depends on endotoxin load through a single
+  scaled group. We use a peptide rather than a small molecule because MD2 presents a
+  protein&#8211;protein interface, and because a peptide can be designed sequence-up for the
+  developability properties the wound demands &#8212; which is what this model exists to score.</p>
 
   <p>The model evaluates three independent modules, each returning a sub-score
   s<sub>i</sub>&#160;&#8712;&#160;[0,&#160;1]. The composite is their geometric mean, and the verdict
@@ -753,6 +817,16 @@ body.noscroll{overflow:hidden}
   number should never be read on its own.</p>
   </div>
 
+<h3 class="col">Assumptions behind the screen</h3>
+  <div class="tablewrap"><table>
+  <thead><tr><th>Assumption</th><th>Biological basis</th><th>What breaks if it is wrong</th><th>How to test it</th></tr></thead>
+  <tbody>
+  <tr><td><b>The serum half-life proxy transfers to wound exudate</b></td><td>No sequence regression exists for exudate; serum is the nearest fitted standard.</td><td>Module&#160;C becomes optimistic by an unknown factor. Exudate protease activity is higher and more variable than serum.</td><td>HPLC stability in exudate or with recombinant MMP-9 / elastase, replacing the estimate with a measured k<sub>deg</sub>.</td></tr>
+  <tr><td><b>Cys and Trp are the dominant developability risks</b></td><td>Disulfide shuffling in an oxidising wound and Trp-driven aggregation at loading concentrations are the two failure modes we can predict from sequence alone.</td><td>Module&#160;B misses a liability it does not encode &#8212; deamidation, oxidation of Met, or charge-driven binding to the gel.</td><td>Forced-degradation study on the candidate; LC-MS for modified species.</td></tr>
+  <tr><td><b>A cell blocking concentration is comparable across assays</b></td><td>It is the only quantity reported for the single sequenced benchmark.</td><td>Module&#160;A. The blocking concentration depends on the assay’s endotoxin load, which is unreported for the benchmark, so the comparison is not a ratio of affinities.</td><td>Measure both peptides in one assay at matched [LPS], or compare K<sub>D</sub> directly.</td></tr>
+  </tbody>
+  </table></div>
+
   <details class="math"><summary>Limitations of the screening model</summary>
   <div class="inner">
     <ul>
@@ -871,6 +945,17 @@ body.noscroll{overflow:hidden}
 <div class="eqwrap"><div class="eqlabel">The handoff &#183; where the two arms leave the transport model</div><div class="eq">C^{\mathrm t}_V(0,t)\;\longrightarrow\;\text{Model 3},\qquad\bar C_F(t)=\frac1\delta\int_{-\delta}^{0}C^{\mathrm t}_{F,\mathrm{free}}(x,t)\,\mathrm dx\;\longrightarrow\;\text{Model 6}</div></div>
   </div></details>
 
+<h3 class="col">Assumptions this section makes</h3>
+  <div class="tablewrap"><table>
+  <thead><tr><th>Assumption</th><th>Biological basis</th><th>What breaks if it is wrong</th><th>How to test it</th></tr></thead>
+  <tbody>
+  <tr><td><b>Transport is one-dimensional and diffusive</b></td><td>The patch is wide relative to its 500&#160;&#181;m thickness, so lateral gradients are small; no bulk convection is imposed.</td><td>Exudate flow in a heavily exuding wound is convective and outward, which would carry drug <em>away</em> from the tissue rather than into it.</td><td>Measure exudate production rate; add a P&#233;clet number and a convective term if it is not small.</td></tr>
+  <tr><td><b>The gel is a fixed 500&#160;&#181;m reservoir</b></td><td>The patch is cast at that thickness and modelled as geometrically stable.</td><td>Calcium alginate absorbs exudate and slowly dissolves as sodium displaces calcium. Swelling dilutes the reservoir and shortens the change interval.</td><td>Weigh gels in simulated wound fluid over 24&#160;h.</td></tr>
+  <tr><td><b>Alginate binds neither payload</b></td><td>FGF-2 shows no measurable binding to unmodified alginate (Freeman <i>et al.</i>, 2008), and V14 has no hydrophobic surface and a net charge of &#8722;2.</td><td>Nothing for this build &#8212; it is why R<sub>V</sub>&#160;=&#160;1 is locked. It is what makes the retention analysis a counterfactual.</td><td>Release assay against gel with and without the payload pre-equilibrated.</td></tr>
+  <tr><td><b>Tissue is a homogeneous porous medium</b></td><td>A single effective diffusivity and porosity stand in for dermal collagen, cells and interstitium.</td><td>Local accuracy. Real granulation tissue is spatially heterogeneous and changes as the wound heals, so D<sub>eff</sub> is not constant in time.</td><td>Fit D<sub>eff</sub> from a tissue-penetration time course rather than assuming it.</td></tr>
+  </tbody>
+  </table></div>
+
   <div class="claim">
     <h3>Solver verification</h3>
     <p>Before using any result, we checked the solvers against known answers. The release solver
@@ -885,6 +970,29 @@ body.noscroll{overflow:hidden}
   </div>
 
   <div class="col">
+  <h3>Which cells have to receive the drug, and where they are</h3>
+  <p>The two arms have different target cells in different places, and this is what sets the
+  geometry of this section.</p>
+
+  <p><b>V14 targets macrophages</b>, which concentrate in the inflamed superficial wound bed, close
+  to the patch interface. That matters for how we report coverage. Concentration falls with depth,
+  so a time-above-target computed from the <em>depth-averaged</em> concentration is a lower bound on
+  what the macrophage population actually sees. We report the lower bound deliberately rather than
+  quoting the more flattering interfacial value.</p>
+
+  <p><b>FGF2-G3 targets fibroblasts</b>, which sit deeper, in the granulation tissue being built.
+  This is why the model averages FGF2-G3 over an active band &#948; rather than taking its
+  interfacial value &#8212; and it is why the two arms cannot be validated together in&#160;vitro
+  without a co-culture, since one is assayed on macrophages and the other on fibroblasts.</p>
+
+  <p><b>The deep boundary is a sink because the dermis is vascularised.</b> Drug reaching the dermal
+  capillary bed is carried away systemically, which is why the model imposes a Dirichlet condition
+  there rather than a reflecting one. That choice is biologically right in kind. Its <em>depth</em>
+  is less certain: dermal anatomy places a vascular plexus well above the 1.5&#160;mm boundary we
+  use, so clearance plausibly begins shallower than the model assumes. If it does, residence time is
+  over-estimated and the single-patch window is shorter than 7.2&#160;h. We have not resolved this,
+  and it is the assumption in this section most likely to be wrong in the optimistic direction.</p>
+
   <p>Where the drug ends up: the 1.5&#160;mm dermis drains the gel reservoir into the systemic sink
   within hours, whatever the proteolysis rate. Our macrophage target sits in a thin surface band
   where concentration is always above the depth average, so a time-above-target computed from the
@@ -943,6 +1051,15 @@ body.noscroll{overflow:hidden}
 <div class="eqwrap"><div class="eqlabel">Half-maximal suppression, exactly</div><div class="eq">\frac{\theta_{\mathrm{LPS}}(\psi)}{\theta_{\mathrm{LPS}}(0)}=\frac{1+a}{1+a+\psi}\qquad\Longrightarrow\qquad \boxed{\;\psi_{50}=1+a\;}</div></div>
 
   <div class="col">
+  <p class="col"><b>The biology this rests on is a single mechanistic claim:</b> that V14 occupies
+  the same MD2 pocket LPS does, and does nothing else. Competitive antagonism is what produces the
+  rightward shift with an undepressed maximum, and it is what makes the required dose scale with
+  endotoxin load. An allosteric or non-competitive inhibitor would change the functional form rather
+  than a constant, and the exact &#968;<sub>50</sub> result would simply be false. We therefore treat
+  this as a hypothesis to be refuted rather than a premise &#8212; which is why a Schild analysis is
+  on the wet-lab list, and why we say explicitly that a depressed maximum would send us back to
+  rebuild this model rather than refit it.</p>
+
   <p>Because &#968;<sub>50</sub> is exact, it doubles as a closed-form check on any numerical
   implementation of Models&#160;3&#8211;4, and we use it as one.</p>
 
@@ -962,6 +1079,17 @@ body.noscroll{overflow:hidden}
     low endotoxin load to about 2500&#215; at high load. The earlier version mispredicted the very
     quantity it was built to deliver, and only a direct numerical check caught it.</p>
   </div>
+
+<h3 class="col">Assumptions this section makes</h3>
+  <div class="tablewrap"><table>
+  <thead><tr><th>Assumption</th><th>Biological basis</th><th>What breaks if it is wrong</th><th>How to test it</th></tr></thead>
+  <tbody>
+  <tr><td><b>Receptor occupancy is at equilibrium on the timescale of interest</b></td><td>Binding and unbinding at MD2 are fast relative to the hours over which tissue concentration changes.</td><td>The quasi-steady treatment. If dissociation were slow, occupancy would lag concentration and the patch would behave better than modelled, not worse.</td><td>Association/dissociation kinetics by SPR; compare k<sub>off</sub><sup>&#8722;1</sup> against the hours-scale delivery profile.</td></tr>
+  <tr><td><b>Endotoxin is a uniform 1&#160;&#181;M field</b></td><td>A single scalar [L] is needed for the scaled load a&#160;=&#160;15.4.</td><td>Required dose is <em>linear</em> in [L], so a tenfold higher local load needs roughly tenfold more peptide. A biofilm-associated wound is heterogeneous in space and time.</td><td>Endotoxin quantification on wound fluid; model a distribution rather than a point value.</td></tr>
+  <tr><td><b>V14 acts only through MD2</b></td><td>It was designed against that interface and shows the expected blockade.</td><td>Attribution, not efficacy. Anti-inflammatory action by another route would still help the wound but would break the quantitative chain from occupancy to outcome.</td><td>Counter-screen on TLR4-null or MD2-null cells &#8212; the blockade should disappear.</td></tr>
+  <tr><td><b>Total receptor is constant</b></td><td>TLR4 is treated as a fixed pool that LPS and V14 compete for.</td><td>Long-horizon predictions. TLR4 is itself NF-&#954;B-inducible, so suppressing signalling may lower receptor number over days, making the model conservative.</td><td>TLR4 surface expression by flow cytometry at 24&#8211;72&#160;h under blockade.</td></tr>
+  </tbody>
+  </table></div>
 
   <h3 class="col">What the assay can and cannot return</h3>
   <div class="col">
@@ -1045,6 +1173,25 @@ body.noscroll{overflow:hidden}
     are the only two we will report.</p>
   </div>
 
+  <div class="claim warn">
+    <h3>The assumption we are least comfortable with</h3>
+    <p>Model&#160;6 reads nitrite as a monotonic index of harm: more nitrite means lower
+    proliferation and higher death. The biology does not straightforwardly support that. Nitric
+    oxide is <b>required</b> for normal repair &#8212; iNOS-deficient animals and animals given iNOS
+    inhibitors show delayed re-epithelialisation and reduced collagen deposition and tensile
+    strength, and NO has a central role in the angiogenesis that granulation tissue depends on
+    (Krausz &amp; Friedman, 2015). Macrophage-derived NO also contributes to antimicrobial defence in
+    a wound that is, by assumption here, colonised.</p>
+    <p>So the true relationship is plausibly <b>biphasic</b>: too little NO impairs healing, too much
+    sustains inflammatory damage, and the therapeutic goal is to move a chronically elevated wound
+    back toward an optimum rather than to drive iNOS output to zero. Our coupling encodes only the
+    descending limb. Within the range a competitive antagonist can reach &#8212; partial, reversible
+    blockade of one receptor, against a wound already far above baseline &#8212; we think the
+    monotonic approximation is defensible. But it is an approximation, it is not conservative, and a
+    dose&#8211;response for <em>healing outcome</em> rather than for nitrite is the experiment that
+    would settle it. We would look for an optimum, not a plateau.</p>
+  </div>
+
   <h3 class="col">Sensitivity analysis</h3>
   <div class="col">
   <p>To find which parameters matter most, we ran Morris screening followed by Sobol indices over the
@@ -1073,6 +1220,17 @@ body.noscroll{overflow:hidden}
   interactions that no single-slider exploration can show. That is why this page reports the
   variance-based analysis rather than inviting readers to tune one parameter at a time.</p>
   </div>
+
+<h3 class="col">Assumptions this section makes</h3>
+  <div class="tablewrap"><table>
+  <thead><tr><th>Assumption</th><th>Biological basis</th><th>What breaks if it is wrong</th><th>How to test it</th></tr></thead>
+  <tbody>
+  <tr><td><b>NF-&#954;B response to receptor activation is a Hill function at steady state</b></td><td>Signalling equilibrates in minutes to hours, far faster than the days over which delivery changes.</td><td>Dynamics only. Real NF-&#954;B signalling oscillates, and a pulsed input can give a different transcriptional output than its time average.</td><td>Time-resolved p65 nuclear translocation under a pulsed LPS stimulus.</td></tr>
+  <tr><td><b>Nitrite reports the inflammatory state of the wound</b></td><td>It is the stable, measurable end product of the iNOS arm and rises with inflammatory drive.</td><td>The sign of the coupling at low NO, and therefore the direction of benefit at strong blockade &#8212; see the warning above.</td><td>Healing-outcome dose&#8211;response, looking for an optimum rather than assuming monotonicity.</td></tr>
+  <tr><td><b>One macrophage population, uniformly responsive</b></td><td>The model carries a single cell density and one response curve.</td><td>Magnitude. Wound macrophages are a mixed and shifting M1/M2 population, and only part of it is the pro-inflammatory compartment the peptide acts on.</td><td>Polarisation markers alongside <i>Nos2</i> in the qPCR panel.</td></tr>
+  <tr><td><b>RAW&#160;264.7 and THP-1 responses transfer to human wound macrophages</b></td><td>They are the standard tractable models for TLR4 signalling.</td><td>External validity. Cell lines differ from primary wound macrophages in a hyperglycaemic, protease-rich environment.</td><td>Repeat the key dose&#8211;response on primary monocyte-derived macrophages.</td></tr>
+  </tbody>
+  </table></div>
 
   <h3 class="col">Parameters that cannot be identified from the planned data</h3>
   <div class="tablewrap"><table>
@@ -1111,6 +1269,21 @@ body.noscroll{overflow:hidden}
     closure, and <em>no planned experiment constrains any of them</em>. We present it as a structured
     hypothesis that generates testable predictions, not as a quantitative forecast, and we have
     marked it that way everywhere rather than letting it borrow credibility from Models&#160;1&#8211;2.</p>
+  </div>
+
+  <div class="claim warn">
+    <h3>What this model calls &#8220;closure&#8221; is not re-epithelialisation</h3>
+    <p>This is the most important biological caveat on the page. Model&#160;6 describes a
+    <b>fibroblast</b> population repopulating the defect. In real wound healing, fibroblasts build
+    the granulation tissue that fills the wound, but the epithelial surface is closed by
+    <b>keratinocytes</b> migrating in from the wound margins and from hair follicle remnants &#8212;
+    a cell type this model does not contain at all.</p>
+    <p>A deep wound must be filled with granulation tissue before epithelium can cross it, so the
+    two are ordered and fibroblast repopulation is a genuine prerequisite. But they are not the same
+    event, and the one we predict is the earlier one. <b>Every closure time on this page should be
+    read as a granulation-filling time, and as a lower bound on the time to a closed epithelium.</b>
+    Reporting the two separately &#8212; and adding a keratinocyte layer before claiming closure
+    times &#8212; is the single largest structural improvement available to this model.</p>
   </div>
 
   <div class="col">
@@ -1187,7 +1360,21 @@ body.noscroll{overflow:hidden}
   for this device. If the mechanism is real, under-treating is actively harmful rather than merely
   insufficient, because it costs the patient weeks and returns the wound to a worse position than it
   started from.</p>
+  </div>
 
+<h3 class="col">Assumptions this section makes</h3>
+  <div class="tablewrap"><table>
+  <thead><tr><th>Assumption</th><th>Biological basis</th><th>What breaks if it is wrong</th><th>How to test it</th></tr></thead>
+  <tbody>
+  <tr><td><b>Fibroblasts respond to FGF2-G3 with literature potency</b></td><td>EC<sub>50</sub> and E<sub>max</sub> are taken from growth-factor responses in healthy cells.</td><td><b>The size of the whole therapeutic effect.</b> Fibroblasts from chronic wounds are growth-factor hyporesponsive, with reduced receptor expression and impaired downstream signalling (Kim <i>et al.</i>, 2003), so E<sub>max</sub> in the cells we are actually treating is plausibly lower than modelled.</td><td>Dose&#8211;response on patient-derived or high-glucose-conditioned fibroblasts, not only on a healthy line.</td></tr>
+  <tr><td><b>A single fibroblast population with one proliferation rate</b></td><td>Logistic growth with a carrying capacity is the standard minimal closure model.</td><td>Chronic wound fibroblasts include a senescent fraction that does not proliferate at all and secretes inflammatory mediators. A mean rate averages over two populations behaving differently.</td><td>Senescence markers on wound-edge biopsies; split the population if the fraction is large.</td></tr>
+  <tr><td><b>Migration is diffusive</b></td><td>Random-walk spreading gives the Fisher&#8211;KPP form and the travelling front.</td><td>Front shape. Real fibroblast migration is directed by matrix alignment and chemotactic gradients, which diffusion does not represent.</td><td>Scratch assay reporting front <em>width</em> as well as speed &#8212; width is also what breaks the D<sub>n</sub>/r<sub>eff</sub> degeneracy.</td></tr>
+  <tr><td><b>The wound is a flat circular defect of uniform depth</b></td><td>It makes the radial geometry tractable and the closure fraction well defined.</td><td>Geometric realism. Clinical ulcers are irregular, undermined and variable in depth, and contraction &#8212; a myofibroblast-driven mechanism absent from this model &#8212; contributes substantially to area reduction in vivo.</td><td>Planimetry on real wound shapes; add a contraction term before comparing to clinical area data.</td></tr>
+  <tr><td><b>No infection dynamics</b></td><td>The LPS load is an external constant.</td><td>Long-horizon predictions. A biofilm that grows or is disrupted changes [L] over exactly the multi-day timescale this model runs on.</td><td>Bioburden over time; couple a bacterial growth term to [L].</td></tr>
+  </tbody>
+  </table></div>
+
+  <div class="col">
   <p>Two numerical corrections belong here, because both ran against our written equation reference.
   The planar closure estimate R<sub>w</sub>/c is a <b>lower</b> bound, not an upper one: curvature
   does accelerate the front by 5&#8211;21&#160;% relative to Cartesian, but R<sub>w</sub>/c neglects
@@ -1517,6 +1704,13 @@ body.noscroll{overflow:hidden}
       doi:<a href="https://doi.org/10.1111/cts.12985">10.1111/cts.12985</a>
       <span class="caveat">Source of the Module&#160;C half-life regression.</span></li>
 
+    <li>Dasu M.R., Martin S.J. Toll-like receptor expression and signaling in human diabetic
+      wounds. <i>World Journal of Diabetes</i> 2014;5(2):219&#8211;223.
+      doi:<a href="https://doi.org/10.4239/wjd.v5.i2.219">10.4239/wjd.v5.i2.219</a>
+      <span class="caveat">Source of the claim that TLR4 expression and downstream signalling are
+      elevated rather than transient in <em>human</em> diabetic wounds &#8212; the premise the whole
+      device rests on.</span></li>
+
     <li>Freeman I., Kedem A., Cohen S. The effect of sulfation of alginate hydrogels on the
       specific binding and controlled release of heparin-binding proteins. <i>Biomaterials</i>
       2008;29(22). PMID:<a href="https://pubmed.ncbi.nlm.nih.gov/18462788/">18462788</a>
@@ -1531,6 +1725,30 @@ body.noscroll{overflow:hidden}
       <span class="caveat">Source of the 1&#160;% calcium-alginate mesh size, estimated two ways
       &#8212; 14&#160;nm from mechanical (Flory) analysis and 26&#160;nm from release
       (free-volume) analysis. We use the mechanical value and sweep the range.</span></li>
+
+    <li>Kim B.C., Kim H.T., Park S.H., Cha J.S., Yufit T., Kim S.J., Falanga V. Fibroblasts from
+      chronic wounds show altered TGF-&#946; signaling and decreased TGF-&#946; type II receptor
+      expression. <i>Journal of Cellular Physiology</i> 2003;195(3):331&#8211;336.
+      doi:<a href="https://doi.org/10.1002/jcp.10301">10.1002/jcp.10301</a>
+      <span class="caveat">Source of the growth-factor hyporesponsiveness caveat in Model&#160;6:
+      chronic-wound fibroblasts show reduced type&#160;II receptor expression, impaired Smad2/3 and
+      MAPK phosphorylation, and a weaker proliferative response.</span></li>
+
+    <li>Krausz A., Friedman A.J. Nitric oxide as a surgical adjuvant. <i>Future Science OA</i>
+      2015;1(1):FSO56.
+      doi:<a href="https://doi.org/10.4155/fso.15.56">10.4155/fso.15.56</a>
+      <span class="caveat">Source of the dual-role argument in Models&#160;4&#160;&amp;&#160;5: iNOS
+      deficiency or inhibition delays re-epithelialisation and reduces collagen deposition and
+      tensile strength, so nitric oxide is required for normal repair.</span></li>
+
+    <li>Liu Y., Xia G., Chen Y., Xia H., Xu J., Guo L., Lin S., Liu Y. Purpurolide C-based
+      microneedle promotes macrophage-mediated diabetic wound healing via inhibiting TLR4-MD2
+      dimerization and MYD88 phosphorylation. <i>Acta Pharmaceutica Sinica B</i>
+      2023;13(12):5060&#8211;5073.
+      doi:<a href="https://doi.org/10.1016/j.apsb.2023.05.032">10.1016/j.apsb.2023.05.032</a>
+      <span class="caveat">In&#160;vivo support for blocking TLR4&#8211;MD2 dimerisation
+      specifically, delivered from a hydrogel microneedle patch; the effect is lost in
+      <i>Tlr4</i>-knockout animals.</span></li>
 
     <li>Moor A.N., Vachon D.J., Gould L.J. Proteolytic activity in wound fluids and tissues
       derived from chronic venous leg ulcers. <i>Wound Repair and Regeneration</i>
