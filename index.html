@@ -181,6 +181,17 @@ tbody tr:hover{background:var(--brand-wash)}
   border-bottom:1px solid var(--rule);align-items:start}
 .asks .st{font-size:1rem;line-height:1.5;color:var(--brand)}
 
+/* ---------- reference list ---------- */
+.refs{counter-reset:r;list-style:none;padding:0;margin:1.4em 0;max-width:var(--measure)}
+.refs li{counter-increment:r;position:relative;padding-left:42px;margin-bottom:1.05em;
+  font-size:.93rem;line-height:1.62}
+.refs li::before{content:"[" counter(r) "]";position:absolute;left:0;top:0;
+  font-family:var(--font-sans);font-size:.8rem;font-weight:600;color:var(--ink-2)}
+.refs a{color:var(--brand);text-decoration:none;border-bottom:1px solid var(--rule-strong);
+  word-break:break-word}
+.refs a:hover{border-bottom-color:var(--brand)}
+.refs .caveat{display:block;margin-top:.4em}
+
 /* ---------- model map ---------- */
 .modelmap{width:100%;height:auto;max-width:960px;display:block;margin:0 auto}
 .mm-box{fill:var(--surface);stroke:var(--rule-strong);stroke-width:1.4}
@@ -441,6 +452,7 @@ body.noscroll{overflow:hidden}
   <li><a href="#wrong">Refinement</a></li>
   <li><a href="#asks">Wet lab</a></li>
   <li><a href="#conclusion">Conclusion</a></li>
+  <li><a href="#refs">References</a></li>
   <li><a href="#code">Code</a></li>
 </ul></div></nav>
 
@@ -1293,6 +1305,86 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
   Model&#160;7 inherits that uncertainty wherever it touches closure. The wet-lab experiments listed
   above are ordered by how much each would narrow that gap, and the first three are cheap.</p>
   </div>
+</section>
+
+<!-- ================= REFERENCES ================= -->
+<section class="act wrap" id="refs">
+  <div class="act-head"><div class="num">&#167;</div><div>
+    <p class="eyebrow">Sources</p>
+    <h2>References</h2>
+  </div></div>
+  <p class="col">Every source cited on this page, with a resolvable identifier. Parameter
+  provenance tiers and the full assumption register are in the V3 equation-reference document;
+  this list covers the claims made in the prose above.</p>
+
+  <ol class="refs">
+    <li>Ai S., Kuzuya M., Iguchi A. Neutrophil elastase in pressure ulcer fluid degrades
+      fibronectin in the exudates. <i>Geriatrics &amp; Gerontology International</i> 2004.
+      doi:<a href="https://doi.org/10.1111/j.1447-0594.2004.00243.x">10.1111/j.1447-0594.2004.00243.x</a></li>
+
+    <li>Cavaco M., Valle J., Flores I., Andreu D., Castanho M.A.R.B. Estimating peptide half-life
+      in serum from tunable, sequence-related physicochemical properties. <i>Clinical and
+      Translational Science</i> 2021;14:1304&#8211;1313.
+      doi:<a href="https://doi.org/10.1111/cts.12985">10.1111/cts.12985</a>
+      <span class="caveat">Source of the Module&#160;C half-life regression.</span></li>
+
+    <li>Freeman I., Kedem A., Cohen S. The effect of sulfation of alginate hydrogels on the
+      specific binding and controlled release of heparin-binding proteins. <i>Biomaterials</i>
+      2008;29(22). PMID:<a href="https://pubmed.ncbi.nlm.nih.gov/18462788/">18462788</a>
+      <span class="caveat">Source of the claim that heparin-binding proteins, including FGF-2,
+      bind alginate-sulfate and heparin but show no measurable binding to <em>unmodified</em>
+      alginate. Page numbers differ between secondary listings; cited here by PMID.</span></li>
+
+    <li>Grassi M., Sandolo C., Perin D., Coviello T., Lapasin R., Grassi G. Structural
+      characterization of calcium alginate matrices by means of mechanical and release tests.
+      <i>Molecules</i> 2009;14:3003&#8211;3017.
+      doi:<a href="https://doi.org/10.3390/molecules14083003">10.3390/molecules14083003</a>
+      <span class="caveat">Source of the 1&#160;% calcium-alginate mesh size, estimated two ways
+      &#8212; 14&#160;nm from mechanical (Flory) analysis and 26&#160;nm from release
+      (free-volume) analysis. We use the mechanical value and sweep the range.</span></li>
+
+    <li>Moor A.N., Vachon D.J., Gould L.J. Proteolytic activity in wound fluids and tissues
+      derived from chronic venous leg ulcers. <i>Wound Repair and Regeneration</i>
+      2009;17:832&#8211;839.
+      doi:<a href="https://doi.org/10.1111/j.1524-475X.2009.00547.x">10.1111/j.1524-475X.2009.00547.x</a></li>
+
+    <li>Park H., Hong J., Yin Y., <i>et al.</i> TAP2, a peptide antagonist of Toll-like receptor 4,
+      attenuates pain and cartilage degradation in a monoiodoacetate-induced arthritis rat model.
+      <i>Scientific Reports</i> 2020;10:18930.
+      doi:<a href="https://doi.org/10.1038/s41598-020-74544-5">10.1038/s41598-020-74544-5</a></li>
+
+    <li>Park S.-H., Shin H.-J., Shah M., <i>et al.</i> TLR4/MD2 specific peptides stalled in vivo
+      LPS-induced immune exacerbation. <i>Biomaterials</i> 2017.
+      doi:<a href="https://doi.org/10.1016/j.biomaterials.2017.02.023">10.1016/j.biomaterials.2017.02.023</a></li>
+
+    <li>Shi M., McHugh K.J. Strategies for overcoming protein and peptide instability in
+      biodegradable drug delivery systems. <i>Advanced Drug Delivery Reviews</i> 2023;201:114904.
+      doi:<a href="https://doi.org/10.1016/j.addr.2023.114904">10.1016/j.addr.2023.114904</a></li>
+
+    <li>Slivka P.F., Shridhar M., Lee G.-I., <i>et al.</i> A peptide antagonist of the
+      TLR4&#8211;MD2 interaction. <i>ChemBioChem</i> 2009;10:645&#8211;649.
+      doi:<a href="https://doi.org/10.1002/cbic.200800769">10.1002/cbic.200800769</a>
+      <span class="caveat">Source of the 100&#160;&#181;M Module&#160;A benchmark, and of both
+      the MD2-I and MD2-II reference sequences.</span></li>
+
+    <li>US Patent 10,435,443. Toll-like receptor 4 (TLR4) antagonist peptides. 2019.
+      <span class="caveat">Source of the TAP1, TAP2 and TAP3 sequences.</span></li>
+
+    <li>Yager D.R., Chen S.M., Ward S.I., <i>et al.</i> Ability of chronic wound fluids to degrade
+      peptide growth factors is associated with increased levels of elastase activity and
+      diminished levels of proteinase inhibitors. <i>Wound Repair and Regeneration</i>
+      1997;5:23&#8211;32.
+      doi:<a href="https://doi.org/10.1046/j.1524-475X.1997.50108.x">10.1046/j.1524-475X.1997.50108.x</a></li>
+
+    <li>Yager D.R., Nwomeh B.C. The proteolytic environment of chronic wounds. <i>Wound Repair and
+      Regeneration</i> 1999;7:433&#8211;441.
+      doi:<a href="https://doi.org/10.1046/j.1524-475X.1999.00433.x">10.1046/j.1524-475X.1999.00433.x</a></li>
+
+    <li>Yin Y., Park H., Lee S.Y., <i>et al.</i> Analgesic effect of Toll-like receptor 4
+      antagonistic peptide 2 on mechanical allodynia induced with spinal nerve ligation in rats.
+      <i>International Neurourology Journal</i> 2019.
+      doi:<a href="https://doi.org/10.5213/inj.1938216.107">10.5213/inj.1938216.107</a></li>
+  </ol>
 </section>
 
 <!-- ================= CODE ================= -->
