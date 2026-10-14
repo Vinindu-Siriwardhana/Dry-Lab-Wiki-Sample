@@ -28,7 +28,6 @@
   <li><a href="#asks">Wet lab</a></li>
   <li><a href="#conclusion">Conclusion</a></li>
   <li><a href="#refs">References</a></li>
-  <li><a href="#code">Code</a></li>
 </ul></div></nav>
 
 <!-- ================= OVERVIEW ================= -->
@@ -404,8 +403,8 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
     <b>1.93&#215;10<sup>&#8722;7</sup></b> at 1600 &#8212; a factor of 4 per refinement. The
     numerical Fisher&#8211;KPP front speed matches the analytic value to within
     1.8&#8211;6.2&#160;%, sitting just <i>below</i> the analytic line as expected for a discretised
-    pulled front. <code>verify.py</code> must print ALL CHECKS PASSED before any number on this page
-    is quoted anywhere.</p>
+    pulled front. The two-domain solver is checked four ways. The full regression suite must pass
+    before any number on this page is quoted anywhere.</p>
   </div>
 
   <div class="col">
@@ -960,39 +959,6 @@ C&#7511;(&#8722;L_tis, t) = 0                  systemic sink at the dermal base<
       <i>International Neurourology Journal</i> 2019.
       doi:<a href="https://doi.org/10.5213/inj.1938216.107">10.5213/inj.1938216.107</a></li>
   </ol>
-</section>
-
-<!-- ================= CODE ================= -->
-<section class="act wrap" id="code">
-  <div class="act-head"><div class="num">&#9881;</div><div>
-    <p class="eyebrow">Reproducibility</p>
-    <h2>Code and reproducibility</h2>
-  </div></div>
-
-  <div class="ref-banner">
-    <span class="tag">Team reference &#183; not a judged deliverable</span>
-    <p>This section lets anyone on the team, or anyone reading this page, check a number for
-    themselves. Every quantitative claim above is produced by one of the scripts below. The
-    whole package depends only on
-    <code>numpy</code>, <code>scipy</code> and <code>matplotlib</code>.</p>
-  </div>
-
-  <a class="dl" href="assets/igem2026-hku-dry-lab-model-code.zip" download>
-    &#8595;&#160;&#160;Download the full code bundle (.zip)</a>
-
-  <div class="col">
-  <p style="font-size:.92rem;color:var(--ink-2)">Run <code>python3 verify.py</code> first. It
-  must print <b>ALL CHECKS PASSED</b> &#8212; it checks the release solver against the
-  closed-form Crank series, the Fisher&#8211;KPP solver against the analytic front speed, and
-  the two-domain solver four ways &#8212; before any number here is quoted anywhere.</p>
-  </div>
-
-  <div class="filelist">__FILECARDS__</div>
-
-  <h3>Browse the source</h3>
-  <p style="font-size:.9rem;color:var(--ink-2);max-width:var(--measure)">Expand any file to read
-  it here, or use the copy button.</p>
-  __CODELISTINGS__
 </section>
 
 <footer class="wrap">
