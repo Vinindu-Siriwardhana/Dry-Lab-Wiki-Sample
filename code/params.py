@@ -39,8 +39,11 @@ R_W_DEFAULT  = 0.2      # cm   (2 mm) wound radius (grid 1-5 mm)          T4
 # --- species ----------------------------------------------------------------
 MW_V14       = 1355.59  # Da                                               T1
 MW_FGF       = 16487.87 # Da                                               T1
-A_V14_NM     = 0.73     # nm   hydrodynamic radius (0.87 = sensitivity)    T2
-A_FGF_NM     = 1.68     # nm   (2.34 = sensitivity bound)                  T2
+A_V14_NM     = 0.87     # nm   hydrodynamic radius, fitted correlation     T2
+                        #      a_h = 0.0515 M^0.392 (doc App. A); band 0.8-1.0.
+                        #      0.73 = anhydrous-sphere lower bound, not used
+A_FGF_NM     = 2.34     # nm   same correlation; band 1.9-2.4 (Wilkins ~2.0) T2
+                        #      1.68 = anhydrous-sphere lower bound, not used
 
 
 def stokes_einstein(a_nm):
@@ -48,8 +51,10 @@ def stokes_einstein(a_nm):
     return K_B * T_BODY / (6 * math.pi * ETA_WATER * a_nm * 1e-9) * 1e4
 
 
-D0_V14       = 4.5e-6   # cm2/s Stokes-Einstein from A_V14_NM, ETA     D  (doc band 2.5-4.5e-6)
-D0_FGF       = 2.0e-6   # cm2/s Stokes-Einstein from A_FGF_NM, ETA     D  (doc 1.3-1.7e-6)
+D0_V14       = 3.6e-6   # cm2/s consensus of 3 correlations, doc App. A T2 (band 2.5-4.5e-6)
+D0_FGF       = 1.5e-6   # cm2/s same                                    T2 (band 1.3-1.7e-6)
+                        # stokes_einstein() at the anhydrous radii gives 4.5 / 2.0e-6:
+                        # upper bounds only
 T_HALF_V14   = 6.1 * HOUR   # s  serum half-life proxy                     T4
 T_HALF_FGF   = 168 * HOUR   # s  functional half-life at 37 C              T1
 
@@ -82,7 +87,15 @@ K_CL_FGF     = 0.000115 # 1/s  register value only: NOT used anywhere (Dirichlet
 K_CL_V14     = 0.0035   # 1/s  register value only: NOT used anywhere; unverified T4
 
 # --- dosing (Model 7) -------------------------------------------------------
-C_TARGET_V14 = 25 * UM     # mol/cm3  efficacious tissue concentration    T4
+# Target from the 14 Oct 2026 flow panel (replaces the earlier 25 uM T4 guess):
+#   gate-frequency detection limit 27.8 % (t-test, n = 3)
+#     -> occupancy drop 13.1 % for a log-normal per-cell intensity, SIGMA_FLOW_LOG
+#     -> K_D,P >= 10.08 uM (one-sided LOWER BOUND)
+#     -> C_target = K_D,P (a - 1) = 145 uM: the dose at which 50 % of the MD2 pool
+#        is LPS-bound (psi_50 = 1 + a, which halves theta_LPS, is 165 uM).
+SIGMA_FLOW_LOG = 0.7       # --  log-SD of per-cell FITC intensity       T4 -- needs FCS files
+KD_P_LOWER   = 10.08 * UM  # mol/cm3  lower bound on V14 K_D,P            D
+C_TARGET_V14 = 145 * UM    # mol/cm3  efficacious tissue concentration   D
 C_SOLUBILITY = 738 * UM    # mol/cm3  1 mg/mL saturation ceiling          T4 -- MEASURE THIS
 F_REL        = 0.5         # --  fraction of loaded dose released         T4
 REAPPLY_D    = 1.0         # d   dressing-change interval                 T4
@@ -93,9 +106,9 @@ L_LPS        = 1.0 * UM # mol/cm3 (1 uM) wound endotoxin load              T4
 A_LPS        = L_LPS / KD_L   # -- scaled endotoxin load, 15.4             D
 THETA_UNTREATED = A_LPS / (1 + A_LPS)   # 0.94, closure calibration anchor D
 TLR4_TOT     = 1.0      # nM                                               T4
-GAMMA        = 10.0     # --  scaled receptor density                      T4
 HILL_H       = 2.0      # --  NF-kB p65 Hill coefficient                   T3
 K_NF         = 10.0     # nM                                               T4
+GAMMA        = TLR4_TOT / K_NF   # -- scaled receptor density, 0.1         D
 P65_BAS, P65_MAX = 0.5, 50.0   # nM                                        T4
 PSI_RANGE    = (1e-2, 1e4)
 
