@@ -2,7 +2,8 @@
 """
 build_page.py -- assemble the Modelling wiki page.
 
-Reads page.css + css/theme.css + body.html + js/ui.js and writes ../index.html.
+Reads page.css + css/theme.css + css/widgets.css + body.html + widgets/*.html + js/*.js
+and writes ../index.html.
 """
 import os, datetime, sys
 
@@ -11,8 +12,8 @@ ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 
 
-CSS = ("page.css", "css/theme.css")
-JS = ("ui.js", "math.js")
+CSS = ("page.css", "css/theme.css", "css/widgets.css")
+JS = ("sim.js", "plot.js", "ui.js", "math.js", "i3.js", "i1.js", "i2.js")
 NL = "\n"
 
 
@@ -46,6 +47,8 @@ def main():
     js = NL.join(read(os.path.join(HERE, "js", f)) for f in JS)
     body = read(os.path.join(HERE, "body.html"))
 
+    for k in ("I1", "I2", "I3"):
+        body = body.replace("__%s__" % k, read(os.path.join(HERE, "widgets", k.lower() + ".html")))
     body = (body.replace("__BUILDDATE__",
                          datetime.date.today().strftime("%d %B %Y")))
 

@@ -443,6 +443,87 @@ body.noscroll{overflow:hidden}
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
 @media(max-width:560px){.hero .keystrip .v{font-size:1.4rem}.hero .keystrip>div{padding:14px 15px}}
 
+/* widgets.css -- the three interactives */
+.widget{background:#fff;border:1px solid var(--rule);border-radius:24px;margin:3.4em 0;max-width:1080px;
+  overflow:hidden;box-shadow:0 2px 6px rgba(15,40,28,.05),0 30px 70px -34px rgba(15,74,47,.45)}
+.w-head{padding:28px 32px 10px;background:linear-gradient(180deg,#EEF7F2 0%,#fff 100%)}
+.w-badge{display:inline-block;background:var(--brand);color:#fff;font-family:var(--font-sans);
+  font-weight:700;font-size:.66rem;letter-spacing:.15em;text-transform:uppercase;padding:6px 12px;border-radius:999px}
+.w-head h3{margin:.6em 0 .3em;font-family:var(--font-serif);font-size:1.6rem;letter-spacing:-.015em}
+.w-head p{color:var(--ink-2);font-size:.96rem;max-width:74ch;margin:0 0 .7em}
+.w-body{display:grid;grid-template-columns:312px minmax(0,1fr);gap:30px;padding:18px 32px 28px;align-items:start}
+.w-controls{display:flex;flex-direction:column;gap:20px}
+.w-out{min-width:0}
+@media(max-width:900px){.w-body{grid-template-columns:1fr;padding:16px 20px 24px}.w-head{padding:24px 20px 8px}}
+
+.ctl{display:block}
+.ctl-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  font:600 .8rem/1.2 var(--font-sans);color:var(--ink-2);margin-bottom:4px}
+.ctl output{font-variant-numeric:tabular-nums;color:var(--brand-strong);font-weight:700;white-space:nowrap}
+.widget input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:30px;background:transparent;
+  margin:0;cursor:pointer}
+.widget input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:99px;background:#D8E3DC}
+.widget input[type=range]::-moz-range-track{height:6px;border-radius:99px;background:#D8E3DC}
+.widget input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;
+  background:#fff;border:3px solid var(--brand);margin-top:-8px;box-shadow:0 3px 8px rgba(15,40,28,.28);
+  transition:transform .15s ease}
+.widget input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#fff;
+  border:3px solid var(--brand);box-shadow:0 3px 8px rgba(15,40,28,.28)}
+.widget input[type=range]:hover::-webkit-slider-thumb{transform:scale(1.12)}
+.widget input[type=range]:active::-webkit-slider-thumb{transform:scale(1.2);background:var(--brand-wash)}
+.widget input[type=range]:disabled{cursor:not-allowed}
+
+.tiles{display:grid;gap:12px;grid-template-columns:1fr}
+.tiles-4{grid-template-columns:repeat(6,minmax(0,1fr));margin-bottom:18px}
+.tiles-4 .tile{grid-column:span 2}
+.tiles-4 .tile-key{grid-column:span 3;order:-1;padding:16px 18px}
+.tiles-4 .tile-key .tv{font-size:2rem;white-space:nowrap}
+.tiles-4 .tile-key .tk{font-size:.8rem}
+@media(max-width:560px){.tiles-4{grid-template-columns:1fr 1fr}.tiles-4 .tile,.tiles-4 .tile-key{grid-column:span 1}
+  .tiles-4 .tile-key{grid-column:1/-1}}
+.ctl-group{display:flex;flex-direction:column;gap:14px;background:var(--brand-wash);
+  border:1px solid #B9DCC8;border-radius:16px;padding:14px 16px 6px}
+.ctl-group-t{font:700 .66rem var(--font-sans);letter-spacing:.14em;text-transform:uppercase;color:var(--brand-strong)}
+.tile{background:var(--bg-soft);border:1px solid var(--rule);border-radius:16px;padding:14px 16px;min-width:0}
+.tv{font:700 1.6rem/1.1 var(--font-sans);letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums}
+.tk{font:500 .76rem/1.38 var(--font-sans);color:var(--ink-3);margin-top:.4em}
+.tile-key{background:var(--brand-wash);border-color:#B9DCC8}
+.tile-key .tv{color:var(--brand-strong)}
+.tile-bad{background:#FBEDEF;border-color:#EBB6BD}
+.tile-bad .tv,.tile-bad .tk{color:var(--fgf)}
+
+.w-btn{font:600 .85rem var(--font-sans);border:0;border-radius:999px;padding:11px 20px;cursor:pointer;
+  background:var(--brand);color:#fff;box-shadow:0 8px 18px -8px rgba(15,74,47,.7);
+  transition:background .2s ease,transform .15s ease}
+.w-btn:hover{background:var(--brand-strong);transform:translateY(-1px)}
+.w-btn-ghost{background:#fff;color:var(--brand-strong);border:1.5px solid var(--rule-strong);box-shadow:none}
+.w-btn-ghost:hover{background:var(--brand-wash)}
+.player{display:flex;gap:10px;flex-wrap:wrap}
+.seg{display:flex;background:var(--bg-soft);border:1px solid var(--rule);border-radius:999px;padding:4px}
+.seg-b{flex:1;font:600 .84rem var(--font-sans);border:0;background:transparent;color:var(--ink-2);
+  padding:9px 14px;border-radius:999px;cursor:pointer;transition:background .2s ease,color .2s ease}
+.seg-b.on{background:var(--brand);color:#fff;box-shadow:0 6px 14px -6px rgba(15,74,47,.7)}
+/* fixed height: this text changes every animation frame, and a box that grew
+   and shrank with it shifted everything below while the reader scrolled */
+.status{font-size:.86rem;line-height:1.45;background:var(--bg-soft);border:1px solid var(--rule);
+  border-radius:14px;padding:12px 14px;height:7.6em;overflow:hidden;color:var(--ink-2)}
+.tk{min-height:2.76em}
+.tiles-4 .tile-key .tk{min-height:2.76em;display:flex;align-items:center}
+.widget{contain:layout paint}
+/* reserve each canvas's height before its first draw, so a widget that
+   initialises lazily never pushes the page down */
+#i1-cv-c{aspect-ratio:1/0.52}#i3-cv{aspect-ratio:1/0.62}
+#i2-disc,#i2-prof{aspect-ratio:1/1}#i2-time{aspect-ratio:1/0.34}
+
+.w-chart{background:#fff;border:1px solid var(--rule);border-radius:16px;padding:10px 8px 4px}
+.w-chart canvas,.i2-grid canvas{display:block;width:100%}
+.i2-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.i2-grid canvas{background:#fff;border:1px solid var(--rule);border-radius:16px}
+@media(max-width:560px){.i2-grid{grid-template-columns:1fr}}
+.w-foot{margin:0;max-width:none;padding:16px 32px 20px;border-top:1px solid var(--rule);background:#FAFCFA;
+  font-size:.8rem;line-height:1.5;color:var(--ink-3)}
+@media(max-width:900px){.w-foot{padding:14px 20px 18px}}
+
 </style>
 </head>
 <body>
@@ -459,7 +540,7 @@ body.noscroll{overflow:hidden}
   <div class="keystrip">
     <div><div class="v">3 modules</div><div class="k">screened the payload before synthesis: the iteration-1 peptide fails the structural gate, V14 passes all three</div></div>
     <div><div class="v">11 min</div><div class="k">to 95&#160;% release of V14 from the 500&#160;&#181;m alginate gel. The patch is a bolus, not a sustained delivery</div></div>
-    <div><div class="v">&#8804; 8.6 h</div><div class="k">patch-change interval needed for closure; one patch holds tissue above the 145&#160;&#181;M target for 2.9&#160;h</div></div>
+    <div><div class="v">&#8804; 6.8 h</div><div class="k">patch-change interval needed for closure; one patch holds tissue above the 145&#160;&#181;M target for 2.2&#160;h</div></div>
     <div><div class="v">1.93&#215;10<sup>&#8722;7</sup></div><div class="k">solver error against the closed form, converging at second order</div></div>
   </div>
 </div></header>
@@ -983,7 +1064,7 @@ body.noscroll{overflow:hidden}
 
   <figure class="wide">
     <div class="figbox"><img src="assets/G02_kymographs_V14_FGF2.svg" alt="Two kymographs of free concentration against depth and log time for V14 and FGF2-G3, gel on the left of a dashed line, tissue to the right; an orange contour marks the 145 micromolar V14 target." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;3.</span> Gel + tissue transport (two-domain solver, 500&#160;&#181;m alginate, R<sub>V</sub>&#160;=&#160;1). V14 stays above the 145&#160;&#181;M target for about 3&#160;h at the wound surface and reaches 0.7&#160;mm at its deepest; FGF2-G3 persists for days. White lines mark 1, 10 and 50&#160;% of the loaded concentration. <span class="caveat">FGF2-G3 is run with the linear tissue equation (no heparan-sulfate retardation, no FGFR uptake), so its penetration is an upper bound.</span></figcaption>
+    <figcaption><span class="fid">Figure&#160;3.</span> Gel + tissue transport (two-domain solver, 500&#160;&#181;m alginate, R<sub>V</sub>&#160;=&#160;1). V14 stays above the 145&#160;&#181;M target for about 2.6&#160;h at the wound surface and reaches 0.7&#160;mm at its deepest; FGF2-G3 persists for days. White lines mark 1, 10 and 50&#160;% of the loaded concentration. <span class="caveat">FGF2-G3 is run with the linear tissue equation (no heparan-sulfate retardation, no FGFR uptake), so its penetration is an upper bound.</span></figcaption>
   </figure>
 
   <div class="claim">
@@ -1026,7 +1107,7 @@ body.noscroll{overflow:hidden}
   there rather than a reflecting one. That choice is biologically right in kind. Its <em>depth</em>
   is less certain: dermal anatomy places a vascular plexus well above the 1.5&#160;mm boundary we
   use, so clearance plausibly begins shallower than the model assumes. If it does, residence time is
-  over-estimated and the single-patch window is shorter than 2.9&#160;h. We have not resolved this,
+  over-estimated and the single-patch window is shorter than 2.2&#160;h. We have not resolved this,
   and it is the assumption in this section most likely to be wrong in the optimistic direction.</p>
 
   <p>Where the drug ends up: the 1.5&#160;mm dermis drains the gel reservoir into the systemic sink
@@ -1238,6 +1319,44 @@ body.noscroll{overflow:hidden}
     <div class="figbox"><img src="assets/G06_free_NO_vs_nitrite.svg" alt="Left: free NO in nanomolar over 24 hours for four V14 doses. Right: accumulated nitrite in micromolar over 24 hours for the same doses." loading="lazy"></div>
     <figcaption><span class="fid">Figure&#160;9.</span> Model&#160;5: free NO is quasi-steady at nanomolar levels, while nitrite &#8212; what the Griess assay reads &#8212; accumulates to micromolar. At 145&#160;&#181;M V14 the predicted 24&#160;h nitrite falls from 26 to 12&#160;&#181;M. <span class="caveat">Model predictions; the Griess dose&#8211;response will calibrate IC<sub>50</sub><sup>NO</sup> and n<sub>app</sub>.</span></figcaption>
   </figure>
+
+
+<section class="widget" id="i3" aria-labelledby="i3-title">
+  <header class="w-head">
+    <span class="w-badge">Interactive 3</span>
+    <h3 id="i3-title">Inflammation explorer</h3>
+    <p>Set the V14 concentration reaching the macrophages, the endotoxin load and the V14 affinity, and
+    follow the chain from receptor competition (Model&#160;3) through nuclear p65 (Model&#160;4) to the
+    nitrite a Griess assay would read after 24&#160;h (Model&#160;5). Every value is recomputed in your
+    browser from the same equations as Figures&#160;5, 6 and 9.</p>
+  </header>
+  <div class="w-body">
+    <div class="w-controls">
+      <label class="ctl"><span class="ctl-top"><span>V14 concentration C<sub>V</sub></span><output id="i3-cv-v"></output></span>
+        <input type="range" id="i3-cv" min="-1" max="3.7" step="0.01" value="2.1614"></label>
+      <label class="ctl"><span class="ctl-top"><span>Endotoxin [LPS]</span><output id="i3-l-v"></output></span>
+        <input type="range" id="i3-l" min="-2" max="1" step="0.01" value="0"></label>
+      <label class="ctl"><span class="ctl-top"><span>V14 affinity K<sub>D,P</sub></span><output id="i3-kd-v"></output></span>
+        <input type="range" id="i3-kd" min="1.0035" max="2" step="0.005" value="1.0035"></label>
+      <button type="button" class="w-btn" id="i3-reset">Reset to the 145&#160;&#181;M target</button>
+      <div class="tiles">
+        <div class="tile"><div class="tv" id="i3-lps"></div><div class="tk">of MD2 is LPS-bound (signalling-competent)</div></div>
+        <div class="tile"><div class="tv" id="i3-supp"></div><div class="tk">active receptor, relative to LPS alone</div></div>
+        <div class="tile"><div class="tv" id="i3-p65"></div><div class="tk">nuclear p65, relative to LPS alone</div></div>
+        <div class="tile tile-key"><div class="tv" id="i3-no2"></div><div class="tk" id="i3-no2-k">predicted nitrite after 24&#160;h</div></div>
+      </div>
+    </div>
+    <div class="w-chart"><canvas id="i3-c" aria-label="Active receptor, nuclear p65 and nitrite relative to LPS alone, against V14 concentration" role="img"></canvas></div>
+  </div>
+  <p class="w-foot">a&#160;=&#160;[LPS]/K<sub>D,L</sub> with K<sub>D,L</sub>&#160;=&#160;65&#160;nM. K<sub>D,P</sub>&#160;&#8805;&#160;10.08&#160;&#181;M
+  is the lower bound from the 14&#160;October flow panel, so the slider starts there and only moves to weaker
+  binding. The p65 step uses the register&#8217;s Tier-4 priors (&#947;&#160;=&#160;0.1, h&#160;=&#160;2); nitrite is
+  the integrated iNOS output for 2&#215;10<sup>5</sup> cells in 200&#160;&#181;L, scaled from the LPS-only p65
+  level of 0.85 as in Figure&#160;9. These are model predictions until the Griess dose&#8211;response
+  calibrates IC<sub>50</sub><sup>NO</sup>. Vertical lines: 25&#160;&#181;M tested, 145&#160;&#181;M target,
+  738&#160;&#181;M solubility limit.</p>
+</section>
+
 
   <div class="claim warn">
     <h3>What we will and will not fit</h3>
@@ -1460,6 +1579,53 @@ body.noscroll{overflow:hidden}
     <figcaption><span class="fid">Figure&#160;12.</span> Closure under the joint Model&#160;6 prior: 81&#160;% of parameter samples close, with a wide spread of closure times. The plateau is the fraction with r<sub>p</sub>&#160;&gt;&#160;d.</figcaption>
   </figure>
 
+<section class="widget" id="i2" aria-labelledby="i2-title">
+  <header class="w-head">
+    <span class="w-badge">Interactive 2</span>
+    <h3 id="i2-title">Wound-closure animation</h3>
+    <p>Watch the fibroblast density n(r,t) advance across the wound bed. Apply a fresh patch on a
+    schedule and watch each one top up the drug effect, compare a single long treatment pulse, or
+    leave the wound untreated. Too little drug lets the front advance and then <em>recede</em>.</p>
+  </header>
+  <div class="w-body">
+    <div class="w-controls">
+      <div class="seg" role="group" aria-label="Treatment">
+        <button type="button" class="seg-b on" id="i2-pat" aria-pressed="true">Patches</button>
+        <button type="button" class="seg-b" id="i2-trt" aria-pressed="false">One pulse</button>
+        <button type="button" class="seg-b" id="i2-unt" aria-pressed="false">Untreated</button>
+      </div>
+      <label class="ctl" id="i2-iv-c"><span class="ctl-top"><span>New patch every</span><output id="i2-iv-v">4 h</output></span>
+        <input type="range" id="i2-iv" min="2" max="24" step="1" value="4"></label>
+      <label class="ctl" id="i2-T-c" style="display:none"><span class="ctl-top"><span>Treatment duration</span><output id="i2-T-v">14.0 d</output></span>
+        <input type="range" id="i2-T" min="1" max="30" step="0.5" value="14"></label>
+      <label class="ctl"><span class="ctl-top"><span>Wound radius R<sub>w</sub></span><output id="i2-rw-v">2.0 mm</output></span>
+        <input type="range" id="i2-rw" min="1" max="5" step="0.5" value="2"></label>
+      <div class="player">
+        <button type="button" class="w-btn" id="i2-play">&#9654; Play</button>
+        <button type="button" class="w-btn w-btn-ghost" id="i2-restart">Restart</button>
+      </div>
+      <label class="ctl"><span class="ctl-top"><span>Day</span><output id="i2-d-v">0.0 d</output></span>
+        <input type="range" id="i2-d" min="0" max="90" step="0.25" value="0"></label>
+      <div class="status" id="i2-status" role="status" aria-live="polite">Day 0.0: front at <b>1.97 mm</b></div>
+    </div>
+    <div class="w-out">
+      <div class="i2-grid">
+        <canvas id="i2-disc" aria-label="Top-down view of the wound bed" role="img"></canvas>
+        <canvas id="i2-prof" aria-label="Fibroblast density against radius" role="img"></canvas>
+      </div>
+      <div class="w-chart"><canvas id="i2-time" aria-label="Front position and drug effect against time" role="img"></canvas></div>
+    </div>
+  </div>
+  <p class="w-foot">Static versions: Figures&#160;11 and 14. In <b>Patches</b> mode each patch is the
+  500&#160;&#181;m alginate patch of Interactive&#160;1, which keeps tissue above the 145&#160;&#181;M target for about 2.2&#160;h; the
+  drug effect then fades with an 18&#160;h time constant until the next patch (green saw-tooth on the
+  timeline). The longest interval that still closes is about 6.8&#160;h; at longer intervals the front advances and then stalls. Every rate comes from the Tier-4 closure functions of the constants register (chronic
+  r<sub>p</sub> = 0.50, d = 0.51&#160;d<sup>&#8722;1</sup>; treated r<sub>p</sub> = 1.11,
+  d = 0.45&#160;d<sup>&#8722;1</sup>). The animation stops when the front reaches the centre, because the
+  model describes a chronic wound bed.</p>
+</section>
+
+
 <h3 class="col">Assumptions this section makes</h3>
   <div class="tablewrap"><table>
   <thead><tr><th>Assumption</th><th>Biological basis</th><th>What breaks if it is wrong</th><th>How to test it</th></tr></thead>
@@ -1495,10 +1661,10 @@ body.noscroll{overflow:hidden}
   <div class="claim gold">
     <h3>Summary</h3>
     <p>Model&#160;7 runs the chain backwards, from a wound to a device specification. One patch keeps
-    tissue above the 145&#160;&#181;M V14 target for <b>2.9&#160;h</b> (1.4&#8211;4.8&#160;h across
+    tissue above the 145&#160;&#181;M V14 target for <b>2.2&#160;h</b> (1.2&#8211;3.4&#160;h across
     the ranges of sink depth and diffusivity). No wound in the 1&#8211;5&#160;mm range closes on a
-    single patch: the continuous cover needed is <b>about 55&#8211;285&#215;</b> what one patch
-    supplies. The patch must be changed at least every <b>8.6&#160;h</b>, about three times a day,
+    single patch: the continuous cover needed is <b>about 70&#8211;370&#215;</b> what one patch
+    supplies. The patch must be changed at least every <b>6.8&#160;h</b>, about four times a day,
     for the 500&#160;&#181;m gel as built.</p>
   </div>
 
@@ -1512,7 +1678,7 @@ body.noscroll{overflow:hidden}
   from the 14&#160;October flow panel: K<sub>D,P</sub>&#160;&#8805;&#160;10.08&#160;&#181;M and
   C<sub>V,target</sub>&#160;=&#160;K<sub>D,P</sub>(a&#160;&#8722;&#160;1), the concentration at which half of
   the MD2 pool is LPS-bound at 1&#160;&#181;M endotoxin. Because K<sub>D,P</sub> is a lower bound, so is
-  the target. Every number below &#8212; 2.9&#160;h, 8.6&#160;h, 234&#160;&#181;M,
+  the target. Every number below &#8212; 2.2&#160;h, 6.8&#160;h, 234&#160;&#181;M,
   R<sub>V</sub>&#160;&#8776;&#160;3.2 &#8212; inherits that assumption.</p>
 
   <h3 class="col">Why we invert the chain instead of simulating forwards</h3>
@@ -1528,8 +1694,8 @@ body.noscroll{overflow:hidden}
   otherwise. Retention works by <em>binding</em>, so the free concentration that drives delivery is
   C<sub>total</sub>/R<sub>V</sub>: residence time is gained and driving concentration is lost in
   equal proportion. At the 145&#160;&#181;M target the trade is unfavourable from the start: the
-  window shortens from 2.9&#160;h at R<sub>V</sub>&#160;=&#160;1 to 2.5&#160;h at R<sub>V</sub>&#160;=&#160;1.5
-  and 1.9&#160;h at R<sub>V</sub>&#160;=&#160;2, and is <b>zero</b> from R<sub>V</sub>&#160;&#8776;&#160;3,
+  window shortens from 2.2&#160;h at R<sub>V</sub>&#160;=&#160;1 to 2.0&#160;h at R<sub>V</sub>&#160;=&#160;1.5
+  and 1.5&#160;h at R<sub>V</sub>&#160;=&#160;2, and is <b>zero</b> from R<sub>V</sub>&#160;&#8776;&#160;3,
   because peak tissue concentration falls as 1/R<sub>V</sub> and drops below the target. (At the
   earlier 25&#160;&#181;M target, retention could roughly double the window.)</p>
 
@@ -1549,35 +1715,86 @@ body.noscroll{overflow:hidden}
 
   <figure class="wide">
     <div class="figbox"><img src="assets/G10_design_feasibility_map.svg" alt="Filled contour map of hours above the 145 micromolar target against V14 loading and gel thickness, with the solubility limit hatched and the current 0.5 millimetre design starred." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;13.</span> Model&#160;7 design space: hours one patch keeps the top 500&#160;&#181;m of tissue above 145&#160;&#181;M. The current design (0.5&#160;mm, 738&#160;&#181;M) gives about 2.7&#160;h; thicker gels extend this (about 8&#160;h at 1.5&#160;mm). <span class="caveat">Loadings to the right of 738&#160;&#181;M exceed V14 solubility.</span></figcaption>
+    <figcaption><span class="fid">Figure&#160;13.</span> Model&#160;7 design space: hours one patch keeps the top 500&#160;&#181;m of tissue above 145&#160;&#181;M. The current design (0.5&#160;mm, 738&#160;&#181;M) gives about 2.2&#160;h; thicker gels extend this (about 5&#160;h at 1.5&#160;mm). <span class="caveat">Loadings to the right of 738&#160;&#181;M exceed V14 solubility.</span></figcaption>
   </figure>
 
   <figure class="wide">
     <div class="figbox"><img src="assets/G07_time_above_target_vs_dressing_interval.svg" alt="Left: depth-averaged free V14 against hours after one patch with the 145 micromolar target line. Right: closure time against patch-change interval for 1, 2 and 3 millimetre wounds, with the longest closing interval marked." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;14.</span> The dressing-change interval at the 145&#160;&#181;M target. (a) One patch holds tissue above target for about 2.9&#160;h (1.4&#8211;4.8&#160;h across the tissue ranges). (b) Through the 18&#160;h drug-effect compartment, the longest change interval that still closes is about 8.6&#160;h, the same for 1, 2 and 3&#160;mm wounds. <span class="caveat">Repeat dosing as in the model document (&#167;envelope); all closure rates are Tier-4 priors.</span></figcaption>
+    <figcaption><span class="fid">Figure&#160;14.</span> The dressing-change interval at the 145&#160;&#181;M target. (a) One patch holds tissue above target for about 2.2&#160;h (1.2&#8211;3.4&#160;h across the tissue ranges). (b) Through the 18&#160;h drug-effect compartment, the longest change interval that still closes is about 6.8&#160;h, the same for 1, 2 and 3&#160;mm wounds. <span class="caveat">Repeat dosing as in the model document (&#167;envelope); all closure rates are Tier-4 priors.</span></figcaption>
   </figure>
+
+<section class="widget" id="i1" aria-labelledby="i1-title">
+  <header class="w-head">
+    <span class="w-badge">Interactive 1</span>
+    <h3 id="i1-title">Patch design explorer</h3>
+    <p>Change the loading, gel thickness, retention and proteolysis rate. The page re-runs the same
+    gel&#8211;tissue solver as the figures in your browser (it agrees with the Python solver to within
+    1&#160;%). The treatment-protocol sliders then simulate wound closure for the patch-change
+    schedule you pick.</p>
+  </header>
+  <div class="w-body">
+    <div class="w-controls">
+      <label class="ctl"><span class="ctl-top"><span>Total V14 loading C<sub>V,0</sub></span><output id="i1-cv-v">738 &#181;M</output></span>
+        <input type="range" id="i1-cv" min="20" max="1500" step="1" value="738"></label>
+      <label class="ctl"><span class="ctl-top"><span>Gel thickness L<sub>gel</sub></span><output id="i1-lg-v">500 &#181;m</output></span>
+        <input type="range" id="i1-lg" min="50" max="1000" step="10" value="500"></label>
+      <label class="ctl"><span class="ctl-top"><span>Retardation factor R<sub>V</sub></span><output id="i1-rv-v">1.0</output></span>
+        <input type="range" id="i1-rv" min="0" max="1.4771" step="0.005" value="0"></label>
+      <label class="ctl"><span class="ctl-top"><span>Tissue proteolysis k<sub>prot</sub></span><output id="i1-kp-v">3.2&#215;10&#8315;&#8309; s&#8315;&#185;</output></span>
+        <input type="range" id="i1-kp" min="-6" max="-3" step="0.01" value="-4.5"></label>
+      <div class="ctl-group">
+        <span class="ctl-group-t">Treatment protocol</span>
+        <label class="ctl"><span class="ctl-top"><span>Wound radius R<sub>w</sub></span><output id="i1-rw-v">2.0 mm</output></span>
+          <input type="range" id="i1-rw" min="1" max="5" step="0.5" value="2"></label>
+        <label class="ctl"><span class="ctl-top"><span>Patch changed every</span><output id="i1-iv-v">4.0 h</output></span>
+          <input type="range" id="i1-iv" min="1" max="24" step="0.5" value="4"></label>
+      </div>
+      <button type="button" class="w-btn" id="i1-reset">Reset to the gel as built</button>
+    </div>
+    <div class="w-out">
+      <div class="tiles tiles-4">
+        <div class="tile"><div class="tv" id="i1-hours">2.24 h</div><div class="tk">hours above the 145&#160;&#181;M target</div></div>
+        <div class="tile"><div class="tv" id="i1-peak">270 &#181;M</div><div class="tk">peak depth-averaged tissue concentration</div></div>
+        <div class="tile" id="i1-sol-tile"><div class="tv" id="i1-sol">100 %</div><div class="tk" id="i1-sol-k">of the 738 &#181;M solubility ceiling</div></div>
+        <div class="tile tile-key" id="i1-tc-tile"><div class="tv" id="i1-tc">21 d</div><div class="tk" id="i1-tc-k">to close a 2.0 mm wound with the patch changed every 4.0 h</div></div>
+        <div class="tile tile-key" id="i1-int-tile"><div class="tv" id="i1-int">&#8804; 6.8 h</div><div class="tk" id="i1-int-k">longest change interval that still closes a wound, for every wound size; a daily change never does</div></div>
+      </div>
+      <div class="w-chart"><canvas id="i1-cv-c" aria-label="Depth-averaged V14 concentration in tissue against time" role="img"></canvas></div>
+    </div>
+  </div>
+  <p class="w-foot"><b>Read this before trusting a slider.</b> A one-parameter-at-a-time sweep can only
+  reach the first-order share of the variance (37&#160;% for delivered dose, Figure&#160;10); every
+  interaction between parameters is invisible here, so this is a presentation tool and not a sensitivity
+  analysis. The longest workable change interval does not depend on wound size: whether a wound closes at
+  all is set by whether the time-averaged drug effect keeps cells growing faster than they die, which is
+  the same everywhere in the wound bed. Wound size sets <i>how long</i> closure takes. Both outputs rest on
+  Tier-4 closure parameters and a scenario treated state (FGF2-G3 at EC<sub>50</sub>, V14 at
+  &#968;<sub>50</sub>). Static versions: Figures&#160;13 and 14.</p>
+</section>
+
 
   <h3 class="col">The device specification</h3>
   <div class="col">
   <p>Combining delivery with closure gives the end-to-end result, and it takes the form of a
-  specification rather than a prediction. Each patch's 2.9&#160;h of cover is passed through the
-  18&#160;h drug-effect delay, which sets a maximum change interval of <b>8.6&#160;h</b> &#8212; and
+  specification rather than a prediction. Each patch's 2.2&#160;h of cover is passed through the
+  18&#160;h drug-effect delay, which sets a maximum change interval of <b>6.8&#160;h</b> &#8212; and
   that interval is a property of <em>the patch, not the wound</em>. Wound size changes only how long
   treatment must continue, not how often the dressing is changed. Repeat dosing is therefore part of
   the design, not a fallback for a patch that failed to release slowly.</p>
 
-  <p>Why does the interval come out at 8.6&#160;h? The drug effect averaged over a cycle equals the
+  <p>Why does the interval come out at 6.8&#160;h? The drug effect averaged over a cycle equals the
   fraction of time a patch keeps tissue above target. Above 2.3&#160;% the wound stops getting worse.
-  To reach the density we count as closed, the average must exceed <b>33&#160;%</b>, so 2.9&#160;h of
-  cover sustains closure for change intervals up to about 8.6&#160;h. A once-daily change would need
-  7.9&#160;h of cover per patch: about a 1.4&#160;mm gel at the 738&#160;&#181;M ceiling. Raising the
-  loading alone does not reach it within solubility (1&#160;mM gives 3.9&#160;h).</p>
+  To reach the density we count as closed, the average must exceed <b>33&#160;%</b>, so 2.2&#160;h of
+  cover sustains closure for change intervals up to about 6.8&#160;h. A once-daily change would need
+  7.9&#160;h of cover per patch. No gel up to 3&#160;mm reaches that at the 738&#160;&#181;M ceiling
+  (6.8&#160;h at 3&#160;mm), and raising the loading alone does not either (1&#160;mM gives 3.1&#160;h).</p>
 
   <p>Gel thickness and dermal drainage, not gel chemistry, set the single-patch window. Thickness is
-  the strongest design lever: 0.5, 1.0 and 1.5&#160;mm gels give 2.9, 5.7 and 8.5&#160;h above
-  145&#160;&#181;M. By contrast, reducing k<sub>prot</sub> thirtyfold lengthens the window only to
-  3.4&#160;h, and retention shortens it &#8212; both smaller than the 1.4&#8211;4.8&#160;h spread that
-  the tissue parameters alone produce.</p>
+  the strongest design lever: 0.5, 1.0 and 1.5&#160;mm gels give 2.2, 3.9 and 5.1&#160;h above
+  145&#160;&#181;M. The gain is less than proportional because a thicker gel holds the peptide longer,
+  and the register degrades it inside the gel at the same rate as in serum. By contrast, reducing
+  k<sub>prot</sub> thirtyfold lengthens the window only to 2.6&#160;h, and retention shortens it &#8212;
+  both smaller than the 1.2&#8211;3.4&#160;h spread that the tissue parameters alone produce.</p>
 
   <p>Finally, FGF2-G3 is not the constraint. Even without any retention the 500&#160;&#181;m gel
   keeps it above its EC<sub>50</sub> for 2&#8211;3&#160;days, longer than the change interval. Adding
@@ -1669,7 +1886,7 @@ body.noscroll{overflow:hidden}
 
     <li><b>Retention is not a lever worth pulling.</b> We wrote it up as something to be
     maximised. Running the coupled solve showed that at the 145&#160;&#181;M target it shortens the
-    window (2.9&#160;h at R<sub>V</sub>&#160;=&#160;1, 1.9&#160;h at R<sub>V</sub>&#160;=&#160;2) and
+    window (2.2&#160;h at R<sub>V</sub>&#160;=&#160;1, 1.5&#160;h at R<sub>V</sub>&#160;=&#160;2) and
     R<sub>V</sub>&#160;&#8805;&#160;3 gives zero hours above target. For V14 in alginate it would also
     need new tethering chemistry.</li>
 
@@ -1677,8 +1894,8 @@ body.noscroll{overflow:hidden}
     Alginate binds neither molecule and its 14&#160;nm mesh barely slows them, so the gel material
     drops out of the sensitivity analysis. The 500&#160;&#181;m thickness is what moved the answer:
     at the original 25&#160;&#181;M target it raised one patch's cover from 2.6 to 7.2&#160;h. At the
-    current 145&#160;&#181;M target, thickness remains the strongest lever (2.9&#160;h at 0.5&#160;mm,
-    8.5&#160;h at 1.5&#160;mm).</li>
+    current 145&#160;&#181;M target, thickness remains the strongest lever (2.2&#160;h at 0.5&#160;mm,
+    5.1&#160;h at 1.5&#160;mm).</li>
 
     <li><b>A sub-threshold pulse causes relapse, not stalling.</b> We had assumed a transient
     crossing of the r<sub>p</sub>&#160;&gt;&#160;d threshold would simply fail to finish. It
@@ -1727,7 +1944,7 @@ body.noscroll{overflow:hidden}
       once.</div></li>
     <li><span class="st">&#9633;</span><div><b>Saturation solubility of V14 in the casting buffer.</b>
       Sets C<sub>total,0</sub>, and with it how long each patch lasts: raising the loading from
-      738&#160;&#181;M to 1&#160;mM lengthens one patch from 2.9 to 3.9&#160;h. Trivial, cheap, and
+      738&#160;&#181;M to 1&#160;mM lengthens one patch from 2.2 to 3.1&#160;h. Trivial, cheap, and
       currently unplanned.</div></li>
     <li><span class="st">&#9633;</span><div><b>Swelling and dissolution of the alginate gel in simulated wound fluid.</b>
       Calcium alginate absorbs exudate and slowly dissolves as sodium replaces calcium. The model
@@ -1756,9 +1973,9 @@ body.noscroll{overflow:hidden}
       and about a third of the V14 is out in the first minute; minute-scale sampling would miss most
       of the kinetics.</div></li>
     <li><span class="st">&#9633;</span><div><b>Test a patch-change protocol, not a single patch.</b>
-      The model puts the longest change interval that still closes a wound at about 8.6&#160;h for
-      the 500&#160;&#181;m gel. A thicker gel is the lever that lengthens it: about 1.4&#160;mm would
-      allow a once-daily change.</div></li>
+      The model puts the longest change interval that still closes a wound at about 6.8&#160;h for
+      the 500&#160;&#181;m gel. A thicker gel lengthens it; a slower k<sub>prot</sub> (the stability
+      assay above) is the other lever.</div></li>
   </ul>
 
   <p class="col"><b>One limitation.</b> If FGF2-G3 is assayed on fibroblasts and V14 on
@@ -1783,10 +2000,10 @@ body.noscroll{overflow:hidden}
 
   <p>What the chain says about the device as built is consistent across every model in it. The
   500&#160;&#181;m alginate patch delivers its load within minutes and keeps tissue above the
-  145&#160;&#181;M V14 target for about 3&#160;hours, while closing a wound takes days to weeks. A
-  single patch therefore cannot close a wound. The patch must be changed at least every 8.6&#160;h
-  &#8212; in practice, three times a day &#8212; and a gel of about 1.4&#160;mm would allow a
-  once-daily change.</p>
+  145&#160;&#181;M V14 target for about 2&#160;hours, while closing a wound takes days to weeks. A
+  single patch therefore cannot close a wound. The patch must be changed at least every 6.8&#160;h
+  &#8212; in practice, four times a day. A thicker gel lengthens that interval, but within 3&#160;mm
+  and the solubility limit it does not reach a once-daily change.</p>
 
   <p>Retention does not rescue this design: at the 145&#160;&#181;M target it shortens the window, it
   is capped by solubility above R<sub>V</sub>&#160;&#8776;&#160;3.2, and for V14 it would need
@@ -1929,6 +2146,364 @@ body.noscroll{overflow:hidden}
 </footer>
 
 <script>
+/* sim.js -- browser/Node port of the V3 solvers used by the interactives.
+   Mirrors code/params.py, code/twodomain.py and code/v3model.py (FisherKPP).
+   Units: cm, s, mol/cm3 unless a name says otherwise. */
+var Sim = (function () {
+  "use strict";
+  var UM = 1e-9, DAY = 86400, HOUR = 3600, LN2 = Math.LN2;
+
+  var P = {
+    D0_V14: 3.6e-6, A_V14: 0.87, A_FIBRE: 0.6, XI: 14, EPS_GEL: 0.99,
+    EPS_TIS: 0.8, D_TIS: 1.2e-6, L_GEL: 0.05, L_TIS: 0.15, K_P: 1,
+    T_HALF_V14: 6.1 * HOUR, C_SOL_UM: 738, TARGET_UM: 145, DELTA: 0.05,
+    // closure (Model 6)
+    D_N: 1e-9, R0: 0.8 / DAY, D0: 0.24 / DAY, DD: 0.3 / DAY, E_MAX: 2, EC50: 0.5,
+    BETA: 0.5, K_IR: 0.3, K_ID: 0.3, S_I: 2, KE0: 1 / (18 * HOUR), W: 75e-4,
+    KD_L_UM: 0.065, L_UM: 1
+  };
+  P.K_PROT = LN2 / P.T_HALF_V14;
+  P.K_DEG = LN2 / P.T_HALF_V14;
+
+  function amsdenH(a, xi, af) {
+    var q = (a + af) / (xi + 2 * af);
+    return Math.exp(-Math.PI * q * q);
+  }
+  function gelD(o) {
+    o = o || {};
+    var D0 = o.D0 != null ? o.D0 : P.D0_V14, eps = o.eps != null ? o.eps : P.EPS_GEL;
+    return D0 * amsdenH(P.A_V14, P.XI, P.A_FIBRE) / Math.pow(eps, -0.5);
+  }
+
+  /* ---------- tridiagonal helpers ---------- */
+  function Tri(sub, dia, sup, dt) {
+    var n = dia.length, cp = new Float64Array(n), inv = new Float64Array(n);
+    this.n = n; this.lo = new Float64Array(n); this.cp = cp; this.inv = inv;
+    for (var i = 0; i < n; i++) this.lo[i] = -dt * sub[i];
+    var up = new Float64Array(n);
+    for (i = 0; i < n; i++) up[i] = -dt * sup[i];
+    var d = 1 - dt * dia[0];
+    inv[0] = 1 / d; cp[0] = up[0] * inv[0];
+    for (i = 1; i < n; i++) {
+      d = 1 - dt * dia[i] - this.lo[i] * cp[i - 1];
+      inv[i] = 1 / d; cp[i] = up[i] * inv[i];
+    }
+  }
+  Tri.prototype.solve = function (b, x) {
+    var n = this.n, lo = this.lo, cp = this.cp, inv = this.inv, i;
+    x[0] = b[0] * inv[0];
+    for (i = 1; i < n; i++) x[i] = (b[i] - lo[i] * x[i - 1]) * inv[i];
+    for (i = n - 2; i >= 0; i--) x[i] -= cp[i] * x[i + 1];
+  };
+
+  /* ---------- Models 1-2: monolithic gel + tissue ---------- */
+  var SEG = [[0.5, 120], [5, 108], [30, 2800], [300, 600]];
+
+  function twoDomain(o) {
+    o = o || {};
+    var Lgel = o.Lgel != null ? o.Lgel : P.L_GEL, Ltis = o.Ltis != null ? o.Ltis : P.L_TIS;
+    var RV = o.RV != null ? o.RV : 1, kprot = o.kprot != null ? o.kprot : P.K_PROT;
+    var Dg = o.Dg != null ? o.Dg : gelD(), Dt = o.Dt != null ? o.Dt : P.D_TIS;
+    var CVtot = (o.CVtotUM != null ? o.CVtotUM : P.C_SOL_UM) * UM;
+    var nxg = o.nxg || 40, nxt = o.nxt || 120, tEnd = (o.tEndDays || 3) * DAY;
+    var delta = o.delta != null ? o.delta : P.DELTA, target = (o.targetUM || P.TARGET_UM) * UM;
+    var Kp = P.K_P, eg = P.EPS_GEL, et = P.EPS_TIS, kdeg = P.K_DEG;
+    var hg = Lgel / nxg, ht = Ltis / nxt, ng = nxg, nt = nxt - 1, N = ng + nt;
+    var a = eg * Dg / hg, b = et * Dt / ht, den = b + a * Kp, ca = a / den, cb = b / den;
+    var sub = new Float64Array(N), dia = new Float64Array(N), sup = new Float64Array(N), i, j, p;
+    var ct = Dt / (ht * ht), cg = Dg / (hg * hg);
+    for (i = 1; i <= nt; i++) {                     // tissue node t_i at pos nt-i
+      p = nt - i;
+      dia[p] = -2 * ct - kprot;
+      if (i < nt) sub[p] = ct;
+      if (i > 1) sup[p] = ct; else { sup[p] = ct * ca; dia[p] += ct * cb; }
+    }
+    for (j = 1; j <= ng; j++) {                     // gel node g_j at pos nt+j-1
+      p = nt + j - 1;
+      var d0 = -2 * cg - kdeg, lo = cg, up = cg;
+      if (j === 1) { d0 += cg * Kp * ca; lo = cg * Kp * cb; }
+      if (j === ng) { up = 0; if (j > 1) lo = 2 * cg; }
+      dia[p] = d0 / RV; sub[p] = lo / RV; sup[p] = up / RV;
+    }
+    var C = new Float64Array(N), X = new Float64Array(N);
+    var cfree = CVtot / RV;
+    for (j = 1; j <= ng; j++) C[nt + j - 1] = cfree;
+    var kmax = Math.floor(delta / ht + 1e-9), ts = [0], avg = [0], t = 0, done = false;
+    var peak = 0, peakT = 0;
+    function depthAvg() {
+      var c0 = ca * C[nt] + cb * C[nt - 1], s = 0.5 * c0;
+      for (var k = 1; k < kmax; k++) s += C[nt - k];
+      s += 0.5 * (kmax <= nt ? C[nt - kmax] : 0);
+      return s * ht / delta;
+    }
+    for (var sI = 0; sI < SEG.length && !done; sI++) {
+      var dt = SEG[sI][0], tri = new Tri(sub, dia, sup, dt);
+      for (var s = 0; s < SEG[sI][1]; s++) {
+        tri.solve(C, X); var tmp = C; C = X; X = tmp; t += dt;
+        var v = depthAvg(); ts.push(t); avg.push(v);
+        if (v > peak) { peak = v; peakT = t; }
+        if (t >= tEnd) { done = true; break; }
+      }
+    }
+    var dur = 0;
+    for (i = 1; i < ts.length; i++) if (avg[i] >= target || avg[i - 1] >= target) dur += ts[i] - ts[i - 1];
+    return {
+      t: ts, avg: avg, hoursAbove: dur / HOUR, peakUM: peak / UM, peakT: peakT,
+      totalUM: CVtot / UM, freeUM: cfree / UM, solFrac: CVtot / UM / P.C_SOL_UM,
+      overCeiling: CVtot / UM > P.C_SOL_UM + 1e-9
+    };
+  }
+
+  /* ---------- closure rates from the register closures ---------- */
+  function rpOf(Ce, Ie) {
+    return P.R0 * (1 + P.E_MAX * Ce / (P.EC50 + Ce)) * (1 - P.BETA * Ie / (P.K_IR + Ie));
+  }
+  function dOf(Ie) {
+    var q = Math.pow(Ie, P.S_I);
+    return P.D0 + P.DD * q / (Math.pow(P.K_ID, P.S_I) + q);
+  }
+  var a_lps = P.L_UM / P.KD_L_UM, theta0 = a_lps / (1 + a_lps);
+  var RATES = {
+    rpChr: rpOf(0, theta0), dChr: dOf(theta0),
+    rpTrt: rpOf(P.EC50, theta0 / 2), dTrt: dOf(theta0 / 2)
+  };
+  RATES.thr = 0.5 * (1 - RATES.dTrt / RATES.rpTrt);   // pinned front level
+
+  function frontAt(n, thr, r, dr, nr) {
+    if (n[0] >= thr) return 0;
+    for (var i = 1; i <= nr; i++) if (n[i] >= thr) {
+      var n0 = n[i - 1], n1 = n[i];
+      if (n1 === n0) return r[i];
+      return r[i - 1] + (thr - n0) / (n1 - n0) * dr;
+    }
+    return r[nr];
+  }
+
+  /* Radial Fisher-KPP with a death term; sFn(tSeconds) in [0,1] drives the
+     drug effect.  opts.frames > 0 stores snapshots for the animation. */
+  function fisher(o) {
+    var Rw = o.Rw, nr = o.nr || 300, Rinf = Rw * 2.2, dr = Rinf / nr, K = 1;
+    var tEnd = o.tEndDays * DAY, dt = 0.2 * dr * dr / P.D_N, thr = RATES.thr;
+    var n = new Float64Array(nr + 1), m = new Float64Array(nr + 1), r = new Float64Array(nr + 1), i;
+    for (i = 0; i <= nr; i++) { r[i] = i * dr; n[i] = 0.5 * (1 + Math.tanh((r[i] - Rw) / P.W)); }
+    var steps = Math.floor(tEnd / dt), D = P.D_N, rec = 40,
+        frames = [], ts = [], fr = [], closed = false, tc = Infinity, t = 0, frameEvery = o.frameEvery ? o.frameEvery * DAY : 0, nextF = 0;
+    var sGrid = o.sGrid, sdt = o.sdt || 60;
+    for (var st = 1; st <= steps; st++) {
+      var s = sGrid ? sGrid[Math.min(Math.floor(t / sdt), sGrid.length - 1)] : o.sFn(t);
+      var rp = RATES.rpChr + (RATES.rpTrt - RATES.rpChr) * s, dd = RATES.dChr + (RATES.dTrt - RATES.dChr) * s;
+      var c0 = D / (dr * dr);
+      m[0] = n[0] + dt * (c0 * 4 * (n[1] - n[0]) + rp * n[0] * (1 - n[0] / K) - dd * n[0]);
+      for (i = 1; i < nr; i++) {
+        var lap = c0 * (n[i + 1] - 2 * n[i] + n[i - 1]) + D * (n[i + 1] - n[i - 1]) / (2 * dr * r[i]);
+        m[i] = n[i] + dt * (lap + rp * n[i] * (1 - n[i] / K) - dd * n[i]);
+      }
+      for (i = 0; i < nr; i++) n[i] = m[i] > 0 ? m[i] : 0;
+      n[nr] = K; t += dt;
+      if (st % rec === 0 || st === steps) {
+        var rf = frontAt(n, thr, r, dr, nr);
+        ts.push(t); fr.push(rf);
+        if (rf <= 1e-9) { closed = true; tc = t; if (!o.keepGoing) break; }
+      }
+      if (frameEvery && t >= nextF) { frames.push(Float32Array.from(n)); nextF += frameEvery; }
+    }
+    return { closed: closed, tc: tc, t: ts, rf: fr, r: r, frames: frames, Rinf: Rinf, finalN: n };
+  }
+
+  /* effect state s(t) on a 60 s grid for a patch changed every `intervalH` h
+     that keeps tissue above target for `covH` h */
+  function scheduleS(intervalH, covH, tEndDays) {
+    var dt = 60, nn = Math.ceil(tEndDays * DAY / dt) + 2, s = new Float64Array(nn), e = Math.exp(-dt * P.KE0);
+    for (var i = 1; i < nn; i++) {
+      var u = (((i - 1) * dt / HOUR) % intervalH) < covH ? 1 : 0;
+      s[i] = u + (s[i - 1] - u) * e;
+    }
+    return s;
+  }
+  function closureTimeInterval(Rw, intervalH, covH, tEndDays, nr) {
+    var T = tEndDays || 120;
+    var res = fisher({ Rw: Rw, nr: nr || 300, tEndDays: T, sGrid: scheduleS(intervalH, covH, T) });
+    return res.closed ? res.tc / DAY : Infinity;
+  }
+  function maxInterval(Rw, covH, hi, nr) {
+    hi = hi || 24;
+    if (!(covH > 0)) return 0;
+    if (isFinite(closureTimeInterval(Rw, hi, covH, 120, nr))) return hi;
+    var lo = covH;
+    if (!isFinite(closureTimeInterval(Rw, lo * 1.0001, covH, 120, nr))) return 0;
+    while (hi - lo > 0.25) {
+      var mid = 0.5 * (lo + hi);
+      if (isFinite(closureTimeInterval(Rw, mid, covH, 120, nr))) lo = mid; else hi = mid;
+    }
+    return lo;
+  }
+  /* Same bisection as maxInterval, but one closure solve per task (~20 ms
+     each) so the browser can keep scrolling between steps. Returns a cancel
+     function; done(hours) is called once with the result. */
+  function maxIntervalAsync(Rw, covH, done, hi, nr) {
+    hi = hi || 24; nr = nr || 300;
+    var cancelled = false, lo = covH, stage = 0;
+    function ok(h) { return isFinite(closureTimeInterval(Rw, h, covH, 120, nr)); }
+    function later(f) { setTimeout(function () { if (!cancelled) f(); }, 0); }
+    function step() {
+      if (!(covH > 0)) return done(0);
+      if (stage === 0) { stage = 1; if (ok(hi)) return done(hi); return later(step); }
+      if (stage === 1) { stage = 2; if (!ok(lo * 1.0001)) return done(0); return later(step); }
+      if (hi - lo <= 0.25) return done(lo);
+      var mid = 0.5 * (lo + hi);
+      if (ok(mid)) lo = mid; else hi = mid;
+      later(step);
+    }
+    later(step);
+    return function () { cancelled = true; };
+  }
+  function pulseS(Tdays) {
+    var T = Tdays * DAY, tau = 1 / P.KE0;
+    return function (t) { return t <= T ? 1 : Math.exp(-(t - T) / tau); };
+  }
+
+  /* ---------- Models 3-4 closed forms ---------- */
+  function suppression(psi, a) { return (1 + a) / (1 + a + psi); }
+  function thetaLps(psi, a) { return a / (1 + a + psi); }
+  function p65(psi, a, gamma, h) {
+    var x = Math.pow(a * gamma, h);
+    return x / (x + Math.pow(1 + a + psi, h));
+  }
+
+  return {
+    P: P, UM: UM, DAY: DAY, HOUR: HOUR, RATES: RATES, gelD: gelD, twoDomain: twoDomain,
+    fisher: fisher, frontAt: frontAt, scheduleS: scheduleS, closureTimeInterval: closureTimeInterval,
+    maxInterval: maxInterval, maxIntervalAsync: maxIntervalAsync, pulseS: pulseS, suppression: suppression,
+    thetaLps: thetaLps, p65: p65
+  };
+})();
+if (typeof module !== "undefined") module.exports = Sim;
+
+/* plot.js -- tiny canvas plotting helpers shared by the interactives. */
+var Plot = (function () {
+  "use strict";
+  var COL = {
+    v14: "#2166AC", v14l: "#92C5DE", fgf: "#B2182B", thresh: "#E08214", good: "#4D9221",
+    bad: "#762A83", ink: "#2B3137", mute: "#6B747D", grid: "#E6EAED", axis: "#9AA3AB"
+  };
+
+  /* Size the canvas from its CSS width. The backing store and the CSS height are
+     only written when they actually change: rewriting them on every animation
+     frame forced a full page re-layout 60 times a second and made scrolling
+     stutter while the closure animation played. */
+  function setup(canvas, aspect) {
+    var dpr = window.devicePixelRatio || 1, w = Math.max(240, Math.round(canvas.clientWidth)),
+        h = Math.round(w * aspect), bw = Math.round(w * dpr), bh = Math.round(h * dpr);
+    if (canvas._h !== h) { canvas.style.height = h + "px"; canvas._h = h; }
+    if (canvas.width !== bw || canvas.height !== bh) { canvas.width = bw; canvas.height = bh; }
+    var c = canvas.getContext("2d");
+    c.setTransform(dpr, 0, 0, dpr, 0, 0);
+    c.clearRect(0, 0, w, h);
+    return { c: c, w: w, h: h };
+  }
+
+  /* box = {l,t,r,b} pixel margins; xr,yr = [min,max]; o.xlog / o.ylog */
+  function Axes(s, box, xr, yr, o) {
+    o = o || {};
+    var a = { c: s.c, o: o, x0: box.l, x1: s.w - box.r, y0: s.h - box.b, y1: box.t };
+    function tf(v, r, log) { return log ? Math.log(v / r[0]) / Math.log(r[1] / r[0]) : (v - r[0]) / (r[1] - r[0]); }
+    a.X = function (v) { return a.x0 + tf(v, xr, o.xlog) * (a.x1 - a.x0); };
+    a.Y = function (v) { return a.y0 + tf(v, yr, o.ylog) * (a.y1 - a.y0); };
+    a.invX = function (px) {
+      var f = (px - a.x0) / (a.x1 - a.x0);
+      return o.xlog ? xr[0] * Math.pow(xr[1] / xr[0], f) : xr[0] + f * (xr[1] - xr[0]);
+    };
+    a.frame = function () {
+      var c = a.c, i, t;
+      c.font = "11px Inter, system-ui, sans-serif"; c.lineWidth = 1;
+      c.strokeStyle = COL.grid; c.fillStyle = COL.mute;
+      c.textAlign = "center"; c.textBaseline = "top";
+      for (i = 0; i < (o.xticks || []).length; i++) {
+        t = o.xticks[i]; var x = a.X(t[0]);
+        c.beginPath(); c.moveTo(x, a.y0); c.lineTo(x, a.y1); c.stroke();
+        c.fillText(t[1], x, a.y0 + 6);
+      }
+      c.textAlign = "right"; c.textBaseline = "middle";
+      for (i = 0; i < (o.yticks || []).length; i++) {
+        t = o.yticks[i]; var y = a.Y(t[0]);
+        c.beginPath(); c.moveTo(a.x0, y); c.lineTo(a.x1, y); c.stroke();
+        c.fillText(t[1], a.x0 - 7, y);
+      }
+      c.strokeStyle = COL.axis;
+      c.beginPath(); c.moveTo(a.x0, a.y1); c.lineTo(a.x0, a.y0); c.lineTo(a.x1, a.y0); c.stroke();
+      c.fillStyle = COL.ink; c.font = "600 11.5px Inter, system-ui, sans-serif";
+      if (o.xlabel) { c.textAlign = "center"; c.textBaseline = "bottom"; c.fillText(o.xlabel, (a.x0 + a.x1) / 2, s.h - 2); }
+      if (o.ylabel) {
+        c.save(); c.translate(13, (a.y0 + a.y1) / 2); c.rotate(-Math.PI / 2);
+        c.textAlign = "center"; c.textBaseline = "middle"; c.fillText(o.ylabel, 0, 0); c.restore();
+      }
+    };
+    a.clip = function () { a.c.save(); a.c.beginPath(); a.c.rect(a.x0, a.y1, a.x1 - a.x0, a.y0 - a.y1); a.c.clip(); };
+    a.unclip = function () { a.c.restore(); };
+    a.line = function (xs, ys, color, w, dash) {
+      var c = a.c, started = false;
+      c.beginPath(); c.strokeStyle = color; c.lineWidth = w || 2; c.setLineDash(dash || []);
+      for (var i = 0; i < xs.length; i++) {
+        if (!(xs[i] > 0) && o.xlog) continue;
+        var px = a.X(xs[i]), py = a.Y(ys[i]);
+        if (!started) { c.moveTo(px, py); started = true; } else c.lineTo(px, py);
+      }
+      c.stroke(); c.setLineDash([]);
+    };
+    a.hline = function (v, color, dash, w) {
+      var y = a.Y(v), c = a.c; c.beginPath(); c.strokeStyle = color; c.lineWidth = w || 1.5;
+      c.setLineDash(dash || [5, 4]); c.moveTo(a.x0, y); c.lineTo(a.x1, y); c.stroke(); c.setLineDash([]);
+    };
+    a.vline = function (v, color, dash, w) {
+      var x = a.X(v), c = a.c; c.beginPath(); c.strokeStyle = color; c.lineWidth = w || 1.5;
+      c.setLineDash(dash || [5, 4]); c.moveTo(x, a.y0); c.lineTo(x, a.y1); c.stroke(); c.setLineDash([]);
+    };
+    a.dot = function (x, y, color, r) {
+      var c = a.c; c.beginPath(); c.fillStyle = "#fff"; c.arc(a.X(x), a.Y(y), (r || 5) + 2, 0, 6.2832); c.fill();
+      c.beginPath(); c.fillStyle = color; c.arc(a.X(x), a.Y(y), r || 5, 0, 6.2832); c.fill();
+    };
+    a.text = function (str, x, y, color, align, font) {
+      var c = a.c; c.fillStyle = color || COL.ink; c.font = font || "600 11.5px Inter, system-ui, sans-serif";
+      c.textAlign = align || "left"; c.textBaseline = "middle"; c.fillText(str, x, y);
+    };
+    return a;
+  }
+
+  /* bind a <input type=range> to a value formatter; fn(value) is called on input */
+  function slider(id, onInput) {
+    var el = document.getElementById(id);
+    if (!el) return null;
+    el.addEventListener("input", function () { onInput(parseFloat(el.value)); });
+    return el;
+  }
+
+  function fmt(v, d) {
+    if (!isFinite(v)) return "∞";
+    return v.toFixed(d == null ? 1 : d);
+  }
+
+  function debounce(fn, ms) {
+    var h = null;
+    return function () { var a = arguments; clearTimeout(h); h = setTimeout(function () { fn.apply(null, a); }, ms); };
+  }
+
+  /* run fn once, when `el` comes within ~1 screen of the viewport, and in an
+     idle moment, so widget start-up never blocks the first scroll */
+  function whenNear(el, fn) {
+    var go = function () {
+      var ric = window.requestIdleCallback || function (f) { return setTimeout(f, 1); };
+      ric(fn, { timeout: 400 });
+    };
+    if (!el || !("IntersectionObserver" in window)) { go(); return; }
+    var io = new IntersectionObserver(function (es) {
+      if (es[0].isIntersecting) { io.disconnect(); go(); }
+    }, { rootMargin: "900px 0px" });
+    io.observe(el);
+  }
+
+  return { COL: COL, setup: setup, Axes: Axes, slider: slider, fmt: fmt, debounce: debounce, whenNear: whenNear };
+})();
+
 /* ui.js -- page chrome: progress bar, scrollspy, back-to-top, lightbox, reveal, copy buttons. */
 (function () {
   "use strict";
@@ -2070,6 +2645,441 @@ body.noscroll{overflow:hidden}
   }
   /* KaTeX is loaded with defer, so re-run once everything has settled. */
   window.addEventListener("load", render);
+})();
+
+/* Interactive 3 -- inflammation explorer: Model 3 occupancy -> Model 4 p65 -> Model 5 nitrite.
+   Closed forms plus one explicit ODE; constants mirror code/params.py and New Graphs/model. */
+(function () {
+  "use strict";
+  var cv = document.getElementById("i3-c");
+  if (!cv) return;
+  var C = Plot.COL, S = Sim;
+  var KD_L = 0.065, GAMMA = 0.1, H = 2.0;                       // uM; register gamma, h
+  var NO = { N: 1e6, q: 5e-19, K: 0.3, p: 2, kturn: Math.LN2 / (4 * 3600), phi: 0.9, p65lps: 0.85 };
+  var DEF = { cv: Math.log10(145), l: 0, kd: Math.log10(10.08) };
+
+  function el(id) { return document.getElementById(id); }
+  function val(id) { return Math.pow(10, parseFloat(el(id).value)); }
+  function nice(v) { return v >= 100 ? v.toFixed(0) : v >= 10 ? v.toFixed(1) : v >= 1 ? v.toFixed(2) : v.toFixed(3); }
+
+  /* accumulated nitrite (uM) after 24 h for a normalised p65 level (Model 5) */
+  function nitrite24(p65) {
+    var drive = NO.N * NO.q * Math.pow(p65, NO.p) / (Math.pow(NO.K, NO.p) + Math.pow(p65, NO.p));
+    var dt = 60, R = 0, Rn, no2 = 0;
+    for (var t = 0; t < 86400; t += dt) {
+      Rn = R + dt * NO.kturn * (drive - R);
+      no2 += dt * NO.phi * 0.5 * (R + Rn);
+      R = Rn;
+    }
+    return no2 / S.UM;
+  }
+  function chain(cvUM, a, kd) {
+    var psi = cvUM / kd, pi0 = S.p65(0, a, GAMMA, H), pr = S.p65(psi, a, GAMMA, H) / pi0;
+    return {
+      lps: S.thetaLps(psi, a), supp: S.suppression(psi, a), p65: pr,
+      no2: nitrite24(NO.p65lps * pr)
+    };
+  }
+
+  function draw() {
+    var cvUM = val("i3-cv"), L = val("i3-l"), kd = val("i3-kd"), a = L / KD_L;
+    el("i3-cv-v").textContent = nice(cvUM) + " µM";
+    el("i3-l-v").textContent = nice(L) + " µM  (a = " + nice(a) + ")";
+    el("i3-kd-v").textContent = nice(kd) + " µM";
+    var r = chain(cvUM, a, kd), r0 = chain(0, a, kd);
+    el("i3-lps").textContent = (r.lps * 100).toFixed(r.lps < 0.1 ? 1 : 0) + " %";
+    el("i3-supp").textContent = (r.supp * 100).toFixed(r.supp < 0.1 ? 1 : 0) + " %";
+    el("i3-p65").textContent = (r.p65 * 100).toFixed(r.p65 < 0.1 ? 1 : 0) + " %";
+    el("i3-no2").textContent = r.no2.toFixed(r.no2 < 10 ? 1 : 0) + " µM";
+    el("i3-no2-k").textContent = "predicted nitrite after 24 h (LPS alone: " + r0.no2.toFixed(0) + " µM)";
+
+    var s = Plot.setup(cv, 0.62), xs = [], i, lo = 0.1, hi = 5000;
+    var ax = Plot.Axes(s, { l: 48, t: 14, r: 16, b: 40 }, [lo, hi], [0, 1.02], {
+      xlog: true, xlabel: "V14 concentration (µM)", ylabel: "relative to LPS alone",
+      xticks: [[0.1, "0.1"], [1, "1"], [10, "10"], [100, "100"], [1000, "1000"]],
+      yticks: [[0, "0"], [0.25, "25%"], [0.5, "50%"], [0.75, "75%"], [1, "100%"]]
+    });
+    ax.frame();
+    for (i = 0; i <= 160; i++) xs.push(lo * Math.pow(hi / lo, i / 160));
+    var rows = xs.map(function (x) { return chain(x, a, kd); });
+    ax.clip();
+    [[25, C.ink], [145, C.thresh], [738, C.mute]].forEach(function (m) { ax.vline(m[0], m[1], [3, 4], 1.1); });
+    ax.line(xs, rows.map(function (q) { return q.supp; }), C.v14, 3);
+    ax.line(xs, rows.map(function (q) { return q.p65; }), C.bad, 2, [7, 5]);
+    ax.line(xs, rows.map(function (q) { return q.no2 / r0.no2; }), C.thresh, 2.4);
+    ax.unclip();
+    ax.dot(cvUM, r.supp, C.v14, 5.5);
+    ax.dot(cvUM, r.p65, C.bad, 5);
+    ax.dot(cvUM, r.no2 / r0.no2, C.thresh, 5);
+    var f = "600 11px Inter, system-ui, sans-serif";
+    ax.text("active receptor", ax.x0 + 8, ax.y0 - 42, C.v14, "left", f);
+    ax.text("nuclear p65 (dashed)", ax.x0 + 8, ax.y0 - 26, C.bad, "left", f);
+    ax.text("24 h nitrite", ax.x0 + 8, ax.y0 - 10, C.thresh, "left", f);
+  }
+
+  ["i3-cv", "i3-l", "i3-kd"].forEach(function (id) { Plot.slider(id, draw); });
+  el("i3-reset").addEventListener("click", function () {
+    el("i3-cv").value = DEF.cv; el("i3-l").value = DEF.l; el("i3-kd").value = DEF.kd; draw();
+  });
+  window.addEventListener("resize", Plot.debounce(draw, 120));
+  draw();
+})();
+
+/* Interactive 1 -- design-space explorer (runs the gel-tissue solver live). */
+(function () {
+  "use strict";
+  var cv = document.getElementById("i1-cv-c");
+  if (!cv) return;
+  var C = Plot.COL, S = Sim, last = null;
+  var DEF = { cv: 738, lg: 500, rv: 0, kp: -4.5, rw: 2, iv: 4 };
+
+  function val(id) { return parseFloat(document.getElementById(id).value); }
+  function set(id, v) { document.getElementById(id).value = v; }
+  function text(id, s) { document.getElementById(id).textContent = s; }
+
+  function inputs() {
+    return { CVtotUM: val("i1-cv"), Lgel: val("i1-lg") * 1e-4, RV: Math.pow(10, val("i1-rv")),
+             kprot: Math.pow(10, val("i1-kp")) };
+  }
+
+  function drawChart(r) {
+    var s = Plot.setup(cv, 0.52), i, hrs = r.t.map(function (t) { return t / 3600; });
+    var tmax = 72, ymax = Math.max(40, r.peakUM * 1.15), target = S.P.TARGET_UM;
+    var ax = Plot.Axes(s, { l: 50, t: 12, r: 14, b: 40 }, [0.01, tmax], [0, ymax], {
+      xlog: true, xlabel: "time after application", ylabel: "tissue V14, depth-averaged (µM)",
+      xticks: [[0.0167, "1 min"], [0.1667, "10 min"], [1, "1 h"], [6, "6 h"], [24, "1 d"], [72, "3 d"]],
+      yticks: niceTicks(ymax)
+    });
+    ax.frame();
+    // shade the time above target
+    ax.c.save(); ax.c.beginPath(); ax.c.rect(ax.x0, ax.y1, ax.x1 - ax.x0, ax.Y(target) - ax.y1); ax.c.clip();
+    ax.c.beginPath(); ax.c.fillStyle = "rgba(33,102,172,.20)";
+    var started = false;
+    for (i = 0; i < hrs.length; i++) {
+      if (hrs[i] < 0.01) continue;
+      var px = ax.X(hrs[i]), py = ax.Y(r.avg[i] / S.UM);
+      if (!started) { ax.c.moveTo(px, ax.Y(0)); ax.c.lineTo(px, py); started = true; } else ax.c.lineTo(px, py);
+    }
+    ax.c.lineTo(ax.X(hrs[hrs.length - 1]), ax.Y(0)); ax.c.closePath(); ax.c.fill(); ax.c.restore();
+    ax.clip();
+    ax.line(hrs, r.avg.map(function (v) { return v / S.UM; }), C.v14, 3);
+    ax.unclip();
+    ax.hline(target, C.thresh, [6, 4], 1.6);
+    ax.text(target + " µM target", ax.x1 - 6, ax.Y(target) - 10, C.thresh, "right");
+    if (r.peakUM > 0) ax.dot(r.peakT / 3600, r.peakUM, C.fgf, 5);
+  }
+
+  function sci(v) {
+    var e = Math.floor(Math.log10(v)), m = v / Math.pow(10, e), sup = { "-": "⁻", 0: "⁰", 1: "¹", 2: "²", 3: "³", 4: "⁴", 5: "⁵", 6: "⁶", 7: "⁷", 8: "⁸", 9: "⁹" };
+    if (m >= 9.95) { m = 1; e += 1; }
+    return m.toFixed(1) + "×10" + String(e).split("").map(function (ch) { return sup[ch]; }).join("");
+  }
+
+  function niceTicks(ymax) {
+    var step = ymax > 400 ? 100 : ymax > 200 ? 50 : ymax > 100 ? 25 : ymax > 50 ? 10 : 5, t = [];
+    for (var v = 0; v <= ymax; v += step) t.push([v, String(v)]);
+    return t;
+  }
+
+  function update() {
+    var o = inputs();
+    text("i1-cv-v", Math.round(o.CVtotUM) + " µM");
+    text("i1-lg-v", Math.round(o.Lgel * 1e4) + " µm");
+    text("i1-rv-v", o.RV < 10 ? o.RV.toFixed(1) : o.RV.toFixed(0));
+    text("i1-kp-v", sci(o.kprot) + " s⁻¹");
+    var r = S.twoDomain({ CVtotUM: o.CVtotUM, Lgel: o.Lgel, RV: o.RV, kprot: o.kprot });
+    last = r;
+    drawChart(r);
+    text("i1-hours", r.hoursAbove > 0 ? Plot.fmt(r.hoursAbove, r.hoursAbove < 10 ? 2 : 1) + " h" : "0 h");
+    text("i1-peak", Math.round(r.peakUM) + " µM");
+    var pct = r.solFrac * 100, tile = document.getElementById("i1-sol-tile");
+    text("i1-sol", pct.toFixed(0) + " %");
+    text("i1-sol-k", r.overCeiling ? "of the solubility ceiling — CANNOT be formulated" : "of the 738 µM solubility ceiling");
+    tile.classList.toggle("tile-bad", r.overCeiling);
+    // the longest workable interval depends only on the patch, not on the
+    // wound, so it is recomputed only when the patch's cover actually changes
+    var covKey = r.hoursAbove.toFixed(3);
+    if (covKey !== maxKey) {
+      maxKey = covKey; maxH = null;
+      text("i1-int", "…"); text("i1-int-k", "computing the longest workable change interval");
+      document.getElementById("i1-int-tile").classList.remove("tile-bad");
+      searchMax(r);
+    }
+    protocol();
+  }
+
+  /* ---- outputs that depend on the treatment protocol (radius, interval) ---- */
+  var maxKey = null, maxH = null, cancelSearch = null, tcTimer = null;
+
+  var searchMax = Plot.debounce(function (r) {
+    if (cancelSearch) cancelSearch();
+    cancelSearch = S.maxIntervalAsync(0.2, r.hoursAbove, function (h) {
+      cancelSearch = null;
+      if (r !== last) return;
+      maxH = h; showMax(h); protocol();
+    }, 24, 200);          // 200-point grid: same interval as 300, half the cost
+  }, 220);
+
+  function showMax(h) {
+    var tile = document.getElementById("i1-int-tile");
+    tile.classList.toggle("tile-bad", h <= 0);
+    if (h <= 0) {
+      text("i1-int", "none");
+      text("i1-int-k", "this patch never holds tissue above target, so no change interval closes a wound");
+    } else if (h >= 24) {
+      text("i1-int", "≥ 24 h");
+      text("i1-int-k", "longest change interval that still closes a wound, for every wound size; even a daily change works");
+    } else {
+      text("i1-int", "≤ " + h.toFixed(1) + " h");
+      text("i1-int-k", "longest change interval that still closes a wound, for every wound size; a daily change never does");
+    }
+  }
+
+  function protocol() {
+    var Rw = val("i1-rw") / 10, iv = val("i1-iv");
+    text("i1-rw-v", (Rw * 10).toFixed(1) + " mm");
+    text("i1-iv-v", iv.toFixed(1) + " h");
+    text("i1-tc", "…");
+    text("i1-tc-k", "simulating closure of a " + (Rw * 10).toFixed(1) + " mm wound");
+    clearTimeout(tcTimer);
+    tcTimer = setTimeout(function () { closureTime(Rw, iv); }, 160);
+  }
+
+  function closureTime(Rw, iv) {
+    if (!last) return;
+    var cov = last.hoursAbove, tile = document.getElementById("i1-tc-tile"),
+        mm = (Rw * 10).toFixed(1) + " mm wound", every = "changed every " + iv.toFixed(1) + " h";
+    var tc = cov > 0 ? S.closureTimeInterval(Rw, iv, cov, 120, 200) : Infinity;
+    var bad = !isFinite(tc);
+    tile.classList.toggle("tile-bad", bad);
+    if (!bad) {
+      text("i1-tc", tc.toFixed(0) + " d");
+      text("i1-tc-k", "to close a " + mm + " with the patch " + every);
+    } else if (cov > 0 && maxH !== null && iv <= maxH) {
+      text("i1-tc", "> 120 d");
+      text("i1-tc-k", "a " + mm + " with the patch " + every + " is still open after 120 days");
+    } else {
+      text("i1-tc", "never");
+      text("i1-tc-k", "a " + mm + " with the patch " + every + " does not close: the gaps between patches are too long");
+    }
+  }
+
+  ["i1-cv", "i1-lg", "i1-rv", "i1-kp"].forEach(function (id) { Plot.slider(id, update); });
+  ["i1-rw", "i1-iv"].forEach(function (id) { Plot.slider(id, protocol); });
+  document.getElementById("i1-reset").addEventListener("click", function () {
+    set("i1-cv", DEF.cv); set("i1-lg", DEF.lg); set("i1-rv", DEF.rv); set("i1-kp", DEF.kp);
+    set("i1-rw", DEF.rw); set("i1-iv", DEF.iv);
+    update();
+  });
+  window.addEventListener("resize", Plot.debounce(function () { if (last) drawChart(last); }, 120));
+  Plot.whenNear(document.getElementById("i1"), update);
+})();
+
+/* Interactive 2 -- closure animation: radial Fisher-KPP, n(r,t).
+   Three modes: repeated patch changes (each patch covers COV h, the effect
+   compartment fades in between), one long pulse, or untreated. */
+(function () {
+  "use strict";
+  var disc = document.getElementById("i2-disc");
+  if (!disc) return;
+  var C = Plot.COL, S = Sim, prof = document.getElementById("i2-prof"), tl = document.getElementById("i2-time");
+  var DAYMAX = 90, FE = 0.25, SDT = 60;
+  var st = { mode: "patch", T: 14, iv: 4, Rw: 0.2, res: null, rf: [], s: null, endDay: DAYMAX, day: 0,
+             playing: false, last: 0, visible: false, parked: false, drawn: -1, autoplayed: false };
+  var COV = null;   // hours one patch keeps tissue above target (500 um alginate, defaults of Interactive 1)
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function el(id) { return document.getElementById(id); }
+  function mix(a, b, t) { return Math.round(a + (b - a) * t); }
+  function colour(n) {
+    n = Math.max(0, Math.min(1, n));
+    var A = [244, 220, 203], B = [168, 207, 154], D = [46, 125, 79], u, f, g;
+    if (n < 0.5) { u = n / 0.5; f = A; g = B; } else { u = (n - 0.5) / 0.5; f = B; g = D; }
+    return "rgb(" + mix(f[0], g[0], u) + "," + mix(f[1], g[1], u) + "," + mix(f[2], g[2], u) + ")";
+  }
+  function coverage() {
+    if (COV === null) COV = S.twoDomain({ CVtotUM: S.P.C_SOL_UM, Lgel: S.P.L_GEL, RV: 1, kprot: S.P.K_PROT }).hoursAbove;
+    return COV;
+  }
+
+  function simulate() {
+    var o = { Rw: st.Rw, nr: 300, tEndDays: DAYMAX, frameEvery: FE };
+    if (st.mode === "patch") { st.s = S.scheduleS(st.iv, coverage(), DAYMAX); o.sGrid = st.s; o.sdt = SDT; }
+    else if (st.mode === "pulse") { st.s = null; o.sFn = S.pulseS(st.T); }
+    else { st.s = null; o.sFn = function () { return 0; }; }
+    var res = S.fisher(o), dr = res.Rinf / 300, thr = S.RATES.thr;
+    st.res = res;
+    st.rf = res.frames.map(function (n) { return S.frontAt(n, thr, res.r, dr, 300); });
+    st.endDay = res.closed ? res.tc / S.DAY : (res.frames.length - 1) * FE;
+    el("i2-d").max = Math.floor(st.endDay * 4) / 4;
+    st.day = 0;
+  }
+
+  function frameIdx() { return Math.max(0, Math.min(st.res.frames.length - 1, Math.round(st.day / FE))); }
+  function patchesBy(day) { return Math.floor(day * 24 / st.iv) + 1; }
+
+  function draw() {
+    if (!st.res) return;
+    var k = frameIdx(), n = st.res.frames[k], r = st.res.r, Rinf = st.res.Rinf, rfk = st.rf[k];
+    el("i2-d-v").textContent = st.day.toFixed(1) + " d";
+    drawDisc(n, r, Rinf, rfk);
+    drawProfile(n, r, Rinf, rfk);
+    drawTimeline();
+    status(k);
+  }
+
+  function drawDisc(n, r, Rinf, rfk) {
+    var s = Plot.setup(disc, 1), c = s.c, cx = s.w / 2, cy = s.h / 2 - 8, R = s.w / 2 - 16, i;
+    // one radial-gradient fill sampled from n(r) -- the previous version filled
+    // 300 stacked discs per frame (~10^8 pixels) and stalled the page
+    var g = c.createRadialGradient(cx, cy, 0, cx, cy, R), N = r.length - 1, STOPS = 96;
+    for (i = 0; i <= STOPS; i++) g.addColorStop(i / STOPS, colour(n[Math.round(i / STOPS * N)]));
+    c.beginPath(); c.fillStyle = g; c.arc(cx, cy, R, 0, 6.2832); c.fill();
+    ring(c, cx, cy, st.Rw / Rinf * R, "#8C6A57", [4, 4], 1.3);
+    if (rfk > 0) ring(c, cx, cy, rfk / Rinf * R, "#B2182B", [], 2.2);
+    c.strokeStyle = "#D5DBE0"; c.lineWidth = 1.5; c.beginPath(); c.arc(cx, cy, R + 3, 0, 6.2832); c.stroke();
+    c.font = "600 11px Inter, system-ui, sans-serif"; c.textAlign = "center"; c.fillStyle = "#2B3137";
+    c.fillText("top-down view · red ring = front · dashed = original edge", cx, s.h - 8);
+  }
+  function ring(c, cx, cy, rad, col, dash, w) {
+    c.beginPath(); c.strokeStyle = col; c.lineWidth = w; c.setLineDash(dash);
+    c.arc(cx, cy, rad, 0, 6.2832); c.stroke(); c.setLineDash([]);
+  }
+
+  function drawProfile(n, r, Rinf, rfk) {
+    var s = Plot.setup(prof, 1), mmax = Rinf * 10, xs = [], ys = [], i, step = Math.max(1, Math.floor(r.length / 160));
+    var tk = []; for (var v = 0; v <= mmax; v += mmax > 8 ? 2 : 1) tk.push([v, String(v)]);
+    var ax = Plot.Axes(s, { l: 44, t: 14, r: 12, b: 48 }, [0, mmax], [0, 1.05], {
+      xlabel: "radius (mm)", ylabel: "cell density n / K", xticks: tk,
+      yticks: [[0, "0"], [0.5, "0.5"], [1, "1"]]
+    });
+    ax.frame();
+    for (i = 0; i < r.length; i += step) { xs.push(r[i] * 10); ys.push(n[i]); }
+    ax.line(xs, ys, C.good, 3);
+    ax.hline(S.RATES.thr, C.thresh, [5, 4], 1.3);
+    ax.vline(st.Rw * 10, "#8C6A57", [4, 4], 1.2);
+    if (rfk > 0) ax.dot(rfk * 10, S.RATES.thr, C.fgf, 4.5);
+    ax.text("front threshold", ax.x1 - 4, ax.Y(S.RATES.thr) - 9, C.thresh, "right", "500 10.5px Inter, system-ui, sans-serif");
+  }
+
+  function drawTimeline() {
+    // keep a front that drifts past the original edge (relapse) inside the chart
+    var rfMax = Math.max.apply(null, st.rf) * 10;
+    var s = Plot.setup(tl, 0.34), ts = [], ys = [], i, xt = [],
+        ymax = Math.min(st.res.Rinf * 10, Math.max(st.Rw * 10, rfMax)) * 1.12;
+    for (var d = 0; d <= DAYMAX; d += 15) xt.push([d, String(d)]);
+    var ax = Plot.Axes(s, { l: 50, t: 10, r: 14, b: 38 }, [0, DAYMAX], [0, ymax], {
+      xlabel: "time (days)", ylabel: "front (mm)", xticks: xt,
+      yticks: [[0, "0"], [st.Rw * 10, (st.Rw * 10).toFixed(0)]]
+    });
+    ax.frame();
+    ax.hline(st.Rw * 10, "#8C6A57", [4, 4], 1);   // original wound edge
+    if (st.mode === "pulse") {
+      ax.c.fillStyle = "rgba(77,146,33,.10)";
+      ax.c.fillRect(ax.X(0), ax.y1, ax.X(Math.min(st.T, DAYMAX)) - ax.X(0), ax.y0 - ax.y1);
+      ax.text("treatment", ax.X(0) + 6, ax.y1 + 11, C.good, "left", "600 10.5px Inter, system-ui, sans-serif");
+    } else if (st.mode === "patch" && st.s) {
+      // drug-effect saw-tooth s(t), drawn in the top band of the chart (0 at mid-height, 1 at the top)
+      var sx = [], sy = [], stepS = Math.max(1, Math.round(0.02 * S.DAY / SDT)), lim = Math.min(st.s.length, Math.ceil(st.endDay * S.DAY / SDT));
+      for (i = 0; i < lim; i += stepS) { sx.push(i * SDT / S.DAY); sy.push(ymax * (0.5 + 0.5 * st.s[i])); }
+      ax.line(sx, sy, "rgba(77,146,33,.55)", 1.2);
+      ax.text("drug effect (each tooth = a new patch)", ax.X(0) + 6, ax.y1 + 11, C.good, "left", "600 10.5px Inter, system-ui, sans-serif");
+    }
+    for (i = 0; i < st.rf.length; i++) { ts.push(i * FE); ys.push(st.rf[i] * 10); }
+    if (st.res.closed) { ts.push(st.endDay); ys.push(0); }
+    ax.line(ts, ys, "#C9D3DB", 2);
+    var cut = ts.filter(function (d) { return d <= st.day + 1e-6; });
+    ax.line(cut, ys.slice(0, cut.length), C.fgf, 3);
+    ax.dot(Math.min(st.day, st.endDay), st.rf[frameIdx()] * 10, C.fgf, 5);
+  }
+
+  function status(k) {
+    var rf = st.rf[k] * 10, closed = st.res.closed, done = st.day >= st.endDay - 1e-6, msg;
+    var minRf = Math.min.apply(null, st.rf.slice(0, k + 1));
+    var duty = st.mode === "patch" ? coverage() / st.iv : 0;
+    var centre = Math.round(st.res.frames[k][0] * 100), thrPct = Math.round(S.RATES.thr * 100);
+    if (closed && done) {
+      msg = "<b>Closed on day " + st.endDay.toFixed(1) + ".</b> The front reached the centre" +
+        (st.mode === "patch" ? " after " + patchesBy(st.endDay) + " patches, one every " + st.iv + " h." : ".");
+    } else if (!closed && done) {
+      if (st.mode === "patch") {
+        msg = "<b>Not closed.</b> A patch every " + st.iv + " h gives drug " + Math.round(duty * 100) +
+          " % of the time; the wound needs ~33 %. Cells fill in but level off at " + centre +
+          " % density, under the " + thrPct + " % that counts as closed.";
+      } else {
+        msg = st.rf[k] > minRf * 1.25 + 1e-3
+          ? "<b>Relapse.</b> The front advanced to " + (minRf * 10).toFixed(1) + " mm, then receded to " + rf.toFixed(1) + " mm once the drug effect faded."
+          : "<b>Stalled</b> at " + rf.toFixed(1) + " mm. The wound has not closed by day " + DAYMAX + ".";
+      }
+    } else {
+      msg = "Day " + st.day.toFixed(1) + ": front at <b>" + rf.toFixed(2) + " mm</b>";
+      if (st.mode === "patch") msg += " · patch #" + patchesBy(st.day) + " · centre density " +
+        centre + " % (closed at " + thrPct + " %)";
+      else if (st.mode === "pulse" && st.day > st.T) msg += " (treatment ended, drug effect relaxing)";
+    }
+    el("i2-status").innerHTML = msg;
+  }
+
+  function play(on) {
+    st.playing = on; el("i2-play").innerHTML = on ? "&#10074;&#10074; Pause" : "&#9654; Play";
+    if (on) { if (st.day >= st.endDay - 1e-6) st.day = 0; st.parked = false; st.drawn = -1; st.last = performance.now(); requestAnimationFrame(tick); }
+  }
+  // The loop only runs while the widget is on screen, and only repaints when
+  // the stored frame changes (one frame per 0.25 d), so it costs nothing while
+  // the reader scrolls past.
+  function tick(now) {
+    if (!st.playing) return;
+    if (!st.visible) { st.parked = true; return; }
+    st.day = Math.min(st.endDay, st.day + (now - st.last) / 1000 * 6); st.last = now;
+    el("i2-d").value = st.day;
+    var k = frameIdx();
+    if (k !== st.drawn || st.day >= st.endDay - 1e-6) { draw(); st.drawn = k; }
+    if (st.day >= st.endDay - 1e-6) { play(false); return; }
+    requestAnimationFrame(tick);
+  }
+
+  function refresh(autoplay) {
+    el("i2-T-v").textContent = st.T.toFixed(1) + " d";
+    el("i2-iv-v").textContent = st.iv + " h";
+    el("i2-rw-v").textContent = (st.Rw * 10).toFixed(1) + " mm";
+    el("i2-iv-c").style.display = st.mode === "patch" ? "" : "none";
+    el("i2-T-c").style.display = st.mode === "pulse" ? "" : "none";
+    simulate(); el("i2-d").value = 0; draw();
+    if (autoplay && !reduce) play(true); else play(false);
+  }
+  var refreshSoon = Plot.debounce(function () { refresh(true); }, 140);
+
+  el("i2-T").addEventListener("input", function () { st.T = parseFloat(this.value); el("i2-T-v").textContent = st.T.toFixed(1) + " d"; refreshSoon(); });
+  el("i2-iv").addEventListener("input", function () { st.iv = parseFloat(this.value); el("i2-iv-v").textContent = st.iv + " h"; refreshSoon(); });
+  el("i2-rw").addEventListener("input", function () { st.Rw = parseFloat(this.value) / 10; el("i2-rw-v").textContent = (st.Rw * 10).toFixed(1) + " mm"; refreshSoon(); });
+  var MODES = { patch: "i2-pat", pulse: "i2-trt", none: "i2-unt" };
+  function pick(mode) {
+    st.mode = mode;
+    for (var m in MODES) { el(MODES[m]).classList.toggle("on", m === mode); el(MODES[m]).setAttribute("aria-pressed", m === mode); }
+    refresh(true);
+  }
+  el("i2-pat").addEventListener("click", function () { pick("patch"); });
+  el("i2-trt").addEventListener("click", function () { pick("pulse"); });
+  el("i2-unt").addEventListener("click", function () { pick("none"); });
+  el("i2-play").addEventListener("click", function () { play(!st.playing); });
+  el("i2-restart").addEventListener("click", function () { st.day = 0; el("i2-d").value = 0; draw(); if (!reduce) play(true); });
+  el("i2-d").addEventListener("input", function () { play(false); st.day = parseFloat(this.value); draw(); });
+  window.addEventListener("resize", Plot.debounce(draw, 120));
+
+  // the 90-day solve only runs once the widget is about a screen away
+  Plot.whenNear(el("i2"), function () {
+    refresh(false);
+    if ("IntersectionObserver" in window) {
+      // track visibility for the whole session: autoplay once on first view,
+      // park the loop when scrolled away, resume it when scrolled back
+      new IntersectionObserver(function (es) {
+        st.visible = es[0].isIntersecting;
+        if (!st.visible) return;
+        if (!st.autoplayed && !reduce) { st.autoplayed = true; if (st.day === 0) play(true); return; }
+        if (st.playing && st.parked) { st.parked = false; st.last = performance.now(); requestAnimationFrame(tick); }
+      }, { threshold: 0.3 }).observe(el("i2"));
+    } else st.visible = true;
+  });
 })();
 
 </script>

@@ -13,8 +13,8 @@
         <button type="button" class="seg-b" id="i2-trt" aria-pressed="false">One pulse</button>
         <button type="button" class="seg-b" id="i2-unt" aria-pressed="false">Untreated</button>
       </div>
-      <label class="ctl" id="i2-iv-c"><span class="ctl-top"><span>New patch every</span><output id="i2-iv-v">12 h</output></span>
-        <input type="range" id="i2-iv" min="6" max="24" step="1" value="12"></label>
+      <label class="ctl" id="i2-iv-c"><span class="ctl-top"><span>New patch every</span><output id="i2-iv-v">4 h</output></span>
+        <input type="range" id="i2-iv" min="2" max="24" step="1" value="4"></label>
       <label class="ctl" id="i2-T-c" style="display:none"><span class="ctl-top"><span>Treatment duration</span><output id="i2-T-v">14.0 d</output></span>
         <input type="range" id="i2-T" min="1" max="30" step="0.5" value="14"></label>
       <label class="ctl"><span class="ctl-top"><span>Wound radius R<sub>w</sub></span><output id="i2-rw-v">2.0 mm</output></span>
@@ -35,11 +35,10 @@
       <div class="w-chart"><canvas id="i2-time" aria-label="Front position and drug effect against time" role="img"></canvas></div>
     </div>
   </div>
-  <p class="w-foot">Static versions: Figures&#160;9 and 10. In <b>Patches</b> mode each patch is the
-  500&#160;&#181;m alginate patch of Interactive&#160;1, which keeps tissue above target for about 7.2&#160;h; the
+  <p class="w-foot">Static versions: Figures&#160;11 and 14. In <b>Patches</b> mode each patch is the
+  500&#160;&#181;m alginate patch of Interactive&#160;1, which keeps tissue above the 145&#160;&#181;M target for about 2.2&#160;h; the
   drug effect then fades with an 18&#160;h time constant until the next patch (green saw-tooth on the
-  timeline). The longest interval that still closes is about 21.8&#160;h, so a daily change stalls just
-  short. Every rate comes from the Tier-4 closure functions of the constants register (chronic
+  timeline). The longest interval that still closes is about 6.8&#160;h; at longer intervals the front advances and then stalls. Every rate comes from the Tier-4 closure functions of the constants register (chronic
   r<sub>p</sub> = 0.50, d = 0.51&#160;d<sup>&#8722;1</sup>; treated r<sub>p</sub> = 1.11,
   d = 0.45&#160;d<sup>&#8722;1</sup>). The animation stops when the front reaches the centre, because the
   model describes a chronic wound bed.</p>

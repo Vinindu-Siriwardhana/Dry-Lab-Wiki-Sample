@@ -7,7 +7,7 @@
   if (!disc) return;
   var C = Plot.COL, S = Sim, prof = document.getElementById("i2-prof"), tl = document.getElementById("i2-time");
   var DAYMAX = 90, FE = 0.25, SDT = 60;
-  var st = { mode: "patch", T: 14, iv: 12, Rw: 0.2, res: null, rf: [], s: null, endDay: DAYMAX, day: 0,
+  var st = { mode: "patch", T: 14, iv: 4, Rw: 0.2, res: null, rf: [], s: null, endDay: DAYMAX, day: 0,
              playing: false, last: 0, visible: false, parked: false, drawn: -1, autoplayed: false };
   var COV = null;   // hours one patch keeps tissue above target (500 um alginate, defaults of Interactive 1)
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;

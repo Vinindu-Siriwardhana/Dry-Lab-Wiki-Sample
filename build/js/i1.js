@@ -4,7 +4,7 @@
   var cv = document.getElementById("i1-cv-c");
   if (!cv) return;
   var C = Plot.COL, S = Sim, last = null;
-  var DEF = { cv: 738, lg: 500, rv: 0, kp: -4.5, rw: 2, iv: 12 };
+  var DEF = { cv: 738, lg: 500, rv: 0, kp: -4.5, rw: 2, iv: 4 };
 
   function val(id) { return parseFloat(document.getElementById(id).value); }
   function set(id, v) { document.getElementById(id).value = v; }
