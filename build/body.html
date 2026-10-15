@@ -186,12 +186,18 @@
   protein&#8211;protein interface, and because a peptide can be designed sequence-up for the
   developability properties the wound demands &#8212; which is what this model exists to score.</p>
 
+  <h3 class="col">Why a gated geometric mean, and not a scorecard</h3>
+  <div class="col">
+  <p>The form of the composite is a modelling choice with consequences, so it is worth stating why it is a <em>product</em> rather than a weighted sum. A weighted sum lets a candidate average its way out of trouble: an exceptional binder with two cysteines would still score respectably, because a high s<sub>A</sub> compensates for a low s<sub>B</sub>. A geometric mean does the opposite &#8212; any sub-score near zero drags the whole composite toward zero, which is the correct behaviour when the modules represent <em>independent ways the payload can fail</em>. A peptide that binds beautifully and aggregates in the gel is not two-thirds of a good payload. It is not a payload.</p>
+  <p>Even a product is not enough on its own, which is why the verdict is <b>gated</b> rather than thresholded on S. A gate encodes a statement of kind, not of degree: two cysteines mean an intramolecular disulfide <em>can</em> form, so the molecule needs an oxidative-folding step and can exist as a mixture of species. That is a different category of problem from being somewhat less potent, and collapsing it into a single number would hide it. The composite then describes <em>how comfortably</em> a candidate passes, and the gates decide <em>whether</em> it passes.</p>
+  <p>We deliberately did not fit a classifier. The entire labelled reference set is five literature peptides plus our own, and at that sample size any machine-learned decision boundary would be fitting noise while looking authoritative. A transparent rule whose constants are stated as design choices is the more honest instrument here, and it has the practical advantage that a reader can recompute every number in the table by hand. The sub-scores are monotonic maps into [0,&#160;1] rather than calibrated probabilities, and we do not report them as probabilities: they encode the <em>direction</em> of a developability argument, not its likelihood.</p>
+  </div>
   <p>The model evaluates three independent modules, each returning a sub-score
   s<sub>i</sub>&#160;&#8712;&#160;[0,&#160;1]. The composite is their geometric mean, and the verdict
   is <em>gated</em> by the two sequence-level modules &#8212; a peptide cannot average its way past
   a structural disqualification:</p>
 
-<div class="eqwrap"><div class="eqlabel">Composite score and gated verdict</div><div class="eq">S=\Bigl(\textstyle\prod_{i\in\{A,B,C\}} s_i\Bigr)^{1/3},\qquad \text{verdict}=\begin{cases}\text{suitable} & n_{\mathrm{Cys}}\le 1 \ \text{ and }\ s_C\ge\tfrac12\\[2pt]\text{unsuitable} & \text{otherwise}\end{cases}</div></div>
+<div class="eqwrap"><div class="eqlabel">Composite score and gated verdict</div><div class="eq">S=\Bigl(\textstyle\prod_{i\in\{A,B,C\}} s_i\Bigr)^{1/3},\qquad \text{verdict}=\begin{cases}\text{suitable} &amp; n_{\mathrm{Cys}}\le 1 \ \text{ and }\ s_C\ge\tfrac12\\[2pt]\text{unsuitable} &amp; \text{otherwise}\end{cases}</div></div>
   </div>
 
   <h3 class="col">Module A &#183; binding suitability</h3>
@@ -417,6 +423,13 @@
   </div>
 
   <div class="col">
+  <h3 class="col">Why a diffusion PDE, and not a compartment model</h3>
+  <div class="col">
+  <p>The obvious cheaper choice would be a compartmental ODE &#8212; gel compartment, tissue compartment, rate constants between them. We did not use one, because <b>the answer we need is a gradient</b>. A well-mixed compartment has, by construction, one concentration everywhere inside it; but the macrophages we are trying to reach sit near the surface, the clearance sink sits at the dermal base, and the entire question of how long tissue stays above target is a question about the <em>shape</em> of the profile between them. A compartment model cannot represent that shape, so it could not have produced the coverage window, the depth-dependence, or the lower-bound argument.</p>
+  <p>Within the PDE, each term is there for a reason that can be checked. Transport is Fickian because both payloads are dilute, uncharged with respect to the gel, and there is no evidence of concentration-dependent mobility; the mesh correction H(a,&#958;) comes from Amsden obstruction scaling, which was derived for exactly this geometry &#8212; a solute sphere moving through a fibrous polymer network &#8212; rather than being a fitted fudge factor. Degradation is first order because proteolysis of a dilute substrate by an enzyme pool in excess is pseudo-first-order in substrate. FGF2-G3 alone carries a Michaelis&#8211;Menten sink, because receptor-mediated uptake saturates and V14 has no equivalent mechanism.</p>
+  <p>We solve the gel and the tissue as <b>two coupled domains with an explicit interface</b> rather than smearing them into one effective medium. That costs more to solve, but an effective medium would destroy the two things that matter most: the partition at the interface, and the fact that the two phases have genuinely different diffusivities and porosities. The flux-matching condition is what conserves mass across that seam, and the porosity convention inside it is precisely where our earlier version went wrong.</p>
+  <p>Reducing to <b>one spatial dimension</b> is justified by aspect ratio: the patch is centimetres across and 500&#160;&#181;m thick, so over the region that feeds a millimetre-scale wound the lateral gradients are negligible compared with the axial one. This is a geometric argument, not a convenience, and it would fail for a patch comparable in width to its thickness.</p>
+  </div>
   <p>Release half-times are 1.9&#160;minutes for V14 and 4.4&#160;minutes for FGF2-G3. The gap
   between the release curves and the closure window is the central result of this section: the two
   timescales differ by roughly <b>400&#8211;2800&#215;</b> for the as-built gel. Three consequences
@@ -461,9 +474,9 @@
     moderate for FGF2-G3, and across the whole 5&#8211;50&#160;nm mesh range the effect on release is
     small. The mesh size is measured on 1&#160;% calcium alginate (14&#160;nm mechanically, 26&#160;nm
     from release), not yet on our own gel.</p>
-<div class="eqwrap"><div class="eqlabel">Model 1 &#183; release from the gel</div><div class="eq">\frac{\partial C^{\mathrm g}_i}{\partial t}=D^{\mathrm g}_{\mathrm{eff},i}\frac{\partial^2 C^{\mathrm g}_i}{\partial x^2}-k^{\mathrm g}_{\deg,i}C^{\mathrm g}_i,\qquad 0<x<L_{\mathrm{gel}},\qquad i\in\{V,F\}</div></div>
-<div class="eqwrap"><div class="eqlabel">Model 2 &#183; tissue transport, &#8722;L<sub>tis</sub> &lt; x &lt; 0</div><div class="eq">\begin{aligned}\frac{\partial C^{\mathrm t}_V}{\partial t}&=D^{\mathrm t}_{\mathrm{eff},V}\frac{\partial^2 C^{\mathrm t}_V}{\partial x^2}-k_{\mathrm{prot},V}\,C^{\mathrm t}_V\\[4pt]\frac{\partial C^{\mathrm t}_F}{\partial t}&=D^{\mathrm t}_{\mathrm{eff},F}\frac{\partial^2 C^{\mathrm t}_F}{\partial x^2}-\bigl(k_{\deg,F}+k_{\mathrm{prot},F}\bigr)C^{\mathrm t}_F-\frac{V_{\max}C^{\mathrm t}_F}{K_M+C^{\mathrm t}_F}\,\rho_{\mathrm{fib}}\end{aligned}</div></div>
-<div class="eqwrap"><div class="eqlabel">Initial and boundary conditions</div><div class="eq">\begin{aligned}C^{\mathrm g}_i(x,0)&=C_{i,0}=\frac{M_{i,\mathrm{loaded}}}{\varepsilon_{\mathrm g}V_{\mathrm{gel}}},\qquad C^{\mathrm t}_i(x,0)=0&&\text{initial condition}\\[3pt]\left.\frac{\partial C^{\mathrm g}_i}{\partial x}\right|_{L_{\mathrm{gel}}}&=0&&\text{impermeable backing}\\[3pt]C^{\mathrm g}_i(0,t)&=K_{p,i}\,C^{\mathrm t}_i(0,t)&&\text{partition at the interface}\\[3pt]\varepsilon_{\mathrm g}D^{\mathrm g}_{\mathrm{eff},i}\left.\frac{\partial C^{\mathrm g}_i}{\partial x}\right|_{0^+}&=\varepsilon_{\mathrm t}D^{\mathrm t}_{\mathrm{eff},i}\left.\frac{\partial C^{\mathrm t}_i}{\partial x}\right|_{0^-}&&\text{flux matching, per total area}\\[3pt]C^{\mathrm t}_i(-L_{\mathrm{tis}},t)&=0&&\text{systemic sink at the dermal base}\end{aligned}</div></div>
+<div class="eqwrap"><div class="eqlabel">Model 1 &#183; release from the gel</div><div class="eq">\frac{\partial C^{\mathrm g}_i}{\partial t}=D^{\mathrm g}_{\mathrm{eff},i}\frac{\partial^2 C^{\mathrm g}_i}{\partial x^2}-k^{\mathrm g}_{\deg,i}C^{\mathrm g}_i,\qquad 0&lt;x&lt;L_{\mathrm{gel}},\qquad i\in\{V,F\}</div></div>
+<div class="eqwrap"><div class="eqlabel">Model 2 &#183; tissue transport, &#8722;L<sub>tis</sub> &lt; x &lt; 0</div><div class="eq">\begin{aligned}\frac{\partial C^{\mathrm t}_V}{\partial t}&amp;=D^{\mathrm t}_{\mathrm{eff},V}\frac{\partial^2 C^{\mathrm t}_V}{\partial x^2}-k_{\mathrm{prot},V}\,C^{\mathrm t}_V\\[4pt]\frac{\partial C^{\mathrm t}_F}{\partial t}&amp;=D^{\mathrm t}_{\mathrm{eff},F}\frac{\partial^2 C^{\mathrm t}_F}{\partial x^2}-\bigl(k_{\deg,F}+k_{\mathrm{prot},F}\bigr)C^{\mathrm t}_F-\frac{V_{\max}C^{\mathrm t}_F}{K_M+C^{\mathrm t}_F}\,\rho_{\mathrm{fib}}\end{aligned}</div></div>
+<div class="eqwrap"><div class="eqlabel">Initial and boundary conditions</div><div class="eq">\begin{aligned}C^{\mathrm g}_i(x,0)&amp;=C_{i,0}=\frac{M_{i,\mathrm{loaded}}}{\varepsilon_{\mathrm g}V_{\mathrm{gel}}},\qquad C^{\mathrm t}_i(x,0)=0&amp;&amp;\text{initial condition}\\[3pt]\left.\frac{\partial C^{\mathrm g}_i}{\partial x}\right|_{L_{\mathrm{gel}}}&amp;=0&amp;&amp;\text{impermeable backing}\\[3pt]C^{\mathrm g}_i(0,t)&amp;=K_{p,i}\,C^{\mathrm t}_i(0,t)&amp;&amp;\text{partition at the interface}\\[3pt]\varepsilon_{\mathrm g}D^{\mathrm g}_{\mathrm{eff},i}\left.\frac{\partial C^{\mathrm g}_i}{\partial x}\right|_{0^+}&amp;=\varepsilon_{\mathrm t}D^{\mathrm t}_{\mathrm{eff},i}\left.\frac{\partial C^{\mathrm t}_i}{\partial x}\right|_{0^-}&amp;&amp;\text{flux matching, per total area}\\[3pt]C^{\mathrm t}_i(-L_{\mathrm{tis}},t)&amp;=0&amp;&amp;\text{systemic sink at the dermal base}\end{aligned}</div></div>
     <p>These four spatial conditions close the two coupled second-order domains, which we solve
     together as one system. Clearance to the circulation is imposed only at the deep boundary, so
     neither tissue equation carries a distributed clearance term: the two would describe the same
@@ -571,6 +584,12 @@
   </div>
 
   <div class="col">
+  <h3 class="col">Why equilibrium occupancy, and why we non-dimensionalised it</h3>
+  <div class="col">
+  <p>Model&#160;3 uses equilibrium mass action rather than a kinetic scheme with explicit k<sub>on</sub> and k<sub>off</sub>. The justification is a <b>separation of timescales</b>: peptide&#8211;receptor binding equilibrates on the order of seconds to minutes, while the delivery profile it reads from Model&#160;2 changes over hours. On the timescale that matters, occupancy tracks concentration essentially instantaneously, so carrying the kinetics would add two parameters we cannot measure and would change no prediction. This is an assumption with a test attached: if SPR showed a dissociation half-life comparable to the delivery timescale, the quasi-equilibrium treatment would have to go &#8212; and the patch would in fact perform <em>better</em> than modelled, not worse, since slow release of the peptide from the receptor would extend its action.</p>
+  <p>The competitive form in particular is not a generic sigmoid. It follows from the single structural claim that V14 and LPS occupy the <em>same</em> MD2 pocket, and it makes a specific, falsifiable prediction &#8212; a rightward shift of the dose&#8211;response with an <b>undepressed maximum</b>. A non-competitive inhibitor would depress the maximum instead. The mathematics therefore carries the mechanism rather than merely fitting the data, which is what makes the Schild experiment worth doing.</p>
+  <p><b>Non-dimensionalisation is the choice that paid for itself.</b> The raw chain carries fourteen parameters, of which the binding affinity K<sub>D,P</sub> was the one we did not have. By rescaling concentration as &#968;&#160;=&#160;C<sub>V</sub>/K<sub>D,P</sub> and endotoxin as a&#160;=&#160;[L]/K<sub>D,L</sub>, the unknown becomes the <em>unit of the axis</em> rather than a free parameter in the answer. The dose&#8211;response shape, the sensitivity structure and the exact half-suppression point all follow without it. That is why the dry lab was never blocked on the binding assay: measuring K<sub>D,P</sub> relabels the axis and calibrates the model, but it does not change any of its conclusions. For a team working on an iGEM timeline, with wet-lab results arriving late, this is the single most useful property the model has.</p>
+  </div>
   <p>V14 (&#945;TI-14) is a competitive antagonist: it and LPS contend for the same MD2 site, so
   each occupancy carries the other's concentration in its denominator:</p>
   </div>
@@ -676,6 +695,13 @@
   </div>
 
   <div class="col">
+  <h3 class="col">Why Hill functions, and why we integrate the readout</h3>
+  <div class="col">
+  <p>Models&#160;4 and&#160;5 use Hill functions where a mechanistic model would use a reaction network. This is deliberate coarse-graining. A full NF-&#954;B model &#8212; IKK activation, I&#954;B&#945; degradation and resynthesis, p65 nuclear shuttling &#8212; is well described in the literature and would add well over a dozen parameters, none of which our planned experiments constrain. What we actually need from this stage is a <b>monotonic, saturating input&#8211;output map</b> from receptor occupancy to transcriptional drive, with the right behaviour in both limits. A Hill function is the minimal form with those properties, and its exponent is the one feature of the shape that a dose&#8211;response can actually inform.</p>
+  <p>The honest cost of that choice is dynamics. Real NF-&#954;B signalling oscillates, and a pulsed input can produce a different transcriptional output than its time average would suggest &#8212; which matters here, because our patch delivers in pulses. We note this as a limitation rather than claiming the steady-state map is exact.</p>
+  <p><b>Model&#160;5 is shaped by the instrument, not by the biology.</b> The chemistry produces free NO, which equilibrates in about 100&#160;s and sits at tens of nanomolar; the Griess assay reads accumulated nitrite, which climbs all day into the micromolar range. These differ by roughly 600&#215;, and the single most consequential decision in this section was to make the model output an <em>integral</em> &#8212; &#8747;R<sub>rel</sub>&#160;dt &#8212; so that the quantity the model reports and the quantity the plate reader measures are the same quantity. Fitting an instantaneous expression to an accumulating measurement is how our earlier version hid a 10<sup>4</sup>&#215; error in the per-cell iNOS rate for as long as it did.</p>
+  <p>For the same reason the fitted form is reduced to a two-parameter sigmoid. A dose&#8211;response curve contains roughly three degrees of freedom; the chain behind it has at least fourteen parameters. Fitting the full chain to that curve would return confident-looking values for quantities the data cannot distinguish, so we fit only IC<sub>50</sub><sup>NO</sup> and n<sub>app</sub> and report only those.</p>
+  </div>
   <p>Model&#160;4 takes the surviving active receptor through a Hill response to nuclear p65, which
   is the transcriptional state the rest of the chain reads:</p>
   </div>
@@ -839,6 +865,13 @@
   </div>
 
   <div class="col">
+  <h3 class="col">Why Fisher&#8211;KPP, and why we added a term that is not in it</h3>
+  <div class="col">
+  <p>Wound closure is a front advancing into empty space, driven by cells that both <em>move</em> and <em>divide</em>. That is precisely the structure a reaction&#8211;diffusion equation describes, and Fisher&#8211;KPP is its canonical form: a diffusion term for migration, a logistic term for proliferation bounded by a carrying capacity. The logistic bound is not decoration &#8212; it represents contact inhibition and finite tissue density, and without it the population would grow without limit behind the front. Radial rather than Cartesian geometry follows from the wound being an approximately circular defect, and it is what makes the area closure fraction &#8211;&#160;the quantity a clinician actually measures&#160;&#8211; well defined.</p>
+  <p><b>The death term is the important departure, and it is there for a reason the standard model cannot supply.</b> Textbook Fisher&#8211;KPP always closes: for any positive proliferation rate a front forms and advances, so every simulated wound heals, eventually. A model with that property is structurally incapable of representing a chronic wound, which is the only kind of wound this project is about. Adding d(I<sub>e</sub>) makes the effective rate r<sub>eff</sub>&#160;=&#160;r<sub>p</sub>&#160;&#8722;&#160;d, which can be negative &#8212; and a wound with r<sub>eff</sub>&#160;&lt;&#160;0 does not merely heal slowly, it regresses. That single term is what lets the model express the thing we are trying to treat, and it is why 18.5&#160;% of sampled wounds never close under our priors. It is also what produced the relapse prediction, which we did not anticipate.</p>
+  <p>We did not build an agent-based model, although cell-level simulation is fashionable for wound healing. The reason is constraint, not computation: an ABM would introduce rules for adhesion, contact inhibition, chemotaxis and division that no experiment on our list could pin down, so it would add parameters without adding evidence, and it would be harder to tell when it was wrong. The continuum model has four parameters in its front behaviour, two of which are degenerate &#8212; and we would rather report that degeneracy honestly than bury it inside a simulation with forty.</p>
+  <p>The same reasoning sets the limits of what we claim. This is a <em>minimal</em> model of one cell population. It has no keratinocytes, no myofibroblast contraction and no angiogenesis, and each of those omissions is recorded above rather than left for a reader to discover.</p>
+  </div>
   <p>The model treats the wound as a fibroblast population spreading into a defect with logistic
   growth and a death term, giving a travelling front. In radial coordinates:</p>
   </div>
@@ -852,7 +885,7 @@
   the V14 arm and the FGF2-G3 arm meet.</b></p>
   </div>
 
-<div class="eqwrap"><div class="eqlabel">The coupling &#183; where the two arms meet</div><div class="eq">\begin{aligned}r_p&=r_0\!\left[1+E_{\max}\frac{C_e}{\mathrm{EC}_{50,F}+C_e}\right]\!\left[1-\beta\frac{I_e}{K_I^{r}+I_e}\right],&\qquad d&=d_0+\Delta d\,\frac{I_e^{\,s}}{(K_I^{d})^{s}+I_e^{\,s}}\\[5pt]\frac{\mathrm{d}C_e}{\mathrm{d}t}&=k_{e0}\bigl(\bar C_F-C_e\bigr),&\qquad I_e&=\frac{[\mathrm{NO}_2^-]}{[\mathrm{NO}_2^-]_{\mathrm{untr}}}\end{aligned}</div></div>
+<div class="eqwrap"><div class="eqlabel">The coupling &#183; where the two arms meet</div><div class="eq">\begin{aligned}r_p&amp;=r_0\!\left[1+E_{\max}\frac{C_e}{\mathrm{EC}_{50,F}+C_e}\right]\!\left[1-\beta\frac{I_e}{K_I^{r}+I_e}\right],&amp;\qquad d&amp;=d_0+\Delta d\,\frac{I_e^{\,s}}{(K_I^{d})^{s}+I_e^{\,s}}\\[5pt]\frac{\mathrm{d}C_e}{\mathrm{d}t}&amp;=k_{e0}\bigl(\bar C_F-C_e\bigr),&amp;\qquad I_e&amp;=\frac{[\mathrm{NO}_2^-]}{[\mathrm{NO}_2^-]_{\mathrm{untr}}}\end{aligned}</div></div>
 
   <div class="col">
   <p>k<sub>e0</sub> is the effect-compartment rate constant, and its reciprocal is the
@@ -969,6 +1002,13 @@
   number below &#8212; 7.2&#160;h, 21.8&#160;h, 50.5&#160;&#181;M,
   R<sub>V</sub>&#160;&#8776;&#160;14.6 &#8212; inherits that assumption.</p>
 
+  <h3 class="col">Why we invert the chain instead of simulating forwards</h3>
+  <div class="col">
+  <p>Models&#160;1&#8211;6 answer a forward question: given a patch, what happens? That is the natural direction to compute in, but it is the wrong direction for <em>design</em>. A team deciding how thick to cast a gel, how much peptide to load, and how often to tell a clinician to change a dressing needs the inverse map &#8212; from a required outcome to a device specification. Model&#160;7 exists to run the chain backwards, and it is the only part of this work whose output is a set of numbers someone could build to.</p>
+  <p>Mathematically the inversion is where approximations become dangerous, which is why we flag it twice. Isolating the required dose demands that &#968; be separated <em>additively</em>; factoring out K<sub>D</sub><sup>app</sup> instead &#8212; a step that is perfectly valid for the occupancy expression and for Cheng&#8211;Prusoff &#8212; turns a linear relation into a quadratic one. The error was in the scaling law rather than in a constant, which is exactly the kind of mistake forward simulation does not reveal and a direct numerical check does.</p>
+  <p>The delay between drug arriving and tissue responding is represented by an <b>effect compartment</b> rather than by modelling the intervening biology. This is the standard pharmacodynamic device for a response that lags exposure, and it is appropriate here because the lag spans transcription, translation and matrix turnover &#8212; processes we have no intention of resolving individually. It buys the right qualitative behaviour with one parameter, k<sub>e0</sub>, at the price of that parameter being Tier&#160;4.</p>
+  <p>Finally, the output is deliberately expressed as a <b>maximum change interval</b> rather than as a dose. A dose is a number a chemist can hit; an interval is an instruction a clinician can follow, and it turns out to depend on the patch rather than on the wound, which makes it a genuine device specification rather than a per-patient calculation. Reporting the result in that form is what turned the modelling into something the wet lab and the eventual user could both act on.</p>
+  </div>
   <h3 class="col">Why retention is not the lever we assumed</h3>
   <div class="col">
   <p>We began by writing retention up as something to be maximised. Running the coupled solve showed
