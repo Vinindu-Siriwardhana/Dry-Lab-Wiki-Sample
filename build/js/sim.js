@@ -8,7 +8,7 @@ var Sim = (function () {
   var P = {
     D0_V14: 4.5e-6, A_V14: 0.73, A_FIBRE: 0.6, XI: 14, EPS_GEL: 0.99,
     EPS_TIS: 0.8, D_TIS: 1.2e-6, L_GEL: 0.05, L_TIS: 0.15, K_P: 1,
-    T_HALF_V14: 6.1 * HOUR, C_SOL_UM: 738, TARGET_UM: 25, DELTA: 0.05,
+    T_HALF_V14: 6.1 * HOUR, C_SOL_UM: 738, TARGET_UM: 145, DELTA: 0.05,
     // closure (Model 6)
     D_N: 1e-9, R0: 0.8 / DAY, D0: 0.24 / DAY, DD: 0.3 / DAY, E_MAX: 2, EC50: 0.5,
     BETA: 0.5, K_IR: 0.3, K_ID: 0.3, S_I: 2, KE0: 1 / (18 * HOUR), W: 75e-4,

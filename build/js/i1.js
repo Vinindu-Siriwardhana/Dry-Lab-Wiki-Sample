@@ -38,7 +38,7 @@
     ax.line(hrs, r.avg.map(function (v) { return v / S.UM; }), C.v14, 3);
     ax.unclip();
     ax.hline(target, C.thresh, [6, 4], 1.6);
-    ax.text("25 µM target", ax.x1 - 6, ax.Y(target) - 10, C.thresh, "right");
+    ax.text(target + " µM target", ax.x1 - 6, ax.Y(target) - 10, C.thresh, "right");
     if (r.peakUM > 0) ax.dot(r.peakT / 3600, r.peakUM, C.fgf, 5);
   }
 
