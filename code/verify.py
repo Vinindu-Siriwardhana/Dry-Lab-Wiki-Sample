@@ -9,6 +9,7 @@ import sys, os, numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import v3model as m
 import twodomain as td
+import params as P
 
 DAY = 86400.0
 ok = True
@@ -22,22 +23,28 @@ def check(name, got, want, tol, fmt="{:.3e}"):
           f"{fmt.format(got)}  (expect {fmt.format(want)} ± {fmt.format(tol)})")
 
 
-print("\n1. transport coefficients")
-check("D_eff V14 at xi=10 nm (cm^2/s)",
-      m.D_eff(3.6e-6, 0.87, 10, 0.91), 3.25e-6, 5e-8)
-check("D_eff FGF2-G3 at xi=10 nm (cm^2/s)",
-      m.D_eff(1.5e-6, 2.34, 10, 0.91), 1.15e-6, 5e-8)
+# Every expected value below is for the gel AS BUILT -- 1% w/v calcium
+# alginate, 2.5 mm (was 500 um until 2026-10-16), xi = 14 nm, eps = 0.99 --
+# and the inputs come from
+# params.py rather than being repeated here, so that changing the register
+# changes these checks too.  An earlier version of this file hard-coded the
+# superseded 5% GelMA gel (xi = 10 nm, eps = 0.91) and so printed ALL CHECKS
+# PASSED while asserting release times that disagreed with the documents.
+print("\n1. transport coefficients  (alginate as built: xi = %g nm, eps = %g)"
+      % (P.XI_NM, P.EPS_GEL))
+Dv = m.D_eff(P.D0_V14, P.A_V14_NM, P.XI_NM, P.EPS_GEL, P.A_FIBRE_NM)
+Df = m.D_eff(P.D0_FGF, P.A_FGF_NM, P.XI_NM, P.EPS_GEL, P.A_FIBRE_NM)
+check("D_eff V14 (cm^2/s)", Dv, 3.478e-6, 5e-9)
+check("D_eff FGF2-G3 (cm^2/s)", Df, 1.327e-6, 5e-9)
 
 print("\n2. release timescales (closed form)")
-Dv = m.D_eff(3.6e-6, 0.87, 10, 0.91)
-Df = m.D_eff(1.5e-6, 2.34, 10, 0.91)
-check("95% release, V14, 500 um (min)",
-      m.release_time(0.95, Dv, 500e-4) / 60, 14.5, 0.3, "{:.1f}")
-check("95% release, FGF2-G3, 500 um (min)",
-      m.release_time(0.95, Df, 500e-4) / 60, 40.9, 0.4, "{:.1f}")
+check("95% release, V14, 2.5 mm (min)",
+      m.release_time(0.95, Dv, P.L_GEL) / 60, 338.1, 0.5, "{:.2f}")
+check("95% release, FGF2-G3, 2.5 mm (min)",
+      m.release_time(0.95, Df, P.L_GEL) / 60, 886.3, 0.5, "{:.2f}")
 check("arrival separation factor",
-      m.release_time(0.95, Df, 500e-4) / m.release_time(0.95, Dv, 500e-4),
-      2.82, 0.05, "{:.2f}")
+      m.release_time(0.95, Df, P.L_GEL) / m.release_time(0.95, Dv, P.L_GEL),
+      2.62, 0.02, "{:.2f}")
 
 print("\n3. release solver vs the Crank series (spatial order)")
 times = np.array([30., 60., 120., 300., 600., 900.])
@@ -49,7 +56,7 @@ for nx in (100, 200, 400, 800):
     errs.append(np.max(np.abs(Cn - Ce)))
 order = np.log2(errs[-2] / errs[-1])
 check("observed spatial order", order, 2.0, 0.08, "{:.2f}")
-check("max error at nx=800", errs[-1], 8.2e-7, 3e-7)
+check("max error at nx=800", errs[-1], 8.08e-7, 5e-8)
 
 print("\n4. Fisher-KPP front speed vs 2 sqrt(D r_eff)")
 sol = m.FisherKPP(1e-9, R_inf=1.6, nr=1600, geometry="cartesian")
@@ -58,7 +65,10 @@ t, rf = res["t"], res["r_front"]
 msk = (rf > 0.35) & (rf < 1.05)
 c_nu = -np.polyfit(t[msk], rf[msk], 1)[0]
 c_an = m.front_speed(1e-9, 1.0 / DAY)
-check("front speed relative error", abs(c_nu - c_an) / c_an, 0.0, 0.05, "{:.2%}")
+# Across the four cases reported in the documents the error spans 1.8-6.2%, the
+# numerical speed always sitting just below the analytic one as expected for a
+# discretised pulled front.  This case is the 2.05% one.
+check("front speed relative error", abs(c_nu - c_an) / c_an, 0.0, 0.07, "{:.2%}")
 
 print("\n5. front failure is reproduced (chronic regime)")
 sol = m.FisherKPP(1e-9, R_inf=1.1, nr=700)

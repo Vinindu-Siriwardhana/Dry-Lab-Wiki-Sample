@@ -4,7 +4,7 @@
   var cv = document.getElementById("i1-cv-c");
   if (!cv) return;
   var C = Plot.COL, S = Sim, last = null;
-  var DEF = { cv: 738, lg: 500, rv: 0, kp: -4.5, rw: 2, iv: 4 };
+  var DEF = { cv: 2213, lg: 2500, rv: 0, kp: -4.5, rw: 2, iv: 24 };
 
   function val(id) { return parseFloat(document.getElementById(id).value); }
   function set(id, v) { document.getElementById(id).value = v; }
@@ -67,7 +67,8 @@
     text("i1-peak", Math.round(r.peakUM) + " µM");
     var pct = r.solFrac * 100, tile = document.getElementById("i1-sol-tile");
     text("i1-sol", pct.toFixed(0) + " %");
-    text("i1-sol-k", r.overCeiling ? "of the solubility ceiling — CANNOT be formulated" : "of the 738 µM solubility ceiling");
+    text("i1-sol-k", r.overCeiling ? "of the 3 mg/mL demonstrated loading — solubility beyond it is unverified"
+                                   : "of the 3 mg/mL (" + Math.round(S.P.C_LOAD_V14_UM) + " µM) loading demonstrated");
     tile.classList.toggle("tile-bad", r.overCeiling);
     // the longest workable interval depends only on the patch, not on the
     // wound, so it is recomputed only when the patch's cover actually changes
@@ -90,7 +91,8 @@
       cancelSearch = null;
       if (r !== last) return;
       maxH = h; showMax(h); protocol();
-    }, 24, 200);          // 200-point grid: same interval as 300, half the cost
+    }, 48, 200);          // 200-point grid: same interval as 300, half the cost
+                          // search to 48 h: the 2.5 mm patch passes 24 h
   }, 220);
 
   function showMax(h) {
@@ -99,12 +101,10 @@
     if (h <= 0) {
       text("i1-int", "none");
       text("i1-int-k", "this patch never holds tissue above target, so no change interval closes a wound");
-    } else if (h >= 24) {
-      text("i1-int", "≥ 24 h");
-      text("i1-int-k", "longest change interval that still closes a wound, for every wound size; even a daily change works");
     } else {
-      text("i1-int", "≤ " + h.toFixed(1) + " h");
-      text("i1-int-k", "longest change interval that still closes a wound, for every wound size; a daily change never does");
+      text("i1-int", (h >= 48 ? "≥ " : "≤ ") + h.toFixed(1) + " h");
+      text("i1-int-k", "longest change interval that still closes a wound, for every wound size; "
+        + (h >= 24 ? "a daily change works" : "a daily change never does"));
     }
   }
 
@@ -119,6 +119,8 @@
   }
 
   function closureTime(Rw, iv) {
+    // before the first solve there is nothing to report; update() calls
+    // protocol() again as soon as `last` exists, so this recovers by itself
     if (!last) return;
     var cov = last.hoursAbove, tile = document.getElementById("i1-tc-tile"),
         mm = (Rw * 10).toFixed(1) + " mm wound", every = "changed every " + iv.toFixed(1) + " h";
@@ -128,13 +130,29 @@
     if (!bad) {
       text("i1-tc", tc.toFixed(0) + " d");
       text("i1-tc-k", "to close a " + mm + " with the patch " + every);
-    } else if (cov > 0 && maxH !== null && iv <= maxH) {
+      return;
+    }
+    if (cov > 0 && maxH !== null && iv <= maxH) {
       text("i1-tc", "> 120 d");
       text("i1-tc-k", "a " + mm + " with the patch " + every + " is still open after 120 days");
-    } else {
-      text("i1-tc", "never");
-      text("i1-tc-k", "a " + mm + " with the patch " + every + " does not close: the gaps between patches are too long");
+      return;
     }
+    // Infeasible schedule.  Report WHY and by how much, rather than a bare
+    // "never": every position of the interval slider above the limit returns
+    // the same closure time, so without the duty cycle the slider looks dead,
+    // and the radius slider looks dead too (correctly -- the feasibility test
+    // is pointwise in the wound bed, so wound size cannot rescue it).
+    text("i1-tc", "never");
+    if (!(cov > 0)) {
+      text("i1-tc-k", "this patch never lifts tissue above the target, so no schedule closes a wound"
+        + " — fix that with the sliders above before changing the protocol");
+      return;
+    }
+    var duty = cov / iv, need = S.RATES.dutyStar;
+    text("i1-tc-k", "no wound closes on this schedule, whatever its size: the patch is in place "
+      + (duty * 100).toFixed(0) + " % of the time and closure needs " + (need * 100).toFixed(0)
+      + " %. Shorten the interval to " + (cov / need).toFixed(1) + " h or less"
+      + " — wound size only sets how long closure takes, never whether it happens.");
   }
 
   ["i1-cv", "i1-lg", "i1-rv", "i1-kp"].forEach(function (id) { Plot.slider(id, update); });

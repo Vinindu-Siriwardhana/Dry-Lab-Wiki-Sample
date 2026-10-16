@@ -10,8 +10,8 @@
   wet lab which experiment to do next.</p>
   <div class="keystrip">
     <div><div class="v">3 modules</div><div class="k">screened the payload before synthesis: the iteration-1 peptide fails the structural gate, V14 passes all three</div></div>
-    <div><div class="v">11 min</div><div class="k">to 95&#160;% release of V14 from the 500&#160;&#181;m alginate gel. The patch is a bolus, not a sustained delivery</div></div>
-    <div><div class="v">&#8804; 6.8 h</div><div class="k">patch-change interval needed for closure; one patch holds tissue above the 145&#160;&#181;M target for 2.2&#160;h</div></div>
+    <div><div class="v">5.6 h</div><div class="k">to 95&#160;% release of the mobile V14 dose from the 2.5&#160;mm alginate gel &#8212; hours, not minutes, because release time scales with thickness squared</div></div>
+    <div><div class="v">&#8804; 26 h</div><div class="k">patch-change interval needed for closure; one patch holds tissue above the 145&#160;&#181;M target for 8.7&#160;h, so a once-daily change works</div></div>
     <div><div class="v">1.93&#215;10<sup>&#8722;7</sup></div><div class="k">solver error against the closed form, converging at second order</div></div>
   </div>
 </div></header>
@@ -125,7 +125,7 @@
   statement of confidence.</p>
 
   <h3>The device</h3>
-  <p>The patch is a single acellular calcium-alginate hydrogel layer, 500&#160;&#181;m thick:
+  <p>The patch is a single acellular calcium-alginate hydrogel layer, 2.5&#160;mm thick:
   1&#160;% w/v sodium alginate, cross-linked with 100&#160;mM calcium chloride, in HEPES-buffered
   saline at pH&#160;7.4. Its outer face is sealed by an impermeable backing and its inner face sits
   on the wound bed. Two active molecules are mixed into the gel during casting: <b>V14</b>
@@ -269,28 +269,32 @@
   of a slab of thickness L as t<sub>1/2,rel</sub>&#160;&#8776;&#160;0.196&#160;L&#178;/D<sub>eff</sub>,
   and a payload only works if it survives longer than the patch takes to let it go:</p>
 <div class="eqwrap"><div class="eqlabel">Module C &#183; the stability&#8211;release race</div><div class="eq">s_C=\frac{t_{1/2}^{\deg}}{t_{1/2}^{\deg}+t_{1/2,\mathrm{rel}}},\qquad\text{gate: } s_C\ge\tfrac12\iff t_{1/2}^{\deg}\gtrsim t_{1/2,\mathrm{rel}}</div></div>
-  <p>For the patch as built &#8212; 500&#160;&#181;m of 1&#160;% calcium alginate,
-  D<sub>eff</sub>&#160;=&#160;4.37&#215;10<sup>&#8722;6</sup>&#160;cm&#178;s<sup>&#8722;1</sup> for
-  V14 &#8212; this gives <b>t<sub>1/2,rel</sub>&#160;=&#160;1.9&#160;minutes</b>, consistent with
-  Model&#160;1's 95&#160;% release in 11&#160;minutes.</p>
+  <p>For the patch as built &#8212; 2.5&#160;mm of 1&#160;% calcium alginate,
+  D<sub>eff</sub>&#160;=&#160;3.48&#215;10<sup>&#8722;6</sup>&#160;cm&#178;s<sup>&#8722;1</sup> for
+  V14 &#8212; this gives <b>t<sub>1/2,rel</sub>&#160;=&#160;59&#160;minutes</b>, consistent with
+  Model&#160;1's 95&#160;% release in 5.6&#160;hours.</p>
   </div>
 
   <div class="claim warn">
-    <h3>What the fast patch does to Module C</h3>
-    <p>Because the patch empties in minutes, <em>every</em> candidate we screened clears the Module&#160;C
-    gate, including the 0.6&#160;h TAP1. Module&#160;C does not discriminate for this device. That is a
-    result, not a defect: building a fast-release bolus removed proteolysis-before-release as a
-    selection criterion and left <b>structural burden as the only discriminating module</b>. Stability
-    still matters &#8212; but it matters <em>after</em> release, as the tissue-side k<sub>prot</sub> in
-    Model&#160;2, which is why measuring it is the top wet-lab ask on this page. An earlier version of
-    this screen compared against a release half-time of 2&#8211;22&#160;h carried over from a thicker
-    gel; with that figure TAP2 appeared to fail on stability. It does not. It fails on Module&#160;B.</p>
+    <h3>What the thicker patch does to Module C &#8212; it discriminates again</h3>
+    <p>This has moved twice, so it is worth stating the history rather than just the answer. The
+    original screen used a release half-time of 2&#8211;22&#160;h carried over from a thicker gel,
+    and TAP2 appeared to fail on stability; it does not, it fails on Module&#160;B. Recomputed on the
+    0.5&#160;mm patch, t<sub>1/2,rel</sub> was 2.3&#160;minutes and <em>every</em> candidate cleared
+    Module&#160;C, including the 0.6&#160;h TAP1 &#8212; the gate did no work at all. At the
+    2.5&#160;mm thickness now built, t<sub>1/2,rel</sub> is <b>59&#160;minutes</b>, so the gate asks
+    for a serum half-life of roughly an hour and <b>TAP1, TAP2 and MD2-I fail it</b>.</p>
+    <p>The survivors are the same either way &#8212; V14 and MD2-II &#8212; so no selection decision
+    ever depended on this, and structural burden remains the module that separated the candidates.
+    What changed is that stability is now a live criterion rather than a vacuous one. It still also
+    matters <em>after</em> release, as the tissue-side k<sub>prot</sub> in Model&#160;2, which is why
+    measuring it is the top wet-lab ask on this page.</p>
   </div>
 
   <h3 class="col">The reference set and both project peptides</h3>
   <p class="col">Net charge and pI are from Henderson&#8211;Hasselbalch titration at pH&#160;7;
   t<sub>1/2</sub><sup>serum</sup> from the regression above; s<sub>C</sub> computed against
-  t<sub>1/2,rel</sub>&#160;=&#160;1.9&#160;min for the as-built patch. TAP1 and TAP3 are the sibling
+  t<sub>1/2,rel</sub>&#160;=&#160;59&#160;min for the as-built patch. TAP1 and TAP3 are the sibling
   phage-display peptides of TAP2 (US&#160;10,435,443); MD2-I is the active and MD2-II the inactive
   (Cys95Ala) MD2-loop antagonist.</p>
 
@@ -327,8 +331,8 @@
         <td><b>Fail</b> &#8212; 2 Cys, 3 Trp</td>
         <td>Pass &#8212; 0 Cys, 0 Trp</td></tr>
       <tr><td>C</td><td>t<sub>deg</sub>&#160;&#8819;&#160;t<sub>1/2,rel</sub></td>
-        <td>Pass &#8212; 0.9&#160;h vs 1.9&#160;min</td>
-        <td>Pass &#8212; 6.1&#160;h vs 1.9&#160;min</td></tr>
+        <td><b>Fail</b> &#8212; 0.9&#160;h vs 59&#160;min</td>
+        <td>Pass &#8212; 6.1&#160;h vs 59&#160;min</td></tr>
       <tr><td colspan="2" style="text-align:right"><b>Composite S</b></td>
         <td>&#8776;&#160;<b>0.41</b></td>
         <td>&#8776;&#160;<b>1.00</b></td></tr>
@@ -378,7 +382,7 @@
 
   <figure class="wide">
     <div class="figbox"><img src="assets/G01_peptide_screening.svg" alt="Table of six candidate peptides against the cysteine gate, tryptophan count, structural and stability sub-scores and the sequence verdict; V14 is highlighted and passes." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;1.</span> Sequence-level screen. TAP2, TAP3 and MD2-I fail the cysteine gate; of the candidates that pass, V14 (&#945;TI-14) has the longest predicted serum half-life (6.1&#160;h). With the 500&#160;&#181;m alginate gel releasing in minutes, every candidate clears the stability gate, so the structural gate is the discriminating criterion. <span class="caveat">Module A binding evidence is listed, not scored: the in-house flow result for V14 at 25&#160;&#181;M is a 20&#160;% drop with p&#160;=&#160;0.098 (n&#160;=&#160;3).</span></figcaption>
+    <figcaption><span class="fid">Figure&#160;1.</span> Sequence-level screen. TAP2, TAP3 and MD2-I fail the cysteine gate; of the candidates that pass, V14 (&#945;TI-14) has the longest predicted serum half-life (6.1&#160;h). With the 2.5&#160;mm gel the release half-time is 59&#160;minutes, so the stability gate now bites as well &#8212; it demands a serum half-life of about an hour, which TAP1, TAP2 and MD2-I fail. The survivors are unchanged (V14 and MD2-II); with the earlier 0.5&#160;mm gel the stability gate was vacuous and only the structural gate discriminated. <span class="caveat">Module A binding evidence is listed, not scored: the in-house flow result for V14 at 25&#160;&#181;M is a 20&#160;% drop with p&#160;=&#160;0.098 (n&#160;=&#160;3).</span></figcaption>
   </figure>
 
 <h3 class="col">Assumptions behind the screen</h3>
@@ -422,9 +426,9 @@
   <div class="claim warn">
     <h3>Summary</h3>
     <p>The patch releases its load as a single burst rather than a sustained supply. From the
-    500&#160;&#181;m alginate gel as built, V14 reaches 95&#160;% release in <b>11&#160;minutes</b>
-    and FGF2-G3 in <b>25&#160;minutes</b>, while wound closure takes 7&#8211;21&#160;days. The
-    2.4&#215; difference between the two molecules comes only from their size, because plain alginate
+    2.5&#160;mm alginate gel as built, V14 reaches 95&#160;% release of its mobile dose in <b>5.6&#160;hours</b>
+    and FGF2-G3 in <b>14.8&#160;hours</b>, while wound closure takes 7&#8211;55&#160;days. The
+    2.6&#215; difference between the two molecules comes only from their size, because plain alginate
     binds neither of them.</p>
   </div>
 
@@ -434,11 +438,11 @@
   <p>The obvious cheaper choice would be a compartmental ODE &#8212; gel compartment, tissue compartment, rate constants between them. We did not use one, because <b>the answer we need is a gradient</b>. A well-mixed compartment has, by construction, one concentration everywhere inside it; but the macrophages we are trying to reach sit near the surface, the clearance sink sits at the dermal base, and the entire question of how long tissue stays above target is a question about the <em>shape</em> of the profile between them. A compartment model cannot represent that shape, so it could not have produced the coverage window, the depth-dependence, or the lower-bound argument.</p>
   <p>Within the PDE, each term is there for a reason that can be checked. Transport is Fickian because both payloads are dilute, uncharged with respect to the gel, and there is no evidence of concentration-dependent mobility; the mesh correction H(a,&#958;) comes from Amsden obstruction scaling, which was derived for exactly this geometry &#8212; a solute sphere moving through a fibrous polymer network &#8212; rather than being a fitted fudge factor. Degradation is first order because proteolysis of a dilute substrate by an enzyme pool in excess is pseudo-first-order in substrate. FGF2-G3 alone carries a Michaelis&#8211;Menten sink, because receptor-mediated uptake saturates and V14 has no equivalent mechanism.</p>
   <p>We solve the gel and the tissue as <b>two coupled domains with an explicit interface</b> rather than smearing them into one effective medium. That costs more to solve, but an effective medium would destroy the two things that matter most: the partition at the interface, and the fact that the two phases have genuinely different diffusivities and porosities. The flux-matching condition is what conserves mass across that seam, and the porosity convention inside it is precisely where our earlier version went wrong.</p>
-  <p>Reducing to <b>one spatial dimension</b> is justified by aspect ratio: the patch is centimetres across and 500&#160;&#181;m thick, so over the region that feeds a millimetre-scale wound the lateral gradients are negligible compared with the axial one. This is a geometric argument, not a convenience, and it would fail for a patch comparable in width to its thickness.</p>
+  <p>Reducing to <b>one spatial dimension</b> is justified by aspect ratio: the patch is centimetres across and 2.5&#160;mm thick, so over the region that feeds a millimetre-scale wound the lateral gradients are negligible compared with the axial one. This is a geometric argument, not a convenience, and it would fail for a patch comparable in width to its thickness.</p>
   </div>
-  <p>Release half-times are 1.9&#160;minutes for V14 and 4.4&#160;minutes for FGF2-G3. The gap
+  <p>Release half-times are 59&#160;minutes for V14 and 154&#160;minutes for FGF2-G3. The gap
   between the release curves and the closure window is the central result of this section: the two
-  timescales differ by roughly <b>400&#8211;2800&#215;</b> for the as-built gel. Three consequences
+  timescales differ by roughly <b>300&#8211;2000&#215;</b> for the as-built gel. Three consequences
   follow.</p>
 
   <p>First, the gel diffusivity cannot be identified from closure data and has to be fitted from the
@@ -473,10 +477,16 @@
     <p>Porosity enters in only two places: the flux matching at the interface, and the conversion
     of loaded mass to concentration. At &#958;&#160;=&#160;14&#160;nm, the mesh size measured for
     1&#160;% calcium alginate (Grassi <i>et al.</i>, 2009), this gives
-    D<sub>eff</sub>&#160;=&#160;4.37&#215;10<sup>&#8722;6</sup> (V14) and
-    1.85&#215;10<sup>&#8722;6</sup>&#160;cm&#178;s<sup>&#8722;1</sup> (FGF2-G3), using the register's
-    Stokes&#8211;Einstein diffusivities, hydrodynamic radii of 0.73 and 1.68&#160;nm, and an alginate
-    porosity of 0.99. The gel barely slows either molecule: steric hindrance is mild for V14 and
+    D<sub>eff</sub>&#160;=&#160;3.48&#215;10<sup>&#8722;6</sup> (V14) and
+    1.33&#215;10<sup>&#8722;6</sup>&#160;cm&#178;s<sup>&#8722;1</sup> (FGF2-G3), using the
+    correlation hydrodynamic radii of 0.87 and 2.34&#160;nm with
+    D<sub>0</sub>&#160;=&#160;3.6 and 1.5&#215;10<sup>&#8722;6</sup>&#160;cm&#178;s<sup>&#8722;1</sup>,
+    and an alginate porosity of 0.99. These are the values every figure on this page is
+    plotted from. The register also tabulates an anhydrous-sphere alternative (radii 0.73 and
+    1.68&#160;nm, D<sub>eff</sub>&#160;=&#160;4.37 and 1.85&#215;10<sup>&#8722;6</sup>), which
+    would give 4.5&#160;h to 95&#160;% release rather than 5.6; those radii are lower bounds
+    on the true hydrodynamic size, so we carry them as the fast edge of the sensitivity range
+    and not as the headline. The gel barely slows either molecule: steric hindrance is mild for V14 and
     moderate for FGF2-G3, and across the whole 5&#8211;50&#160;nm mesh range the effect on release is
     small. The mesh size is measured on 1&#160;% calcium alginate (14&#160;nm mechanically, 26&#160;nm
     from release), not yet on our own gel.</p>
@@ -520,8 +530,8 @@
   <div class="tablewrap"><table>
   <thead><tr><th>Assumption</th><th>Biological basis</th><th>What breaks if it is wrong</th><th>How to test it</th></tr></thead>
   <tbody>
-  <tr><td><b>Transport is one-dimensional and diffusive</b></td><td>The patch is wide relative to its 500&#160;&#181;m thickness, so lateral gradients are small; no bulk convection is imposed.</td><td>Exudate flow in a heavily exuding wound is convective and outward, which would carry drug <em>away</em> from the tissue rather than into it.</td><td>Measure exudate production rate; add a P&#233;clet number and a convective term if it is not small.</td></tr>
-  <tr><td><b>The gel is a fixed 500&#160;&#181;m reservoir</b></td><td>The patch is cast at that thickness and modelled as geometrically stable.</td><td>Calcium alginate absorbs exudate and slowly dissolves as sodium displaces calcium. Swelling dilutes the reservoir and shortens the change interval.</td><td>Weigh gels in simulated wound fluid over 24&#160;h.</td></tr>
+  <tr><td><b>Transport is one-dimensional and diffusive</b></td><td>The patch is wide relative to its 2.5&#160;mm thickness, so lateral gradients are small; no bulk convection is imposed.</td><td>Exudate flow in a heavily exuding wound is convective and outward, which would carry drug <em>away</em> from the tissue rather than into it.</td><td>Measure exudate production rate; add a P&#233;clet number and a convective term if it is not small.</td></tr>
+  <tr><td><b>The gel is a fixed 2.5&#160;mm reservoir</b></td><td>The patch is cast at that thickness and modelled as geometrically stable.</td><td>Calcium alginate absorbs exudate and slowly dissolves as sodium displaces calcium. Swelling dilutes the reservoir and shortens the change interval.</td><td>Weigh gels in simulated wound fluid over 24&#160;h.</td></tr>
   <tr><td><b>Alginate binds neither payload</b></td><td>FGF-2 shows no measurable binding to unmodified alginate (Freeman <i>et al.</i>, 2008), and V14 has no hydrophobic surface and a net charge of &#8722;2.</td><td>Nothing for this build &#8212; it is why R<sub>V</sub>&#160;=&#160;1 is locked. It is what makes the retention analysis a counterfactual.</td><td>Release assay against gel with and without the payload pre-equilibrated.</td></tr>
   <tr><td><b>Tissue is a homogeneous porous medium</b></td><td>A single effective diffusivity and porosity stand in for dermal collagen, cells and interstitium.</td><td>Local accuracy. Real granulation tissue is spatially heterogeneous and changes as the wound heals, so D<sub>eff</sub> is not constant in time.</td><td>Fit D<sub>eff</sub> from a tissue-penetration time course rather than assuming it.</td></tr>
   </tbody>
@@ -529,13 +539,13 @@
 
 
   <figure class="wide">
-    <div class="figbox"><img src="assets/G03_release_curves_and_BCA.svg" alt="Left: cumulative release curves for V14 and FGF2-G3 from 500 and 1000 micrometre alginate gels on a log time axis. Right: blank-subtracted BCA signal relative to the positive control at 60, 90 and 120 minutes." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;2.</span> (a) Model&#160;1 release into a perfect sink (closed-form Crank series): both actives leave the 500&#160;&#181;m gel within the first hour. (b) In-house FGF2-G3 release supernatants (30&#160;Sep), blank-subtracted and expressed relative to the positive control. <span class="caveat">Same material as the model (1&#160;% Ca-alginate), but gel thickness and buffer volume were not recorded, so (b) is shown alongside (a) rather than fitted to it.</span></figcaption>
+    <div class="figbox"><img src="assets/G03_release_curves_and_BCA.svg" alt="Left: cumulative release of V14 and FGF2-G3 from the 2.5 mm alginate gel on a log time axis, each levelling off at its released fraction. Right: blank-subtracted BCA signal relative to the positive control at 60, 90 and 120 minutes, with the model for the 2.5 mm gel fitted to the 30-minute read (f_rel = 0.31 &#177; 0.07)." loading="lazy"></div>
+    <figcaption><span class="fid">Figure&#160;2.</span> (a) Model&#160;1 release into a perfect sink (closed-form Crank series), plotted as a fraction of the <em>total</em> loaded dose so each curve levels off at its released fraction f<sub>rel</sub> (0.5 for V14, 0.31 for FGF2-G3). The shaded band marks the 60&#8211;120&#160;min window that panel (b) samples. (b) In-house FGF2-G3 release supernatants (30&#160;Sep), blank-subtracted and expressed relative to the positive control, with the model for the 2.5&#160;mm design gel fitted to the 30-minute read: f<sub>rel</sub>&#160;=&#160;0.31&#160;&#177;&#160;0.07. This is the FGF2-G3 released fraction the model now uses. <span class="caveat">Same material as the model (1&#160;% Ca-alginate), but the tested gel's thickness and buffer volume were not recorded, so the fit assumes the design thickness. We adopt 0.31 because it is the only in-house number, not because (b) tests the model. One read is negative (&#8722;23&#160;&#177;&#160;7&#160;%), which is not physical and locates the series at the noise floor of the BCA assay, so neither f<sub>rel</sub> nor the release timescale is yet <b>tested</b>. Pinning either down needs the assay run to completion on a log grid from &#8818;&#160;1&#160;min with thickness and buffer volume recorded.</span></figcaption>
   </figure>
 
   <figure class="wide">
     <div class="figbox"><img src="assets/G02_kymographs_V14_FGF2.svg" alt="Two kymographs of free concentration against depth and log time for V14 and FGF2-G3, gel on the left of a dashed line, tissue to the right; an orange contour marks the 145 micromolar V14 target." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;3.</span> Gel + tissue transport (two-domain solver, 500&#160;&#181;m alginate, R<sub>V</sub>&#160;=&#160;1). V14 stays above the 145&#160;&#181;M target for about 2.6&#160;h at the wound surface and reaches 0.7&#160;mm at its deepest; FGF2-G3 persists for days. White lines mark 1, 10 and 50&#160;% of the loaded concentration. <span class="caveat">FGF2-G3 is run with the linear tissue equation (no heparan-sulfate retardation, no FGFR uptake), so its penetration is an upper bound.</span></figcaption>
+    <figcaption><span class="fid">Figure&#160;3.</span> Gel + tissue transport (two-domain solver, 2.5&#160;mm alginate, R<sub>V</sub>&#160;=&#160;1, each arm started from its mobile fraction). V14 stays above the 145&#160;&#181;M target for about 10&#160;h <em>at the wound surface</em> &#8212; the headline 8.7&#160;h quoted elsewhere on this page is the average over the top 500&#160;&#181;m, which is necessarily lower &#8212; and reaches 1.1&#160;mm at its deepest; FGF2-G3 holds above its EC<sub>50</sub> at the surface for about 5&#160;days. White lines mark 1, 10 and 50&#160;% of the total loaded concentration. <span class="caveat">FGF2-G3 is run with the linear tissue equation (no heparan-sulfate retardation, no FGFR uptake), so its penetration is an upper bound.</span></figcaption>
   </figure>
 
   <div class="claim">
@@ -578,7 +588,7 @@
   there rather than a reflecting one. That choice is biologically right in kind. Its <em>depth</em>
   is less certain: dermal anatomy places a vascular plexus well above the 1.5&#160;mm boundary we
   use, so clearance plausibly begins shallower than the model assumes. If it does, residence time is
-  over-estimated and the single-patch window is shorter than 2.2&#160;h. We have not resolved this,
+  over-estimated and the single-patch window is shorter than 8.7&#160;h. We have not resolved this,
   and it is the assumption in this section most likely to be wrong in the optimistic direction.</p>
 
   <p>Where the drug ends up: the 1.5&#160;mm dermis drains the gel reservoir into the systemic sink
@@ -665,8 +675,8 @@
 
 
   <figure class="wide">
-    <div class="figbox"><img src="assets/G04_md2_occupancy.svg" alt="Stacked area plot of LPS-bound, V14-bound and free MD2 against V14 concentration, with markers at 25, 145 and 738 micromolar showing 82, 50 and 17 percent LPS-bound." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;5.</span> Model&#160;3 competitive occupancy of MD2 at 1&#160;&#181;M LPS (a&#160;=&#160;15.4). Without V14, 94&#160;% of MD2 is LPS-bound; this falls to 82&#160;% at the tested 25&#160;&#181;M, 50&#160;% at the 145&#160;&#181;M target and 17&#160;% at the 738&#160;&#181;M solubility limit. <span class="caveat">K<sub>D,P</sub>&#160;&#8805;&#160;10.08&#160;&#181;M is a lower bound from the 14&#160;Oct flow panel; the dashed line shows K<sub>D,P</sub>&#160;=&#160;18&#160;&#181;M.</span></figcaption>
+    <div class="figbox"><img src="assets/G04_md2_occupancy.svg" alt="Stacked area plot of LPS-bound, V14-bound and free MD2 against V14 concentration, with markers at 25, 145 and 2213 micromolar showing 82, 50 and 7 percent LPS-bound." loading="lazy"></div>
+    <figcaption><span class="fid">Figure&#160;5.</span> Model&#160;3 competitive occupancy of MD2 at 1&#160;&#181;M LPS (a&#160;=&#160;15.4). Without V14, 94&#160;% of MD2 is LPS-bound; this falls to 82&#160;% at the tested 25&#160;&#181;M, 50&#160;% at the 145&#160;&#181;M target and 7&#160;% at the 2213&#160;&#181;M (3&#160;mg&#160;mL<sup>&#8722;1</sup>) loading the patch now carries. <span class="caveat">K<sub>D,P</sub>&#160;&#8805;&#160;10.08&#160;&#181;M is a lower bound from the 14&#160;Oct flow panel; the dashed line shows K<sub>D,P</sub>&#160;=&#160;18&#160;&#181;M.</span></figcaption>
   </figure>
 
   <figure class="wide">
@@ -826,28 +836,44 @@ __I3__
   <h3 class="col">Sensitivity analysis</h3>
   <div class="col">
   <p>To find which parameters matter most, we ran Morris screening followed by Sobol indices over the
-  full joint prior. The results contradicted two of our own expectations, which was the most useful
-  outcome of the analysis. We expected k<sub>prot,V</sub> to dominate delivered dose and
-  D<sub>n</sub> to dominate closure time. The computed indices <b>support neither</b>. Delivered
-  dose is dominated by K<sub>D,P</sub> and C<sub>V,0</sub>; closure time by r<sub>0</sub>.</p>
+  full joint prior. We expected k<sub>prot,V</sub> to dominate delivered dose and
+  D<sub>n</sub> to dominate closure time. The computed indices <b>confirm the first and refute the
+  second</b>. Delivered dose is dominated by K<sub>D,P</sub> (S<sub>T</sub>&#160;=&#160;0.63), the
+  loading C<sub>V,0</sub> (0.54) and k<sub>prot,V</sub> (0.41); closure time by r<sub>0</sub>
+  (0.63), with D<sub>n</sub> the <em>least</em> influential of the ten factors
+  (S<sub>T</sub>&#160;=&#160;0.014), because t<sub>c</sub>&#160;&#8733;&#160;D<sub>n</sub><sup>&#8722;1/2</sup>
+  is a weak dependence and physiology bounds D<sub>n</sub> to about 1.5 decades.</p>
+
+  <p class="caveat">An earlier version of this page reported that <em>both</em> expectations had been
+  refuted, with k<sub>prot,V</sub> ranking fifth at S<sub>T</sub>&#160;=&#160;0.023. That was an
+  artefact of our own code: the analytic surrogate for delivered dose carried a spurious extra
+  factor &#923;/&#948; in the depth average, which cancelled most of the k<sub>prot,V</sub>
+  dependence. The depth average of C<sub>0</sub>e<sup>&#8722;x/&#923;</sup> over [0,&#160;&#948;]
+  is C&#772;&#160;=&#160;M(1&#160;&#8722;&#160;e<sup>&#8722;&#948;/&#923;</sup>)/(&#949;<sub>t</sub>&#948;),
+  which is what the module's own documentation stated and what it now computes. Correcting it raises
+  k<sub>prot,V</sub> to third place and removes a tension we had previously had to explain away:
+  the design section argues that k<sub>prot,V</sub> is the most useful parameter to <em>act</em> on,
+  and the variance ranking now agrees with that instead of contradicting it. We record the error
+  because the corrected result is less flattering to our original framing, not more.</p>
 
   <p>Two caveats keep this honest. A Sobol ranking reflects the width of the priors as much as the
   physics, and K<sub>D,P</sub> and C<sub>V,0</sub> have the widest ranges. And share of variance is
-  not the same as what we can <em>change</em>: gel thickness L<sub>gel</sub> ranks only fourth for
+  not the same as what we can <em>change</em>: gel thickness L<sub>gel</sub> ranks fourth for
   delivered dose but is a design variable we control directly, while the gel material &#8212;
   porosity, mesh size &#8212; contributes essentially nothing. The practical lever and the
   statistical leader are not the same parameter.</p>
 
   <p>Propagating the full joint prior through to closure gives a result we think is the most
-  important single number in the uncertainty analysis: under the current priors, <b>18.5&#160;% of
+  important single number in the uncertainty analysis: under the current priors, <b>18.7&#160;% of
   sampled wounds never close at all</b>. This is a statement about the priors rather than a
   prediction for any particular wound, but it is the main reason we keep the death term in
   Model&#160;6. A model without it would return a finite closure time for every one of those
   samples, and would quietly convert a chronic wound into a healing one by construction.</p>
 
   <p>One further result constrains how this page should be read. A one-parameter-at-a-time sweep
-  &#8212; what any slider performs &#8212; captures only the first-order variance: <b>52&#160;%</b>
-  for delivered dose and <b>51&#160;%</b> for closure time. Nearly half the behaviour lives in
+  &#8212; what any slider performs &#8212; captures only the first-order variance: <b>34&#160;%</b>
+  for delivered dose and <b>51&#160;%</b> for closure time. Most of the behaviour of the delivery
+  arm, and half of the closure arm, lives in
   interactions that no single-slider exploration can show. That is why this page reports the
   variance-based analysis rather than inviting readers to tune one parameter at a time.</p>
   </div>
@@ -926,7 +952,7 @@ __I3__
   <h3 class="col">Why Fisher&#8211;KPP, and why we added a term that is not in it</h3>
   <div class="col">
   <p>Wound closure is a front advancing into empty space, driven by cells that both <em>move</em> and <em>divide</em>. That is precisely the structure a reaction&#8211;diffusion equation describes, and Fisher&#8211;KPP is its canonical form: a diffusion term for migration, a logistic term for proliferation bounded by a carrying capacity. The logistic bound is not decoration &#8212; it represents contact inhibition and finite tissue density, and without it the population would grow without limit behind the front. Radial rather than Cartesian geometry follows from the wound being an approximately circular defect, and it is what makes the area closure fraction &#8211;&#160;the quantity a clinician actually measures&#160;&#8211; well defined.</p>
-  <p><b>The death term is the important departure, and it is there for a reason the standard model cannot supply.</b> Textbook Fisher&#8211;KPP always closes: for any positive proliferation rate a front forms and advances, so every simulated wound heals, eventually. A model with that property is structurally incapable of representing a chronic wound, which is the only kind of wound this project is about. Adding d(I<sub>e</sub>) makes the effective rate r<sub>eff</sub>&#160;=&#160;r<sub>p</sub>&#160;&#8722;&#160;d, which can be negative &#8212; and a wound with r<sub>eff</sub>&#160;&lt;&#160;0 does not merely heal slowly, it regresses. That single term is what lets the model express the thing we are trying to treat, and it is why 18.5&#160;% of sampled wounds never close under our priors. It is also what produced the relapse prediction, which we did not anticipate.</p>
+  <p><b>The death term is the important departure, and it is there for a reason the standard model cannot supply.</b> Textbook Fisher&#8211;KPP always closes: for any positive proliferation rate a front forms and advances, so every simulated wound heals, eventually. A model with that property is structurally incapable of representing a chronic wound, which is the only kind of wound this project is about. Adding d(I<sub>e</sub>) makes the effective rate r<sub>eff</sub>&#160;=&#160;r<sub>p</sub>&#160;&#8722;&#160;d, which can be negative &#8212; and a wound with r<sub>eff</sub>&#160;&lt;&#160;0 does not merely heal slowly, it regresses. That single term is what lets the model express the thing we are trying to treat, and it is why 18.7&#160;% of sampled wounds never close under our priors. It is also what produced the relapse prediction, which we did not anticipate.</p>
   <p>We did not build an agent-based model, although cell-level simulation is fashionable for wound healing. The reason is constraint, not computation: an ABM would introduce rules for adhesion, contact inhibition, chemotaxis and division that no experiment on our list could pin down, so it would add parameters without adding evidence, and it would be harder to tell when it was wrong. The continuum model has four parameters in its front behaviour, two of which are degenerate &#8212; and we would rather report that degeneracy honestly than bury it inside a simulation with forty.</p>
   <p>The same reasoning sets the limits of what we claim. This is a <em>minimal</em> model of one cell population. It has no keratinocytes, no myofibroblast contraction and no angiogenesis, and each of those omissions is recorded above rather than left for a reader to discover.</p>
   </div>
@@ -1052,11 +1078,14 @@ __I2__
   <div class="claim gold">
     <h3>Summary</h3>
     <p>Model&#160;7 runs the chain backwards, from a wound to a device specification. One patch keeps
-    tissue above the 145&#160;&#181;M V14 target for <b>2.2&#160;h</b> (1.2&#8211;3.4&#160;h across
+    tissue above the 145&#160;&#181;M V14 target for <b>8.7&#160;h</b> (5.4&#8211;11.5&#160;h across
     the ranges of sink depth and diffusivity). No wound in the 1&#8211;5&#160;mm range closes on a
-    single patch: the continuous cover needed is <b>about 70&#8211;370&#215;</b> what one patch
-    supplies. The patch must be changed at least every <b>6.8&#160;h</b>, about four times a day,
-    for the 500&#160;&#181;m gel as built.</p>
+    single patch: the continuous cover needed is <b>about 18&#8211;95&#215;</b> what one patch
+    supplies. But the patch need only be changed every <b>26&#160;h</b> &#8212; so for the 2.5&#160;mm
+    gel as built, <b>a once-daily dressing change is enough</b>. That is the single biggest change
+    from the earlier 0.5&#160;mm design, which demanded a change every 6.8&#160;h, four times a day.
+    The margin is real but thin: a daily change runs at a 36&#160;% duty cycle against a 33&#160;%
+    threshold, and that threshold is computed from Tier-4 closure parameters.</p>
   </div>
 
   <p class="col">The loading requirement follows straight from the transport model: to hold a target
@@ -1069,8 +1098,8 @@ __I2__
   from the 14&#160;October flow panel: K<sub>D,P</sub>&#160;&#8805;&#160;10.08&#160;&#181;M and
   C<sub>V,target</sub>&#160;=&#160;K<sub>D,P</sub>(a&#160;&#8722;&#160;1), the concentration at which half of
   the MD2 pool is LPS-bound at 1&#160;&#181;M endotoxin. Because K<sub>D,P</sub> is a lower bound, so is
-  the target. Every number below &#8212; 2.2&#160;h, 6.8&#160;h, 234&#160;&#181;M,
-  R<sub>V</sub>&#160;&#8776;&#160;3.2 &#8212; inherits that assumption.</p>
+  the target. Every number below &#8212; 8.7&#160;h, 26&#160;h, 47&#160;&#181;M,
+  R<sub>V</sub>&#160;&#8776;&#160;47 &#8212; inherits that assumption.</p>
 
   <h3 class="col">Why we invert the chain instead of simulating forwards</h3>
   <div class="col">
@@ -1079,22 +1108,29 @@ __I2__
   <p>The delay between drug arriving and tissue responding is represented by an <b>effect compartment</b> rather than by modelling the intervening biology. This is the standard pharmacodynamic device for a response that lags exposure, and it is appropriate here because the lag spans transcription, translation and matrix turnover &#8212; processes we have no intention of resolving individually. It buys the right qualitative behaviour with one parameter, k<sub>e0</sub>, at the price of that parameter being Tier&#160;4.</p>
   <p>Finally, the output is deliberately expressed as a <b>maximum change interval</b> rather than as a dose. A dose is a number a chemist can hit; an interval is an instruction a clinician can follow, and it turns out to depend on the patch rather than on the wound, which makes it a genuine device specification rather than a per-patient calculation. Reporting the result in that form is what turned the modelling into something the wet lab and the eventual user could both act on.</p>
   </div>
-  <h3 class="col">Why retention is not the lever we assumed</h3>
+  <h3 class="col">Why retention is still not the lever &#8212; for a different reason now</h3>
   <div class="col">
   <p>We began by writing retention up as something to be maximised. Running the coupled solve showed
   otherwise. Retention works by <em>binding</em>, so the free concentration that drives delivery is
   C<sub>total</sub>/R<sub>V</sub>: residence time is gained and driving concentration is lost in
-  equal proportion. At the 145&#160;&#181;M target the trade is unfavourable from the start: the
-  window shortens from 2.2&#160;h at R<sub>V</sub>&#160;=&#160;1 to 2.0&#160;h at R<sub>V</sub>&#160;=&#160;1.5
-  and 1.5&#160;h at R<sub>V</sub>&#160;=&#160;2, and is <b>zero</b> from R<sub>V</sub>&#160;&#8776;&#160;3,
-  because peak tissue concentration falls as 1/R<sub>V</sub> and drops below the target. (At the
-  earlier 25&#160;&#181;M target, retention could roughly double the window.)</p>
+  equal proportion. Whether that trade pays depends entirely on how much headroom the peak tissue
+  concentration has above the target.</p>
 
-  <p>A second, independent limit closes the door. A 145&#160;&#181;M target at 500&#160;&#181;m depth
-  needs at least <b>234&#160;&#181;M free</b> (317&#160;&#181;g&#160;mL<sup>&#8722;1</sup>), which is
-  32&#160;% of the solubility ceiling at R<sub>V</sub>&#160;=&#160;1. The <em>total</em> that must
-  dissolve rises to 469&#160;&#181;M (64&#160;% of the ceiling) at R<sub>V</sub>&#160;=&#160;2. Above
-  R<sub>V</sub>&#160;&#8776;&#160;3.2, retention <b>cannot be formulated at all</b>.</p>
+  <p><b>The redesign flipped this conclusion, and we are flagging it rather than quietly restating
+  it.</b> At the old 0.5&#160;mm / 738&#160;&#181;M design the peak was only 1.9&#215; the target, so
+  any retention shortened the window and R<sub>V</sub>&#160;&#8776;&#160;3 left none at all. At
+  2.5&#160;mm and 3&#160;mg&#160;mL<sup>&#8722;1</sup> the peak is 522&#160;&#181;M, about 3.6&#215; the
+  target, and there is room to trade: the window now <em>lengthens</em> from 8.7&#160;h at
+  R<sub>V</sub>&#160;=&#160;1 to 9.4&#160;h at R<sub>V</sub>&#160;=&#160;1.5 and 9.5&#160;h at
+  R<sub>V</sub>&#160;=&#160;2, before falling back to 7.8&#160;h at R<sub>V</sub>&#160;=&#160;3. So a
+  shallow optimum does exist. We still do not recommend pursuing it: the gain is under an hour, and
+  the same hour is bought far more cheaply by casting the gel slightly thicker.</p>
+
+  <p>The solubility limit that used to sit behind this has moved out of the way entirely. A
+  145&#160;&#181;M target at 500&#160;&#181;m depth needs a <em>total</em> loading of only
+  <b>47&#160;&#181;M</b> (64&#160;&#181;g&#160;mL<sup>&#8722;1</sup>) at f<sub>rel</sub>&#160;=&#160;0.5,
+  which is 2&#160;% of the 3&#160;mg&#160;mL<sup>&#8722;1</sup> the team has now dissolved. Retention
+  would only become unformulable above R<sub>V</sub>&#160;&#8776;&#160;47.</p>
 
   <p>And for V14 specifically, the chemistry is not available. Neither heparin nor alginate-sulfate
   can help: both are strongly anionic, and V14 carries a net charge of &#8722;2 with no Lys, Arg or
@@ -1105,13 +1141,13 @@ __I2__
 
 
   <figure class="wide">
-    <div class="figbox"><img src="assets/G10_design_feasibility_map.svg" alt="Filled contour map of hours above the 145 micromolar target against V14 loading and gel thickness, with the solubility limit hatched and the current 0.5 millimetre design starred." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;13.</span> Model&#160;7 design space: hours one patch keeps the top 500&#160;&#181;m of tissue above 145&#160;&#181;M. The current design (0.5&#160;mm, 738&#160;&#181;M) gives about 2.2&#160;h; thicker gels extend this (about 5&#160;h at 1.5&#160;mm). <span class="caveat">Loadings to the right of 738&#160;&#181;M exceed V14 solubility.</span></figcaption>
+    <div class="figbox"><img src="assets/G10_design_feasibility_map.svg" alt="Filled contour map of hours above the 145 micromolar target against V14 loading and gel thickness, with the demonstrated loading marked and the current 2.5 millimetre design starred." loading="lazy"></div>
+    <figcaption><span class="fid">Figure&#160;13.</span> Model&#160;7 design space: hours one patch keeps the top 500&#160;&#181;m of tissue above 145&#160;&#181;M. The current design (2.5&#160;mm, 2213&#160;&#181;M) gives about 8.7&#160;h; thicker gels extend this (about 10&#160;h at 4&#160;mm). The x axis is the <em>total</em> loading, of which f<sub>rel</sub>&#160;=&#160;0.5 is mobile. <span class="caveat">Loadings to the right of 2213&#160;&#181;M go beyond the 3&#160;mg&#160;mL<sup>&#8722;1</sup> the team has actually dissolved, so their solubility is unverified rather than known to be impossible.</span></figcaption>
   </figure>
 
   <figure class="wide">
     <div class="figbox"><img src="assets/G07_time_above_target_vs_dressing_interval.svg" alt="Left: depth-averaged free V14 against hours after one patch with the 145 micromolar target line. Right: closure time against patch-change interval for 1, 2 and 3 millimetre wounds, with the longest closing interval marked." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;14.</span> The dressing-change interval at the 145&#160;&#181;M target. (a) One patch holds tissue above target for about 2.2&#160;h (1.2&#8211;3.4&#160;h across the tissue ranges). (b) Through the 18&#160;h drug-effect compartment, the longest change interval that still closes is about 6.8&#160;h, the same for 1, 2 and 3&#160;mm wounds. <span class="caveat">Repeat dosing as in the model document (&#167;envelope); all closure rates are Tier-4 priors.</span></figcaption>
+    <figcaption><span class="fid">Figure&#160;14.</span> The dressing-change interval at the 145&#160;&#181;M target. (a) One patch holds tissue above target for about 8.7&#160;h (5.4&#8211;11.5&#160;h across the tissue ranges); the shaded band marks the far longer period over which FGF2-G3 stays above its EC<sub>50</sub>. (b) Through the 18&#160;h drug-effect compartment, the longest change interval that still closes is about 26&#160;h, the same for 1, 2 and 3&#160;mm wounds &#8212; so a 24&#160;h change sits just inside it. <span class="caveat">Repeat dosing as in the model document (&#167;envelope); all closure rates are Tier-4 priors.</span></figcaption>
   </figure>
 
 __I1__
@@ -1119,30 +1155,40 @@ __I1__
   <h3 class="col">The device specification</h3>
   <div class="col">
   <p>Combining delivery with closure gives the end-to-end result, and it takes the form of a
-  specification rather than a prediction. Each patch's 2.2&#160;h of cover is passed through the
-  18&#160;h drug-effect delay, which sets a maximum change interval of <b>6.8&#160;h</b> &#8212; and
+  specification rather than a prediction. Each patch's 8.7&#160;h of cover is passed through the
+  18&#160;h drug-effect delay, which sets a maximum change interval of <b>26&#160;h</b> &#8212; and
   that interval is a property of <em>the patch, not the wound</em>. Wound size changes only how long
   treatment must continue, not how often the dressing is changed. Repeat dosing is therefore part of
   the design, not a fallback for a patch that failed to release slowly.</p>
 
-  <p>Why does the interval come out at 6.8&#160;h? The drug effect averaged over a cycle equals the
+  <p>Why does the interval come out at 26&#160;h? The drug effect averaged over a cycle equals the
   fraction of time a patch keeps tissue above target. Above 2.3&#160;% the wound stops getting worse.
-  To reach the density we count as closed, the average must exceed <b>33&#160;%</b>, so 2.2&#160;h of
-  cover sustains closure for change intervals up to about 6.8&#160;h. A once-daily change would need
-  7.9&#160;h of cover per patch. No gel up to 3&#160;mm reaches that at the 738&#160;&#181;M ceiling
-  (6.8&#160;h at 3&#160;mm), and raising the loading alone does not either (1&#160;mM gives 3.1&#160;h).</p>
+  To reach the density we count as closed, the average must exceed <b>33&#160;%</b>, so 8.7&#160;h of
+  cover sustains closure for change intervals up to about 26&#160;h. A once-daily change needs
+  7.9&#160;h of cover per patch, and the 2.5&#160;mm patch supplies 8.7&#160;h &#8212; a duty cycle of
+  36&#160;% against a 33&#160;% requirement.</p>
+
+  <p class="caveat" style="display:block"><b>Read that margin carefully.</b> It is about 10&#160;%,
+  and the 33&#160;% threshold behind it is computed entirely from Tier-4 closure parameters with no
+  planned experiment. A 15&#160;% shortfall in coverage &#8212; well inside the 5.4&#8211;11.5&#160;h
+  band that the tissue parameters alone produce &#8212; would put a daily change back outside the
+  envelope. The honest claim is that once-daily dosing is <em>predicted</em> to work, not
+  <em>demonstrated</em> to; the design should not be trimmed further on the strength of it.</p>
 
   <p>Gel thickness and dermal drainage, not gel chemistry, set the single-patch window. Thickness is
-  the strongest design lever: 0.5, 1.0 and 1.5&#160;mm gels give 2.2, 3.9 and 5.1&#160;h above
-  145&#160;&#181;M. The gain is less than proportional because a thicker gel holds the peptide longer,
-  and the register degrades it inside the gel at the same rate as in serum. By contrast, reducing
-  k<sub>prot</sub> thirtyfold lengthens the window only to 2.6&#160;h, and retention shortens it &#8212;
-  both smaller than the 1.2&#8211;3.4&#160;h spread that the tissue parameters alone produce.</p>
+  the strongest design lever, and it is the one the team pulled: 0.5, 1.0, 1.5 and 2.5&#160;mm gels
+  give 3.4, 5.5, 6.9 and 8.7&#160;h above 145&#160;&#181;M. The gain is far less than proportional
+  &#8212; a 25&#215; larger reservoir buys about 4&#215; the hours &#8212; because a thicker gel holds
+  the peptide longer and the register degrades it inside the gel at the same rate as in serum. That
+  is also why the next millimetre is poor value: 4&#160;mm gives only 10&#160;h. By contrast, reducing
+  k<sub>prot</sub> thirtyfold lengthens the window to 9.5&#160;h, and the best retention adds under an
+  hour &#8212; both smaller than the 5.4&#8211;11.5&#160;h spread the tissue parameters produce.</p>
 
-  <p>Finally, FGF2-G3 is not the constraint. Even without any retention the 500&#160;&#181;m gel
-  keeps it above its EC<sub>50</sub> for 2&#8211;3&#160;days, longer than the change interval. Adding
-  alginate-sulfate to hold it for weeks would be wasted effort when the dressing comes off several times a day.
-  <b>V14 sets the schedule.</b></p>
+  <p>Finally, FGF2-G3 is not the constraint. Even without any retention the 2.5&#160;mm gel
+  keeps it above its EC<sub>50</sub> for <b>5.4&#160;days</b>, about five times the change interval. The
+  closure model requires both arms to be satisfied at once, but the FGF2-G3 condition is met
+  continuously after the first few minutes and never binds. Adding alginate-sulfate to hold it for
+  weeks would be wasted effort when the dressing comes off daily. <b>V14 sets the schedule.</b></p>
   </div>
 
   <details class="math"><summary>Retention chemistries &#8212; the equations, and why this build
@@ -1210,6 +1256,34 @@ __I1__
 
   <h3 class="col">Corrections and refuted expectations</h3>
   <ol class="corr">
+    <li><b>&#8220;A once-daily dressing change is not within reach of thickness or loading alone.&#8221;
+    We said that, and on 16&#160;Oct 2026 we were proved wrong by our own wet lab.</b> The claim was
+    true of the patch it described &#8212; 0.5&#160;mm of gel, 1&#160;mg&#160;mL<sup>&#8722;1</sup> of
+    V14 &#8212; which held tissue above target for only 2.2&#160;h and so needed changing every
+    6.8&#160;h. The team then cast the gel at 2.5&#160;mm and loaded 3&#160;mg&#160;mL<sup>&#8722;1</sup>,
+    and the same solver now returns 8.7&#160;h of cover and a 26&#160;h limit. Thickness was the
+    lever, and we had under-rated it because we were reading its effect off a prior that only ran to
+    1&#160;mm. Two caveats keep this honest: the released fraction is now taken as
+    f<sub>rel</sub>&#160;=&#160;0.5 rather than 1, which costs half the loading back; and the daily
+    margin is only 10&#160;% on Tier-4 closure parameters, so this is a prediction, not a
+    demonstration.</li>
+
+    <li><b>&#8220;The gel Damk&#246;hler number is small, so nearly the whole dose escapes.&#8221;</b>
+    True at 0.5&#160;mm (Da<sub>V</sub>&#160;=&#160;0.007&#8211;0.07), false at 2.5&#160;mm
+    (0.18&#8211;1.8, and 0.57 at the register rate). In-gel degradation now eats a real share of the
+    mobile dose, which is why a 25&#215; bigger reservoir buys only about 4&#215; the hours above
+    target. The analytic surrogate behind the delivery sensitivity analysis still assumes full escape
+    and is correspondingly optimistic; every coverage number we quote comes from the two-domain
+    solver, which does not.</li>
+
+    <li><b>&#8220;A peptide with GRAVY&#160;=&#160;+1.16 may not dissolve at the required
+    concentration.&#8221; Withdrawn on evidence.</b> We flagged solubility as a possible showstopper
+    against an <em>assumed</em> 1&#160;mg&#160;mL<sup>&#8722;1</sup> ceiling. The team has since
+    dissolved 3&#160;mg&#160;mL<sup>&#8722;1</sup> in the casting buffer, and the thicker gel cut the
+    requirement to 47&#160;&#181;M, so the demonstrated loading clears it roughly 47&#215; over. The
+    saturation solubility is still unmeasured &#8212; what changed is that it is no longer on the
+    critical path.</li>
+
     <li><b>The planar closure estimate is a lower bound, not an upper bound.</b> Curvature does
     accelerate the front, by 5&#8211;21&#160;% relative to Cartesian &#8212; but the formula
     R<sub>w</sub>/c neglects the time to <i>form</i> the travelling front, and that transient
@@ -1227,18 +1301,24 @@ __I1__
     upper bound. The gap is small in most of the parameter space but reaches 36&#160;% in the
     corner that matters most, and it is always in the optimistic direction.</li>
 
-    <li><b>Retention is not a lever worth pulling.</b> We wrote it up as something to be
-    maximised. Running the coupled solve showed that at the 145&#160;&#181;M target it shortens the
-    window (2.2&#160;h at R<sub>V</sub>&#160;=&#160;1, 1.5&#160;h at R<sub>V</sub>&#160;=&#160;2) and
-    R<sub>V</sub>&#160;&#8805;&#160;3 gives zero hours above target. For V14 in alginate it would also
-    need new tethering chemistry.</li>
+    <li><b>Retention is not a lever worth pulling &#8212; but our reason for saying so was
+    overturned on 16&#160;Oct 2026.</b> We first wrote retention up as something to be maximised,
+    then reported the opposite: at the 0.5&#160;mm / 738&#160;&#181;M design the coupled solve showed
+    it <em>shortening</em> the window (2.2&#160;h at R<sub>V</sub>&#160;=&#160;1, 1.5&#160;h at
+    R<sub>V</sub>&#160;=&#160;2, zero by R<sub>V</sub>&#160;&#8776;&#160;3). At the 2.5&#160;mm /
+    3&#160;mg&#160;mL<sup>&#8722;1</sup> build the peak tissue concentration is 3.6&#215; the target
+    rather than 1.9&#215;, so the trade now pays and a shallow optimum reappears near
+    R<sub>V</sub>&#160;&#8776;&#160;1.5&#8211;2 (8.7&#160;&#8594;&#160;9.5&#160;h). <b>The conclusion
+    survives; the argument for it does not.</b> We still do not recommend retention, because the gain
+    is under an hour, the same hour is cheaper to buy with thickness, and for V14 in alginate it
+    would need new tethering chemistry.</li>
 
     <li><b>Changing the gel from GelMA to calcium alginate mattered less than its thickness.</b>
     Alginate binds neither molecule and its 14&#160;nm mesh barely slows them, so the gel material
-    drops out of the sensitivity analysis. The 500&#160;&#181;m thickness is what moved the answer:
-    at the original 25&#160;&#181;M target it raised one patch's cover from 2.6 to 7.2&#160;h. At the
-    current 145&#160;&#181;M target, thickness remains the strongest lever (2.2&#160;h at 0.5&#160;mm,
-    5.1&#160;h at 1.5&#160;mm).</li>
+    drops out of the sensitivity analysis. Thickness is what moved the answer, twice: it remains the
+    strongest lever, and the move from 0.5&#160;mm to 2.5&#160;mm on 16&#160;Oct 2026 took one
+    patch's cover from 3.4&#160;h to 8.7&#160;h &#8212; enough to turn a four-times-daily dressing
+    change into a once-daily one.</li>
 
     <li><b>A sub-threshold pulse causes relapse, not stalling.</b> We had assumed a transient
     crossing of the r<sub>p</sub>&#160;&gt;&#160;d threshold would simply fail to finish. It
@@ -1252,12 +1332,38 @@ __I1__
     K<sub>D</sub><sup>app</sup> is valid for occupancy and for Cheng&#8211;Prusoff but not for the
     inversion, turning a linear relation quadratic and over-estimating by up to ~2500&#215;.</li>
 
-    <li><b>The peptide screen's stability gate was compared against a stale release half-time.</b>
-    Module&#160;C originally used 2&#8211;22&#160;h, carried over from a thicker gel. Recomputed on
-    the as-built 500&#160;&#181;m patch, t<sub>1/2,rel</sub> is 1.9&#160;minutes, so TAP2 passes
-    Module&#160;C rather than failing it. TAP2 remains unsuitable &#8212; it fails the Module&#160;B
-    cysteine gate &#8212; but the stated reason for rejecting it was half wrong, and Module&#160;C
-    turns out not to discriminate for a device this fast.</li>
+    <li><b>The peptide screen's stability gate was compared against a stale release half-time
+    &#8212; and has now swung back.</b> Module&#160;C originally used 2&#8211;22&#160;h, carried over
+    from a thicker gel. Recomputed on the 0.5&#160;mm patch, t<sub>1/2,rel</sub> was 2.3&#160;minutes
+    and the gate stopped discriminating at all: every candidate passed it, so the stated reason for
+    rejecting TAP2 was half wrong. On the 2.5&#160;mm patch as now built t<sub>1/2,rel</sub> is
+    59&#160;minutes, and the gate discriminates again &#8212; it demands a serum half-life of about an
+    hour, which TAP1, TAP2 and MD2-I fail. The surviving candidates have been V14 and MD2-II
+    throughout, so no selection decision ever turned on this; what changed is whether the gate was
+    doing any work.</li>
+
+    <li><b>Our own sensitivity code had a bug, and it had reversed one of our conclusions.</b>
+    We reported that the expected dominance of k<sub>prot,V</sub> over delivered dose had been
+    refuted (S<sub>T</sub>&#160;=&#160;0.023, fifth of eight). The analytic surrogate carried a
+    spurious extra factor &#923;/&#948; in the depth average, which cancelled most of the
+    k<sub>prot,V</sub> dependence &#8212; and disagreed with the formula written in the module's own
+    documentation. Corrected, k<sub>prot,V</sub> ranks <b>third at
+    S<sub>T</sub>&#160;=&#160;0.42</b> and the expectation is confirmed, while first-order variance
+    for delivered dose falls from 52&#160;% to 34&#160;%. The correction also resolved a tension we
+    had been explaining away: our design section calls k<sub>prot,V</sub> the most useful parameter
+    to act on, and the variance ranking now agrees instead of contradicting it. The lesson we take
+    is that a result which conveniently explained an anomaly deserved more suspicion than we gave
+    it.</li>
+
+    <li><b>&#8220;NO half-life&#8221; was one symbol doing two jobs.</b> We carried
+    3&#8211;10&#160;s in the written model while the constants register held
+    0.09&#8211;2&#160;s, and neither was simply wrong: tissue consumption (which sets the
+    penetration depth L<sub>d</sub>) and autoxidation in culture medium (which sets free NO in a
+    well) differ by about two decades. No single number is correct for both. They are now two named
+    constants. Using the medium figure for tissue had overstated L<sub>d</sub> by ~2.4&#215;, which
+    made the NO-sensing geometry look <em>more</em> viable than it was &#8212; the corrected
+    11&#8211;93&#160;&#181;m strengthens the learning-cycle conclusion rather than weakening
+    it.</li>
   </ol>
 
   <div class="col">
@@ -1286,12 +1392,13 @@ __I1__
       peptide screen with a measured k<sub>deg</sub>. One day of work, and it upgrades two models at
       once.</div></li>
     <li><span class="st">&#9633;</span><div><b>Saturation solubility of V14 in the casting buffer.</b>
-      Sets C<sub>total,0</sub>, and with it how long each patch lasts: raising the loading from
-      738&#160;&#181;M to 1&#160;mM lengthens one patch from 2.2 to 3.1&#160;h. Trivial, cheap, and
-      currently unplanned.</div></li>
+      3&#160;mg&#160;mL<sup>&#8722;1</sup> (2213&#160;&#181;M) is now known to dissolve, so this is a
+      lower bound rather than the assumption it used to be. Measuring the true saturation point
+      bounds how much further the loading lever can be pushed &#8212; it is no longer needed to show
+      the target is reachable. Trivial, cheap, and currently unplanned.</div></li>
     <li><span class="st">&#9633;</span><div><b>Swelling and dissolution of the alginate gel in simulated wound fluid.</b>
       Calcium alginate absorbs exudate and slowly dissolves as sodium replaces calcium. The model
-      assumes a fixed 500&#160;&#181;m reservoir; swelling would dilute it and shorten the change
+      assumes a fixed 2.5&#160;mm reservoir; swelling would dilute it and shorten the change
       interval. Weighing gels over 24&#160;h is enough.</div></li>
     <li><span class="st">&#9633;</span><div><b>Run the release assay against a RAW&#160;264.7 layer rather than a stirred bath.</b>
       Every planned experiment probes one module in isolation, so a seam error &#8212; a wrong
@@ -1300,7 +1407,7 @@ __I1__
       and&#160;5 at once.</div></li>
     <li><span class="st">&#9633;</span><div><b>The same release assay for FGF2-G3.</b>
       Every FGF gel parameter is otherwise unconstrained, and it tests the predicted
-      2.4&#215; arrival separation directly.</div></li>
+      2.6&#215; arrival separation directly.</div></li>
     <li><span class="st">&#9633;</span><div><b>Scratch assay on fibroblasts &#177; FGF2-G3, &#177; mitomycin C, reporting front width.</b>
       One assay that supplies an otherwise entirely unsupported module and breaks the
       D<sub>n</sub>&#160;/&#160;r<sub>p</sub> degeneracy. This is the only experiment that would move
@@ -1311,14 +1418,17 @@ __I1__
       the whole V14 arm assumes.</div></li>
     <li><span class="st">&#9633;</span><div><b><i>Nos2</i> as one of the two pro-inflammatory qPCR markers.</b>
       It is the only marker that parameterises an equation already in the model.</div></li>
-    <li><span class="st">&#9633;</span><div><b>Sample the release assay on a log grid from ~10&#160;s.</b>
-      Release from the 500&#160;&#181;m gel is ~95&#160;% complete within 11&#8211;25&#160;minutes,
-      and about a third of the V14 is out in the first minute; minute-scale sampling would miss most
-      of the kinetics.</div></li>
+    <li><span class="st">&#9633;</span><div><b>Run the release assay to completion on a log grid from ~1&#160;min.</b>
+      From the 2.5&#160;mm gel, 95&#160;% of the mobile dose takes 5.6&#160;h (V14) and 14.8&#160;h
+      (FGF2-G3), so the assay must run for most of a day rather than an hour. It is now the
+      <b>highest-value release experiment available</b>, because it measures two things at once: the
+      timescale, and the released fraction f<sub>rel</sub> &#8212; currently a Tier-4 estimate of 0.5
+      for V14 and, for FGF2-G3, 0.31&#160;&#177;&#160;0.07 fitted to a BCA run at its noise floor. Every coverage number depends on it linearly.</div></li>
     <li><span class="st">&#9633;</span><div><b>Test a patch-change protocol, not a single patch.</b>
-      The model puts the longest change interval that still closes a wound at about 6.8&#160;h for
-      the 500&#160;&#181;m gel. A thicker gel lengthens it; a slower k<sub>prot</sub> (the stability
-      assay above) is the other lever.</div></li>
+      The model puts the longest change interval that still closes a wound at about 26&#160;h for
+      the 2.5&#160;mm gel, so a once-daily protocol should close and a 36&#160;h one should not. That
+      is a sharp, falsifiable prediction with only a 10&#160;% margin, and it is the single most
+      informative in&#160;vivo test the model offers.</div></li>
   </ul>
 
   <p class="col"><b>One limitation.</b> If FGF2-G3 is assayed on fibroblasts and V14 on
@@ -1342,16 +1452,18 @@ __I1__
   the experiment could not answer.</p>
 
   <p>What the chain says about the device as built is consistent across every model in it. The
-  500&#160;&#181;m alginate patch delivers its load within minutes and keeps tissue above the
-  145&#160;&#181;M V14 target for about 2&#160;hours, while closing a wound takes days to weeks. A
-  single patch therefore cannot close a wound. The patch must be changed at least every 6.8&#160;h
-  &#8212; in practice, four times a day. A thicker gel lengthens that interval, but within 3&#160;mm
-  and the solubility limit it does not reach a once-daily change.</p>
+  2.5&#160;mm alginate patch releases its mobile dose over hours and keeps tissue above the
+  145&#160;&#181;M V14 target for about 8.7&#160;hours, while closing a wound takes days to weeks. A
+  single patch therefore still cannot close a wound, and repeat application remains structural. But
+  the patch need only be changed every 26&#160;h, so <b>a once-daily dressing change closes the
+  wound</b> &#8212; ordinary clinical practice rather than the four-times-daily schedule the earlier
+  0.5&#160;mm design demanded. Thickness was the lever that did it, and the margin is about
+  10&#160;% on Tier-4 closure parameters: predicted, not demonstrated.</p>
 
-  <p>Retention does not rescue this design: at the 145&#160;&#181;M target it shortens the window, it
-  is capped by solubility above R<sub>V</sub>&#160;&#8776;&#160;3.2, and for V14 it would need
-  chemistry we do not have.
-  FGF2-G3 already lasts 2&#8211;3&#160;days without it, so V14 sets the schedule.</p>
+  <p>Retention is still not worth pursuing, though no longer because it fails. At this loading a
+  shallow optimum does exist near R<sub>V</sub>&#160;&#8776;&#160;1.5&#8211;2, but it buys under an
+  hour, the same hour is cheaper to buy with thickness, and for V14 it would need chemistry we do not
+  have. FGF2-G3 lasts 5.4&#160;days without it, so V14 sets the schedule.</p>
 
   <p>We are equally clear about what the chain does not establish. Models&#160;1&#8211;2 are
   predictive now. Models&#160;3&#8211;5 are predictive in scaled form and wait only on calibration.

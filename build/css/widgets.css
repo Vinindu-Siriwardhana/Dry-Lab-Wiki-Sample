@@ -68,7 +68,16 @@
 /* reserve each canvas's height before its first draw, so a widget that
    initialises lazily never pushes the page down */
 #i1-cv-c{aspect-ratio:1/0.52}#i3-cv{aspect-ratio:1/0.62}
-#i2-disc,#i2-prof{aspect-ratio:1/1}#i2-time{aspect-ratio:1/0.34}
+#i2-disc,#i2-prof{aspect-ratio:1/1}#i2-time{aspect-ratio:1/0.42}
+.seg-sm .seg-b{font-size:.78rem;padding:6px 10px}
+.i2-legend{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-wrap:wrap;gap:6px 16px;font:500 .76rem/1.3 var(--font-sans);color:var(--ink-2)}
+.i2-legend li{display:flex;align-items:center;gap:6px}
+.i2-legend .sw{display:inline-block;width:14px;height:14px;border-radius:50%;flex:none}
+.sw-bed{background:#C2484F}
+.sw-cell{background:#FBEBD6;border:1px solid #B98A63;border-radius:7px/4px!important;width:18px!important;height:8px!important}
+.sw-front{background:#fff;border:2.5px solid #16201B}
+.sw-edge{background:transparent;border:1.5px dashed #8C6A57}
+.sw-drug{background:rgba(33,102,172,.28);box-shadow:0 0 0 2.5px rgba(33,102,172,.7)}
 
 .w-chart{background:#fff;border:1px solid var(--rule);border-radius:16px;padding:10px 8px 4px}
 .w-chart canvas,.i2-grid canvas{display:block;width:100%}

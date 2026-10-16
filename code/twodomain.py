@@ -46,16 +46,18 @@ UM = 1e-9     # 1 micromolar in mol cm^-3
 DAY = 86400.0
 
 
-def free_from_total(C_total, R_V):
+def free_from_total(C_total, R_V, f_rel=1.0):
     """
     Free (diffusible) loaded concentration given the TOTAL dissolved loading.
 
-        C_free,0 = C_total,0 / R_V
+        C_free,0 = f_rel C_total,0 / R_V
 
+    f_rel is the released (mobile) fraction: the other 1 - f_rel of the dose
+    stays in the gel for the life of the patch and never reaches tissue.
     Retention is paid for in driving concentration, which is why R_V has an
     optimum rather than a maximum.
     """
-    return C_total / R_V
+    return f_rel * C_total / R_V
 
 
 class TwoDomain:

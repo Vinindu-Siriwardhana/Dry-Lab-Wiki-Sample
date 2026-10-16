@@ -7,8 +7,14 @@ var Sim = (function () {
 
   var P = {
     D0_V14: 3.6e-6, A_V14: 0.87, A_FIBRE: 0.6, XI: 14, EPS_GEL: 0.99,
-    EPS_TIS: 0.8, D_TIS: 1.2e-6, L_GEL: 0.05, L_TIS: 0.15, K_P: 1,
-    T_HALF_V14: 6.1 * HOUR, C_SOL_UM: 738, TARGET_UM: 145, DELTA: 0.05,
+    EPS_TIS: 0.8, D_TIS: 1.2e-6, L_GEL: 0.25, L_TIS: 0.15, K_P: 1,
+    T_HALF_V14: 6.1 * HOUR, C_SOL_UM: 2213.0585206441474, DELTA: 0.05,
+    // patch design 2026-10-16: loadings are TOTAL, only F_REL of each is mobile
+    C_LOAD_V14_UM: 2213.0585206441474, F_REL_V14: 0.5,
+    C_LOAD_FGF_NGML: 200, F_REL_FGF: 0.31,
+    // flow-panel results: MUST equal params.KD_P_LOWER and params.C_TARGET_V14
+    // (in uM). build/check_params_sync.py fails the build if they drift.
+    KD_P_UM: 10.08, TARGET_UM: 145, PANEL_DOSE_UM: 25,
     // closure (Model 6)
     D_N: 1e-9, R0: 0.8 / DAY, D0: 0.24 / DAY, DD: 0.3 / DAY, E_MAX: 2, EC50: 0.5,
     BETA: 0.5, K_IR: 0.3, K_ID: 0.3, S_I: 2, KE0: 1 / (18 * HOUR), W: 75e-4,
@@ -56,8 +62,9 @@ var Sim = (function () {
     var Lgel = o.Lgel != null ? o.Lgel : P.L_GEL, Ltis = o.Ltis != null ? o.Ltis : P.L_TIS;
     var RV = o.RV != null ? o.RV : 1, kprot = o.kprot != null ? o.kprot : P.K_PROT;
     var Dg = o.Dg != null ? o.Dg : gelD(), Dt = o.Dt != null ? o.Dt : P.D_TIS;
-    var CVtot = (o.CVtotUM != null ? o.CVtotUM : P.C_SOL_UM) * UM;
-    var nxg = o.nxg || 40, nxt = o.nxt || 120, tEnd = (o.tEndDays || 3) * DAY;
+    var CVtot = (o.CVtotUM != null ? o.CVtotUM : P.C_LOAD_V14_UM) * UM;
+    var fRel = o.fRel != null ? o.fRel : P.F_REL_V14;
+    var nxg = o.nxg || 100, nxt = o.nxt || 120, tEnd = (o.tEndDays || 3) * DAY;
     var delta = o.delta != null ? o.delta : P.DELTA, target = (o.targetUM || P.TARGET_UM) * UM;
     var Kp = P.K_P, eg = P.EPS_GEL, et = P.EPS_TIS, kdeg = P.K_DEG;
     var hg = Lgel / nxg, ht = Ltis / nxt, ng = nxg, nt = nxt - 1, N = ng + nt;
@@ -78,7 +85,7 @@ var Sim = (function () {
       dia[p] = d0 / RV; sub[p] = lo / RV; sup[p] = up / RV;
     }
     var C = new Float64Array(N), X = new Float64Array(N);
-    var cfree = CVtot / RV;
+    var cfree = fRel * CVtot / RV;   // only the mobile fraction can diffuse
     for (j = 1; j <= ng; j++) C[nt + j - 1] = cfree;
     var kmax = Math.floor(delta / ht + 1e-9), ts = [0], avg = [0], t = 0, done = false;
     var peak = 0, peakT = 0;
@@ -102,7 +109,7 @@ var Sim = (function () {
     return {
       t: ts, avg: avg, hoursAbove: dur / HOUR, peakUM: peak / UM, peakT: peakT,
       totalUM: CVtot / UM, freeUM: cfree / UM, solFrac: CVtot / UM / P.C_SOL_UM,
-      overCeiling: CVtot / UM > P.C_SOL_UM + 1e-9
+      fRel: fRel, overCeiling: CVtot / UM > P.C_SOL_UM + 1e-9
     };
   }
 
@@ -120,6 +127,23 @@ var Sim = (function () {
     rpTrt: rpOf(P.EC50, theta0 / 2), dTrt: dOf(theta0 / 2)
   };
   RATES.thr = 0.5 * (1 - RATES.dTrt / RATES.rpTrt);   // pinned front level
+
+  /* Smallest time-averaged drug effect (duty cycle) that can reach the pinned
+     front level at all.  At a steady duty cycle s the rates interpolate, so the
+     density the wound can hold is n_ss(s) = 1 - d(s)/rp(s); closure needs
+     n_ss(s) > RATES.thr.  Solving that for s:
+
+         s* = [ (1-thr) rpChr - dChr ] / [ (dTrt-dChr) - (1-thr)(rpTrt-rpChr) ]
+
+     This is why the longest workable change interval is cov/s* and why it does
+     not depend on wound radius -- the condition is pointwise in the wound bed.
+     s* ~= 0.330, so one patch covering ~8.7 h gives ~26.4 h. */
+  function dutyThreshold() {
+    var k = 1 - RATES.thr;
+    return (k * RATES.rpChr - RATES.dChr) /
+           ((RATES.dTrt - RATES.dChr) - k * (RATES.rpTrt - RATES.rpChr));
+  }
+  RATES.dutyStar = dutyThreshold();
 
   function frontAt(n, thr, r, dr, nr) {
     if (n[0] >= thr) return 0;
@@ -225,6 +249,7 @@ var Sim = (function () {
   return {
     P: P, UM: UM, DAY: DAY, HOUR: HOUR, RATES: RATES, gelD: gelD, twoDomain: twoDomain,
     fisher: fisher, frontAt: frontAt, scheduleS: scheduleS, closureTimeInterval: closureTimeInterval,
+    dutyThreshold: dutyThreshold,
     maxInterval: maxInterval, maxIntervalAsync: maxIntervalAsync, pulseS: pulseS, suppression: suppression,
     thetaLps: thetaLps, p65: p65
   };

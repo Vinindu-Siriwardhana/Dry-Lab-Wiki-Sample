@@ -225,6 +225,64 @@ def psi_50(a):
     return 1.0 + a
 
 
+# -----------------------------------------------------------------------------
+# Flow-cytometry observables.  The model predicts OCCUPANCY; the cytometer
+# reports something else, and which one matters.
+#
+#   MFI            is proportional to mean bound LPS per cell, so it maps to the
+#                  occupancy ratio LINEARLY -- a 20% MFI drop is a 20% drop in
+#                  theta_LPS.  This is what the tex's observable equation assumes.
+#
+#   gate frequency is the FRACTION OF CELLS above a fixed threshold: a tail
+#                  probability of the per-cell intensity distribution, NOT a mean.
+#                  It is nonlinear in occupancy, and when the gate sits in the
+#                  upper tail it AMPLIFIES occupancy changes.
+#
+# The HKU panel of 14 Oct 2026 reported gate frequency, not MFI.  Reading a gate
+# drop as though it were an MFI drop understates K_D,P by 2.5-4.6x (see
+# occupancy_from_gate below), so the two are not interchangeable.
+# -----------------------------------------------------------------------------
+
+def mfi_ratio(psi, a):
+    """Normalised MFI.  Linear in occupancy: equals suppression_ratio exactly."""
+    return suppression_ratio(psi, a)
+
+
+def gate_frequency(r, sigma, f_lps, f_bg=0.0):
+    """
+    Positive-gate frequency given an occupancy ratio r = theta_LPS(C)/theta_LPS(0).
+
+    Per-cell FITC intensity is taken log-normal with log-SD sigma; competition
+    shifts the whole distribution down by ln(r) without changing its width.  The
+    gate position is CALIBRATED from the no-competitor control (f_lps), so it is
+    an observed quantity, not a fitted one:
+
+        z0 = Phi^-1((f_lps - f_bg)/(1 - f_bg))
+        f_pos(r) = f_bg + (1 - f_bg) Phi(z0 + ln(r)/sigma)
+
+    sigma is the one genuinely free parameter and is NOT recoverable from
+    summary statistics -- it needs the histogram or the FCS files.
+    """
+    from scipy.stats import norm
+    z0 = norm.ppf((f_lps - f_bg) / (1.0 - f_bg))
+    return f_bg + (1.0 - f_bg) * norm.cdf(z0 + np.log(r) / sigma)
+
+
+def occupancy_from_gate(f_gate, sigma, f_lps, f_bg=0.0):
+    """
+    Inverse of gate_frequency: the fractional OCCUPANCY drop implied by an
+    observed fractional drop f_gate in positive-gate frequency.
+
+    Returns 1 - r.  Use this before any K_D,P inversion when the readout is gate
+    frequency; passing f_gate straight into an IC50 formula silently assumes the
+    MFI mapping and biases K_D,P LOW.
+    """
+    from scipy.stats import norm
+    z0 = norm.ppf((f_lps - f_bg) / (1.0 - f_bg))
+    z = norm.ppf((f_lps * (1.0 - f_gate) - f_bg) / (1.0 - f_bg))
+    return 1.0 - np.exp((z - z0) * sigma)
+
+
 def p65_scaled(psi, a, gamma, h):
     """Normalised nuclear p65, pi = (a gamma)^h / ((a gamma)^h + (1+a+psi)^h)."""
     return (a * gamma) ** h / ((a * gamma) ** h + (1 + a + psi) ** h)
@@ -262,7 +320,7 @@ def dose_required_v2(KD_P, L_lps, KD_L, TLR_tot, TLR_tgt):
 # =============================================================================
 
 def inos_response(t, p65_rel, N_cell, q_max, K_iNOS_rel=0.5, p=2.0,
-                  k_turn=1 / (4 * 3600), k_scav=1 / 8.0, phi=0.8):
+                  k_turn=1 / (4 * 3600), k_scav=0.01, phi=0.8):
     """
     Integrate the iNOS turnover ODE and accumulate nitrite.
 
@@ -272,6 +330,12 @@ def inos_response(t, p65_rel, N_cell, q_max, K_iNOS_rel=0.5, p=2.0,
 
     p65_rel is the NORMALISED nuclear p65 (0..1), so K_iNOS_rel is on the same
     scale.  Returns (R_rel, free_NO, nitrite) on the grid t.
+
+    k_scav defaults to params.K_SCAV = 0.01 s^-1: autoxidation in CULTURE
+    MEDIUM, since this module describes a well.  Do NOT pass the tissue NO
+    consumption rate (params.NO_HALFLIFE, ~2 decades faster) here -- that rate
+    belongs to the penetration-depth calculation, not to the well balance.
+    Only free_NO scales with k_scav; nitrite does not.
     """
     drive = N_cell * q_max * p65_rel ** p / (K_iNOS_rel ** p + p65_rel ** p)
     R = np.zeros_like(t, dtype=float)
@@ -427,7 +491,7 @@ class FisherKPP:
 # Model 7 -- design inversion
 # =============================================================================
 
-def loading_required(C_target, delta, L_gel, f_rel=0.5,
+def loading_required(C_target, delta, L_gel, f_rel=1.0,
                      eps_gel=0.9, eps_tis=1.0):
     """
     Lower bound on the FREE loading needed to hold C_target at depth delta:

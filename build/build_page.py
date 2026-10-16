@@ -42,7 +42,21 @@ HEAD = """<!doctype html>
 """
 
 
+def sync_check():
+    """Refuse to build if a hand-maintained parameter copy has drifted from
+    New Graphs/model/params.py (see check_params_sync.py). Pass
+    --skip-sync-check only when the project folder is not alongside."""
+    if "--skip-sync-check" in sys.argv:
+        print("WARNING: parameter sync check skipped")
+        return
+    import subprocess
+    r = subprocess.run([sys.executable, os.path.join(HERE, "check_params_sync.py")])
+    if r.returncode != 0:
+        sys.exit("build aborted: fix the parameter copies above, then rebuild")
+
+
 def main():
+    sync_check()
     css = NL.join(read(os.path.join(HERE, p)) for p in CSS)
     js = NL.join(read(os.path.join(HERE, "js", f)) for f in JS)
     body = read(os.path.join(HERE, "body.html"))

@@ -7,7 +7,7 @@
   var C = Plot.COL, S = Sim;
   var KD_L = 0.065, GAMMA = 0.1, H = 2.0;                       // uM; register gamma, h
   var NO = { N: 1e6, q: 5e-19, K: 0.3, p: 2, kturn: Math.LN2 / (4 * 3600), phi: 0.9, p65lps: 0.85 };
-  var DEF = { cv: Math.log10(145), l: 0, kd: Math.log10(10.08) };
+  var DEF = { cv: Math.log10(S.P.TARGET_UM), l: 0, kd: Math.log10(S.P.KD_P_UM) };
 
   function el(id) { return document.getElementById(id); }
   function val(id) { return Math.pow(10, parseFloat(el(id).value)); }
@@ -54,7 +54,7 @@
     for (i = 0; i <= 160; i++) xs.push(lo * Math.pow(hi / lo, i / 160));
     var rows = xs.map(function (x) { return chain(x, a, kd); });
     ax.clip();
-    [[25, C.ink], [145, C.thresh], [738, C.mute]].forEach(function (m) { ax.vline(m[0], m[1], [3, 4], 1.1); });
+    [[S.P.PANEL_DOSE_UM, C.ink], [S.P.TARGET_UM, C.thresh], [S.P.C_SOL_UM, C.mute]].forEach(function (m) { ax.vline(m[0], m[1], [3, 4], 1.1); });
     ax.line(xs, rows.map(function (q) { return q.supp; }), C.v14, 3);
     ax.line(xs, rows.map(function (q) { return q.p65; }), C.bad, 2, [7, 5]);
     ax.line(xs, rows.map(function (q) { return q.no2 / r0.no2; }), C.thresh, 2.4);

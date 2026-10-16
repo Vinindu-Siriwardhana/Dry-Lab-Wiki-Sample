@@ -11,11 +11,14 @@ rather than take it on trust.
 ## Run it
 
 ```bash
-pip install numpy scipy matplotlib        # that is the entire dependency list
-python3 verify.py                         # ~40 s — do this first
-python3 make_figures.py                   # ~8 min — writes ../assets/*.svg + *.png
-python3 make_figures.py 07 13             # or just the figures you want
+pip install numpy scipy matplotlib openpyxl   # that is the entire dependency list
+python3 verify.py                             # ~40 s — do this first
+cd figures && python3 G07_time_above_target_vs_dressing_interval.py
 ```
+
+Each figure is one self-contained script under `figures/`, named for the figure it
+produces. Run the ones you want; there is no build-all driver, because the slow
+ones (`G07`, `G08`, `G10`) take minutes each and you rarely want all of them.
 
 `verify.py` must print **ALL CHECKS PASSED** before any number here is quoted
 anywhere. It checks the release solver against the closed-form Crank series
@@ -34,9 +37,16 @@ first-order decay, mass budget).
 | `twodomain.py` | monolithic gel + tissue solver with partition, flux matching and the Dirichlet systemic sink |
 | `sa_run.py` | Morris screening and Sobol indices, implemented directly (no SALib needed) |
 | `verify.py` | the regression suite |
-| `make_figures.py` | regenerates everything |
-| `figures/figNN_*.py` | one script per figure, linked from that figure's caption on the wiki |
-| `data/` | where the wet-lab CSVs go |
+| `figures/common.py` | shared setup: puts the model modules on the path, applies the house style, and defines `save()` |
+| `figures/GNN_*.py` | one script per figure on the wiki, named for that figure |
+| `figures/WL_*.py` | the two wet-lab figures (flow-panel statistics, and the K_D,P bound the 145 µM target comes from) |
+| `Wet Lab Data/` | the raw flow-cytometry CSVs and the 30 Sep BCA workbook, so the `WL_*` and `G03` scripts run as shipped |
+| `data/` | template for wet-lab CSVs not yet collected |
+| `constants_register.xlsx` | the team register `params.py` follows |
+
+The `figNN_*.py` scripts that earlier versions of this bundle shipped have been
+dropped: they generated an older figure set that is no longer on the page, and
+two of them predated the switch from GelMA to calcium alginate.
 
 ---
 

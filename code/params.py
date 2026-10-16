@@ -4,8 +4,10 @@ params.py -- the single source of truth for every parameter used in the figures.
 No value is hard-coded inside a solver; everything enters through this file, so
 changing a number here changes every figure that depends on it.  Each entry
 carries its provenance TIER, following the team constants register
-(constants_register.xlsx, updated 2026-10-09; gel changed to 1% Ca-alginate,
-500 um, by the team on 2026-10-09):
+(constants_register.xlsx, updated 2026-10-16; gel changed to 1% Ca-alginate
+on 2026-10-09, and to the 2.5 mm / 3 mg/mL V14 / 200 ng/mL FGF2-G3 design with
+f_rel = 0.5 / 0.15 on 2026-10-16; f_rel,FGF = 0.31 from the BCA fit on
+2026-10-16):
 
     T1  measured in house
     T2  mechanistic correlation
@@ -29,7 +31,8 @@ K_B          = 1.380649e-23 # J/K                                          D
 ETA_WATER    = 0.00069      # Pa s water at 37 C                           T3
 
 # --- geometry ---------------------------------------------------------------
-L_GEL        = 0.05     # cm   (500 um) as-manufactured 1% Ca-alginate    T1
+L_GEL        = 0.25     # cm   (2.5 mm) as-manufactured 1% Ca-alginate,
+                        #      team design 2026-10-16 (was 500 um)          T1
 L_GEL_ALT    = 0.015    # cm   (150 um) earlier GelMA build, comparison   design
 L_TIS        = 0.15     # cm   (1.5 mm) dermal depth to the systemic sink T3
 L_TIS_RANGE  = (0.10, 0.20)   # cm, band carried as sensitivity           T3
@@ -62,7 +65,8 @@ T_HALF_FGF   = 168 * HOUR   # s  functional half-life at 37 C              T1
 # 1% w/v sodium alginate, ionically cross-linked in 100 mM CaCl2, in HBS
 # (10 mM HEPES, 150 mM NaCl, pH 7.4).  Team recipe.                         T1
 A_FIBRE_NM   = 0.6      # nm   alginate chain radius; not measured for this gel.
-                        #      0.6 -> 2 nm only lowers H(FGF) 0.93 -> 0.88   T4
+                        #      at A_FGF_NM = 2.34 and XI_NM = 14, raising it
+                        #      0.6 -> 2 nm lowers H(FGF) 0.89 -> 0.83        T4
 XI_NM        = 14.0     # nm   1% Ca-alginate mesh, Grassi et al. 2009,
                         #      Molecules 14:3003 (14 mechanical, 26 release) T3
 EPS_GEL      = 0.99     # --   1% w/v polymer -> ~0.6% v/v solid           D
@@ -89,15 +93,30 @@ K_CL_V14     = 0.0035   # 1/s  register value only: NOT used anywhere; unverifie
 # --- dosing (Model 7) -------------------------------------------------------
 # Target from the 14 Oct 2026 flow panel (replaces the earlier 25 uM T4 guess):
 #   gate-frequency detection limit 27.8 % (t-test, n = 3)
-#     -> occupancy drop 13.1 % for a log-normal per-cell intensity, SIGMA_FLOW_LOG
+#     -> occupancy drop 13.1 % via v3model.occupancy_from_gate at SIGMA_FLOW_LOG
 #     -> K_D,P >= 10.08 uM (one-sided LOWER BOUND)
 #     -> C_target = K_D,P (a - 1) = 145 uM: the dose at which 50 % of the MD2 pool
 #        is LPS-bound (psi_50 = 1 + a, which halves theta_LPS, is 165 uM).
 SIGMA_FLOW_LOG = 0.7       # --  log-SD of per-cell FITC intensity       T4 -- needs FCS files
 KD_P_LOWER   = 10.08 * UM  # mol/cm3  lower bound on V14 K_D,P            D
 C_TARGET_V14 = 145 * UM    # mol/cm3  efficacious tissue concentration   D
-C_SOLUBILITY = 738 * UM    # mol/cm3  1 mg/mL saturation ceiling          T4 -- MEASURE THIS
-F_REL        = 0.5         # --  fraction of loaded dose released         T4
+# Patch design, 2026-10-16.  Loadings are TOTAL per gel volume; only the
+# released (mobile) fraction f_rel diffuses, the rest stays in the gel for the
+# life of the patch, so the free initial concentration is f_rel C_load / R_V
+# (twodomain.free_from_total).
+C_LOAD_V14   = 3.0e-3 / MW_V14   # mol/cm3  3 mg/mL = 2213 uM                T1 (design)
+C_LOAD_FGF_NGML = 200.0          # ng/mL    FGF2-G3 loading (12.1 nM)        T1 (design)
+C_LOAD_FGF   = C_LOAD_FGF_NGML * 1e-9 / MW_FGF   # mol/cm3                    D
+C_SOLUBILITY = C_LOAD_V14  # mol/cm3  LOWER BOUND: 3 mg/mL dissolves (was a
+                           #          1 mg/mL = 738 uM T4 guess). Saturation
+                           #          solubility still unmeasured.           T1 (bound)
+F_REL_V14    = 0.5         # --  released fraction of V14 (= f_mob)         T4
+F_REL_FGF    = 0.31        # --  released fraction of FGF2-G3 (= f_mob)     T1
+                           #     least-squares fit of f_rel x Crank to the 30 Sep
+                           #     BCA 30-min read (G03): 0.31 +/- 0.07 (SE, n = 12).
+                           #     Was a 0.15 T4 guess. Assay is near its noise floor.
+F_REL_FGF_SE = 0.07        # --  standard error of F_REL_FGF                T1
+F_REL        = F_REL_V14   # --  alias kept for the shipped code/figures scripts
 REAPPLY_D    = 1.0         # d   dressing-change interval                 T4
 
 # --- receptor / signalling (Models 3-4) -------------------------------------
@@ -113,17 +132,32 @@ P65_BAS, P65_MAX = 0.5, 50.0   # nM                                        T4
 PSI_RANGE    = (1e-2, 1e4)
 
 # --- nitric oxide (Learning Cycle 1 and Model 5) ---------------------------
+# TWO DIFFERENT RATES, and conflating them was an error in earlier drafts.
+# NO_HALFLIFE is NO consumption in TISSUE (cell respiration + haem), which is
+# what sets the penetration depth L_d in the legacy sensing analysis.
+# K_SCAV is autoxidation in CULTURE MEDIUM, which is ~2 decades slower and is
+# what Eq. (no-well) uses, because Model 5 is a well, not tissue.
 D0_NO        = 3.0e-5   # cm2/s NO in water                                T3
-NO_HALFLIFE  = (0.09, 0.5, 2.0)   # s, normoxic tissue, report as a RANGE:
-                                  # autoxidation is second order, so t_1/2 is
-                                  # concentration dependent                T3
+NO_HALFLIFE  = (0.09, 0.5, 2.0)   # s, normoxic TISSUE; report as a RANGE:
+                                  # consumption is second order, so t_1/2 is
+                                  # concentration dependent.  Thomas 2001,
+                                  # PNAS 98:355 (PMID 11134509)            T3
 INV_TAU      = (1.0, 0.5, 0.3)    # swept group 1/tau                      T2
 STACK_MM     = (0.5, 3.0)         # V2 cellulose + hydrogel stack, mm      design (V2)
-K_SCAV       = 0.01     # 1/s  NO scavenging                               T3
+K_SCAV       = 0.01     # 1/s  NO autoxidation in CULTURE MEDIUM (t_1/2 =
+                        #      ln2/K_SCAV = 69 s).  NOT the tissue rate
+                        #      above; still fast vs iNOS turnover (4 h), so
+                        #      the quasi-steady free-NO form holds.         T3
 Q_CHRONIC    = 5.0e-19  # mol/cell/s sustained iNOS rate (3.5-8.1e-19)     T3
 Q_MAX_ACUTE  = 8.17e-17 # mol/cell/s                                       T3
 N_MAC        = 262      # cells/mm2 chronic baseline M1 density            T3
-MAC_BAND     = 0.005    # cm                                               T4
+MAC_BAND     = 0.0364   # cm   M1 band depth, CALIBRATED so that the
+                        #      quasi-steady balance reproduces the team's
+                        #      36 nM wound-NO figure:
+                        #        [NO] = (N_MAC/MAC_BAND) Q_CHRONIC / K_SCAV
+                        #      Was 0.005 cm, which gives 262 nM and so
+                        #      contradicted the 36 nM it was meant to match.
+                        #      Not used by any current figure.             T4
 K_TURN       = LN2 / (4 * HOUR)   # 1/s iNOS turnover                      T4
 K_INOS_REL   = 0.3      # x p65_max                                        T4
 P_INOS       = 2.0      # --                                               T4
@@ -177,5 +211,5 @@ PROVENANCE = {
     "M4 signalling":   dict(T1=0, T2=0, T3=1, T4=4, unplanned=4),
     "M5 NO readout":   dict(T1=0, T2=0, T3=9, T4=5, unplanned=5),
     "M6 closure":      dict(T1=0, T2=0, T3=0, T4=15, unplanned=15),
-    "M7 design":       dict(T1=0, T2=0, T3=0, T4=3, unplanned=2),
+    "M7 design":       dict(T1=1, T2=0, T3=0, T4=2, unplanned=2),   # f_rel,FGF T4 -> T1 (2026-10-16)
 }

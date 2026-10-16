@@ -2,7 +2,7 @@
   <header class="w-head">
     <span class="w-badge">Interactive 2</span>
     <h3 id="i2-title">Wound-closure animation</h3>
-    <p>Watch the fibroblast density n(r,t) advance across the wound bed. Apply a fresh patch on a
+    <p>Watch fibroblasts migrate in from the wound edge and fill the bed. Apply a fresh patch on a
     schedule and watch each one top up the drug effect, compare a single long treatment pulse, or
     leave the wound untreated. Too little drug lets the front advance and then <em>recede</em>.</p>
   </header>
@@ -13,8 +13,8 @@
         <button type="button" class="seg-b" id="i2-trt" aria-pressed="false">One pulse</button>
         <button type="button" class="seg-b" id="i2-unt" aria-pressed="false">Untreated</button>
       </div>
-      <label class="ctl" id="i2-iv-c"><span class="ctl-top"><span>New patch every</span><output id="i2-iv-v">4 h</output></span>
-        <input type="range" id="i2-iv" min="2" max="24" step="1" value="4"></label>
+      <label class="ctl" id="i2-iv-c"><span class="ctl-top"><span>New patch every</span><output id="i2-iv-v">24 h</output></span>
+        <input type="range" id="i2-iv" min="2" max="36" step="1" value="24"></label>
       <label class="ctl" id="i2-T-c" style="display:none"><span class="ctl-top"><span>Treatment duration</span><output id="i2-T-v">14.0 d</output></span>
         <input type="range" id="i2-T" min="1" max="30" step="0.5" value="14"></label>
       <label class="ctl"><span class="ctl-top"><span>Wound radius R<sub>w</sub></span><output id="i2-rw-v">2.0 mm</output></span>
@@ -23,22 +23,39 @@
         <button type="button" class="w-btn" id="i2-play">&#9654; Play</button>
         <button type="button" class="w-btn w-btn-ghost" id="i2-restart">Restart</button>
       </div>
+      <div class="seg seg-sm" role="group" aria-label="Playback speed">
+        <button type="button" class="seg-b" id="i2-sp-slow" aria-pressed="false" title="Slow enough to see each patch go on">Slow</button>
+        <button type="button" class="seg-b on" id="i2-sp-norm" aria-pressed="true">Normal</button>
+        <button type="button" class="seg-b" id="i2-sp-fast" aria-pressed="false">Fast</button>
+      </div>
       <label class="ctl"><span class="ctl-top"><span>Day</span><output id="i2-d-v">0.0 d</output></span>
         <input type="range" id="i2-d" min="0" max="90" step="0.25" value="0"></label>
       <div class="status" id="i2-status" role="status" aria-live="polite">Day 0.0: front at <b>1.97 mm</b></div>
     </div>
     <div class="w-out">
       <div class="i2-grid">
-        <canvas id="i2-disc" aria-label="Top-down view of the wound bed" role="img"></canvas>
-        <canvas id="i2-prof" aria-label="Fibroblast density against radius" role="img"></canvas>
+        <canvas id="i2-disc" aria-label="Top-down view of the wound bed, with fibroblasts filling in from the edge" role="img"></canvas>
+        <canvas id="i2-prof" aria-label="Fibroblast density against distance from the wound centre" role="img"></canvas>
       </div>
+      <ul class="i2-legend" aria-label="Legend">
+        <li><span class="sw sw-bed"></span>open wound bed</li>
+        <li><span class="sw sw-cell"></span>fibroblasts (more marks = denser)</li>
+        <li><span class="sw sw-front"></span>healing front</li>
+        <li><span class="sw sw-edge"></span>original wound edge</li>
+        <li><span class="sw sw-drug"></span>drug effect from the patch</li>
+      </ul>
       <div class="w-chart"><canvas id="i2-time" aria-label="Front position and drug effect against time" role="img"></canvas></div>
     </div>
   </div>
-  <p class="w-foot">Static versions: Figures&#160;11 and 14. In <b>Patches</b> mode each patch is the
-  500&#160;&#181;m alginate patch of Interactive&#160;1, which keeps tissue above the 145&#160;&#181;M target for about 2.2&#160;h; the
-  drug effect then fades with an 18&#160;h time constant until the next patch (green saw-tooth on the
-  timeline). The longest interval that still closes is about 6.8&#160;h; at longer intervals the front advances and then stalls. Every rate comes from the Tier-4 closure functions of the constants register (chronic
+  <p class="w-foot"><b>How to read the wound bed.</b> Each fibroblast mark has a fixed position and is
+  drawn only where the model's local density n/K exceeds a threshold assigned to that mark, so the share
+  of marks present at any distance from the centre <i>is</i> the computed density &#8212; the picture is a
+  plot, not an illustration. The blue dotted line on the density plot is the most the current drug level can
+  sustain; once it sits below the orange closure line, the wound cannot close however long you wait.
+  Static versions: Figures&#160;11 and 14. In <b>Patches</b> mode each patch is the
+  2.5&#160;mm alginate patch of Interactive&#160;3, which keeps tissue above the 145&#160;&#181;M target for about 8.7&#160;h; the
+  drug effect then fades with an 18&#160;h time constant until the next patch (the blue band on the
+  timeline; its solid line is the 1-day average, which is what has to stay above 33&#160;%). The longest interval that still closes is about 26.4&#160;h, so a once-daily change is inside the envelope; at longer intervals the front advances and then stalls. Every rate comes from the Tier-4 closure functions of the constants register (chronic
   r<sub>p</sub> = 0.50, d = 0.51&#160;d<sup>&#8722;1</sup>; treated r<sub>p</sub> = 1.11,
   d = 0.45&#160;d<sup>&#8722;1</sup>). The animation stops when the front reaches the centre, because the
   model describes a chronic wound bed.</p>

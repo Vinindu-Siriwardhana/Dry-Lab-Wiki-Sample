@@ -16,8 +16,19 @@ evaluated with ANALYTIC SURROGATES that preserve the dependence structure of
 the full model:
 
   Output A, scaled dose psi delivered to the macrophage plane
-      All of the loaded dose escapes (Da << 1, verified in F3), so the mass
-      delivered per unit area is eps_g L_gel C_V0.  It spreads into tissue with
+      The MOBILE dose is taken to escape in full, so the mass delivered per
+      unit area is f_rel eps_g L_gel C_V0; the immobile (1 - f_rel) fraction
+      never leaves the gel.
+
+      CAVEAT (2026-10-16): this was justified by Da << 1, which held for the
+      500 um gel (Da_V ~ 0.007-0.07).  At the 2.5 mm thickness as built
+      Da_V ~ 0.18-1.8 (0.57 at the register k_prot), so in-gel degradation is
+      NOT negligible and the surrogate over-states delivered dose at the upper
+      end of the k_prot prior.  The ranking is still informative -- the
+      over-statement is monotone in k_prot and so does not reorder the
+      factors -- but the absolute psi values are optimistic.  The full
+      two-domain solver (twodomain.py), which carries in-gel decay, is what
+      every reported coverage number uses.  It spreads into tissue with
       the exponential profile set by the penetration depth Lambda, and the
       depth-average over the target depth delta is
 
@@ -53,10 +64,12 @@ CAP_DAYS = 365.0
 # (name, low, high)  -- all log-uniform, as in the provenance appendix
 PRIORS_A = [
     ("$K_{D,P}$",        1.0 * UM,   100.0 * UM),    # 2 decades, T4
-    ("$C_{V,0}$",        20.0 * UM,  800.0 * UM),    # 40x, design variable
+    ("$C_{V,0}$",        200.0 * UM, 6000.0 * UM),   # 30x, design variable; spans the
+                                                     # 2213 uM (3 mg/mL) as loaded, 2026-10-16
     (r"$\delta$",        0.03,       0.10),         # register sweep 300-1000 um
     ("$k_{prot,V}$",     1e-6,       1e-3),          # 3 decades, T4 (register sweep)
-    ("$L_{gel}$",        300e-4,     1000e-4),       # around the 500 um as built
+    ("$L_{gel}$",        500e-4,     4000e-4),       # 0.5-4 mm, around the 2.5 mm as built
+                                                     # (was 300-1000 um for the 500 um gel)
     ("$D_{0,V}$",        2.5e-6,     4.5e-6),        # doc band to Stokes-Einstein
     (r"$\varepsilon_g$", 0.98,       0.995),         # around 0.99, 1% alginate
     (r"$\xi$",           5.0,        50.0),          # T3
@@ -94,8 +107,8 @@ def model_A(X):
     # No distributed clearance: loss to the circulation is the Dirichlet sink
     # at the deep boundary, so only proteolysis sets the penetration depth.
     lam = np.sqrt(Deff_t / kprot)
-    M = epsg * Lgel * CV0                                   # mol per cm^2
-    C_bar = M / (P.EPS_TIS * delta) * (1 - np.exp(-delta / lam)) * (lam / delta)
+    M = P.F_REL_V14 * epsg * Lgel * CV0                     # mol per cm^2 (mobile dose only)
+    C_bar = M / (P.EPS_TIS * delta) * (1 - np.exp(-delta / lam))
     return C_bar / KD
 
 

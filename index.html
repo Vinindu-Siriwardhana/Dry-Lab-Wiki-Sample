@@ -513,7 +513,16 @@ body.noscroll{overflow:hidden}
 /* reserve each canvas's height before its first draw, so a widget that
    initialises lazily never pushes the page down */
 #i1-cv-c{aspect-ratio:1/0.52}#i3-cv{aspect-ratio:1/0.62}
-#i2-disc,#i2-prof{aspect-ratio:1/1}#i2-time{aspect-ratio:1/0.34}
+#i2-disc,#i2-prof{aspect-ratio:1/1}#i2-time{aspect-ratio:1/0.42}
+.seg-sm .seg-b{font-size:.78rem;padding:6px 10px}
+.i2-legend{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-wrap:wrap;gap:6px 16px;font:500 .76rem/1.3 var(--font-sans);color:var(--ink-2)}
+.i2-legend li{display:flex;align-items:center;gap:6px}
+.i2-legend .sw{display:inline-block;width:14px;height:14px;border-radius:50%;flex:none}
+.sw-bed{background:#C2484F}
+.sw-cell{background:#FBEBD6;border:1px solid #B98A63;border-radius:7px/4px!important;width:18px!important;height:8px!important}
+.sw-front{background:#fff;border:2.5px solid #16201B}
+.sw-edge{background:transparent;border:1.5px dashed #8C6A57}
+.sw-drug{background:rgba(33,102,172,.28);box-shadow:0 0 0 2.5px rgba(33,102,172,.7)}
 
 .w-chart{background:#fff;border:1px solid var(--rule);border-radius:16px;padding:10px 8px 4px}
 .w-chart canvas,.i2-grid canvas{display:block;width:100%}
@@ -539,8 +548,8 @@ body.noscroll{overflow:hidden}
   wet lab which experiment to do next.</p>
   <div class="keystrip">
     <div><div class="v">3 modules</div><div class="k">screened the payload before synthesis: the iteration-1 peptide fails the structural gate, V14 passes all three</div></div>
-    <div><div class="v">11 min</div><div class="k">to 95&#160;% release of V14 from the 500&#160;&#181;m alginate gel. The patch is a bolus, not a sustained delivery</div></div>
-    <div><div class="v">&#8804; 6.8 h</div><div class="k">patch-change interval needed for closure; one patch holds tissue above the 145&#160;&#181;M target for 2.2&#160;h</div></div>
+    <div><div class="v">5.6 h</div><div class="k">to 95&#160;% release of the mobile V14 dose from the 2.5&#160;mm alginate gel &#8212; hours, not minutes, because release time scales with thickness squared</div></div>
+    <div><div class="v">&#8804; 26 h</div><div class="k">patch-change interval needed for closure; one patch holds tissue above the 145&#160;&#181;M target for 8.7&#160;h, so a once-daily change works</div></div>
     <div><div class="v">1.93&#215;10<sup>&#8722;7</sup></div><div class="k">solver error against the closed form, converging at second order</div></div>
   </div>
 </div></header>
@@ -654,7 +663,7 @@ body.noscroll{overflow:hidden}
   statement of confidence.</p>
 
   <h3>The device</h3>
-  <p>The patch is a single acellular calcium-alginate hydrogel layer, 500&#160;&#181;m thick:
+  <p>The patch is a single acellular calcium-alginate hydrogel layer, 2.5&#160;mm thick:
   1&#160;% w/v sodium alginate, cross-linked with 100&#160;mM calcium chloride, in HEPES-buffered
   saline at pH&#160;7.4. Its outer face is sealed by an impermeable backing and its inner face sits
   on the wound bed. Two active molecules are mixed into the gel during casting: <b>V14</b>
@@ -798,28 +807,32 @@ body.noscroll{overflow:hidden}
   of a slab of thickness L as t<sub>1/2,rel</sub>&#160;&#8776;&#160;0.196&#160;L&#178;/D<sub>eff</sub>,
   and a payload only works if it survives longer than the patch takes to let it go:</p>
 <div class="eqwrap"><div class="eqlabel">Module C &#183; the stability&#8211;release race</div><div class="eq">s_C=\frac{t_{1/2}^{\deg}}{t_{1/2}^{\deg}+t_{1/2,\mathrm{rel}}},\qquad\text{gate: } s_C\ge\tfrac12\iff t_{1/2}^{\deg}\gtrsim t_{1/2,\mathrm{rel}}</div></div>
-  <p>For the patch as built &#8212; 500&#160;&#181;m of 1&#160;% calcium alginate,
-  D<sub>eff</sub>&#160;=&#160;4.37&#215;10<sup>&#8722;6</sup>&#160;cm&#178;s<sup>&#8722;1</sup> for
-  V14 &#8212; this gives <b>t<sub>1/2,rel</sub>&#160;=&#160;1.9&#160;minutes</b>, consistent with
-  Model&#160;1's 95&#160;% release in 11&#160;minutes.</p>
+  <p>For the patch as built &#8212; 2.5&#160;mm of 1&#160;% calcium alginate,
+  D<sub>eff</sub>&#160;=&#160;3.48&#215;10<sup>&#8722;6</sup>&#160;cm&#178;s<sup>&#8722;1</sup> for
+  V14 &#8212; this gives <b>t<sub>1/2,rel</sub>&#160;=&#160;59&#160;minutes</b>, consistent with
+  Model&#160;1's 95&#160;% release in 5.6&#160;hours.</p>
   </div>
 
   <div class="claim warn">
-    <h3>What the fast patch does to Module C</h3>
-    <p>Because the patch empties in minutes, <em>every</em> candidate we screened clears the Module&#160;C
-    gate, including the 0.6&#160;h TAP1. Module&#160;C does not discriminate for this device. That is a
-    result, not a defect: building a fast-release bolus removed proteolysis-before-release as a
-    selection criterion and left <b>structural burden as the only discriminating module</b>. Stability
-    still matters &#8212; but it matters <em>after</em> release, as the tissue-side k<sub>prot</sub> in
-    Model&#160;2, which is why measuring it is the top wet-lab ask on this page. An earlier version of
-    this screen compared against a release half-time of 2&#8211;22&#160;h carried over from a thicker
-    gel; with that figure TAP2 appeared to fail on stability. It does not. It fails on Module&#160;B.</p>
+    <h3>What the thicker patch does to Module C &#8212; it discriminates again</h3>
+    <p>This has moved twice, so it is worth stating the history rather than just the answer. The
+    original screen used a release half-time of 2&#8211;22&#160;h carried over from a thicker gel,
+    and TAP2 appeared to fail on stability; it does not, it fails on Module&#160;B. Recomputed on the
+    0.5&#160;mm patch, t<sub>1/2,rel</sub> was 2.3&#160;minutes and <em>every</em> candidate cleared
+    Module&#160;C, including the 0.6&#160;h TAP1 &#8212; the gate did no work at all. At the
+    2.5&#160;mm thickness now built, t<sub>1/2,rel</sub> is <b>59&#160;minutes</b>, so the gate asks
+    for a serum half-life of roughly an hour and <b>TAP1, TAP2 and MD2-I fail it</b>.</p>
+    <p>The survivors are the same either way &#8212; V14 and MD2-II &#8212; so no selection decision
+    ever depended on this, and structural burden remains the module that separated the candidates.
+    What changed is that stability is now a live criterion rather than a vacuous one. It still also
+    matters <em>after</em> release, as the tissue-side k<sub>prot</sub> in Model&#160;2, which is why
+    measuring it is the top wet-lab ask on this page.</p>
   </div>
 
   <h3 class="col">The reference set and both project peptides</h3>
   <p class="col">Net charge and pI are from Henderson&#8211;Hasselbalch titration at pH&#160;7;
   t<sub>1/2</sub><sup>serum</sup> from the regression above; s<sub>C</sub> computed against
-  t<sub>1/2,rel</sub>&#160;=&#160;1.9&#160;min for the as-built patch. TAP1 and TAP3 are the sibling
+  t<sub>1/2,rel</sub>&#160;=&#160;59&#160;min for the as-built patch. TAP1 and TAP3 are the sibling
   phage-display peptides of TAP2 (US&#160;10,435,443); MD2-I is the active and MD2-II the inactive
   (Cys95Ala) MD2-loop antagonist.</p>
 
@@ -856,8 +869,8 @@ body.noscroll{overflow:hidden}
         <td><b>Fail</b> &#8212; 2 Cys, 3 Trp</td>
         <td>Pass &#8212; 0 Cys, 0 Trp</td></tr>
       <tr><td>C</td><td>t<sub>deg</sub>&#160;&#8819;&#160;t<sub>1/2,rel</sub></td>
-        <td>Pass &#8212; 0.9&#160;h vs 1.9&#160;min</td>
-        <td>Pass &#8212; 6.1&#160;h vs 1.9&#160;min</td></tr>
+        <td><b>Fail</b> &#8212; 0.9&#160;h vs 59&#160;min</td>
+        <td>Pass &#8212; 6.1&#160;h vs 59&#160;min</td></tr>
       <tr><td colspan="2" style="text-align:right"><b>Composite S</b></td>
         <td>&#8776;&#160;<b>0.41</b></td>
         <td>&#8776;&#160;<b>1.00</b></td></tr>
@@ -907,7 +920,7 @@ body.noscroll{overflow:hidden}
 
   <figure class="wide">
     <div class="figbox"><img src="assets/G01_peptide_screening.svg" alt="Table of six candidate peptides against the cysteine gate, tryptophan count, structural and stability sub-scores and the sequence verdict; V14 is highlighted and passes." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;1.</span> Sequence-level screen. TAP2, TAP3 and MD2-I fail the cysteine gate; of the candidates that pass, V14 (&#945;TI-14) has the longest predicted serum half-life (6.1&#160;h). With the 500&#160;&#181;m alginate gel releasing in minutes, every candidate clears the stability gate, so the structural gate is the discriminating criterion. <span class="caveat">Module A binding evidence is listed, not scored: the in-house flow result for V14 at 25&#160;&#181;M is a 20&#160;% drop with p&#160;=&#160;0.098 (n&#160;=&#160;3).</span></figcaption>
+    <figcaption><span class="fid">Figure&#160;1.</span> Sequence-level screen. TAP2, TAP3 and MD2-I fail the cysteine gate; of the candidates that pass, V14 (&#945;TI-14) has the longest predicted serum half-life (6.1&#160;h). With the 2.5&#160;mm gel the release half-time is 59&#160;minutes, so the stability gate now bites as well &#8212; it demands a serum half-life of about an hour, which TAP1, TAP2 and MD2-I fail. The survivors are unchanged (V14 and MD2-II); with the earlier 0.5&#160;mm gel the stability gate was vacuous and only the structural gate discriminated. <span class="caveat">Module A binding evidence is listed, not scored: the in-house flow result for V14 at 25&#160;&#181;M is a 20&#160;% drop with p&#160;=&#160;0.098 (n&#160;=&#160;3).</span></figcaption>
   </figure>
 
 <h3 class="col">Assumptions behind the screen</h3>
@@ -951,9 +964,9 @@ body.noscroll{overflow:hidden}
   <div class="claim warn">
     <h3>Summary</h3>
     <p>The patch releases its load as a single burst rather than a sustained supply. From the
-    500&#160;&#181;m alginate gel as built, V14 reaches 95&#160;% release in <b>11&#160;minutes</b>
-    and FGF2-G3 in <b>25&#160;minutes</b>, while wound closure takes 7&#8211;21&#160;days. The
-    2.4&#215; difference between the two molecules comes only from their size, because plain alginate
+    2.5&#160;mm alginate gel as built, V14 reaches 95&#160;% release of its mobile dose in <b>5.6&#160;hours</b>
+    and FGF2-G3 in <b>14.8&#160;hours</b>, while wound closure takes 7&#8211;55&#160;days. The
+    2.6&#215; difference between the two molecules comes only from their size, because plain alginate
     binds neither of them.</p>
   </div>
 
@@ -963,11 +976,11 @@ body.noscroll{overflow:hidden}
   <p>The obvious cheaper choice would be a compartmental ODE &#8212; gel compartment, tissue compartment, rate constants between them. We did not use one, because <b>the answer we need is a gradient</b>. A well-mixed compartment has, by construction, one concentration everywhere inside it; but the macrophages we are trying to reach sit near the surface, the clearance sink sits at the dermal base, and the entire question of how long tissue stays above target is a question about the <em>shape</em> of the profile between them. A compartment model cannot represent that shape, so it could not have produced the coverage window, the depth-dependence, or the lower-bound argument.</p>
   <p>Within the PDE, each term is there for a reason that can be checked. Transport is Fickian because both payloads are dilute, uncharged with respect to the gel, and there is no evidence of concentration-dependent mobility; the mesh correction H(a,&#958;) comes from Amsden obstruction scaling, which was derived for exactly this geometry &#8212; a solute sphere moving through a fibrous polymer network &#8212; rather than being a fitted fudge factor. Degradation is first order because proteolysis of a dilute substrate by an enzyme pool in excess is pseudo-first-order in substrate. FGF2-G3 alone carries a Michaelis&#8211;Menten sink, because receptor-mediated uptake saturates and V14 has no equivalent mechanism.</p>
   <p>We solve the gel and the tissue as <b>two coupled domains with an explicit interface</b> rather than smearing them into one effective medium. That costs more to solve, but an effective medium would destroy the two things that matter most: the partition at the interface, and the fact that the two phases have genuinely different diffusivities and porosities. The flux-matching condition is what conserves mass across that seam, and the porosity convention inside it is precisely where our earlier version went wrong.</p>
-  <p>Reducing to <b>one spatial dimension</b> is justified by aspect ratio: the patch is centimetres across and 500&#160;&#181;m thick, so over the region that feeds a millimetre-scale wound the lateral gradients are negligible compared with the axial one. This is a geometric argument, not a convenience, and it would fail for a patch comparable in width to its thickness.</p>
+  <p>Reducing to <b>one spatial dimension</b> is justified by aspect ratio: the patch is centimetres across and 2.5&#160;mm thick, so over the region that feeds a millimetre-scale wound the lateral gradients are negligible compared with the axial one. This is a geometric argument, not a convenience, and it would fail for a patch comparable in width to its thickness.</p>
   </div>
-  <p>Release half-times are 1.9&#160;minutes for V14 and 4.4&#160;minutes for FGF2-G3. The gap
+  <p>Release half-times are 59&#160;minutes for V14 and 154&#160;minutes for FGF2-G3. The gap
   between the release curves and the closure window is the central result of this section: the two
-  timescales differ by roughly <b>400&#8211;2800&#215;</b> for the as-built gel. Three consequences
+  timescales differ by roughly <b>300&#8211;2000&#215;</b> for the as-built gel. Three consequences
   follow.</p>
 
   <p>First, the gel diffusivity cannot be identified from closure data and has to be fitted from the
@@ -1002,10 +1015,16 @@ body.noscroll{overflow:hidden}
     <p>Porosity enters in only two places: the flux matching at the interface, and the conversion
     of loaded mass to concentration. At &#958;&#160;=&#160;14&#160;nm, the mesh size measured for
     1&#160;% calcium alginate (Grassi <i>et al.</i>, 2009), this gives
-    D<sub>eff</sub>&#160;=&#160;4.37&#215;10<sup>&#8722;6</sup> (V14) and
-    1.85&#215;10<sup>&#8722;6</sup>&#160;cm&#178;s<sup>&#8722;1</sup> (FGF2-G3), using the register's
-    Stokes&#8211;Einstein diffusivities, hydrodynamic radii of 0.73 and 1.68&#160;nm, and an alginate
-    porosity of 0.99. The gel barely slows either molecule: steric hindrance is mild for V14 and
+    D<sub>eff</sub>&#160;=&#160;3.48&#215;10<sup>&#8722;6</sup> (V14) and
+    1.33&#215;10<sup>&#8722;6</sup>&#160;cm&#178;s<sup>&#8722;1</sup> (FGF2-G3), using the
+    correlation hydrodynamic radii of 0.87 and 2.34&#160;nm with
+    D<sub>0</sub>&#160;=&#160;3.6 and 1.5&#215;10<sup>&#8722;6</sup>&#160;cm&#178;s<sup>&#8722;1</sup>,
+    and an alginate porosity of 0.99. These are the values every figure on this page is
+    plotted from. The register also tabulates an anhydrous-sphere alternative (radii 0.73 and
+    1.68&#160;nm, D<sub>eff</sub>&#160;=&#160;4.37 and 1.85&#215;10<sup>&#8722;6</sup>), which
+    would give 4.5&#160;h to 95&#160;% release rather than 5.6; those radii are lower bounds
+    on the true hydrodynamic size, so we carry them as the fast edge of the sensitivity range
+    and not as the headline. The gel barely slows either molecule: steric hindrance is mild for V14 and
     moderate for FGF2-G3, and across the whole 5&#8211;50&#160;nm mesh range the effect on release is
     small. The mesh size is measured on 1&#160;% calcium alginate (14&#160;nm mechanically, 26&#160;nm
     from release), not yet on our own gel.</p>
@@ -1049,8 +1068,8 @@ body.noscroll{overflow:hidden}
   <div class="tablewrap"><table>
   <thead><tr><th>Assumption</th><th>Biological basis</th><th>What breaks if it is wrong</th><th>How to test it</th></tr></thead>
   <tbody>
-  <tr><td><b>Transport is one-dimensional and diffusive</b></td><td>The patch is wide relative to its 500&#160;&#181;m thickness, so lateral gradients are small; no bulk convection is imposed.</td><td>Exudate flow in a heavily exuding wound is convective and outward, which would carry drug <em>away</em> from the tissue rather than into it.</td><td>Measure exudate production rate; add a P&#233;clet number and a convective term if it is not small.</td></tr>
-  <tr><td><b>The gel is a fixed 500&#160;&#181;m reservoir</b></td><td>The patch is cast at that thickness and modelled as geometrically stable.</td><td>Calcium alginate absorbs exudate and slowly dissolves as sodium displaces calcium. Swelling dilutes the reservoir and shortens the change interval.</td><td>Weigh gels in simulated wound fluid over 24&#160;h.</td></tr>
+  <tr><td><b>Transport is one-dimensional and diffusive</b></td><td>The patch is wide relative to its 2.5&#160;mm thickness, so lateral gradients are small; no bulk convection is imposed.</td><td>Exudate flow in a heavily exuding wound is convective and outward, which would carry drug <em>away</em> from the tissue rather than into it.</td><td>Measure exudate production rate; add a P&#233;clet number and a convective term if it is not small.</td></tr>
+  <tr><td><b>The gel is a fixed 2.5&#160;mm reservoir</b></td><td>The patch is cast at that thickness and modelled as geometrically stable.</td><td>Calcium alginate absorbs exudate and slowly dissolves as sodium displaces calcium. Swelling dilutes the reservoir and shortens the change interval.</td><td>Weigh gels in simulated wound fluid over 24&#160;h.</td></tr>
   <tr><td><b>Alginate binds neither payload</b></td><td>FGF-2 shows no measurable binding to unmodified alginate (Freeman <i>et al.</i>, 2008), and V14 has no hydrophobic surface and a net charge of &#8722;2.</td><td>Nothing for this build &#8212; it is why R<sub>V</sub>&#160;=&#160;1 is locked. It is what makes the retention analysis a counterfactual.</td><td>Release assay against gel with and without the payload pre-equilibrated.</td></tr>
   <tr><td><b>Tissue is a homogeneous porous medium</b></td><td>A single effective diffusivity and porosity stand in for dermal collagen, cells and interstitium.</td><td>Local accuracy. Real granulation tissue is spatially heterogeneous and changes as the wound heals, so D<sub>eff</sub> is not constant in time.</td><td>Fit D<sub>eff</sub> from a tissue-penetration time course rather than assuming it.</td></tr>
   </tbody>
@@ -1058,13 +1077,13 @@ body.noscroll{overflow:hidden}
 
 
   <figure class="wide">
-    <div class="figbox"><img src="assets/G03_release_curves_and_BCA.svg" alt="Left: cumulative release curves for V14 and FGF2-G3 from 500 and 1000 micrometre alginate gels on a log time axis. Right: blank-subtracted BCA signal relative to the positive control at 60, 90 and 120 minutes." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;2.</span> (a) Model&#160;1 release into a perfect sink (closed-form Crank series): both actives leave the 500&#160;&#181;m gel within the first hour. (b) In-house FGF2-G3 release supernatants (30&#160;Sep), blank-subtracted and expressed relative to the positive control. <span class="caveat">Same material as the model (1&#160;% Ca-alginate), but gel thickness and buffer volume were not recorded, so (b) is shown alongside (a) rather than fitted to it.</span></figcaption>
+    <div class="figbox"><img src="assets/G03_release_curves_and_BCA.svg" alt="Left: cumulative release of V14 and FGF2-G3 from the 2.5 mm alginate gel on a log time axis, each levelling off at its released fraction. Right: blank-subtracted BCA signal relative to the positive control at 60, 90 and 120 minutes, with the model for the 2.5 mm gel fitted to the 30-minute read (f_rel = 0.31 &#177; 0.07)." loading="lazy"></div>
+    <figcaption><span class="fid">Figure&#160;2.</span> (a) Model&#160;1 release into a perfect sink (closed-form Crank series), plotted as a fraction of the <em>total</em> loaded dose so each curve levels off at its released fraction f<sub>rel</sub> (0.5 for V14, 0.31 for FGF2-G3). The shaded band marks the 60&#8211;120&#160;min window that panel (b) samples. (b) In-house FGF2-G3 release supernatants (30&#160;Sep), blank-subtracted and expressed relative to the positive control, with the model for the 2.5&#160;mm design gel fitted to the 30-minute read: f<sub>rel</sub>&#160;=&#160;0.31&#160;&#177;&#160;0.07. This is the FGF2-G3 released fraction the model now uses. <span class="caveat">Same material as the model (1&#160;% Ca-alginate), but the tested gel's thickness and buffer volume were not recorded, so the fit assumes the design thickness. We adopt 0.31 because it is the only in-house number, not because (b) tests the model. One read is negative (&#8722;23&#160;&#177;&#160;7&#160;%), which is not physical and locates the series at the noise floor of the BCA assay, so neither f<sub>rel</sub> nor the release timescale is yet <b>tested</b>. Pinning either down needs the assay run to completion on a log grid from &#8818;&#160;1&#160;min with thickness and buffer volume recorded.</span></figcaption>
   </figure>
 
   <figure class="wide">
     <div class="figbox"><img src="assets/G02_kymographs_V14_FGF2.svg" alt="Two kymographs of free concentration against depth and log time for V14 and FGF2-G3, gel on the left of a dashed line, tissue to the right; an orange contour marks the 145 micromolar V14 target." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;3.</span> Gel + tissue transport (two-domain solver, 500&#160;&#181;m alginate, R<sub>V</sub>&#160;=&#160;1). V14 stays above the 145&#160;&#181;M target for about 2.6&#160;h at the wound surface and reaches 0.7&#160;mm at its deepest; FGF2-G3 persists for days. White lines mark 1, 10 and 50&#160;% of the loaded concentration. <span class="caveat">FGF2-G3 is run with the linear tissue equation (no heparan-sulfate retardation, no FGFR uptake), so its penetration is an upper bound.</span></figcaption>
+    <figcaption><span class="fid">Figure&#160;3.</span> Gel + tissue transport (two-domain solver, 2.5&#160;mm alginate, R<sub>V</sub>&#160;=&#160;1, each arm started from its mobile fraction). V14 stays above the 145&#160;&#181;M target for about 10&#160;h <em>at the wound surface</em> &#8212; the headline 8.7&#160;h quoted elsewhere on this page is the average over the top 500&#160;&#181;m, which is necessarily lower &#8212; and reaches 1.1&#160;mm at its deepest; FGF2-G3 holds above its EC<sub>50</sub> at the surface for about 5&#160;days. White lines mark 1, 10 and 50&#160;% of the total loaded concentration. <span class="caveat">FGF2-G3 is run with the linear tissue equation (no heparan-sulfate retardation, no FGFR uptake), so its penetration is an upper bound.</span></figcaption>
   </figure>
 
   <div class="claim">
@@ -1107,7 +1126,7 @@ body.noscroll{overflow:hidden}
   there rather than a reflecting one. That choice is biologically right in kind. Its <em>depth</em>
   is less certain: dermal anatomy places a vascular plexus well above the 1.5&#160;mm boundary we
   use, so clearance plausibly begins shallower than the model assumes. If it does, residence time is
-  over-estimated and the single-patch window is shorter than 2.2&#160;h. We have not resolved this,
+  over-estimated and the single-patch window is shorter than 8.7&#160;h. We have not resolved this,
   and it is the assumption in this section most likely to be wrong in the optimistic direction.</p>
 
   <p>Where the drug ends up: the 1.5&#160;mm dermis drains the gel reservoir into the systemic sink
@@ -1194,8 +1213,8 @@ body.noscroll{overflow:hidden}
 
 
   <figure class="wide">
-    <div class="figbox"><img src="assets/G04_md2_occupancy.svg" alt="Stacked area plot of LPS-bound, V14-bound and free MD2 against V14 concentration, with markers at 25, 145 and 738 micromolar showing 82, 50 and 17 percent LPS-bound." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;5.</span> Model&#160;3 competitive occupancy of MD2 at 1&#160;&#181;M LPS (a&#160;=&#160;15.4). Without V14, 94&#160;% of MD2 is LPS-bound; this falls to 82&#160;% at the tested 25&#160;&#181;M, 50&#160;% at the 145&#160;&#181;M target and 17&#160;% at the 738&#160;&#181;M solubility limit. <span class="caveat">K<sub>D,P</sub>&#160;&#8805;&#160;10.08&#160;&#181;M is a lower bound from the 14&#160;Oct flow panel; the dashed line shows K<sub>D,P</sub>&#160;=&#160;18&#160;&#181;M.</span></figcaption>
+    <div class="figbox"><img src="assets/G04_md2_occupancy.svg" alt="Stacked area plot of LPS-bound, V14-bound and free MD2 against V14 concentration, with markers at 25, 145 and 2213 micromolar showing 82, 50 and 7 percent LPS-bound." loading="lazy"></div>
+    <figcaption><span class="fid">Figure&#160;5.</span> Model&#160;3 competitive occupancy of MD2 at 1&#160;&#181;M LPS (a&#160;=&#160;15.4). Without V14, 94&#160;% of MD2 is LPS-bound; this falls to 82&#160;% at the tested 25&#160;&#181;M, 50&#160;% at the 145&#160;&#181;M target and 7&#160;% at the 2213&#160;&#181;M (3&#160;mg&#160;mL<sup>&#8722;1</sup>) loading the patch now carries. <span class="caveat">K<sub>D,P</sub>&#160;&#8805;&#160;10.08&#160;&#181;M is a lower bound from the 14&#160;Oct flow panel; the dashed line shows K<sub>D,P</sub>&#160;=&#160;18&#160;&#181;M.</span></figcaption>
   </figure>
 
   <figure class="wide">
@@ -1323,7 +1342,7 @@ body.noscroll{overflow:hidden}
 
 <section class="widget" id="i3" aria-labelledby="i3-title">
   <header class="w-head">
-    <span class="w-badge">Interactive 3</span>
+    <span class="w-badge">Interactive 1</span>
     <h3 id="i3-title">Inflammation explorer</h3>
     <p>Set the V14 concentration reaching the macrophages, the endotoxin load and the V14 affinity, and
     follow the chain from receptor competition (Model&#160;3) through nuclear p65 (Model&#160;4) to the
@@ -1354,7 +1373,7 @@ body.noscroll{overflow:hidden}
   the integrated iNOS output for 2&#215;10<sup>5</sup> cells in 200&#160;&#181;L, scaled from the LPS-only p65
   level of 0.85 as in Figure&#160;9. These are model predictions until the Griess dose&#8211;response
   calibrates IC<sub>50</sub><sup>NO</sup>. Vertical lines: 25&#160;&#181;M tested, 145&#160;&#181;M target,
-  738&#160;&#181;M solubility limit.</p>
+  2213&#160;&#181;M loaded (3&#160;mg/mL, the largest loading demonstrated).</p>
 </section>
 
 
@@ -1390,28 +1409,44 @@ body.noscroll{overflow:hidden}
   <h3 class="col">Sensitivity analysis</h3>
   <div class="col">
   <p>To find which parameters matter most, we ran Morris screening followed by Sobol indices over the
-  full joint prior. The results contradicted two of our own expectations, which was the most useful
-  outcome of the analysis. We expected k<sub>prot,V</sub> to dominate delivered dose and
-  D<sub>n</sub> to dominate closure time. The computed indices <b>support neither</b>. Delivered
-  dose is dominated by K<sub>D,P</sub> and C<sub>V,0</sub>; closure time by r<sub>0</sub>.</p>
+  full joint prior. We expected k<sub>prot,V</sub> to dominate delivered dose and
+  D<sub>n</sub> to dominate closure time. The computed indices <b>confirm the first and refute the
+  second</b>. Delivered dose is dominated by K<sub>D,P</sub> (S<sub>T</sub>&#160;=&#160;0.63), the
+  loading C<sub>V,0</sub> (0.54) and k<sub>prot,V</sub> (0.41); closure time by r<sub>0</sub>
+  (0.63), with D<sub>n</sub> the <em>least</em> influential of the ten factors
+  (S<sub>T</sub>&#160;=&#160;0.014), because t<sub>c</sub>&#160;&#8733;&#160;D<sub>n</sub><sup>&#8722;1/2</sup>
+  is a weak dependence and physiology bounds D<sub>n</sub> to about 1.5 decades.</p>
+
+  <p class="caveat">An earlier version of this page reported that <em>both</em> expectations had been
+  refuted, with k<sub>prot,V</sub> ranking fifth at S<sub>T</sub>&#160;=&#160;0.023. That was an
+  artefact of our own code: the analytic surrogate for delivered dose carried a spurious extra
+  factor &#923;/&#948; in the depth average, which cancelled most of the k<sub>prot,V</sub>
+  dependence. The depth average of C<sub>0</sub>e<sup>&#8722;x/&#923;</sup> over [0,&#160;&#948;]
+  is C&#772;&#160;=&#160;M(1&#160;&#8722;&#160;e<sup>&#8722;&#948;/&#923;</sup>)/(&#949;<sub>t</sub>&#948;),
+  which is what the module's own documentation stated and what it now computes. Correcting it raises
+  k<sub>prot,V</sub> to third place and removes a tension we had previously had to explain away:
+  the design section argues that k<sub>prot,V</sub> is the most useful parameter to <em>act</em> on,
+  and the variance ranking now agrees with that instead of contradicting it. We record the error
+  because the corrected result is less flattering to our original framing, not more.</p>
 
   <p>Two caveats keep this honest. A Sobol ranking reflects the width of the priors as much as the
   physics, and K<sub>D,P</sub> and C<sub>V,0</sub> have the widest ranges. And share of variance is
-  not the same as what we can <em>change</em>: gel thickness L<sub>gel</sub> ranks only fourth for
+  not the same as what we can <em>change</em>: gel thickness L<sub>gel</sub> ranks fourth for
   delivered dose but is a design variable we control directly, while the gel material &#8212;
   porosity, mesh size &#8212; contributes essentially nothing. The practical lever and the
   statistical leader are not the same parameter.</p>
 
   <p>Propagating the full joint prior through to closure gives a result we think is the most
-  important single number in the uncertainty analysis: under the current priors, <b>18.5&#160;% of
+  important single number in the uncertainty analysis: under the current priors, <b>18.7&#160;% of
   sampled wounds never close at all</b>. This is a statement about the priors rather than a
   prediction for any particular wound, but it is the main reason we keep the death term in
   Model&#160;6. A model without it would return a finite closure time for every one of those
   samples, and would quietly convert a chronic wound into a healing one by construction.</p>
 
   <p>One further result constrains how this page should be read. A one-parameter-at-a-time sweep
-  &#8212; what any slider performs &#8212; captures only the first-order variance: <b>52&#160;%</b>
-  for delivered dose and <b>51&#160;%</b> for closure time. Nearly half the behaviour lives in
+  &#8212; what any slider performs &#8212; captures only the first-order variance: <b>34&#160;%</b>
+  for delivered dose and <b>51&#160;%</b> for closure time. Most of the behaviour of the delivery
+  arm, and half of the closure arm, lives in
   interactions that no single-slider exploration can show. That is why this page reports the
   variance-based analysis rather than inviting readers to tune one parameter at a time.</p>
   </div>
@@ -1490,7 +1525,7 @@ body.noscroll{overflow:hidden}
   <h3 class="col">Why Fisher&#8211;KPP, and why we added a term that is not in it</h3>
   <div class="col">
   <p>Wound closure is a front advancing into empty space, driven by cells that both <em>move</em> and <em>divide</em>. That is precisely the structure a reaction&#8211;diffusion equation describes, and Fisher&#8211;KPP is its canonical form: a diffusion term for migration, a logistic term for proliferation bounded by a carrying capacity. The logistic bound is not decoration &#8212; it represents contact inhibition and finite tissue density, and without it the population would grow without limit behind the front. Radial rather than Cartesian geometry follows from the wound being an approximately circular defect, and it is what makes the area closure fraction &#8211;&#160;the quantity a clinician actually measures&#160;&#8211; well defined.</p>
-  <p><b>The death term is the important departure, and it is there for a reason the standard model cannot supply.</b> Textbook Fisher&#8211;KPP always closes: for any positive proliferation rate a front forms and advances, so every simulated wound heals, eventually. A model with that property is structurally incapable of representing a chronic wound, which is the only kind of wound this project is about. Adding d(I<sub>e</sub>) makes the effective rate r<sub>eff</sub>&#160;=&#160;r<sub>p</sub>&#160;&#8722;&#160;d, which can be negative &#8212; and a wound with r<sub>eff</sub>&#160;&lt;&#160;0 does not merely heal slowly, it regresses. That single term is what lets the model express the thing we are trying to treat, and it is why 18.5&#160;% of sampled wounds never close under our priors. It is also what produced the relapse prediction, which we did not anticipate.</p>
+  <p><b>The death term is the important departure, and it is there for a reason the standard model cannot supply.</b> Textbook Fisher&#8211;KPP always closes: for any positive proliferation rate a front forms and advances, so every simulated wound heals, eventually. A model with that property is structurally incapable of representing a chronic wound, which is the only kind of wound this project is about. Adding d(I<sub>e</sub>) makes the effective rate r<sub>eff</sub>&#160;=&#160;r<sub>p</sub>&#160;&#8722;&#160;d, which can be negative &#8212; and a wound with r<sub>eff</sub>&#160;&lt;&#160;0 does not merely heal slowly, it regresses. That single term is what lets the model express the thing we are trying to treat, and it is why 18.7&#160;% of sampled wounds never close under our priors. It is also what produced the relapse prediction, which we did not anticipate.</p>
   <p>We did not build an agent-based model, although cell-level simulation is fashionable for wound healing. The reason is constraint, not computation: an ABM would introduce rules for adhesion, contact inhibition, chemotaxis and division that no experiment on our list could pin down, so it would add parameters without adding evidence, and it would be harder to tell when it was wrong. The continuum model has four parameters in its front behaviour, two of which are degenerate &#8212; and we would rather report that degeneracy honestly than bury it inside a simulation with forty.</p>
   <p>The same reasoning sets the limits of what we claim. This is a <em>minimal</em> model of one cell population. It has no keratinocytes, no myofibroblast contraction and no angiogenesis, and each of those omissions is recorded above rather than left for a reader to discover.</p>
   </div>
@@ -1583,7 +1618,7 @@ body.noscroll{overflow:hidden}
   <header class="w-head">
     <span class="w-badge">Interactive 2</span>
     <h3 id="i2-title">Wound-closure animation</h3>
-    <p>Watch the fibroblast density n(r,t) advance across the wound bed. Apply a fresh patch on a
+    <p>Watch fibroblasts migrate in from the wound edge and fill the bed. Apply a fresh patch on a
     schedule and watch each one top up the drug effect, compare a single long treatment pulse, or
     leave the wound untreated. Too little drug lets the front advance and then <em>recede</em>.</p>
   </header>
@@ -1594,8 +1629,8 @@ body.noscroll{overflow:hidden}
         <button type="button" class="seg-b" id="i2-trt" aria-pressed="false">One pulse</button>
         <button type="button" class="seg-b" id="i2-unt" aria-pressed="false">Untreated</button>
       </div>
-      <label class="ctl" id="i2-iv-c"><span class="ctl-top"><span>New patch every</span><output id="i2-iv-v">4 h</output></span>
-        <input type="range" id="i2-iv" min="2" max="24" step="1" value="4"></label>
+      <label class="ctl" id="i2-iv-c"><span class="ctl-top"><span>New patch every</span><output id="i2-iv-v">24 h</output></span>
+        <input type="range" id="i2-iv" min="2" max="36" step="1" value="24"></label>
       <label class="ctl" id="i2-T-c" style="display:none"><span class="ctl-top"><span>Treatment duration</span><output id="i2-T-v">14.0 d</output></span>
         <input type="range" id="i2-T" min="1" max="30" step="0.5" value="14"></label>
       <label class="ctl"><span class="ctl-top"><span>Wound radius R<sub>w</sub></span><output id="i2-rw-v">2.0 mm</output></span>
@@ -1604,22 +1639,39 @@ body.noscroll{overflow:hidden}
         <button type="button" class="w-btn" id="i2-play">&#9654; Play</button>
         <button type="button" class="w-btn w-btn-ghost" id="i2-restart">Restart</button>
       </div>
+      <div class="seg seg-sm" role="group" aria-label="Playback speed">
+        <button type="button" class="seg-b" id="i2-sp-slow" aria-pressed="false" title="Slow enough to see each patch go on">Slow</button>
+        <button type="button" class="seg-b on" id="i2-sp-norm" aria-pressed="true">Normal</button>
+        <button type="button" class="seg-b" id="i2-sp-fast" aria-pressed="false">Fast</button>
+      </div>
       <label class="ctl"><span class="ctl-top"><span>Day</span><output id="i2-d-v">0.0 d</output></span>
         <input type="range" id="i2-d" min="0" max="90" step="0.25" value="0"></label>
       <div class="status" id="i2-status" role="status" aria-live="polite">Day 0.0: front at <b>1.97 mm</b></div>
     </div>
     <div class="w-out">
       <div class="i2-grid">
-        <canvas id="i2-disc" aria-label="Top-down view of the wound bed" role="img"></canvas>
-        <canvas id="i2-prof" aria-label="Fibroblast density against radius" role="img"></canvas>
+        <canvas id="i2-disc" aria-label="Top-down view of the wound bed, with fibroblasts filling in from the edge" role="img"></canvas>
+        <canvas id="i2-prof" aria-label="Fibroblast density against distance from the wound centre" role="img"></canvas>
       </div>
+      <ul class="i2-legend" aria-label="Legend">
+        <li><span class="sw sw-bed"></span>open wound bed</li>
+        <li><span class="sw sw-cell"></span>fibroblasts (more marks = denser)</li>
+        <li><span class="sw sw-front"></span>healing front</li>
+        <li><span class="sw sw-edge"></span>original wound edge</li>
+        <li><span class="sw sw-drug"></span>drug effect from the patch</li>
+      </ul>
       <div class="w-chart"><canvas id="i2-time" aria-label="Front position and drug effect against time" role="img"></canvas></div>
     </div>
   </div>
-  <p class="w-foot">Static versions: Figures&#160;11 and 14. In <b>Patches</b> mode each patch is the
-  500&#160;&#181;m alginate patch of Interactive&#160;1, which keeps tissue above the 145&#160;&#181;M target for about 2.2&#160;h; the
-  drug effect then fades with an 18&#160;h time constant until the next patch (green saw-tooth on the
-  timeline). The longest interval that still closes is about 6.8&#160;h; at longer intervals the front advances and then stalls. Every rate comes from the Tier-4 closure functions of the constants register (chronic
+  <p class="w-foot"><b>How to read the wound bed.</b> Each fibroblast mark has a fixed position and is
+  drawn only where the model's local density n/K exceeds a threshold assigned to that mark, so the share
+  of marks present at any distance from the centre <i>is</i> the computed density &#8212; the picture is a
+  plot, not an illustration. The blue dotted line on the density plot is the most the current drug level can
+  sustain; once it sits below the orange closure line, the wound cannot close however long you wait.
+  Static versions: Figures&#160;11 and 14. In <b>Patches</b> mode each patch is the
+  2.5&#160;mm alginate patch of Interactive&#160;3, which keeps tissue above the 145&#160;&#181;M target for about 8.7&#160;h; the
+  drug effect then fades with an 18&#160;h time constant until the next patch (the blue band on the
+  timeline; its solid line is the 1-day average, which is what has to stay above 33&#160;%). The longest interval that still closes is about 26.4&#160;h, so a once-daily change is inside the envelope; at longer intervals the front advances and then stalls. Every rate comes from the Tier-4 closure functions of the constants register (chronic
   r<sub>p</sub> = 0.50, d = 0.51&#160;d<sup>&#8722;1</sup>; treated r<sub>p</sub> = 1.11,
   d = 0.45&#160;d<sup>&#8722;1</sup>). The animation stops when the front reaches the centre, because the
   model describes a chronic wound bed.</p>
@@ -1661,11 +1713,14 @@ body.noscroll{overflow:hidden}
   <div class="claim gold">
     <h3>Summary</h3>
     <p>Model&#160;7 runs the chain backwards, from a wound to a device specification. One patch keeps
-    tissue above the 145&#160;&#181;M V14 target for <b>2.2&#160;h</b> (1.2&#8211;3.4&#160;h across
+    tissue above the 145&#160;&#181;M V14 target for <b>8.7&#160;h</b> (5.4&#8211;11.5&#160;h across
     the ranges of sink depth and diffusivity). No wound in the 1&#8211;5&#160;mm range closes on a
-    single patch: the continuous cover needed is <b>about 70&#8211;370&#215;</b> what one patch
-    supplies. The patch must be changed at least every <b>6.8&#160;h</b>, about four times a day,
-    for the 500&#160;&#181;m gel as built.</p>
+    single patch: the continuous cover needed is <b>about 18&#8211;95&#215;</b> what one patch
+    supplies. But the patch need only be changed every <b>26&#160;h</b> &#8212; so for the 2.5&#160;mm
+    gel as built, <b>a once-daily dressing change is enough</b>. That is the single biggest change
+    from the earlier 0.5&#160;mm design, which demanded a change every 6.8&#160;h, four times a day.
+    The margin is real but thin: a daily change runs at a 36&#160;% duty cycle against a 33&#160;%
+    threshold, and that threshold is computed from Tier-4 closure parameters.</p>
   </div>
 
   <p class="col">The loading requirement follows straight from the transport model: to hold a target
@@ -1678,8 +1733,8 @@ body.noscroll{overflow:hidden}
   from the 14&#160;October flow panel: K<sub>D,P</sub>&#160;&#8805;&#160;10.08&#160;&#181;M and
   C<sub>V,target</sub>&#160;=&#160;K<sub>D,P</sub>(a&#160;&#8722;&#160;1), the concentration at which half of
   the MD2 pool is LPS-bound at 1&#160;&#181;M endotoxin. Because K<sub>D,P</sub> is a lower bound, so is
-  the target. Every number below &#8212; 2.2&#160;h, 6.8&#160;h, 234&#160;&#181;M,
-  R<sub>V</sub>&#160;&#8776;&#160;3.2 &#8212; inherits that assumption.</p>
+  the target. Every number below &#8212; 8.7&#160;h, 26&#160;h, 47&#160;&#181;M,
+  R<sub>V</sub>&#160;&#8776;&#160;47 &#8212; inherits that assumption.</p>
 
   <h3 class="col">Why we invert the chain instead of simulating forwards</h3>
   <div class="col">
@@ -1688,22 +1743,29 @@ body.noscroll{overflow:hidden}
   <p>The delay between drug arriving and tissue responding is represented by an <b>effect compartment</b> rather than by modelling the intervening biology. This is the standard pharmacodynamic device for a response that lags exposure, and it is appropriate here because the lag spans transcription, translation and matrix turnover &#8212; processes we have no intention of resolving individually. It buys the right qualitative behaviour with one parameter, k<sub>e0</sub>, at the price of that parameter being Tier&#160;4.</p>
   <p>Finally, the output is deliberately expressed as a <b>maximum change interval</b> rather than as a dose. A dose is a number a chemist can hit; an interval is an instruction a clinician can follow, and it turns out to depend on the patch rather than on the wound, which makes it a genuine device specification rather than a per-patient calculation. Reporting the result in that form is what turned the modelling into something the wet lab and the eventual user could both act on.</p>
   </div>
-  <h3 class="col">Why retention is not the lever we assumed</h3>
+  <h3 class="col">Why retention is still not the lever &#8212; for a different reason now</h3>
   <div class="col">
   <p>We began by writing retention up as something to be maximised. Running the coupled solve showed
   otherwise. Retention works by <em>binding</em>, so the free concentration that drives delivery is
   C<sub>total</sub>/R<sub>V</sub>: residence time is gained and driving concentration is lost in
-  equal proportion. At the 145&#160;&#181;M target the trade is unfavourable from the start: the
-  window shortens from 2.2&#160;h at R<sub>V</sub>&#160;=&#160;1 to 2.0&#160;h at R<sub>V</sub>&#160;=&#160;1.5
-  and 1.5&#160;h at R<sub>V</sub>&#160;=&#160;2, and is <b>zero</b> from R<sub>V</sub>&#160;&#8776;&#160;3,
-  because peak tissue concentration falls as 1/R<sub>V</sub> and drops below the target. (At the
-  earlier 25&#160;&#181;M target, retention could roughly double the window.)</p>
+  equal proportion. Whether that trade pays depends entirely on how much headroom the peak tissue
+  concentration has above the target.</p>
 
-  <p>A second, independent limit closes the door. A 145&#160;&#181;M target at 500&#160;&#181;m depth
-  needs at least <b>234&#160;&#181;M free</b> (317&#160;&#181;g&#160;mL<sup>&#8722;1</sup>), which is
-  32&#160;% of the solubility ceiling at R<sub>V</sub>&#160;=&#160;1. The <em>total</em> that must
-  dissolve rises to 469&#160;&#181;M (64&#160;% of the ceiling) at R<sub>V</sub>&#160;=&#160;2. Above
-  R<sub>V</sub>&#160;&#8776;&#160;3.2, retention <b>cannot be formulated at all</b>.</p>
+  <p><b>The redesign flipped this conclusion, and we are flagging it rather than quietly restating
+  it.</b> At the old 0.5&#160;mm / 738&#160;&#181;M design the peak was only 1.9&#215; the target, so
+  any retention shortened the window and R<sub>V</sub>&#160;&#8776;&#160;3 left none at all. At
+  2.5&#160;mm and 3&#160;mg&#160;mL<sup>&#8722;1</sup> the peak is 522&#160;&#181;M, about 3.6&#215; the
+  target, and there is room to trade: the window now <em>lengthens</em> from 8.7&#160;h at
+  R<sub>V</sub>&#160;=&#160;1 to 9.4&#160;h at R<sub>V</sub>&#160;=&#160;1.5 and 9.5&#160;h at
+  R<sub>V</sub>&#160;=&#160;2, before falling back to 7.8&#160;h at R<sub>V</sub>&#160;=&#160;3. So a
+  shallow optimum does exist. We still do not recommend pursuing it: the gain is under an hour, and
+  the same hour is bought far more cheaply by casting the gel slightly thicker.</p>
+
+  <p>The solubility limit that used to sit behind this has moved out of the way entirely. A
+  145&#160;&#181;M target at 500&#160;&#181;m depth needs a <em>total</em> loading of only
+  <b>47&#160;&#181;M</b> (64&#160;&#181;g&#160;mL<sup>&#8722;1</sup>) at f<sub>rel</sub>&#160;=&#160;0.5,
+  which is 2&#160;% of the 3&#160;mg&#160;mL<sup>&#8722;1</sup> the team has now dissolved. Retention
+  would only become unformulable above R<sub>V</sub>&#160;&#8776;&#160;47.</p>
 
   <p>And for V14 specifically, the chemistry is not available. Neither heparin nor alginate-sulfate
   can help: both are strongly anionic, and V14 carries a net charge of &#8722;2 with no Lys, Arg or
@@ -1714,30 +1776,32 @@ body.noscroll{overflow:hidden}
 
 
   <figure class="wide">
-    <div class="figbox"><img src="assets/G10_design_feasibility_map.svg" alt="Filled contour map of hours above the 145 micromolar target against V14 loading and gel thickness, with the solubility limit hatched and the current 0.5 millimetre design starred." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;13.</span> Model&#160;7 design space: hours one patch keeps the top 500&#160;&#181;m of tissue above 145&#160;&#181;M. The current design (0.5&#160;mm, 738&#160;&#181;M) gives about 2.2&#160;h; thicker gels extend this (about 5&#160;h at 1.5&#160;mm). <span class="caveat">Loadings to the right of 738&#160;&#181;M exceed V14 solubility.</span></figcaption>
+    <div class="figbox"><img src="assets/G10_design_feasibility_map.svg" alt="Filled contour map of hours above the 145 micromolar target against V14 loading and gel thickness, with the demonstrated loading marked and the current 2.5 millimetre design starred." loading="lazy"></div>
+    <figcaption><span class="fid">Figure&#160;13.</span> Model&#160;7 design space: hours one patch keeps the top 500&#160;&#181;m of tissue above 145&#160;&#181;M. The current design (2.5&#160;mm, 2213&#160;&#181;M) gives about 8.7&#160;h; thicker gels extend this (about 10&#160;h at 4&#160;mm). The x axis is the <em>total</em> loading, of which f<sub>rel</sub>&#160;=&#160;0.5 is mobile. <span class="caveat">Loadings to the right of 2213&#160;&#181;M go beyond the 3&#160;mg&#160;mL<sup>&#8722;1</sup> the team has actually dissolved, so their solubility is unverified rather than known to be impossible.</span></figcaption>
   </figure>
 
   <figure class="wide">
     <div class="figbox"><img src="assets/G07_time_above_target_vs_dressing_interval.svg" alt="Left: depth-averaged free V14 against hours after one patch with the 145 micromolar target line. Right: closure time against patch-change interval for 1, 2 and 3 millimetre wounds, with the longest closing interval marked." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;14.</span> The dressing-change interval at the 145&#160;&#181;M target. (a) One patch holds tissue above target for about 2.2&#160;h (1.2&#8211;3.4&#160;h across the tissue ranges). (b) Through the 18&#160;h drug-effect compartment, the longest change interval that still closes is about 6.8&#160;h, the same for 1, 2 and 3&#160;mm wounds. <span class="caveat">Repeat dosing as in the model document (&#167;envelope); all closure rates are Tier-4 priors.</span></figcaption>
+    <figcaption><span class="fid">Figure&#160;14.</span> The dressing-change interval at the 145&#160;&#181;M target. (a) One patch holds tissue above target for about 8.7&#160;h (5.4&#8211;11.5&#160;h across the tissue ranges); the shaded band marks the far longer period over which FGF2-G3 stays above its EC<sub>50</sub>. (b) Through the 18&#160;h drug-effect compartment, the longest change interval that still closes is about 26&#160;h, the same for 1, 2 and 3&#160;mm wounds &#8212; so a 24&#160;h change sits just inside it. <span class="caveat">Repeat dosing as in the model document (&#167;envelope); all closure rates are Tier-4 priors.</span></figcaption>
   </figure>
 
 <section class="widget" id="i1" aria-labelledby="i1-title">
   <header class="w-head">
-    <span class="w-badge">Interactive 1</span>
+    <span class="w-badge">Interactive 3</span>
     <h3 id="i1-title">Patch design explorer</h3>
     <p>Change the loading, gel thickness, retention and proteolysis rate. The page re-runs the same
     gel&#8211;tissue solver as the figures in your browser (it agrees with the Python solver to within
     1&#160;%). The treatment-protocol sliders then simulate wound closure for the patch-change
-    schedule you pick.</p>
+    schedule you pick. Note that closure is a <em>threshold</em>: past the longest workable interval
+    shown below, no wound closes at any size, so both protocol sliders stop changing the closure
+    time and report the duty-cycle shortfall instead.</p>
   </header>
   <div class="w-body">
     <div class="w-controls">
-      <label class="ctl"><span class="ctl-top"><span>Total V14 loading C<sub>V,0</sub></span><output id="i1-cv-v">738 &#181;M</output></span>
-        <input type="range" id="i1-cv" min="20" max="1500" step="1" value="738"></label>
-      <label class="ctl"><span class="ctl-top"><span>Gel thickness L<sub>gel</sub></span><output id="i1-lg-v">500 &#181;m</output></span>
-        <input type="range" id="i1-lg" min="50" max="1000" step="10" value="500"></label>
+      <label class="ctl"><span class="ctl-top"><span>Total V14 loading C<sub>V,0</sub></span><output id="i1-cv-v">2213 &#181;M</output></span>
+        <input type="range" id="i1-cv" min="200" max="6000" step="10" value="2213"></label>
+      <label class="ctl"><span class="ctl-top"><span>Gel thickness L<sub>gel</sub></span><output id="i1-lg-v">2500 &#181;m</output></span>
+        <input type="range" id="i1-lg" min="250" max="4000" step="50" value="2500"></label>
       <label class="ctl"><span class="ctl-top"><span>Retardation factor R<sub>V</sub></span><output id="i1-rv-v">1.0</output></span>
         <input type="range" id="i1-rv" min="0" max="1.4771" step="0.005" value="0"></label>
       <label class="ctl"><span class="ctl-top"><span>Tissue proteolysis k<sub>prot</sub></span><output id="i1-kp-v">3.2&#215;10&#8315;&#8309; s&#8315;&#185;</output></span>
@@ -1746,18 +1810,18 @@ body.noscroll{overflow:hidden}
         <span class="ctl-group-t">Treatment protocol</span>
         <label class="ctl"><span class="ctl-top"><span>Wound radius R<sub>w</sub></span><output id="i1-rw-v">2.0 mm</output></span>
           <input type="range" id="i1-rw" min="1" max="5" step="0.5" value="2"></label>
-        <label class="ctl"><span class="ctl-top"><span>Patch changed every</span><output id="i1-iv-v">4.0 h</output></span>
-          <input type="range" id="i1-iv" min="1" max="24" step="0.5" value="4"></label>
+        <label class="ctl"><span class="ctl-top"><span>Patch changed every</span><output id="i1-iv-v">24.0 h</output></span>
+          <input type="range" id="i1-iv" min="1" max="36" step="0.5" value="24"></label>
       </div>
-      <button type="button" class="w-btn" id="i1-reset">Reset to the gel as built</button>
+      <button type="button" class="w-btn" id="i1-reset">Reset to the gel as built (2.5&#160;mm, 3&#160;mg/mL)</button>
     </div>
     <div class="w-out">
       <div class="tiles tiles-4">
-        <div class="tile"><div class="tv" id="i1-hours">2.24 h</div><div class="tk">hours above the 145&#160;&#181;M target</div></div>
-        <div class="tile"><div class="tv" id="i1-peak">270 &#181;M</div><div class="tk">peak depth-averaged tissue concentration</div></div>
-        <div class="tile" id="i1-sol-tile"><div class="tv" id="i1-sol">100 %</div><div class="tk" id="i1-sol-k">of the 738 &#181;M solubility ceiling</div></div>
-        <div class="tile tile-key" id="i1-tc-tile"><div class="tv" id="i1-tc">21 d</div><div class="tk" id="i1-tc-k">to close a 2.0 mm wound with the patch changed every 4.0 h</div></div>
-        <div class="tile tile-key" id="i1-int-tile"><div class="tv" id="i1-int">&#8804; 6.8 h</div><div class="tk" id="i1-int-k">longest change interval that still closes a wound, for every wound size; a daily change never does</div></div>
+        <div class="tile"><div class="tv" id="i1-hours">8.7 h</div><div class="tk">hours above the 145&#160;&#181;M target</div></div>
+        <div class="tile"><div class="tv" id="i1-peak">522 &#181;M</div><div class="tk">peak depth-averaged tissue concentration</div></div>
+        <div class="tile" id="i1-sol-tile"><div class="tv" id="i1-sol">100 %</div><div class="tk" id="i1-sol-k">of the 3&#160;mg/mL (2213&#160;&#181;M) loading demonstrated</div></div>
+        <div class="tile tile-key" id="i1-tc-tile"><div class="tv" id="i1-tc">34 d</div><div class="tk" id="i1-tc-k">to close a 2.0 mm wound with the patch changed every 24.0 h</div></div>
+        <div class="tile tile-key" id="i1-int-tile"><div class="tv" id="i1-int">&#8804; 26.4 h</div><div class="tk" id="i1-int-k">longest change interval that still closes a wound, for every wound size; a daily change works</div></div>
       </div>
       <div class="w-chart"><canvas id="i1-cv-c" aria-label="Depth-averaged V14 concentration in tissue against time" role="img"></canvas></div>
     </div>
@@ -1769,37 +1833,49 @@ body.noscroll{overflow:hidden}
   all is set by whether the time-averaged drug effect keeps cells growing faster than they die, which is
   the same everywhere in the wound bed. Wound size sets <i>how long</i> closure takes. Both outputs rest on
   Tier-4 closure parameters and a scenario treated state (FGF2-G3 at EC<sub>50</sub>, V14 at
-  &#968;<sub>50</sub>). Static versions: Figures&#160;13 and 14.</p>
+  &#968;<sub>50</sub>). The loading slider is the <em>total</em> dose; only f<sub>rel</sub>&#160;=&#160;0.5 of it is
+  mobile and reaches tissue. 3&#160;mg/mL is the largest loading the team has dissolved, so values above it
+  assume a solubility that has not been measured. Static versions: Figures&#160;13 and 14.</p>
 </section>
 
 
   <h3 class="col">The device specification</h3>
   <div class="col">
   <p>Combining delivery with closure gives the end-to-end result, and it takes the form of a
-  specification rather than a prediction. Each patch's 2.2&#160;h of cover is passed through the
-  18&#160;h drug-effect delay, which sets a maximum change interval of <b>6.8&#160;h</b> &#8212; and
+  specification rather than a prediction. Each patch's 8.7&#160;h of cover is passed through the
+  18&#160;h drug-effect delay, which sets a maximum change interval of <b>26&#160;h</b> &#8212; and
   that interval is a property of <em>the patch, not the wound</em>. Wound size changes only how long
   treatment must continue, not how often the dressing is changed. Repeat dosing is therefore part of
   the design, not a fallback for a patch that failed to release slowly.</p>
 
-  <p>Why does the interval come out at 6.8&#160;h? The drug effect averaged over a cycle equals the
+  <p>Why does the interval come out at 26&#160;h? The drug effect averaged over a cycle equals the
   fraction of time a patch keeps tissue above target. Above 2.3&#160;% the wound stops getting worse.
-  To reach the density we count as closed, the average must exceed <b>33&#160;%</b>, so 2.2&#160;h of
-  cover sustains closure for change intervals up to about 6.8&#160;h. A once-daily change would need
-  7.9&#160;h of cover per patch. No gel up to 3&#160;mm reaches that at the 738&#160;&#181;M ceiling
-  (6.8&#160;h at 3&#160;mm), and raising the loading alone does not either (1&#160;mM gives 3.1&#160;h).</p>
+  To reach the density we count as closed, the average must exceed <b>33&#160;%</b>, so 8.7&#160;h of
+  cover sustains closure for change intervals up to about 26&#160;h. A once-daily change needs
+  7.9&#160;h of cover per patch, and the 2.5&#160;mm patch supplies 8.7&#160;h &#8212; a duty cycle of
+  36&#160;% against a 33&#160;% requirement.</p>
+
+  <p class="caveat" style="display:block"><b>Read that margin carefully.</b> It is about 10&#160;%,
+  and the 33&#160;% threshold behind it is computed entirely from Tier-4 closure parameters with no
+  planned experiment. A 15&#160;% shortfall in coverage &#8212; well inside the 5.4&#8211;11.5&#160;h
+  band that the tissue parameters alone produce &#8212; would put a daily change back outside the
+  envelope. The honest claim is that once-daily dosing is <em>predicted</em> to work, not
+  <em>demonstrated</em> to; the design should not be trimmed further on the strength of it.</p>
 
   <p>Gel thickness and dermal drainage, not gel chemistry, set the single-patch window. Thickness is
-  the strongest design lever: 0.5, 1.0 and 1.5&#160;mm gels give 2.2, 3.9 and 5.1&#160;h above
-  145&#160;&#181;M. The gain is less than proportional because a thicker gel holds the peptide longer,
-  and the register degrades it inside the gel at the same rate as in serum. By contrast, reducing
-  k<sub>prot</sub> thirtyfold lengthens the window only to 2.6&#160;h, and retention shortens it &#8212;
-  both smaller than the 1.2&#8211;3.4&#160;h spread that the tissue parameters alone produce.</p>
+  the strongest design lever, and it is the one the team pulled: 0.5, 1.0, 1.5 and 2.5&#160;mm gels
+  give 3.4, 5.5, 6.9 and 8.7&#160;h above 145&#160;&#181;M. The gain is far less than proportional
+  &#8212; a 25&#215; larger reservoir buys about 4&#215; the hours &#8212; because a thicker gel holds
+  the peptide longer and the register degrades it inside the gel at the same rate as in serum. That
+  is also why the next millimetre is poor value: 4&#160;mm gives only 10&#160;h. By contrast, reducing
+  k<sub>prot</sub> thirtyfold lengthens the window to 9.5&#160;h, and the best retention adds under an
+  hour &#8212; both smaller than the 5.4&#8211;11.5&#160;h spread the tissue parameters produce.</p>
 
-  <p>Finally, FGF2-G3 is not the constraint. Even without any retention the 500&#160;&#181;m gel
-  keeps it above its EC<sub>50</sub> for 2&#8211;3&#160;days, longer than the change interval. Adding
-  alginate-sulfate to hold it for weeks would be wasted effort when the dressing comes off several times a day.
-  <b>V14 sets the schedule.</b></p>
+  <p>Finally, FGF2-G3 is not the constraint. Even without any retention the 2.5&#160;mm gel
+  keeps it above its EC<sub>50</sub> for <b>5.4&#160;days</b>, about five times the change interval. The
+  closure model requires both arms to be satisfied at once, but the FGF2-G3 condition is met
+  continuously after the first few minutes and never binds. Adding alginate-sulfate to hold it for
+  weeks would be wasted effort when the dressing comes off daily. <b>V14 sets the schedule.</b></p>
   </div>
 
   <details class="math"><summary>Retention chemistries &#8212; the equations, and why this build
@@ -1867,6 +1943,34 @@ body.noscroll{overflow:hidden}
 
   <h3 class="col">Corrections and refuted expectations</h3>
   <ol class="corr">
+    <li><b>&#8220;A once-daily dressing change is not within reach of thickness or loading alone.&#8221;
+    We said that, and on 16&#160;Oct 2026 we were proved wrong by our own wet lab.</b> The claim was
+    true of the patch it described &#8212; 0.5&#160;mm of gel, 1&#160;mg&#160;mL<sup>&#8722;1</sup> of
+    V14 &#8212; which held tissue above target for only 2.2&#160;h and so needed changing every
+    6.8&#160;h. The team then cast the gel at 2.5&#160;mm and loaded 3&#160;mg&#160;mL<sup>&#8722;1</sup>,
+    and the same solver now returns 8.7&#160;h of cover and a 26&#160;h limit. Thickness was the
+    lever, and we had under-rated it because we were reading its effect off a prior that only ran to
+    1&#160;mm. Two caveats keep this honest: the released fraction is now taken as
+    f<sub>rel</sub>&#160;=&#160;0.5 rather than 1, which costs half the loading back; and the daily
+    margin is only 10&#160;% on Tier-4 closure parameters, so this is a prediction, not a
+    demonstration.</li>
+
+    <li><b>&#8220;The gel Damk&#246;hler number is small, so nearly the whole dose escapes.&#8221;</b>
+    True at 0.5&#160;mm (Da<sub>V</sub>&#160;=&#160;0.007&#8211;0.07), false at 2.5&#160;mm
+    (0.18&#8211;1.8, and 0.57 at the register rate). In-gel degradation now eats a real share of the
+    mobile dose, which is why a 25&#215; bigger reservoir buys only about 4&#215; the hours above
+    target. The analytic surrogate behind the delivery sensitivity analysis still assumes full escape
+    and is correspondingly optimistic; every coverage number we quote comes from the two-domain
+    solver, which does not.</li>
+
+    <li><b>&#8220;A peptide with GRAVY&#160;=&#160;+1.16 may not dissolve at the required
+    concentration.&#8221; Withdrawn on evidence.</b> We flagged solubility as a possible showstopper
+    against an <em>assumed</em> 1&#160;mg&#160;mL<sup>&#8722;1</sup> ceiling. The team has since
+    dissolved 3&#160;mg&#160;mL<sup>&#8722;1</sup> in the casting buffer, and the thicker gel cut the
+    requirement to 47&#160;&#181;M, so the demonstrated loading clears it roughly 47&#215; over. The
+    saturation solubility is still unmeasured &#8212; what changed is that it is no longer on the
+    critical path.</li>
+
     <li><b>The planar closure estimate is a lower bound, not an upper bound.</b> Curvature does
     accelerate the front, by 5&#8211;21&#160;% relative to Cartesian &#8212; but the formula
     R<sub>w</sub>/c neglects the time to <i>form</i> the travelling front, and that transient
@@ -1884,18 +1988,24 @@ body.noscroll{overflow:hidden}
     upper bound. The gap is small in most of the parameter space but reaches 36&#160;% in the
     corner that matters most, and it is always in the optimistic direction.</li>
 
-    <li><b>Retention is not a lever worth pulling.</b> We wrote it up as something to be
-    maximised. Running the coupled solve showed that at the 145&#160;&#181;M target it shortens the
-    window (2.2&#160;h at R<sub>V</sub>&#160;=&#160;1, 1.5&#160;h at R<sub>V</sub>&#160;=&#160;2) and
-    R<sub>V</sub>&#160;&#8805;&#160;3 gives zero hours above target. For V14 in alginate it would also
-    need new tethering chemistry.</li>
+    <li><b>Retention is not a lever worth pulling &#8212; but our reason for saying so was
+    overturned on 16&#160;Oct 2026.</b> We first wrote retention up as something to be maximised,
+    then reported the opposite: at the 0.5&#160;mm / 738&#160;&#181;M design the coupled solve showed
+    it <em>shortening</em> the window (2.2&#160;h at R<sub>V</sub>&#160;=&#160;1, 1.5&#160;h at
+    R<sub>V</sub>&#160;=&#160;2, zero by R<sub>V</sub>&#160;&#8776;&#160;3). At the 2.5&#160;mm /
+    3&#160;mg&#160;mL<sup>&#8722;1</sup> build the peak tissue concentration is 3.6&#215; the target
+    rather than 1.9&#215;, so the trade now pays and a shallow optimum reappears near
+    R<sub>V</sub>&#160;&#8776;&#160;1.5&#8211;2 (8.7&#160;&#8594;&#160;9.5&#160;h). <b>The conclusion
+    survives; the argument for it does not.</b> We still do not recommend retention, because the gain
+    is under an hour, the same hour is cheaper to buy with thickness, and for V14 in alginate it
+    would need new tethering chemistry.</li>
 
     <li><b>Changing the gel from GelMA to calcium alginate mattered less than its thickness.</b>
     Alginate binds neither molecule and its 14&#160;nm mesh barely slows them, so the gel material
-    drops out of the sensitivity analysis. The 500&#160;&#181;m thickness is what moved the answer:
-    at the original 25&#160;&#181;M target it raised one patch's cover from 2.6 to 7.2&#160;h. At the
-    current 145&#160;&#181;M target, thickness remains the strongest lever (2.2&#160;h at 0.5&#160;mm,
-    5.1&#160;h at 1.5&#160;mm).</li>
+    drops out of the sensitivity analysis. Thickness is what moved the answer, twice: it remains the
+    strongest lever, and the move from 0.5&#160;mm to 2.5&#160;mm on 16&#160;Oct 2026 took one
+    patch's cover from 3.4&#160;h to 8.7&#160;h &#8212; enough to turn a four-times-daily dressing
+    change into a once-daily one.</li>
 
     <li><b>A sub-threshold pulse causes relapse, not stalling.</b> We had assumed a transient
     crossing of the r<sub>p</sub>&#160;&gt;&#160;d threshold would simply fail to finish. It
@@ -1909,12 +2019,38 @@ body.noscroll{overflow:hidden}
     K<sub>D</sub><sup>app</sup> is valid for occupancy and for Cheng&#8211;Prusoff but not for the
     inversion, turning a linear relation quadratic and over-estimating by up to ~2500&#215;.</li>
 
-    <li><b>The peptide screen's stability gate was compared against a stale release half-time.</b>
-    Module&#160;C originally used 2&#8211;22&#160;h, carried over from a thicker gel. Recomputed on
-    the as-built 500&#160;&#181;m patch, t<sub>1/2,rel</sub> is 1.9&#160;minutes, so TAP2 passes
-    Module&#160;C rather than failing it. TAP2 remains unsuitable &#8212; it fails the Module&#160;B
-    cysteine gate &#8212; but the stated reason for rejecting it was half wrong, and Module&#160;C
-    turns out not to discriminate for a device this fast.</li>
+    <li><b>The peptide screen's stability gate was compared against a stale release half-time
+    &#8212; and has now swung back.</b> Module&#160;C originally used 2&#8211;22&#160;h, carried over
+    from a thicker gel. Recomputed on the 0.5&#160;mm patch, t<sub>1/2,rel</sub> was 2.3&#160;minutes
+    and the gate stopped discriminating at all: every candidate passed it, so the stated reason for
+    rejecting TAP2 was half wrong. On the 2.5&#160;mm patch as now built t<sub>1/2,rel</sub> is
+    59&#160;minutes, and the gate discriminates again &#8212; it demands a serum half-life of about an
+    hour, which TAP1, TAP2 and MD2-I fail. The surviving candidates have been V14 and MD2-II
+    throughout, so no selection decision ever turned on this; what changed is whether the gate was
+    doing any work.</li>
+
+    <li><b>Our own sensitivity code had a bug, and it had reversed one of our conclusions.</b>
+    We reported that the expected dominance of k<sub>prot,V</sub> over delivered dose had been
+    refuted (S<sub>T</sub>&#160;=&#160;0.023, fifth of eight). The analytic surrogate carried a
+    spurious extra factor &#923;/&#948; in the depth average, which cancelled most of the
+    k<sub>prot,V</sub> dependence &#8212; and disagreed with the formula written in the module's own
+    documentation. Corrected, k<sub>prot,V</sub> ranks <b>third at
+    S<sub>T</sub>&#160;=&#160;0.42</b> and the expectation is confirmed, while first-order variance
+    for delivered dose falls from 52&#160;% to 34&#160;%. The correction also resolved a tension we
+    had been explaining away: our design section calls k<sub>prot,V</sub> the most useful parameter
+    to act on, and the variance ranking now agrees instead of contradicting it. The lesson we take
+    is that a result which conveniently explained an anomaly deserved more suspicion than we gave
+    it.</li>
+
+    <li><b>&#8220;NO half-life&#8221; was one symbol doing two jobs.</b> We carried
+    3&#8211;10&#160;s in the written model while the constants register held
+    0.09&#8211;2&#160;s, and neither was simply wrong: tissue consumption (which sets the
+    penetration depth L<sub>d</sub>) and autoxidation in culture medium (which sets free NO in a
+    well) differ by about two decades. No single number is correct for both. They are now two named
+    constants. Using the medium figure for tissue had overstated L<sub>d</sub> by ~2.4&#215;, which
+    made the NO-sensing geometry look <em>more</em> viable than it was &#8212; the corrected
+    11&#8211;93&#160;&#181;m strengthens the learning-cycle conclusion rather than weakening
+    it.</li>
   </ol>
 
   <div class="col">
@@ -1943,12 +2079,13 @@ body.noscroll{overflow:hidden}
       peptide screen with a measured k<sub>deg</sub>. One day of work, and it upgrades two models at
       once.</div></li>
     <li><span class="st">&#9633;</span><div><b>Saturation solubility of V14 in the casting buffer.</b>
-      Sets C<sub>total,0</sub>, and with it how long each patch lasts: raising the loading from
-      738&#160;&#181;M to 1&#160;mM lengthens one patch from 2.2 to 3.1&#160;h. Trivial, cheap, and
-      currently unplanned.</div></li>
+      3&#160;mg&#160;mL<sup>&#8722;1</sup> (2213&#160;&#181;M) is now known to dissolve, so this is a
+      lower bound rather than the assumption it used to be. Measuring the true saturation point
+      bounds how much further the loading lever can be pushed &#8212; it is no longer needed to show
+      the target is reachable. Trivial, cheap, and currently unplanned.</div></li>
     <li><span class="st">&#9633;</span><div><b>Swelling and dissolution of the alginate gel in simulated wound fluid.</b>
       Calcium alginate absorbs exudate and slowly dissolves as sodium replaces calcium. The model
-      assumes a fixed 500&#160;&#181;m reservoir; swelling would dilute it and shorten the change
+      assumes a fixed 2.5&#160;mm reservoir; swelling would dilute it and shorten the change
       interval. Weighing gels over 24&#160;h is enough.</div></li>
     <li><span class="st">&#9633;</span><div><b>Run the release assay against a RAW&#160;264.7 layer rather than a stirred bath.</b>
       Every planned experiment probes one module in isolation, so a seam error &#8212; a wrong
@@ -1957,7 +2094,7 @@ body.noscroll{overflow:hidden}
       and&#160;5 at once.</div></li>
     <li><span class="st">&#9633;</span><div><b>The same release assay for FGF2-G3.</b>
       Every FGF gel parameter is otherwise unconstrained, and it tests the predicted
-      2.4&#215; arrival separation directly.</div></li>
+      2.6&#215; arrival separation directly.</div></li>
     <li><span class="st">&#9633;</span><div><b>Scratch assay on fibroblasts &#177; FGF2-G3, &#177; mitomycin C, reporting front width.</b>
       One assay that supplies an otherwise entirely unsupported module and breaks the
       D<sub>n</sub>&#160;/&#160;r<sub>p</sub> degeneracy. This is the only experiment that would move
@@ -1968,14 +2105,17 @@ body.noscroll{overflow:hidden}
       the whole V14 arm assumes.</div></li>
     <li><span class="st">&#9633;</span><div><b><i>Nos2</i> as one of the two pro-inflammatory qPCR markers.</b>
       It is the only marker that parameterises an equation already in the model.</div></li>
-    <li><span class="st">&#9633;</span><div><b>Sample the release assay on a log grid from ~10&#160;s.</b>
-      Release from the 500&#160;&#181;m gel is ~95&#160;% complete within 11&#8211;25&#160;minutes,
-      and about a third of the V14 is out in the first minute; minute-scale sampling would miss most
-      of the kinetics.</div></li>
+    <li><span class="st">&#9633;</span><div><b>Run the release assay to completion on a log grid from ~1&#160;min.</b>
+      From the 2.5&#160;mm gel, 95&#160;% of the mobile dose takes 5.6&#160;h (V14) and 14.8&#160;h
+      (FGF2-G3), so the assay must run for most of a day rather than an hour. It is now the
+      <b>highest-value release experiment available</b>, because it measures two things at once: the
+      timescale, and the released fraction f<sub>rel</sub> &#8212; currently a Tier-4 estimate of 0.5
+      for V14 and, for FGF2-G3, 0.31&#160;&#177;&#160;0.07 fitted to a BCA run at its noise floor. Every coverage number depends on it linearly.</div></li>
     <li><span class="st">&#9633;</span><div><b>Test a patch-change protocol, not a single patch.</b>
-      The model puts the longest change interval that still closes a wound at about 6.8&#160;h for
-      the 500&#160;&#181;m gel. A thicker gel lengthens it; a slower k<sub>prot</sub> (the stability
-      assay above) is the other lever.</div></li>
+      The model puts the longest change interval that still closes a wound at about 26&#160;h for
+      the 2.5&#160;mm gel, so a once-daily protocol should close and a 36&#160;h one should not. That
+      is a sharp, falsifiable prediction with only a 10&#160;% margin, and it is the single most
+      informative in&#160;vivo test the model offers.</div></li>
   </ul>
 
   <p class="col"><b>One limitation.</b> If FGF2-G3 is assayed on fibroblasts and V14 on
@@ -1999,16 +2139,18 @@ body.noscroll{overflow:hidden}
   the experiment could not answer.</p>
 
   <p>What the chain says about the device as built is consistent across every model in it. The
-  500&#160;&#181;m alginate patch delivers its load within minutes and keeps tissue above the
-  145&#160;&#181;M V14 target for about 2&#160;hours, while closing a wound takes days to weeks. A
-  single patch therefore cannot close a wound. The patch must be changed at least every 6.8&#160;h
-  &#8212; in practice, four times a day. A thicker gel lengthens that interval, but within 3&#160;mm
-  and the solubility limit it does not reach a once-daily change.</p>
+  2.5&#160;mm alginate patch releases its mobile dose over hours and keeps tissue above the
+  145&#160;&#181;M V14 target for about 8.7&#160;hours, while closing a wound takes days to weeks. A
+  single patch therefore still cannot close a wound, and repeat application remains structural. But
+  the patch need only be changed every 26&#160;h, so <b>a once-daily dressing change closes the
+  wound</b> &#8212; ordinary clinical practice rather than the four-times-daily schedule the earlier
+  0.5&#160;mm design demanded. Thickness was the lever that did it, and the margin is about
+  10&#160;% on Tier-4 closure parameters: predicted, not demonstrated.</p>
 
-  <p>Retention does not rescue this design: at the 145&#160;&#181;M target it shortens the window, it
-  is capped by solubility above R<sub>V</sub>&#160;&#8776;&#160;3.2, and for V14 it would need
-  chemistry we do not have.
-  FGF2-G3 already lasts 2&#8211;3&#160;days without it, so V14 sets the schedule.</p>
+  <p>Retention is still not worth pursuing, though no longer because it fails. At this loading a
+  shallow optimum does exist near R<sub>V</sub>&#160;&#8776;&#160;1.5&#8211;2, but it buys under an
+  hour, the same hour is cheaper to buy with thickness, and for V14 it would need chemistry we do not
+  have. FGF2-G3 lasts 5.4&#160;days without it, so V14 sets the schedule.</p>
 
   <p>We are equally clear about what the chain does not establish. Models&#160;1&#8211;2 are
   predictive now. Models&#160;3&#8211;5 are predictive in scaled form and wait only on calibration.
@@ -2138,7 +2280,7 @@ body.noscroll{overflow:hidden}
   <hr class="soft">
   <p><b>HKU iGEM 2026 &#183; Dry Lab.</b> Model V3. Solvers verified against closed-form
   benchmarks; all parameters carry a provenance tier; non-identifiable combinations are declared
-  and not fitted. Page rebuilt 15 October 2026.</p>
+  and not fitted. Page rebuilt 16 October 2026.</p>
   <p style="margin-top:1em">Equations, boundary conditions and the full assumption register are
   in the V3 equation-reference document; the peptide screen is documented in full in the peptide
   suitability model. Where a value is Tier&#160;3 or Tier&#160;4, the tier rather than a citation
@@ -2155,8 +2297,14 @@ var Sim = (function () {
 
   var P = {
     D0_V14: 3.6e-6, A_V14: 0.87, A_FIBRE: 0.6, XI: 14, EPS_GEL: 0.99,
-    EPS_TIS: 0.8, D_TIS: 1.2e-6, L_GEL: 0.05, L_TIS: 0.15, K_P: 1,
-    T_HALF_V14: 6.1 * HOUR, C_SOL_UM: 738, TARGET_UM: 145, DELTA: 0.05,
+    EPS_TIS: 0.8, D_TIS: 1.2e-6, L_GEL: 0.25, L_TIS: 0.15, K_P: 1,
+    T_HALF_V14: 6.1 * HOUR, C_SOL_UM: 2213.0585206441474, DELTA: 0.05,
+    // patch design 2026-10-16: loadings are TOTAL, only F_REL of each is mobile
+    C_LOAD_V14_UM: 2213.0585206441474, F_REL_V14: 0.5,
+    C_LOAD_FGF_NGML: 200, F_REL_FGF: 0.31,
+    // flow-panel results: MUST equal params.KD_P_LOWER and params.C_TARGET_V14
+    // (in uM). build/check_params_sync.py fails the build if they drift.
+    KD_P_UM: 10.08, TARGET_UM: 145, PANEL_DOSE_UM: 25,
     // closure (Model 6)
     D_N: 1e-9, R0: 0.8 / DAY, D0: 0.24 / DAY, DD: 0.3 / DAY, E_MAX: 2, EC50: 0.5,
     BETA: 0.5, K_IR: 0.3, K_ID: 0.3, S_I: 2, KE0: 1 / (18 * HOUR), W: 75e-4,
@@ -2204,8 +2352,9 @@ var Sim = (function () {
     var Lgel = o.Lgel != null ? o.Lgel : P.L_GEL, Ltis = o.Ltis != null ? o.Ltis : P.L_TIS;
     var RV = o.RV != null ? o.RV : 1, kprot = o.kprot != null ? o.kprot : P.K_PROT;
     var Dg = o.Dg != null ? o.Dg : gelD(), Dt = o.Dt != null ? o.Dt : P.D_TIS;
-    var CVtot = (o.CVtotUM != null ? o.CVtotUM : P.C_SOL_UM) * UM;
-    var nxg = o.nxg || 40, nxt = o.nxt || 120, tEnd = (o.tEndDays || 3) * DAY;
+    var CVtot = (o.CVtotUM != null ? o.CVtotUM : P.C_LOAD_V14_UM) * UM;
+    var fRel = o.fRel != null ? o.fRel : P.F_REL_V14;
+    var nxg = o.nxg || 100, nxt = o.nxt || 120, tEnd = (o.tEndDays || 3) * DAY;
     var delta = o.delta != null ? o.delta : P.DELTA, target = (o.targetUM || P.TARGET_UM) * UM;
     var Kp = P.K_P, eg = P.EPS_GEL, et = P.EPS_TIS, kdeg = P.K_DEG;
     var hg = Lgel / nxg, ht = Ltis / nxt, ng = nxg, nt = nxt - 1, N = ng + nt;
@@ -2226,7 +2375,7 @@ var Sim = (function () {
       dia[p] = d0 / RV; sub[p] = lo / RV; sup[p] = up / RV;
     }
     var C = new Float64Array(N), X = new Float64Array(N);
-    var cfree = CVtot / RV;
+    var cfree = fRel * CVtot / RV;   // only the mobile fraction can diffuse
     for (j = 1; j <= ng; j++) C[nt + j - 1] = cfree;
     var kmax = Math.floor(delta / ht + 1e-9), ts = [0], avg = [0], t = 0, done = false;
     var peak = 0, peakT = 0;
@@ -2250,7 +2399,7 @@ var Sim = (function () {
     return {
       t: ts, avg: avg, hoursAbove: dur / HOUR, peakUM: peak / UM, peakT: peakT,
       totalUM: CVtot / UM, freeUM: cfree / UM, solFrac: CVtot / UM / P.C_SOL_UM,
-      overCeiling: CVtot / UM > P.C_SOL_UM + 1e-9
+      fRel: fRel, overCeiling: CVtot / UM > P.C_SOL_UM + 1e-9
     };
   }
 
@@ -2268,6 +2417,23 @@ var Sim = (function () {
     rpTrt: rpOf(P.EC50, theta0 / 2), dTrt: dOf(theta0 / 2)
   };
   RATES.thr = 0.5 * (1 - RATES.dTrt / RATES.rpTrt);   // pinned front level
+
+  /* Smallest time-averaged drug effect (duty cycle) that can reach the pinned
+     front level at all.  At a steady duty cycle s the rates interpolate, so the
+     density the wound can hold is n_ss(s) = 1 - d(s)/rp(s); closure needs
+     n_ss(s) > RATES.thr.  Solving that for s:
+
+         s* = [ (1-thr) rpChr - dChr ] / [ (dTrt-dChr) - (1-thr)(rpTrt-rpChr) ]
+
+     This is why the longest workable change interval is cov/s* and why it does
+     not depend on wound radius -- the condition is pointwise in the wound bed.
+     s* ~= 0.330, so one patch covering ~8.7 h gives ~26.4 h. */
+  function dutyThreshold() {
+    var k = 1 - RATES.thr;
+    return (k * RATES.rpChr - RATES.dChr) /
+           ((RATES.dTrt - RATES.dChr) - k * (RATES.rpTrt - RATES.rpChr));
+  }
+  RATES.dutyStar = dutyThreshold();
 
   function frontAt(n, thr, r, dr, nr) {
     if (n[0] >= thr) return 0;
@@ -2373,6 +2539,7 @@ var Sim = (function () {
   return {
     P: P, UM: UM, DAY: DAY, HOUR: HOUR, RATES: RATES, gelD: gelD, twoDomain: twoDomain,
     fisher: fisher, frontAt: frontAt, scheduleS: scheduleS, closureTimeInterval: closureTimeInterval,
+    dutyThreshold: dutyThreshold,
     maxInterval: maxInterval, maxIntervalAsync: maxIntervalAsync, pulseS: pulseS, suppression: suppression,
     thetaLps: thetaLps, p65: p65
   };
@@ -2656,7 +2823,7 @@ var Plot = (function () {
   var C = Plot.COL, S = Sim;
   var KD_L = 0.065, GAMMA = 0.1, H = 2.0;                       // uM; register gamma, h
   var NO = { N: 1e6, q: 5e-19, K: 0.3, p: 2, kturn: Math.LN2 / (4 * 3600), phi: 0.9, p65lps: 0.85 };
-  var DEF = { cv: Math.log10(145), l: 0, kd: Math.log10(10.08) };
+  var DEF = { cv: Math.log10(S.P.TARGET_UM), l: 0, kd: Math.log10(S.P.KD_P_UM) };
 
   function el(id) { return document.getElementById(id); }
   function val(id) { return Math.pow(10, parseFloat(el(id).value)); }
@@ -2703,7 +2870,7 @@ var Plot = (function () {
     for (i = 0; i <= 160; i++) xs.push(lo * Math.pow(hi / lo, i / 160));
     var rows = xs.map(function (x) { return chain(x, a, kd); });
     ax.clip();
-    [[25, C.ink], [145, C.thresh], [738, C.mute]].forEach(function (m) { ax.vline(m[0], m[1], [3, 4], 1.1); });
+    [[S.P.PANEL_DOSE_UM, C.ink], [S.P.TARGET_UM, C.thresh], [S.P.C_SOL_UM, C.mute]].forEach(function (m) { ax.vline(m[0], m[1], [3, 4], 1.1); });
     ax.line(xs, rows.map(function (q) { return q.supp; }), C.v14, 3);
     ax.line(xs, rows.map(function (q) { return q.p65; }), C.bad, 2, [7, 5]);
     ax.line(xs, rows.map(function (q) { return q.no2 / r0.no2; }), C.thresh, 2.4);
@@ -2731,7 +2898,7 @@ var Plot = (function () {
   var cv = document.getElementById("i1-cv-c");
   if (!cv) return;
   var C = Plot.COL, S = Sim, last = null;
-  var DEF = { cv: 738, lg: 500, rv: 0, kp: -4.5, rw: 2, iv: 4 };
+  var DEF = { cv: 2213, lg: 2500, rv: 0, kp: -4.5, rw: 2, iv: 24 };
 
   function val(id) { return parseFloat(document.getElementById(id).value); }
   function set(id, v) { document.getElementById(id).value = v; }
@@ -2794,7 +2961,8 @@ var Plot = (function () {
     text("i1-peak", Math.round(r.peakUM) + " µM");
     var pct = r.solFrac * 100, tile = document.getElementById("i1-sol-tile");
     text("i1-sol", pct.toFixed(0) + " %");
-    text("i1-sol-k", r.overCeiling ? "of the solubility ceiling — CANNOT be formulated" : "of the 738 µM solubility ceiling");
+    text("i1-sol-k", r.overCeiling ? "of the 3 mg/mL demonstrated loading — solubility beyond it is unverified"
+                                   : "of the 3 mg/mL (" + Math.round(S.P.C_LOAD_V14_UM) + " µM) loading demonstrated");
     tile.classList.toggle("tile-bad", r.overCeiling);
     // the longest workable interval depends only on the patch, not on the
     // wound, so it is recomputed only when the patch's cover actually changes
@@ -2817,7 +2985,8 @@ var Plot = (function () {
       cancelSearch = null;
       if (r !== last) return;
       maxH = h; showMax(h); protocol();
-    }, 24, 200);          // 200-point grid: same interval as 300, half the cost
+    }, 48, 200);          // 200-point grid: same interval as 300, half the cost
+                          // search to 48 h: the 2.5 mm patch passes 24 h
   }, 220);
 
   function showMax(h) {
@@ -2826,12 +2995,10 @@ var Plot = (function () {
     if (h <= 0) {
       text("i1-int", "none");
       text("i1-int-k", "this patch never holds tissue above target, so no change interval closes a wound");
-    } else if (h >= 24) {
-      text("i1-int", "≥ 24 h");
-      text("i1-int-k", "longest change interval that still closes a wound, for every wound size; even a daily change works");
     } else {
-      text("i1-int", "≤ " + h.toFixed(1) + " h");
-      text("i1-int-k", "longest change interval that still closes a wound, for every wound size; a daily change never does");
+      text("i1-int", (h >= 48 ? "≥ " : "≤ ") + h.toFixed(1) + " h");
+      text("i1-int-k", "longest change interval that still closes a wound, for every wound size; "
+        + (h >= 24 ? "a daily change works" : "a daily change never does"));
     }
   }
 
@@ -2846,6 +3013,8 @@ var Plot = (function () {
   }
 
   function closureTime(Rw, iv) {
+    // before the first solve there is nothing to report; update() calls
+    // protocol() again as soon as `last` exists, so this recovers by itself
     if (!last) return;
     var cov = last.hoursAbove, tile = document.getElementById("i1-tc-tile"),
         mm = (Rw * 10).toFixed(1) + " mm wound", every = "changed every " + iv.toFixed(1) + " h";
@@ -2855,13 +3024,29 @@ var Plot = (function () {
     if (!bad) {
       text("i1-tc", tc.toFixed(0) + " d");
       text("i1-tc-k", "to close a " + mm + " with the patch " + every);
-    } else if (cov > 0 && maxH !== null && iv <= maxH) {
+      return;
+    }
+    if (cov > 0 && maxH !== null && iv <= maxH) {
       text("i1-tc", "> 120 d");
       text("i1-tc-k", "a " + mm + " with the patch " + every + " is still open after 120 days");
-    } else {
-      text("i1-tc", "never");
-      text("i1-tc-k", "a " + mm + " with the patch " + every + " does not close: the gaps between patches are too long");
+      return;
     }
+    // Infeasible schedule.  Report WHY and by how much, rather than a bare
+    // "never": every position of the interval slider above the limit returns
+    // the same closure time, so without the duty cycle the slider looks dead,
+    // and the radius slider looks dead too (correctly -- the feasibility test
+    // is pointwise in the wound bed, so wound size cannot rescue it).
+    text("i1-tc", "never");
+    if (!(cov > 0)) {
+      text("i1-tc-k", "this patch never lifts tissue above the target, so no schedule closes a wound"
+        + " — fix that with the sliders above before changing the protocol");
+      return;
+    }
+    var duty = cov / iv, need = S.RATES.dutyStar;
+    text("i1-tc-k", "no wound closes on this schedule, whatever its size: the patch is in place "
+      + (duty * 100).toFixed(0) + " % of the time and closure needs " + (need * 100).toFixed(0)
+      + " %. Shorten the interval to " + (cov / need).toFixed(1) + " h or less"
+      + " — wound size only sets how long closure takes, never whether it happens.");
   }
 
   ["i1-cv", "i1-lg", "i1-rv", "i1-kp"].forEach(function (id) { Plot.slider(id, update); });
@@ -2877,134 +3062,380 @@ var Plot = (function () {
 
 /* Interactive 2 -- closure animation: radial Fisher-KPP, n(r,t).
    Three modes: repeated patch changes (each patch covers COV h, the effect
-   compartment fades in between), one long pulse, or untreated. */
+   compartment fades in between), one long pulse, or untreated.
+
+   The wound bed is drawn as tissue rather than as a colour ramp. Every
+   fibroblast mark sits at a fixed site with its own threshold u in (0,1) and is
+   shown only where the local density n(r)/K exceeds u, so the fraction of marks
+   present at any radius IS the model density -- the picture stays a plot. */
 (function () {
   "use strict";
-  var disc = document.getElementById("i2-disc");
-  if (!disc) return;
-  var C = Plot.COL, S = Sim, prof = document.getElementById("i2-prof"), tl = document.getElementById("i2-time");
-  var DAYMAX = 90, FE = 0.25, SDT = 60;
-  var st = { mode: "patch", T: 14, iv: 4, Rw: 0.2, res: null, rf: [], s: null, endDay: DAYMAX, day: 0,
-             playing: false, last: 0, visible: false, parked: false, drawn: -1, autoplayed: false };
-  var COV = null;   // hours one patch keeps tissue above target (500 um alginate, defaults of Interactive 1)
-  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
   function el(id) { return document.getElementById(id); }
-  function mix(a, b, t) { return Math.round(a + (b - a) * t); }
-  function colour(n) {
-    n = Math.max(0, Math.min(1, n));
-    var A = [244, 220, 203], B = [168, 207, 154], D = [46, 125, 79], u, f, g;
-    if (n < 0.5) { u = n / 0.5; f = A; g = B; } else { u = (n - 0.5) / 0.5; f = B; g = D; }
-    return "rgb(" + mix(f[0], g[0], u) + "," + mix(f[1], g[1], u) + "," + mix(f[2], g[2], u) + ")";
+  var disc = el("i2-disc");
+  if (!disc) return;
+  var S = Sim, C = Plot.COL, prof = el("i2-prof"), tl = el("i2-time");
+  var DAYMAX = 90, FE = 0.25, SDT = 60, NR = 300, TAU = 6.2832;
+  var K = {
+    bed: [194, 72, 79], dermis: [239, 205, 189],          // open granulation bed -> repaired tissue
+    cell: "#FBEBD6", cellEdge: "rgba(150,98,62,.55)", nucleus: "rgba(150,98,62,.75)",
+    cellLine: "#9C6B45", cellFill: "rgba(185,138,99,.16)",
+    front: "#16201B", edge: "#8C6A57", drug: "33,102,172", thr: C.thresh
+  };
+  var st = { mode: "patch", T: 14, iv: 24, Rw: 0.2, res: null, rf: [], sArr: null, band: null,
+             endDay: DAYMAX, xmax: DAYMAX, day: 0, playing: false, last: 0, visible: false,
+             parked: false, autoplayed: false, speed: "normal", flashAt: -1e9, lastPatch: -1 };
+  var COV = null;   // hours one patch keeps tissue above target (500 um alginate, defaults of Interactive 3)
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var nBuf = new Float32Array(NR + 1);
+
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      var t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
   }
+  function clamp(x, a, b) { return x < a ? a : x > b ? b : x; }
+  function smooth(x) { x = clamp(x, 0, 1); return x * x * (3 - 2 * x); }
+
+  /* Cell sites in unit-disc coordinates. The outer domain is always
+     R_inf = 2.2 R_w, so the normalised geometry -- and therefore this set -- is
+     the same for every wound radius. Cells inside the original wound point
+     radially, the direction they migrate; cells in intact tissue lie at random. */
+  var NO = 16, SZ = [0.88, 1, 1.12];   // sprite orientations over [0, pi) and size classes
+  var SITES = (function () {
+    var rnd = mulberry32(20261015), out = [], g = 0.046, x, y;
+    for (y = -1; y <= 1; y += g) for (x = -1; x <= 1; x += g) {
+      var px = x + (rnd() - 0.5) * g * 0.9, py = y + (rnd() - 0.5) * g * 0.9, rr = Math.sqrt(px * px + py * py);
+      if (rr > 0.975) continue;
+      var radial = rr < 0.5;
+      var k = 0.85 + 0.3 * rnd(), a = radial ? Math.atan2(py, px) + (rnd() - 0.5) * 0.7 : rnd() * Math.PI;
+      out.push({ x: px, y: py, r: rr, u: 0.03 + 0.94 * rnd(),
+                 z: k < 0.95 ? 0 : k < 1.05 ? 1 : 2,
+                 o: Math.round(((a % Math.PI) + Math.PI) % Math.PI / Math.PI * NO) % NO });
+    }
+    return out;
+  })();
+
   function coverage() {
-    if (COV === null) COV = S.twoDomain({ CVtotUM: S.P.C_SOL_UM, Lgel: S.P.L_GEL, RV: 1, kprot: S.P.K_PROT }).hoursAbove;
+    if (COV === null) COV = S.twoDomain({ CVtotUM: S.P.C_LOAD_V14_UM, Lgel: S.P.L_GEL, RV: 1, kprot: S.P.K_PROT }).hoursAbove;
     return COV;
   }
+  function niceMax(d) {
+    var steps = [10, 15, 20, 25, 30, 40, 50, 60, 75, 90];
+    for (var i = 0; i < steps.length; i++) if (steps[i] >= d) return steps[i];
+    return DAYMAX;
+  }
 
+  /* ---------- simulation ---------- */
   function simulate() {
-    var o = { Rw: st.Rw, nr: 300, tEndDays: DAYMAX, frameEvery: FE };
-    if (st.mode === "patch") { st.s = S.scheduleS(st.iv, coverage(), DAYMAX); o.sGrid = st.s; o.sdt = SDT; }
-    else if (st.mode === "pulse") { st.s = null; o.sFn = S.pulseS(st.T); }
-    else { st.s = null; o.sFn = function () { return 0; }; }
-    var res = S.fisher(o), dr = res.Rinf / 300, thr = S.RATES.thr;
+    var o = { Rw: st.Rw, nr: NR, tEndDays: DAYMAX, frameEvery: FE }, nS = Math.ceil(DAYMAX * S.DAY / SDT) + 2, i;
+    if (st.mode === "patch") { st.sArr = S.scheduleS(st.iv, coverage(), DAYMAX); o.sGrid = st.sArr; o.sdt = SDT; }
+    else {
+      var f = st.mode === "pulse" ? S.pulseS(st.T) : function () { return 0; };
+      o.sFn = f; st.sArr = new Float64Array(nS);
+      for (i = 0; i < nS; i++) st.sArr[i] = f(i * SDT);
+    }
+    var res = S.fisher(o), dr = res.Rinf / NR, thr = S.RATES.thr;
     st.res = res;
-    st.rf = res.frames.map(function (n) { return S.frontAt(n, thr, res.r, dr, 300); });
+    st.rf = res.frames.map(function (n) { return S.frontAt(n, thr, res.r, dr, NR); });
     st.endDay = res.closed ? res.tc / S.DAY : (res.frames.length - 1) * FE;
+    st.xmax = res.closed ? niceMax(st.endDay * 1.12) : DAYMAX;
+    st.band = buildBand();
     el("i2-d").max = Math.floor(st.endDay * 4) / 4;
-    st.day = 0;
+    st.day = 0; st.lastPatch = -1;
   }
 
-  function frameIdx() { return Math.max(0, Math.min(st.res.frames.length - 1, Math.round(st.day / FE))); }
+  /* drug effect s(t) binned to ~2 px columns: min/max envelope of the
+     saw-tooth plus its trailing 1-day mean, which is the quantity the 33 %
+     closure condition is about */
+  function buildBand() {
+    var M = 360, s = st.sArr, n = s.length, cum = new Float64Array(n + 1), i, j, W = Math.round(S.DAY / SDT);
+    for (i = 0; i < n; i++) cum[i + 1] = cum[i] + s[i];
+    var xs = [], lo = [], hi = [], mean = [];
+    for (i = 0; i < M; i++) {
+      var d0 = i / M * st.xmax, d1 = (i + 1) / M * st.xmax;
+      var a = Math.min(n - 1, Math.floor(d0 * S.DAY / SDT)), b = Math.min(n, Math.max(a + 1, Math.ceil(d1 * S.DAY / SDT)));
+      var mn = 1, mx = 0;
+      for (j = a; j < b; j++) { if (s[j] < mn) mn = s[j]; if (s[j] > mx) mx = s[j]; }
+      var e = b, w0 = Math.max(0, e - W);
+      xs.push(0.5 * (d0 + d1)); lo.push(mn); hi.push(mx); mean.push((cum[e] - cum[w0]) / Math.max(1, e - w0));
+    }
+    return { x: xs, lo: lo, hi: hi, mean: mean };
+  }
+  function sAt(day) { return st.sArr[Math.min(st.sArr.length - 1, Math.max(0, Math.floor(day * S.DAY / SDT)))]; }
+  function nssAt(s) {
+    var R = S.RATES, rp = R.rpChr + (R.rpTrt - R.rpChr) * s, d = R.dChr + (R.dTrt - R.dChr) * s;
+    return Math.max(0, 1 - d / rp);
+  }
+
+  /* density and front interpolated between the stored 0.25-day frames, so
+     the animation moves continuously instead of stepping */
+  function current() {
+    var fr = st.res.frames, last = fr.length - 1, x = clamp(st.day / FE, 0, last),
+        k0 = Math.floor(x), k1 = Math.min(last, k0 + 1), w = x - k0, a = fr[k0], b = fr[k1], i;
+    for (i = 0; i <= NR; i++) nBuf[i] = a[i] + (b[i] - a[i]) * w;
+    return { n: nBuf, rf: st.rf[k0] + (st.rf[k1] - st.rf[k0]) * w, k: k0 };
+  }
   function patchesBy(day) { return Math.floor(day * 24 / st.iv) + 1; }
+  function speedDays() {
+    var normal = Math.max(1.5, st.endDay / 12);
+    return st.speed === "slow" ? 0.25 : st.speed === "fast" ? normal * 3 : normal;
+  }
 
-  function draw() {
+  /* ---------- drawing ---------- */
+  function draw(now) {
     if (!st.res) return;
-    var k = frameIdx(), n = st.res.frames[k], r = st.res.r, Rinf = st.res.Rinf, rfk = st.rf[k];
+    var cur = current();
     el("i2-d-v").textContent = st.day.toFixed(1) + " d";
-    drawDisc(n, r, Rinf, rfk);
-    drawProfile(n, r, Rinf, rfk);
-    drawTimeline();
-    status(k);
+    drawDisc(cur, now || 0);
+    drawProfile(cur);
+    drawTimeline(cur);
+    status(cur);
   }
 
-  function drawDisc(n, r, Rinf, rfk) {
-    var s = Plot.setup(disc, 1), c = s.c, cx = s.w / 2, cy = s.h / 2 - 8, R = s.w / 2 - 16, i;
-    // one radial-gradient fill sampled from n(r) -- the previous version filled
-    // 300 stacked discs per frame (~10^8 pixels) and stalled the page
-    var g = c.createRadialGradient(cx, cy, 0, cx, cy, R), N = r.length - 1, STOPS = 96;
-    for (i = 0; i <= STOPS; i++) g.addColorStop(i / STOPS, colour(n[Math.round(i / STOPS * N)]));
-    c.beginPath(); c.fillStyle = g; c.arc(cx, cy, R, 0, 6.2832); c.fill();
-    ring(c, cx, cy, st.Rw / Rinf * R, "#8C6A57", [4, 4], 1.3);
-    if (rfk > 0) ring(c, cx, cy, rfk / Rinf * R, "#B2182B", [], 2.2);
-    c.strokeStyle = "#D5DBE0"; c.lineWidth = 1.5; c.beginPath(); c.arc(cx, cy, R + 3, 0, 6.2832); c.stroke();
-    c.font = "600 11px Inter, system-ui, sans-serif"; c.textAlign = "center"; c.fillStyle = "#2B3137";
-    c.fillText("top-down view · red ring = front · dashed = original edge", cx, s.h - 8);
-  }
-  function ring(c, cx, cy, rad, col, dash, w) {
-    c.beginPath(); c.strokeStyle = col; c.lineWidth = w; c.setLineDash(dash);
-    c.arc(cx, cy, rad, 0, 6.2832); c.stroke(); c.setLineDash([]);
+  /* One fibroblast pre-rendered per (size, orientation): blitting ~1500 small
+     sprites costs a fraction of filling and stroking ~1500 ellipse paths, and
+     the cell field is the only part of the disc redrawn every frame. */
+  var spr = null, sprKey = "";
+  function sprites(a0, dpr) {
+    var key = a0.toFixed(3) + "|" + dpr;
+    if (spr && sprKey === key) return spr;
+    var out = [], zi, o;
+    for (zi = 0; zi < SZ.length; zi++) {
+      var row = [];
+      for (o = 0; o < NO; o++) {
+        var ra = a0 * SZ[zi], rb = ra / 2.6, ang = o / NO * Math.PI, half = ra + 2,
+            px = Math.ceil(2 * half * dpr), cv = document.createElement("canvas"), c;
+        cv.width = cv.height = px; c = cv.getContext("2d");
+        c.setTransform(dpr, 0, 0, dpr, px / 2, px / 2);
+        c.beginPath(); c.ellipse(0, 0, ra, rb, ang, 0, TAU); c.fillStyle = K.cell; c.fill();
+        c.lineWidth = 0.6; c.strokeStyle = K.cellEdge; c.stroke();
+        c.beginPath(); c.ellipse(0, 0, ra / 3.4, ra / 3.4 / 1.7, ang, 0, TAU); c.fillStyle = K.nucleus; c.fill();
+        row.push({ cv: cv, half: half });
+      }
+      out.push(row);
+    }
+    spr = out; sprKey = key; return spr;
   }
 
-  function drawProfile(n, r, Rinf, rfk) {
-    var s = Plot.setup(prof, 1), mmax = Rinf * 10, xs = [], ys = [], i, step = Math.max(1, Math.floor(r.length / 160));
-    var tk = []; for (var v = 0; v <= mmax; v += mmax > 8 ? 2 : 1) tk.push([v, String(v)]);
+  /* The cell field is rendered into its own layer at native device size and
+     refreshed at most every 50 ms while playing (~20 Hz). Cells fade in over
+     several frames, so the cap is invisible, while the front, rings and haze
+     still move every frame. Scrubbing and static redraws always refresh it. */
+  var layer = null, layerAt = -1e9;
+  function cellLayer(n, cx, cy, R, dpr, bw, bh, now) {
+    var fresh = !layer || layer.width !== bw || layer.height !== bh;
+    if (fresh) { layer = document.createElement("canvas"); layer.width = bw; layer.height = bh; }
+    if (!fresh && now && now - layerAt < 50) return layer;
+    var c = layer.getContext("2d"), SP = sprites(0.052 * R, dpr), i;
+    c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, bw, bh);
+    for (i = 0; i < SITES.length; i++) {
+      var p = SITES[i], vis = smooth((n[Math.min(NR, Math.round(p.r * NR))] - p.u) / 0.07 + 0.5);
+      if (vis <= 0.08) continue;
+      var sp = SP[p.z][p.o], w = sp.cv.width;
+      c.globalAlpha = vis;     // whole device pixels at native size: the rasteriser's fast copy path
+      c.drawImage(sp.cv, Math.round((cx + p.x * R) * dpr - w / 2), Math.round((cy + p.y * R) * dpr - w / 2));
+    }
+    c.globalAlpha = 1;
+    layerAt = now || -1e9;
+    return layer;
+  }
+
+  var tex = null, texKey = "";
+  function texture(px) {
+    if (tex && texKey === px) return tex;
+    var cv = document.createElement("canvas"), rnd = mulberry32(7), c, i, n = Math.round(px * px / 46);
+    cv.width = cv.height = px; c = cv.getContext("2d");
+    for (i = 0; i < n; i++) {
+      c.fillStyle = rnd() < 0.55 ? "rgba(90,18,28,.16)" : "rgba(255,238,228,.14)";
+      c.beginPath(); c.arc(rnd() * px, rnd() * px, 0.5 + rnd() * 1.5 * px / 600, 0, TAU); c.fill();
+    }
+    tex = cv; texKey = px; return tex;
+  }
+  function rgb(a, b, t) {
+    return "rgb(" + Math.round(a[0] + (b[0] - a[0]) * t) + "," + Math.round(a[1] + (b[1] - a[1]) * t) + "," +
+      Math.round(a[2] + (b[2] - a[2]) * t) + ")";
+  }
+  function pill(c, x, y, txt, bg, fg) {
+    c.font = "600 11px Inter, system-ui, sans-serif";
+    var w = c.measureText(txt).width + 14, h = 20, r = 10;
+    c.beginPath(); c.moveTo(x + r, y); c.lineTo(x + w - r, y); c.arc(x + w - r, y + r, r, -Math.PI / 2, Math.PI / 2);
+    c.lineTo(x + r, y + h); c.arc(x + r, y + r, r, Math.PI / 2, 1.5 * Math.PI); c.closePath();
+    c.fillStyle = bg; c.fill();
+    c.fillStyle = fg; c.textAlign = "left"; c.textBaseline = "middle"; c.fillText(txt, x + 7, y + h / 2 + 0.5);
+    return w;
+  }
+  function ring(c, cx, cy, rad, col, w, dash) {
+    c.beginPath(); c.strokeStyle = col; c.lineWidth = w; c.setLineDash(dash || []);
+    c.arc(cx, cy, Math.max(0.1, rad), 0, TAU); c.stroke(); c.setLineDash([]);
+  }
+
+  function drawDisc(cur, now) {
+    var s = Plot.setup(disc, 1), c = s.c, cx = s.w / 2, cy = s.h / 2, R = s.w / 2 - 21, i,
+        n = cur.n, Rinf = st.res.Rinf, dpr = window.devicePixelRatio || 1, sNow = sAt(st.day);
+
+    // tissue: open bed blends into repaired tissue with the local density
+    var g = c.createRadialGradient(cx, cy, 0, cx, cy, R), STOPS = 64;
+    for (i = 0; i <= STOPS; i++) g.addColorStop(i / STOPS, rgb(K.bed, K.dermis, smooth((n[Math.round(i / STOPS * NR)] - 0.04) / 0.5)));
+    c.save(); c.beginPath(); c.arc(cx, cy, R, 0, TAU); c.clip();
+    c.fillStyle = g; c.fillRect(cx - R, cy - R, 2 * R, 2 * R);
+    c.drawImage(texture(Math.round(2 * R * dpr)), cx - R, cy - R, 2 * R, 2 * R);
+
+    // fibroblasts: a site is shown where the local density exceeds its threshold
+    var lay = cellLayer(n, cx, cy, R, dpr, disc.width, disc.height, now);
+    c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.drawImage(lay, 0, 0); c.restore();
+
+    // drug effect: a blue haze whose strength is the effect compartment s(t)
+    if (sNow > 0.004) { c.fillStyle = "rgba(" + K.drug + "," + (0.2 * sNow).toFixed(3) + ")"; c.fillRect(cx - R, cy - R, 2 * R, 2 * R); }
+    c.restore();
+
+    // patch halo; a flash marks each new patch when playback is slow enough to see one
+    if (sNow > 0.004) ring(c, cx, cy, R + 5, "rgba(" + K.drug + "," + (0.25 + 0.6 * sNow).toFixed(3) + ")", 4);
+    var fl = reduce ? 0 : clamp(1 - (now - st.flashAt) / 520, 0, 1);
+    if (fl > 0) ring(c, cx, cy, R + 5 + 9 * (1 - fl), "rgba(" + K.drug + "," + (0.7 * fl).toFixed(3) + ")", 3 + 5 * fl);
+    else ring(c, cx, cy, R + 1, "#D5DBE0", 1.5);
+
+    // original wound edge and the healing front
+    var re = st.Rw / Rinf * R;
+    ring(c, cx, cy, re, "rgba(255,255,255,.85)", 3, [5, 4]);
+    ring(c, cx, cy, re, K.edge, 1.3, [5, 4]);
+    if (cur.rf > 1e-6) { ring(c, cx, cy, cur.rf / Rinf * R, "rgba(255,255,255,.95)", 5.5); ring(c, cx, cy, cur.rf / Rinf * R, K.front, 2.4); }
+
+    // scale bar: 1 mm
+    var bar = 0.1 / Rinf * R, bx = 10, by = s.h - 10;
+    c.strokeStyle = K.front; c.lineWidth = 2.5; c.beginPath(); c.moveTo(bx, by); c.lineTo(bx + bar, by); c.stroke();
+    c.font = "600 11px Inter, system-ui, sans-serif"; c.fillStyle = K.front; c.textAlign = "center"; c.textBaseline = "bottom";
+    c.fillText("1 mm", bx + bar / 2, by - 4);
+
+    // labels
+    pill(c, 6, 6, "Day " + st.day.toFixed(1), "rgba(255,255,255,.95)", "#16201B");
+    var tag = st.mode === "patch" ? ["Patch #" + patchesBy(st.day), "rgba(" + K.drug + ",.95)"]
+      : st.mode === "pulse" ? (st.day <= st.T ? ["Treating", "rgba(" + K.drug + ",.95)"] : ["Treatment over", "rgba(107,116,125,.95)"])
+      : ["No treatment", "rgba(107,116,125,.95)"];
+    c.font = "600 11px Inter, system-ui, sans-serif";
+    pill(c, s.w - c.measureText(tag[0]).width - 20, 6, tag[0], tag[1], "#fff");
+    if (st.res.closed && st.day >= st.endDay - 1e-6) {
+      c.font = "600 11px Inter, system-ui, sans-serif";
+      pill(c, s.w - c.measureText("Closed").width - 20, s.h - 26, "Closed", "#1B6B45", "#fff");
+    }
+  }
+
+  function drawProfile(cur) {
+    var s = Plot.setup(prof, 1), n = cur.n, r = st.res.r, mmax = st.res.Rinf * 10, xs = [], ys = [], i,
+        step = Math.max(1, Math.floor(r.length / 160)), tk = [], thr = S.RATES.thr, nss = nssAt(sAt(st.day));
+    for (var v = 0; v <= mmax; v += mmax > 8 ? 2 : 1) tk.push([v, String(v)]);
     var ax = Plot.Axes(s, { l: 44, t: 14, r: 12, b: 48 }, [0, mmax], [0, 1.05], {
-      xlabel: "radius (mm)", ylabel: "cell density n / K", xticks: tk,
+      xlabel: "distance from wound centre (mm)", ylabel: "cell density n / K", xticks: tk,
       yticks: [[0, "0"], [0.5, "0.5"], [1, "1"]]
     });
     ax.frame();
     for (i = 0; i < r.length; i += step) { xs.push(r[i] * 10); ys.push(n[i]); }
-    ax.line(xs, ys, C.good, 3);
-    ax.hline(S.RATES.thr, C.thresh, [5, 4], 1.3);
-    ax.vline(st.Rw * 10, "#8C6A57", [4, 4], 1.2);
-    if (rfk > 0) ax.dot(rfk * 10, S.RATES.thr, C.fgf, 4.5);
-    ax.text("front threshold", ax.x1 - 4, ax.Y(S.RATES.thr) - 9, C.thresh, "right", "500 10.5px Inter, system-ui, sans-serif");
+    xs.push(r[r.length - 1] * 10); ys.push(n[n.length - 1]);
+    var c = ax.c;
+    c.beginPath(); c.moveTo(ax.X(xs[0]), ax.Y(0));
+    for (i = 0; i < xs.length; i++) c.lineTo(ax.X(xs[i]), ax.Y(ys[i]));
+    c.lineTo(ax.X(xs[xs.length - 1]), ax.Y(0)); c.closePath(); c.fillStyle = K.cellFill; c.fill();
+    ax.line(xs, ys, K.cellLine, 2.6);
+    ax.vline(st.Rw * 10, K.edge, [4, 4], 1.2);
+
+    // what the current drug level can sustain, against what counts as closed
+    ax.hline(thr, K.thr, [5, 4], 1.4);
+    ax.hline(Math.max(0.006, nss), "rgb(" + K.drug + ")", [2, 3], 1.8);
+    var f = "600 10.5px Inter, system-ui, sans-serif", kx = ax.x0 + 8, ky = ax.y1 + 8;
+    function key(y, col, dash, w, txt) {
+      c.beginPath(); c.strokeStyle = col; c.lineWidth = w; c.setLineDash(dash);
+      c.moveTo(kx, y); c.lineTo(kx + 20, y); c.stroke(); c.setLineDash([]);
+      ax.text(txt, kx + 26, y, col, "left", f);
+    }
+    c.font = f; var k1 = nss > 0.006 ? "max at current drug level" : "drug too low: cells die back";
+    c.fillStyle = "rgba(255,255,255,.88)";
+    c.fillRect(kx - 4, ky - 9, 34 + Math.max(c.measureText(k1).width, c.measureText("closure threshold").width), 34);
+    key(ky, "rgb(" + K.drug + ")", [2, 3], 1.8, k1);
+    key(ky + 16, K.thr, [5, 4], 1.4, "closure threshold");
+    if (cur.rf > 1e-6) ax.dot(cur.rf * 10, thr, K.front, 4.5);
   }
 
-  function drawTimeline() {
-    // keep a front that drifts past the original edge (relapse) inside the chart
-    var rfMax = Math.max.apply(null, st.rf) * 10;
-    var s = Plot.setup(tl, 0.34), ts = [], ys = [], i, xt = [],
-        ymax = Math.min(st.res.Rinf * 10, Math.max(st.Rw * 10, rfMax)) * 1.12;
-    for (var d = 0; d <= DAYMAX; d += 15) xt.push([d, String(d)]);
-    var ax = Plot.Axes(s, { l: 50, t: 10, r: 14, b: 38 }, [0, DAYMAX], [0, ymax], {
-      xlabel: "time (days)", ylabel: "front (mm)", xticks: xt,
-      yticks: [[0, "0"], [st.Rw * 10, (st.Rw * 10).toFixed(0)]]
+  function drawTimeline(cur) {
+    var s = Plot.setup(tl, 0.42), c = s.c, xmax = st.xmax, b = st.band, i;
+    var T = 10, Bm = 38, gap = 16, laneH = Math.round((s.h - T - Bm - gap) * 0.36);
+    var xt = [], step = xmax <= 20 ? 5 : xmax <= 50 ? 10 : 15;
+    for (var d = 0; d <= xmax + 1e-9; d += step) xt.push([d, String(d)]);
+    var play = Math.min(st.day, st.endDay), lbl = "600 10.5px Inter, system-ui, sans-serif";
+
+    /* lane 1: drug effect */
+    var A = Plot.Axes(s, { l: 50, t: T, r: 14, b: s.h - T - laneH }, [0, xmax], [0, 1.05], {
+      ylabel: "drug", xticks: xt.map(function (t) { return [t[0], ""]; }), yticks: [[0, "0"], [1, "max"]]
     });
-    ax.frame();
-    ax.hline(st.Rw * 10, "#8C6A57", [4, 4], 1);   // original wound edge
-    if (st.mode === "pulse") {
-      ax.c.fillStyle = "rgba(77,146,33,.10)";
-      ax.c.fillRect(ax.X(0), ax.y1, ax.X(Math.min(st.T, DAYMAX)) - ax.X(0), ax.y0 - ax.y1);
-      ax.text("treatment", ax.X(0) + 6, ax.y1 + 11, C.good, "left", "600 10.5px Inter, system-ui, sans-serif");
-    } else if (st.mode === "patch" && st.s) {
-      // drug-effect saw-tooth s(t), drawn in the top band of the chart (0 at mid-height, 1 at the top)
-      var sx = [], sy = [], stepS = Math.max(1, Math.round(0.02 * S.DAY / SDT)), lim = Math.min(st.s.length, Math.ceil(st.endDay * S.DAY / SDT));
-      for (i = 0; i < lim; i += stepS) { sx.push(i * SDT / S.DAY); sy.push(ymax * (0.5 + 0.5 * st.s[i])); }
-      ax.line(sx, sy, "rgba(77,146,33,.55)", 1.2);
-      ax.text("drug effect (each tooth = a new patch)", ax.X(0) + 6, ax.y1 + 11, C.good, "left", "600 10.5px Inter, system-ui, sans-serif");
+    A.frame();
+    function band(alpha, lineAlpha) {
+      c.beginPath(); c.moveTo(A.X(b.x[0]), A.Y(b.hi[0]));
+      for (i = 1; i < b.x.length; i++) c.lineTo(A.X(b.x[i]), A.Y(b.hi[i]));
+      for (i = b.x.length - 1; i >= 0; i--) c.lineTo(A.X(b.x[i]), A.Y(b.lo[i]));
+      c.closePath(); c.fillStyle = "rgba(" + K.drug + "," + alpha + ")"; c.fill();
+      A.line(b.x, b.mean, "rgba(" + K.drug + "," + lineAlpha + ")", 2);
     }
+    var saw = st.mode === "patch";
+    function lane(alpha, lineAlpha) {
+      if (saw) band(alpha, lineAlpha);
+      else A.line(b.x, b.hi, "rgba(" + K.drug + "," + lineAlpha + ")", 2);
+    }
+    lane(0.1, 0.3);
+    c.save(); c.beginPath(); c.rect(A.x0, A.y1 - 2, A.X(play) - A.x0, A.y0 - A.y1 + 4); c.clip(); lane(0.3, 1); c.restore();
+    var ds = S.RATES.dutyStar;
+    A.hline(ds, K.thr, [5, 4], 1.3);
+    A.text((saw ? "average needed to close · " : "needed to close · ") + Math.round(ds * 100) + " %",
+      A.x1 - 4, A.Y(ds) - 8, K.thr, "right", lbl);
+
+    /* lane 2: front position */
+    var rfMax = 0; for (i = 0; i < st.rf.length; i++) if (st.rf[i] > rfMax) rfMax = st.rf[i];
+    var ymax = Math.max(st.Rw * 10, rfMax * 10) * 1.12;
+    var Bx = Plot.Axes(s, { l: 50, t: T + laneH + gap, r: 14, b: Bm }, [0, xmax], [0, ymax], {
+      xlabel: "time (days)", ylabel: "front (mm)", xticks: xt,
+      yticks: [[0, "0"], [st.Rw * 10, (st.Rw * 10).toFixed(1)]]
+    });
+    Bx.frame();
+    Bx.hline(st.Rw * 10, K.edge, [4, 4], 1);
+    if (rfMax > st.Rw * 1.05) {
+      c.fillStyle = "rgba(194,72,79,.06)"; c.fillRect(Bx.x0, Bx.y1, Bx.x1 - Bx.x0, Bx.Y(st.Rw * 10) - Bx.y1);
+      Bx.text("above the dashed line: tissue around the wound has also fallen below closure density",
+        Bx.x1 - 6, Bx.Y(st.Rw * 10) - 10, "#9C3B42", "right", "500 10.5px Inter, system-ui, sans-serif");
+    }
+    var ts = [], ys = [];
     for (i = 0; i < st.rf.length; i++) { ts.push(i * FE); ys.push(st.rf[i] * 10); }
     if (st.res.closed) { ts.push(st.endDay); ys.push(0); }
-    ax.line(ts, ys, "#C9D3DB", 2);
-    var cut = ts.filter(function (d) { return d <= st.day + 1e-6; });
-    ax.line(cut, ys.slice(0, cut.length), C.fgf, 3);
-    ax.dot(Math.min(st.day, st.endDay), st.rf[frameIdx()] * 10, C.fgf, 5);
+    Bx.line(ts, ys, "#CBD3DA", 2);
+    c.save(); c.beginPath(); c.rect(Bx.x0, Bx.y1 - 4, Bx.X(play) - Bx.x0, Bx.y0 - Bx.y1 + 8); c.clip();
+    Bx.line(ts, ys, K.front, 3); c.restore();
+
+    // closure marker
+    if (st.res.closed) {
+      var reached = st.day >= st.endDay - 1e-6, xc = Bx.X(st.endDay);
+      c.strokeStyle = reached ? "#1B6B45" : "#B6C0B9"; c.lineWidth = 1.2; c.setLineDash([3, 3]);
+      c.beginPath(); c.moveTo(xc, Bx.y0); c.lineTo(xc, Bx.y1); c.stroke(); c.setLineDash([]);
+      Bx.text("closed · day " + st.endDay.toFixed(0), xc - 6, Bx.Y(st.Rw * 10) + 11, reached ? "#1B6B45" : C.mute, "right", lbl);
+    }
+
+    // playhead through both lanes
+    var xp = Bx.X(play);
+    c.strokeStyle = "rgba(22,32,27,.3)"; c.lineWidth = 1; c.beginPath(); c.moveTo(xp, A.y1); c.lineTo(xp, Bx.y0); c.stroke();
+    Bx.dot(play, cur.rf * 10, K.front, 5);
+    A.dot(play, sAt(play), "rgb(" + K.drug + ")", 4);
   }
 
-  function status(k) {
-    var rf = st.rf[k] * 10, closed = st.res.closed, done = st.day >= st.endDay - 1e-6, msg;
+  function status(cur) {
+    var k = cur.k, rf = cur.rf * 10, closed = st.res.closed, done = st.day >= st.endDay - 1e-6, msg;
     var minRf = Math.min.apply(null, st.rf.slice(0, k + 1));
     var duty = st.mode === "patch" ? coverage() / st.iv : 0;
-    var centre = Math.round(st.res.frames[k][0] * 100), thrPct = Math.round(S.RATES.thr * 100);
+    var centre = Math.round(cur.n[0] * 100), thrPct = Math.round(S.RATES.thr * 100), need = Math.round(S.RATES.dutyStar * 100);
     if (closed && done) {
       msg = "<b>Closed on day " + st.endDay.toFixed(1) + ".</b> The front reached the centre" +
         (st.mode === "patch" ? " after " + patchesBy(st.endDay) + " patches, one every " + st.iv + " h." : ".");
     } else if (!closed && done) {
       if (st.mode === "patch") {
         msg = "<b>Not closed.</b> A patch every " + st.iv + " h gives drug " + Math.round(duty * 100) +
-          " % of the time; the wound needs ~33 %. Cells fill in but level off at " + centre +
+          " % of the time; the wound needs ~" + need + " %. Cells fill in but level off at " + centre +
           " % density, under the " + thrPct + " % that counts as closed.";
       } else {
         msg = st.rf[k] > minRf * 1.25 + 1e-3
@@ -3020,20 +3451,28 @@ var Plot = (function () {
     el("i2-status").innerHTML = msg;
   }
 
+  /* ---------- playback ---------- */
   function play(on) {
     st.playing = on; el("i2-play").innerHTML = on ? "&#10074;&#10074; Pause" : "&#9654; Play";
-    if (on) { if (st.day >= st.endDay - 1e-6) st.day = 0; st.parked = false; st.drawn = -1; st.last = performance.now(); requestAnimationFrame(tick); }
+    if (on) {
+      if (st.day >= st.endDay - 1e-6) st.day = 0;
+      st.parked = false; st.lastPatch = patchesBy(st.day); st.last = performance.now(); requestAnimationFrame(tick);
+    }
   }
-  // The loop only runs while the widget is on screen, and only repaints when
-  // the stored frame changes (one frame per 0.25 d), so it costs nothing while
-  // the reader scrolls past.
+  // The loop only runs while the widget is on screen.
   function tick(now) {
     if (!st.playing) return;
     if (!st.visible) { st.parked = true; return; }
-    st.day = Math.min(st.endDay, st.day + (now - st.last) / 1000 * 6); st.last = now;
+    var v = speedDays();
+    st.day = Math.min(st.endDay, st.day + Math.min(0.1, (now - st.last) / 1000) * v); st.last = now;
+    if (st.mode === "patch") {
+      var p = patchesBy(st.day);
+      // only flash when individual patches are slow enough to see (<= 3 per second)
+      if (p !== st.lastPatch && v * 24 / st.iv <= 3) st.flashAt = now;
+      st.lastPatch = p;
+    }
     el("i2-d").value = st.day;
-    var k = frameIdx();
-    if (k !== st.drawn || st.day >= st.endDay - 1e-6) { draw(); st.drawn = k; }
+    draw(now);
     if (st.day >= st.endDay - 1e-6) { play(false); return; }
     requestAnimationFrame(tick);
   }
@@ -3052,26 +3491,32 @@ var Plot = (function () {
   el("i2-T").addEventListener("input", function () { st.T = parseFloat(this.value); el("i2-T-v").textContent = st.T.toFixed(1) + " d"; refreshSoon(); });
   el("i2-iv").addEventListener("input", function () { st.iv = parseFloat(this.value); el("i2-iv-v").textContent = st.iv + " h"; refreshSoon(); });
   el("i2-rw").addEventListener("input", function () { st.Rw = parseFloat(this.value) / 10; el("i2-rw-v").textContent = (st.Rw * 10).toFixed(1) + " mm"; refreshSoon(); });
-  var MODES = { patch: "i2-pat", pulse: "i2-trt", none: "i2-unt" };
-  function pick(mode) {
-    st.mode = mode;
-    for (var m in MODES) { el(MODES[m]).classList.toggle("on", m === mode); el(MODES[m]).setAttribute("aria-pressed", m === mode); }
-    refresh(true);
+  function group(map, key, onPick) {
+    Object.keys(map).forEach(function (k) {
+      var b = el(map[k]); if (!b) return;
+      b.addEventListener("click", function () {
+        Object.keys(map).forEach(function (m) { var e = el(map[m]); if (e) { e.classList.toggle("on", m === k); e.setAttribute("aria-pressed", m === k); } });
+        onPick(k);
+      });
+    });
   }
-  el("i2-pat").addEventListener("click", function () { pick("patch"); });
-  el("i2-trt").addEventListener("click", function () { pick("pulse"); });
-  el("i2-unt").addEventListener("click", function () { pick("none"); });
+  group({ patch: "i2-pat", pulse: "i2-trt", none: "i2-unt" }, "mode", function (m) { st.mode = m; refresh(true); });
+  group({ slow: "i2-sp-slow", normal: "i2-sp-norm", fast: "i2-sp-fast" }, "speed", function (v) { st.speed = v; st.last = performance.now(); });
   el("i2-play").addEventListener("click", function () { play(!st.playing); });
   el("i2-restart").addEventListener("click", function () { st.day = 0; el("i2-d").value = 0; draw(); if (!reduce) play(true); });
-  el("i2-d").addEventListener("input", function () { play(false); st.day = parseFloat(this.value); draw(); });
-  window.addEventListener("resize", Plot.debounce(draw, 120));
+  el("i2-d").addEventListener("input", function () {
+    // the slider's max is rounded down to its 0.25-day step, so the last notch
+    // snaps to the exact closure day -- otherwise scrubbing never shows "Closed"
+    var v = parseFloat(this.value);
+    play(false); st.day = v >= parseFloat(this.max) - 1e-9 ? st.endDay : v; draw();
+  });
+  window.addEventListener("resize", Plot.debounce(function () { draw(); }, 120));
 
   // the 90-day solve only runs once the widget is about a screen away
   Plot.whenNear(el("i2"), function () {
     refresh(false);
     if ("IntersectionObserver" in window) {
-      // track visibility for the whole session: autoplay once on first view,
-      // park the loop when scrolled away, resume it when scrolled back
+      // autoplay once on first view, park the loop when scrolled away, resume when back
       new IntersectionObserver(function (es) {
         st.visible = es[0].isIntersecting;
         if (!st.visible) return;
