@@ -154,7 +154,7 @@
     screening model that takes an amino acid sequence and returns a gated verdict. Our iteration-1
     candidate, <b>TAP2</b>, fails the structural gate &#8212; two cysteines and three tryptophans.
     Our <i>de novo</i> iteration-2 peptide <b>V14 (&#945;TI-14)</b> passes all three modules, with a
-    composite score of <b>S&#160;&#8776;&#160;1.00</b>. The model is the reason we stopped trying to
+    composite score of <b>S&#160;&#8776;&#160;0.95</b>, the highest of the set. The model is the reason we stopped trying to
     formulate TAP2 and designed our own peptide instead.</p>
   </div>
 
@@ -284,9 +284,12 @@
     Module&#160;C, including the 0.6&#160;h TAP1 &#8212; the gate did no work at all. At the
     2.5&#160;mm thickness now built, t<sub>1/2,rel</sub> is <b>59&#160;minutes</b>, so the gate asks
     for a serum half-life of roughly an hour and <b>TAP1, TAP2 and MD2-I fail it</b>.</p>
-    <p>The survivors are the same either way &#8212; V14 and MD2-II &#8212; so no selection decision
-    ever depended on this, and structural burden remains the module that separated the candidates.
-    What changed is that stability is now a live criterion rather than a vacuous one. It still also
+    <p>That changes the screen's output. At 0.5&#160;mm the survivors were TAP1, MD2-II and V14; at
+    2.5&#160;mm they are MD2-II and V14. <b>TAP1 is the candidate that moved</b> &#8212; it carries
+    no Cys and no Trp, so it clears the structural gate outright, and it now drops out on stability
+    alone. No selection decision is affected, because V14 was chosen on its measured binding and its
+    6.1&#160;h half-life is the longest of the set either way. But stability is now a live criterion
+    rather than a vacuous one, and TAP1 is what demonstrates it. It still also
     matters <em>after</em> release, as the tissue-side k<sub>prot</sub> in Model&#160;2, which is why
     measuring it is the top wet-lab ask on this page.</p>
   </div>
@@ -305,17 +308,17 @@
       <th>s<sub>B</sub></th><th>s<sub>C</sub></th><th>Gates</th></tr></thead>
     <tbody>
       <tr><td>TAP1</td><td>+4.0</td><td>11.5</td><td>45.0</td><td>0</td><td>0</td><td>0.6</td>
-        <td>1.00</td><td>0.95</td><td>B pass &#183; C pass</td></tr>
+        <td>1.00</td><td>0.38</td><td>B pass &#183; <b>C FAIL</b></td></tr>
       <tr><td><b>TAP2</b></td><td>+0.9</td><td>8.2</td><td>61.1</td><td>3</td><td>2</td><td>0.9</td>
-        <td>0.07</td><td>0.97</td><td><b>B FAIL</b> &#183; C pass</td></tr>
+        <td>0.07</td><td>0.48</td><td><b>B FAIL</b> &#183; <b>C FAIL</b></td></tr>
       <tr><td>TAP3</td><td>+0.9</td><td>8.1</td><td>44.4</td><td>3</td><td>2</td><td>1.3</td>
-        <td>0.07</td><td>0.98</td><td><b>B FAIL</b> &#183; C pass</td></tr>
+        <td>0.07</td><td>0.57</td><td><b>B FAIL</b> &#183; C pass</td></tr>
       <tr><td>MD2-I</td><td>&#8722;1.1</td><td>4.3</td><td>29.4</td><td>0</td><td>2</td><td>0.7</td>
-        <td>0.33</td><td>0.96</td><td><b>B FAIL</b> &#183; C pass</td></tr>
+        <td>0.33</td><td>0.42</td><td><b>B FAIL</b> &#183; <b>C FAIL</b></td></tr>
       <tr><td>MD2-II</td><td>&#8722;1.1</td><td>4.3</td><td>35.3</td><td>0</td><td>1</td><td>1.0</td>
-        <td>0.50</td><td>0.97</td><td>B pass &#183; C pass</td></tr>
+        <td>0.50</td><td>0.51</td><td>B pass &#183; C pass</td></tr>
       <tr><td><b>V14 (&#945;TI-14)</b></td><td>&#8722;2.0</td><td>3.1</td><td>69.2</td><td>0</td>
-        <td>0</td><td><b>6.1</b></td><td><b>1.00</b></td><td><b>0.99</b></td>
+        <td>0</td><td><b>6.1</b></td><td><b>1.00</b></td><td><b>0.86</b></td>
         <td><b>B pass &#183; C pass</b></td></tr>
     </tbody>
   </table></div>
@@ -334,20 +337,22 @@
         <td><b>Fail</b> &#8212; 0.9&#160;h vs 59&#160;min</td>
         <td>Pass &#8212; 6.1&#160;h vs 59&#160;min</td></tr>
       <tr><td colspan="2" style="text-align:right"><b>Composite S</b></td>
-        <td>&#8776;&#160;<b>0.41</b></td>
-        <td>&#8776;&#160;<b>1.00</b></td></tr>
+        <td>&#8776;&#160;<b>0.33</b></td>
+        <td>&#8776;&#160;<b>0.95</b></td></tr>
       <tr><td colspan="2" style="text-align:right"><b>Verdict</b></td>
-        <td><b>Unsuitable</b> &#8212; Module&#160;B gate</td>
+        <td><b>Unsuitable</b> &#8212; Module&#160;B gate (and now C)</td>
         <td><b>Suitable</b></td></tr>
     </tbody>
   </table></div>
 
   <p class="col caveat" style="display:block">Read the composite with care: it is close to
-  uninformative for this device. s<sub>A</sub> is capped at 1 by construction, and because the patch
-  empties in minutes s<sub>C</sub> sits between 0.95 and 0.99 for every candidate in the table. So S
-  is carried almost entirely by s<sub>B</sub>, and V14's S&#160;&#8776;&#160;1.00 restates that it
-  has no Cys and no Trp rather than adding anything. <b>The gates, not the composite, are what
-  decide a verdict here</b> &#8212; TAP2's S of 0.41 is not what disqualifies it; failing
+  uninformative for this device. s<sub>A</sub> is capped at 1 by construction, and s<sub>B</sub>
+  still spans the widest range (0.07&#8211;1.00), so S is carried largely by structural burden.
+  s<sub>C</sub> at least varies now (0.38&#8211;0.86; it sat between 0.95 and 0.99 when the gel was
+  0.5&#160;mm and emptied in minutes), so the composite is less degenerate than it was &#8212; but
+  V14's S&#160;&#8776;&#160;0.95 still mostly restates that it
+  has no Cys and no Trp. <b>The gates, not the composite, are what
+  decide a verdict here</b> &#8212; TAP2's S of 0.33 is not what disqualifies it; failing
   n<sub>Cys</sub>&#160;&#8804;&#160;1 is.</p>
 
   <div class="col">
@@ -382,7 +387,7 @@
 
   <figure class="wide">
     <div class="figbox"><img src="assets/G01_peptide_screening.svg" alt="Table of six candidate peptides against the cysteine gate, tryptophan count, structural and stability sub-scores and the sequence verdict; V14 is highlighted and passes." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;1.</span> Sequence-level screen. TAP2, TAP3 and MD2-I fail the cysteine gate; of the candidates that pass, V14 (&#945;TI-14) has the longest predicted serum half-life (6.1&#160;h). With the 2.5&#160;mm gel the release half-time is 59&#160;minutes, so the stability gate now bites as well &#8212; it demands a serum half-life of about an hour, which TAP1, TAP2 and MD2-I fail. The survivors are unchanged (V14 and MD2-II); with the earlier 0.5&#160;mm gel the stability gate was vacuous and only the structural gate discriminated. <span class="caveat">Module A binding evidence is listed, not scored: the in-house flow result for V14 at 25&#160;&#181;M is a 20&#160;% drop with p&#160;=&#160;0.098 (n&#160;=&#160;3).</span></figcaption>
+    <figcaption><span class="fid">Figure&#160;1.</span> Sequence-level screen. TAP2, TAP3 and MD2-I fail the cysteine gate; of the candidates that pass, V14 (&#945;TI-14) has the longest predicted serum half-life (6.1&#160;h). With the 2.5&#160;mm gel the release half-time is 59&#160;minutes, so the stability gate bites as well &#8212; it demands a serum half-life of about an hour, which TAP1, TAP2 and MD2-I fail. That leaves MD2-II and V14; with the earlier 0.5&#160;mm gel the stability gate was vacuous, only the structural gate discriminated, and TAP1 survived too. <span class="caveat">Module A binding evidence is listed, not scored: the in-house flow result for V14 at 25&#160;&#181;M is a 20&#160;% drop with p&#160;=&#160;0.098 (n&#160;=&#160;3).</span></figcaption>
   </figure>
 
 <h3 class="col">Assumptions behind the screen</h3>
@@ -410,8 +415,9 @@
       form. The specific constants and thresholds are design choices and can be revised; only the
       n<sub>Cys</sub>&#160;&#8804;&#160;1 gate rests on a structural argument rather than a chosen
       constant.</li>
-      <li>Module&#160;C does not discriminate for a patch that empties in minutes. For a
-      slow-release device it would, which is why the module is kept rather than deleted.</li>
+      <li>Module&#160;C did not discriminate when the patch emptied in minutes, which is why the
+      module was kept rather than deleted. At the 2.5&#160;mm thickness it discriminates again, and
+      TAP1 fails on stability alone.</li>
     </ul>
   </div></details>
 </section>
@@ -442,8 +448,9 @@
   </div>
   <p>Release half-times are 59&#160;minutes for V14 and 154&#160;minutes for FGF2-G3. The gap
   between the release curves and the closure window is the central result of this section: the two
-  timescales differ by roughly <b>300&#8211;2000&#215;</b> for the as-built gel. Three consequences
-  follow.</p>
+  timescales differ by roughly <b>10&#8211;230&#215;</b> for the as-built gel &#8212; narrower than
+  the 300&#8211;2000&#215; of the 0.5&#160;mm build, but still one to two orders of magnitude. Three
+  consequences follow.</p>
 
   <p>First, the gel diffusivity cannot be identified from closure data and has to be fitted from the
   release assay. Second, the model predicts only a <em>small</em> closure benefit from an unmodified
@@ -460,8 +467,9 @@
   &#8706;C/&#8706;x diverges as t<sup>&#8722;1/2</sup>, Crank&#8211;Nicolson oscillates there and the
   solver uses Rannacher startup. This has a direct experimental consequence: integrating the release
   flux on a uniform time grid would over-count early release several-fold, so the release assay must
-  be sampled on a <b>log time grid starting around 10&#160;s</b>. About a third of the V14 is out in
-  the first minute; minute-scale sampling would miss most of the kinetics.</p>
+  be sampled on a <b>log time grid</b>. The 2.5&#160;mm gel makes this less punishing than it was at
+  0.5&#160;mm &#8212; the V14 release half-time is 59&#160;minutes rather than 2.3 &#8212; but the
+  assay must now run for most of a day to reach completion.</p>
   </div>
 
   <details class="math"><summary>The transport equations, and why porosity cancels</summary>
@@ -839,7 +847,7 @@ __I3__
   full joint prior. We expected k<sub>prot,V</sub> to dominate delivered dose and
   D<sub>n</sub> to dominate closure time. The computed indices <b>confirm the first and refute the
   second</b>. Delivered dose is dominated by K<sub>D,P</sub> (S<sub>T</sub>&#160;=&#160;0.63), the
-  loading C<sub>V,0</sub> (0.54) and k<sub>prot,V</sub> (0.41); closure time by r<sub>0</sub>
+  loading C<sub>V,0</sub> (0.50) and k<sub>prot,V</sub> (0.42); closure time by r<sub>0</sub>
   (0.63), with D<sub>n</sub> the <em>least</em> influential of the ten factors
   (S<sub>T</sub>&#160;=&#160;0.014), because t<sub>c</sub>&#160;&#8733;&#160;D<sub>n</sub><sup>&#8722;1/2</sup>
   is a weak dependence and physiology bounds D<sub>n</sub> to about 1.5 decades.</p>
@@ -861,7 +869,10 @@ __I3__
   not the same as what we can <em>change</em>: gel thickness L<sub>gel</sub> ranks fourth for
   delivered dose but is a design variable we control directly, while the gel material &#8212;
   porosity, mesh size &#8212; contributes essentially nothing. The practical lever and the
-  statistical leader are not the same parameter.</p>
+  statistical leader are not the same parameter. L<sub>gel</sub> illustrates the first caveat
+  too: its share more than doubled (S<sub>T</sub> 0.13&#160;&#8594;&#160;0.29) when we widened its
+  prior from 0.3&#8211;1&#160;mm to 0.5&#8211;4&#160;mm to cover the 2.5&#160;mm build. That is a
+  change of prior, not of physics.</p>
 
   <p>Propagating the full joint prior through to closure gives a result we think is the most
   important single number in the uncertainty analysis: under the current priors, <b>18.7&#160;% of
@@ -1338,9 +1349,10 @@ __I1__
     and the gate stopped discriminating at all: every candidate passed it, so the stated reason for
     rejecting TAP2 was half wrong. On the 2.5&#160;mm patch as now built t<sub>1/2,rel</sub> is
     59&#160;minutes, and the gate discriminates again &#8212; it demands a serum half-life of about an
-    hour, which TAP1, TAP2 and MD2-I fail. The surviving candidates have been V14 and MD2-II
-    throughout, so no selection decision ever turned on this; what changed is whether the gate was
-    doing any work.</li>
+    hour, which TAP1, TAP2 and MD2-I fail. That moves the survivor set from TAP1, MD2-II and V14 to
+    MD2-II and V14: TAP1 passes the structural gate outright and now fails on stability alone. No
+    selection decision ever turned on this &#8212; V14 has the longest half-life of the set under
+    either release time &#8212; but the gate has gone from vacuous to load-bearing.</li>
 
     <li><b>Our own sensitivity code had a bug, and it had reversed one of our conclusions.</b>
     We reported that the expected dominance of k<sub>prot,V</sub> over delivered dose had been
