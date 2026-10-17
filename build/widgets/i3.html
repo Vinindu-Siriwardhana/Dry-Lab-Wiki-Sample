@@ -4,7 +4,7 @@
     <h3 id="i3-title">Inflammation explorer</h3>
     <p>Set the V14 concentration reaching the macrophages, the endotoxin load and the V14 affinity, and
     follow the chain from receptor competition (Model&#160;3) through nuclear p65 (Model&#160;4) to the
-    nitrite a Griess assay would read after 24&#160;h (Model&#160;5). Every value is recomputed in your
+    illustrative 24&#160;h accumulated-nitrite model output (Model&#160;5). This is a calculation, not an assay protocol. Every value is recomputed in your
     browser from the same equations as Figures&#160;5, 6 and 9.</p>
   </header>
   <div class="w-body">
@@ -15,21 +15,18 @@
         <input type="range" id="i3-l" min="-2" max="1" step="0.01" value="0"></label>
       <label class="ctl"><span class="ctl-top"><span>V14 affinity K<sub>D,P</sub></span><output id="i3-kd-v"></output></span>
         <input type="range" id="i3-kd" min="1.0035" max="2" step="0.005" value="1.0035"></label>
-      <button type="button" class="w-btn" id="i3-reset">Reset to the 145&#160;&#181;M target</button>
+      <button type="button" class="w-btn" id="i3-reset">Reset to the 80.9&#160;&#181;M target</button>
       <div class="tiles">
         <div class="tile"><div class="tv" id="i3-lps"></div><div class="tk">of MD2 is LPS-bound (signalling-competent)</div></div>
         <div class="tile"><div class="tv" id="i3-supp"></div><div class="tk">active receptor, relative to LPS alone</div></div>
         <div class="tile"><div class="tv" id="i3-p65"></div><div class="tk">nuclear p65, relative to LPS alone</div></div>
-        <div class="tile tile-key"><div class="tv" id="i3-no2"></div><div class="tk" id="i3-no2-k">predicted nitrite after 24&#160;h</div></div>
+        <div class="tile tile-key"><div class="tv" id="i3-no2"></div><div class="tk" id="i3-no2-k">modelled nitrite after 24&#160;h (unvalidated)</div></div>
       </div>
     </div>
     <div class="w-chart"><canvas id="i3-c" aria-label="Active receptor, nuclear p65 and nitrite relative to LPS alone, against V14 concentration" role="img"></canvas></div>
   </div>
-  <p class="w-foot">a&#160;=&#160;[LPS]/K<sub>D,L</sub> with K<sub>D,L</sub>&#160;=&#160;65&#160;nM. K<sub>D,P</sub>&#160;&#8805;&#160;10.08&#160;&#181;M
-  is the lower bound from the 14&#160;October flow panel, so the slider starts there and only moves to weaker
-  binding. The p65 step uses the register&#8217;s Tier-4 priors (&#947;&#160;=&#160;0.1, h&#160;=&#160;2); nitrite is
-  the integrated iNOS output for 2&#215;10<sup>5</sup> cells in 200&#160;&#181;L, scaled from the LPS-only p65
-  level of 0.85 as in Figure&#160;9. These are model predictions until the Griess dose&#8211;response
-  calibrates IC<sub>50</sub><sup>NO</sup>. Vertical lines: 25&#160;&#181;M tested, 145&#160;&#181;M target,
+  <p class="w-foot">a&#160;=&#160;[LPS]/K<sub>D,L</sub> with K<sub>D,L</sub>&#160;=&#160;65&#160;nM. K<sub>D,P</sub>&#160;=&#160;5.62&#160;&#181;M
+  is an exploratory model-based estimate for this model. It assumes the 17&#160;October gate-frequency ratio equals relative LPS occupancy; this estimate depends on that assumption and is not an experimentally determined affinity. The p65 step uses the register&#8217;s Tier-4 priors (&#947;&#160;=&#160;0.1, h&#160;=&#160;2); nitrite is
+  an illustrative integrated iNOS output over a selected 24&#160;h window, using an assumed 10<sup>6</sup> cells and LPS-only p65 level 0.85. No 24-hour stimulation or Griess assay is planned; this output is unvalidated. Vertical lines: 25&#160;&#181;M tested, 80.9&#160;&#181;M conditional model target,
   2213&#160;&#181;M loaded (3&#160;mg/mL, the largest loading demonstrated).</p>
 </section>

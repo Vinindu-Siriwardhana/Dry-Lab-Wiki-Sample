@@ -6,8 +6,8 @@ changing a number here changes every figure that depends on it.  Each entry
 carries its provenance TIER, following the team constants register
 (constants_register.xlsx, updated 2026-10-16; gel changed to 1% Ca-alginate
 on 2026-10-09, and to the 2.5 mm / 3 mg/mL V14 / 200 ng/mL FGF2-G3 design with
-f_rel = 0.5 / 0.15 on 2026-10-16; f_rel,FGF = 0.31 from the BCA fit on
-2026-10-16):
+f_rel = 0.5 / 0.15 on 2026-10-16; f_rel,FGF = 0.45 from the updated BCA fit on
+2026-10-17):
 
     T1  measured in house
     T2  mechanistic correlation
@@ -91,15 +91,16 @@ K_CL_FGF     = 0.000115 # 1/s  register value only: NOT used anywhere (Dirichlet
 K_CL_V14     = 0.0035   # 1/s  register value only: NOT used anywhere; unverified T4
 
 # --- dosing (Model 7) -------------------------------------------------------
-# Target from the 14 Oct 2026 flow panel (replaces the earlier 25 uM T4 guess):
-#   gate-frequency detection limit 27.8 % (t-test, n = 3)
-#     -> occupancy drop 13.1 % via v3model.occupancy_from_gate at SIGMA_FLOW_LOG
-#     -> K_D,P >= 10.08 uM (one-sided LOWER BOUND)
-#     -> C_target = K_D,P (a - 1) = 145 uM: the dose at which 50 % of the MD2 pool
-#        is LPS-bound (psi_50 = 1 + a, which halves theta_LPS, is 165 uM).
+# Provisional direct gate-frequency proxy from the 17 Oct 2026 panel:
+#   FITC-LPS 16.307%, V14 12.827% (25 uM V14; n=4/group; p=0.0186)
+#   relative gate-frequency decrease = 21.34%; treating this ratio directly as
+#   the normalized LPS-occupancy ratio gives K_D,P ~= 5.62 uM.
+# This is an uncalibrated single-dose proxy (no gate-to-occupancy conversion);
+# it is not a validated affinity. C_target = K_D,P (a - 1) ~= 80.9 uM.
+# The distinct half-inhibition dose psi_50 = K_D,P (1 + a) is about 92 uM.
 SIGMA_FLOW_LOG = 0.7       # --  log-SD of per-cell FITC intensity       T4 -- needs FCS files
-KD_P_LOWER   = 10.08 * UM  # mol/cm3  lower bound on V14 K_D,P            D
-C_TARGET_V14 = 145 * UM    # mol/cm3  efficacious tissue concentration   D
+KD_P_PROXY    = 5.624 * UM # mol/cm3  direct positive-gate proxy           T4
+C_TARGET_V14 = 80.9 * UM   # mol/cm3  proxy-derived tissue concentration   T4
 # Patch design, 2026-10-16.  Loadings are TOTAL per gel volume; only the
 # released (mobile) fraction f_rel diffuses, the rest stays in the gel for the
 # life of the patch, so the free initial concentration is f_rel C_load / R_V
@@ -111,11 +112,13 @@ C_SOLUBILITY = C_LOAD_V14  # mol/cm3  LOWER BOUND: 3 mg/mL dissolves (was a
                            #          1 mg/mL = 738 uM T4 guess). Saturation
                            #          solubility still unmeasured.           T1 (bound)
 F_REL_V14    = 0.5         # --  released fraction of V14 (= f_mob)         T4
-F_REL_FGF    = 0.31        # --  released fraction of FGF2-G3 (= f_mob)     T1
-                           #     least-squares fit of f_rel x Crank to the 30 Sep
-                           #     BCA 30-min read (G03): 0.31 +/- 0.07 (SE, n = 12).
-                           #     Was a 0.15 T4 guess. Assay is near its noise floor.
-F_REL_FGF_SE = 0.07        # --  standard error of F_REL_FGF                T1
+F_REL_FGF    = 0.45        # --  released fraction of FGF2-G3 (= f_mob)     T1 (provisional fit)
+                           #     BCA Updated.xlsx: least-squares fit of f_rel x Crank
+                           #     to the 30-min BCA read at 60/90/120 min sampling;
+                           #     fit 0.447 +/- 0.055 residual SE (n = 9), rounded.
+                           #     Assumes positive control = full dose and L_GEL = 2.5 mm;
+                           #     assay remains near noise floor, so fit is provisional.
+F_REL_FGF_SE = 0.055       # --  residual-based standard error of fit          T1
 F_REL        = F_REL_V14   # --  alias kept for the shipped code/figures scripts
 REAPPLY_D    = 1.0         # d   dressing-change interval                 T4
 
@@ -211,5 +214,5 @@ PROVENANCE = {
     "M4 signalling":   dict(T1=0, T2=0, T3=1, T4=4, unplanned=4),
     "M5 NO readout":   dict(T1=0, T2=0, T3=9, T4=5, unplanned=5),
     "M6 closure":      dict(T1=0, T2=0, T3=0, T4=15, unplanned=15),
-    "M7 design":       dict(T1=1, T2=0, T3=0, T4=2, unplanned=2),   # f_rel,FGF T4 -> T1 (2026-10-16)
+    "M7 design":       dict(T1=1, T2=0, T3=0, T4=2, unplanned=2),   # f_rel,FGF updated BCA fit (2026-10-17)
 }

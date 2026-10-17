@@ -42,7 +42,7 @@
     el("i3-supp").textContent = (r.supp * 100).toFixed(r.supp < 0.1 ? 1 : 0) + " %";
     el("i3-p65").textContent = (r.p65 * 100).toFixed(r.p65 < 0.1 ? 1 : 0) + " %";
     el("i3-no2").textContent = r.no2.toFixed(r.no2 < 10 ? 1 : 0) + " µM";
-    el("i3-no2-k").textContent = "predicted nitrite after 24 h (LPS alone: " + r0.no2.toFixed(0) + " µM)";
+    el("i3-no2-k").textContent = "modelled nitrite after 24 h (LPS alone: " + r0.no2.toFixed(0) + " µM)";
 
     var s = Plot.setup(cv, 0.62), xs = [], i, lo = 0.1, hi = 5000;
     var ax = Plot.Axes(s, { l: 48, t: 14, r: 16, b: 40 }, [lo, hi], [0, 1.02], {
@@ -65,7 +65,7 @@
     var f = "600 11px Inter, system-ui, sans-serif";
     ax.text("active receptor", ax.x0 + 8, ax.y0 - 42, C.v14, "left", f);
     ax.text("nuclear p65 (dashed)", ax.x0 + 8, ax.y0 - 26, C.bad, "left", f);
-    ax.text("24 h nitrite", ax.x0 + 8, ax.y0 - 10, C.thresh, "left", f);
+    ax.text("24 h modelled nitrite", ax.x0 + 8, ax.y0 - 10, C.thresh, "left", f);
   }
 
   ["i3-cv", "i3-l", "i3-kd"].forEach(function (id) { Plot.slider(id, draw); });

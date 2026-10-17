@@ -95,7 +95,7 @@ SIM_MAP = {                     # sim.js key : value expected from params.py
     "D0_V14": P.D0_V14, "A_V14": P.A_V14_NM, "A_FIBRE": P.A_FIBRE_NM, "XI": P.XI_NM,
     "EPS_GEL": P.EPS_GEL, "EPS_TIS": P.EPS_TIS, "D_TIS": P.D_TIS_V14, "L_GEL": P.L_GEL,
     "L_TIS": P.L_TIS, "K_P": P.K_P, "T_HALF_V14": P.T_HALF_V14, "C_SOL_UM": P.C_SOLUBILITY / UM,
-    "DELTA": P.DELTA, "KD_P_UM": P.KD_P_LOWER / UM, "TARGET_UM": P.C_TARGET_V14 / UM,
+    "DELTA": P.DELTA, "KD_P_UM": P.KD_P_PROXY / UM, "TARGET_UM": P.C_TARGET_V14 / UM,
     "D_N": P.D_N, "R0": P.R0, "D0": P.D0_DEATH, "DD": P.DELTA_D, "E_MAX": P.E_MAX,
     "EC50": P.EC50_F, "BETA": P.BETA_R, "K_IR": P.K_I_R, "K_ID": P.K_I_D, "S_I": P.S_I,
     "KE0": P.KE0, "W": P.W_SMOOTH, "KD_L_UM": P.KD_L / UM, "L_UM": P.L_LPS / UM,

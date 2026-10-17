@@ -11,10 +11,10 @@ var Sim = (function () {
     T_HALF_V14: 6.1 * HOUR, C_SOL_UM: 2213.0585206441474, DELTA: 0.05,
     // patch design 2026-10-16: loadings are TOTAL, only F_REL of each is mobile
     C_LOAD_V14_UM: 2213.0585206441474, F_REL_V14: 0.5,
-    C_LOAD_FGF_NGML: 200, F_REL_FGF: 0.31,
-    // flow-panel results: MUST equal params.KD_P_LOWER and params.C_TARGET_V14
+    C_LOAD_FGF_NGML: 200, F_REL_FGF: 0.45,
+    // flow-cytometry calculation: MUST equal params.KD_P_PROXY and params.C_TARGET_V14
     // (in uM). build/check_params_sync.py fails the build if they drift.
-    KD_P_UM: 10.08, TARGET_UM: 145, PANEL_DOSE_UM: 25,
+    KD_P_UM: 5.624, TARGET_UM: 80.9, PANEL_DOSE_UM: 25,
     // closure (Model 6)
     D_N: 1e-9, R0: 0.8 / DAY, D0: 0.24 / DAY, DD: 0.3 / DAY, E_MAX: 2, EC50: 0.5,
     BETA: 0.5, K_IR: 0.3, K_ID: 0.3, S_I: 2, KE0: 1 / (18 * HOUR), W: 75e-4,
@@ -137,7 +137,7 @@ var Sim = (function () {
 
      This is why the longest workable change interval is cov/s* and why it does
      not depend on wound radius -- the condition is pointwise in the wound bed.
-     s* ~= 0.330, so one patch covering ~8.7 h gives ~26.4 h. */
+     s* ~= 0.330, so one patch covering ~11.8 h gives ~35.8 h (~36 h). */
   function dutyThreshold() {
     var k = 1 - RATES.thr;
     return (k * RATES.rpChr - RATES.dChr) /

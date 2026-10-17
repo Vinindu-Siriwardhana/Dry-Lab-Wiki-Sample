@@ -39,7 +39,7 @@ first-order decay, mass budget).
 | `verify.py` | the regression suite |
 | `figures/common.py` | shared setup: puts the model modules on the path, applies the house style, and defines `save()` |
 | `figures/GNN_*.py` | one script per figure on the wiki, named for that figure |
-| `figures/WL_*.py` | the two wet-lab figures (flow-panel statistics, and the K_D,P bound the 145 µM target comes from) |
+| `figures/WL_*.py` | the wet-lab figures (flow-panel statistics and the historical 14 Oct detection-limit analysis; the current model uses the 17 Oct direct-gate K_D,P proxy and 80.9 µM target) |
 | `Wet Lab Data/` | the raw flow-cytometry CSVs and the 30 Sep BCA workbook, so the `WL_*` and `G03` scripts run as shipped |
 | `data/` | template for wet-lab CSVs not yet collected |
 | `constants_register.xlsx` | the team register `params.py` follows |
