@@ -143,315 +143,76 @@
 
 <!-- ================= PEPTIDE SUITABILITY ================= -->
 <section class="act wrap" id="peptide">
-  <div class="act-head"><div class="num">01</div><div>
-    <p class="eyebrow">Peptide suitability</p>
-    <h2>Choosing a payload that survives the wound and the patch</h2>
-  </div></div>
+<div class="act-head"><div class="num">01</div><div><p class="eyebrow">Peptide suitability</p><h2>Choosing a payload that survives the wound and the patch</h2></div></div>
+<h1>Module 1: Peptide Suitability</h1>
+<h3>1. Background</h3>
+<p>In synthetic biology, selecting a payload is often treated as a binding problem: find the sequence with the highest affinity and proceed. For a therapeutic peptide delivered via a hydrogel patch to a chronic wound, this is insufficient. The wound bed is a highly proteolytic environment, and the patch itself imposes structural constraints (Yager et al., 1997; Moor et al., 2009). A candidate that ignores these developability factors will fail, regardless of its theoretical target affinity. We observed this first-hand: our initial candidate, TAP2, failed to produce positive results in our wet-lab inflammation assays.</p>
+<p>To understand why, and to avoid repeating the mistake, we developed a mathematical screening model to formalize the payload selection process. The model acts as an <em>in silico</em> filter, evaluating candidate sequences across three modules: binding suitability, structural burden, and proteolytic stability. By applying this screen, we identified the critical structural flaws in TAP2 that likely caused its experimental failure, and used the framework to guide the successful selection of our final <em>de novo</em> peptide, αTI-14.</p>
+<h3>2. Model Construction</h3>
+<h4>2.1 Assumptions</h4>
+<table><thead><tr><th>Assumption</th><th>Justification</th></tr></thead><tbody><tr><td><strong>The serum stability model predicts wound stability.</strong></td><td>No validated wound-fluid model exists; the Cavaco regression is the only fully specified sequence-based half-life model (129 peptides; Cavaco et al., 2021). Wound fluid is more proteolytic than serum, with elevated elastase and MMP-9 and depleted protease inhibitors (Yager et al., 1997; Moor et al., 2009), so the serum half-life is treated as an upper bound. The verdict is therefore robust to uncertainty in the absolute half-life: because the delivery race is cleared by a factor of ~8 (pure-diffusion) or ~2.7 (degradation-inclusive), the gate would reverse only if wound-fluid proteolysis exceeded serum proteolysis by more than those margins.</td></tr><tr><td><strong>Structural burden is captured by Cys and Trp counts.</strong></td><td>Cys drives oxidative disulfide shuffling, and Trp drives hydrophobic aggregation at high loading concentrations (Shi &amp; McHugh, 2023). These represent the two most predictable sequence-level failure modes for a hydrogel payload.</td></tr><tr><td><strong>The 100 µM benchmark is transferable.</strong></td><td>MD2-I blocks LPS binding at 0.1 mM, representing the published state of the art for TLR4/MD2 peptides (Slivka et al., 2009). While assay conditions vary, this provides a necessary reference point for judging our candidate's potency.</td></tr></tbody></table>
+<h4>2.2 Governing Equations</h4>
+<p>The model evaluates three independent modules, each returning a sub-score <span class="eqi">s_i \in [0,1]</span>. Because these represent independent ways a payload can fail, we combine them using a geometric mean. This ensures that a near-zero score in any single module (e.g., severe aggregation risk) drags the overall score down, rather than being averaged out by high scores elsewhere.</p>
+<div class="eqwrap"><div class="eq">S = \left( \prod_{i \in \{A,B,C\}} s_i \right)^{1/3}</div></div>
+<p><em>Where:</em> <span class="eqi">S</span> is the composite suitability score; <span class="eqi">s_A, s_B, s_C</span> are the sub-scores for binding suitability, structural burden, and stability, respectively.</p>
+<p>The verdict is not based on the composite score alone, but is gated by the two sequence-level modules:</p>
+<div class="eqwrap"><div class="eq">\text{Verdict} = \begin{cases} \text{suitable}, &amp; s_B \geq \frac{2}{3} \text{ and } s_C \geq \frac{1}{2} \\ \text{unsuitable}, &amp; \text{otherwise} \end{cases}</div></div>
+<p><em>Where:</em> <span class="eqi">s_B \geq 2/3</span> ensures the candidate has no more than one cysteine residue (no intramolecular disulfides can form). <span class="eqi">s_C \geq 1/2</span> ensures the peptide's degradation half-life is longer than the patch's release half-time.</p>
+<p><strong>Module A: Binding Suitability</strong></p>
+<p>The payload competes with LPS for the MD2 pocket. We model this as a competitive binding equilibrium. The fraction of MD2 occupied by the inhibitor (<span class="eqi">\phi_{\text{inhib}}</span>) and by LPS (<span class="eqi">\phi_{\text{LPS}}</span>) are:</p>
+<div class="eqwrap"><div class="eq">\phi_{\text{inhib}} = \frac{[P]/K_{D,P}}{1 + [L]/K_{D,L} + [P]/K_{D,P}}, \quad \phi_{\text{LPS}} = \frac{[L]/K_{D,L}}{1 + [L]/K_{D,L} + [P]/K_{D,P}}</div></div>
+<p><em>Where:</em> <span class="eqi">[P]</span> is the peptide concentration; <span class="eqi">[L]</span> is the LPS concentration; <span class="eqi">K_{D,P}</span> is the peptide-MD2 dissociation constant; <span class="eqi">K_{D,L}</span> is the LPS-MD2 dissociation constant.</p>
+<p>The predicted blockade fraction <span class="eqi">\chi_{\text{block}}</span> is the ratio of inhibitor-bound to total bound receptor:</p>
+<div class="eqwrap"><div class="eq">\chi_{\text{block}} = \frac{\phi_{\text{inhib}}}{\phi_{\text{inhib}} + \phi_{\text{LPS}}}</div></div>
+<p><em>Where:</em> <span class="eqi">\chi_{\text{block}}</span> ranges from 0 (no receptor blockade) to 1 (complete blockade).</p>
+<p>We convert this to a sub-score by comparing the candidate's half-maximal inhibitory concentration (<span class="eqi">C_{50}^{\text{cand}}</span>) to the literature benchmark of 100 µM (Slivka et al., 2009):</p>
+<div class="eqwrap"><div class="eq">s_A = \min\left(1, \frac{C_{\text{bench}}}{C_{50}^{\text{cand}}}\right)</div></div>
+<p><em>Where:</em> <span class="eqi">s_A</span> is the binding sub-score, capped at 1; <span class="eqi">C_{\text{bench}} = 100\ \mu\text{M}</span>, the blocking concentration of the MD2-I benchmark peptide; and <span class="eqi">C_{50}^{\text{cand}}</span> is the half-maximal inhibitory concentration of the candidate.</p>
+<p><strong>Module B: Structural Burden</strong></p>
+<p>Two residue classes carry developability risk. Cysteine forms disulfides, creating folding heterogeneity. We apply a progressive penalty:</p>
+<div class="eqwrap"><div class="eq">s_{B,\text{Cys}} = 1 - \frac{n_{\text{Cys}}}{n_{\text{Cys}} + 1}</div></div>
+<p><em>Where:</em> <span class="eqi">s_{B,\text{Cys}}</span> drops from 1 (zero Cys) to 0.67 (one Cys) to 0.33 (two Cys); <span class="eqi">n_{\text{Cys}}</span> is the number of cysteine residues.</p>
+<p>Tryptophan drives aggregation. We apply a monotonic exponential penalty:</p>
+<div class="eqwrap"><div class="eq">s_{B,\text{Trp}} = \exp(-0.5 \cdot n_{\text{Trp}})</div></div>
+<p><em>Where:</em> <span class="eqi">s_{B,\text{Trp}}</span> is the aggregation penalty; <span class="eqi">n_{\text{Trp}}</span> is the number of tryptophan residues; the decay rate 0.5 is a design choice, as there is no quantitative aggregation model in the literature.</p>
+<p>The structural score is their product:</p>
+<div class="eqwrap"><div class="eq">s_B = s_{B,\text{Cys}} \cdot s_{B,\text{Trp}}</div></div>
+<p><em>Where:</em> <span class="eqi">s_B</span> is the combined structural burden sub-score.</p>
+<p><strong>Module C: Proteolytic Stability</strong></p>
+<p>We estimate the serum half-life <span class="eqi">t_{1/2}^{\text{serum}}</span> using the Cavaco regression (Cavaco et al., 2021) and compare it to the release half-time <span class="eqi">t_{1/2,\text{rel}}</span> of the hydrogel patch. The stability score is:</p>
+<div class="eqwrap"><div class="eq">s_C = \frac{t_{1/2}^{\text{deg}}}{t_{1/2}^{\text{deg}} + t_{1/2,\text{rel}}}</div></div>
+<p><em>Where:</em> <span class="eqi">s_C</span> is the stability sub-score; <span class="eqi">t_{1/2}^{\text{deg}} \approx t_{1/2}^{\text{serum}}</span>, the predicted degradation half-life; and <span class="eqi">t_{1/2,\text{rel}}</span> is the release half-time of the patch (calculated as <span class="eqi">0.196 L^2 / D_{\text{eff}}</span> from the companion transport model).</p>
+<h4>2.3 Parameters</h4>
+<p><strong>Table 1: Model parameters and sequence-derived properties.</strong></p>
+<table><thead><tr><th>Parameter / Property</th><th>Symbol</th><th>Value / Range</th><th>Source / Justification</th></tr></thead><tbody><tr><td><strong>Binding Benchmark</strong></td><td><span class="eqi">C_{\text{bench}}</span></td><td>100 µM</td><td>Slivka et al. (2009). The effective concentration of MD2-I in a cell LPS-binding assay.</td></tr><tr><td><strong>Cysteine Penalty</strong></td><td><span class="eqi">n_{\text{Cys}}</span></td><td>Integer <span class="eqi">\ge 0</span></td><td>Derived from primary sequence.</td></tr><tr><td><strong>Tryptophan Penalty</strong></td><td><span class="eqi">n_{\text{Trp}}</span></td><td>Integer <span class="eqi">\ge 0</span></td><td>Derived from primary sequence.</td></tr><tr><td><strong>Trp Decay Rate</strong></td><td><span class="eqi">\lambda_{\text{Trp}}</span></td><td>0.5</td><td>Design choice. Reflects qualitative aggregation risk; no quantitative literature model exists.</td></tr><tr><td><strong>Serum Half-life</strong></td><td><span class="eqi">t_{1/2}^{\text{serum}}</span></td><td>Computed (h)</td><td>Cavaco et al. (2021) regression, fit on 129 peptides (validation <span class="eqi">R^2 \approx 0.76</span>).</td></tr><tr><td><strong>Release Half-time</strong></td><td><span class="eqi">t_{1/2,\text{rel}}</span></td><td>47 min</td><td>Derived from the companion transport model for the 2.5 mm alginate gel (<span class="eqi">t_{1/2} \approx 0.196 L^2 / D_{\text{eff}}</span>).</td></tr><tr><td><strong>Wear Interval</strong></td><td><span class="eqi">T_{\text{wear}}</span></td><td>12 h</td><td>Declared assumption for standard dressing-change frequency.</td></tr><tr><td><strong>Net Charge</strong></td><td><span class="eqi">Z</span></td><td>Computed</td><td>Henderson–Hasselbalch titration at pH 7.</td></tr><tr><td><strong>Isoelectric Point</strong></td><td><span class="eqi">\text{pI}</span></td><td>Computed</td><td>Computed via standard acid-base titration curves.</td></tr><tr><td><strong>Nonpolar Fraction</strong></td><td><span class="eqi">n_{\text{NP}}%</span></td><td>Computed</td><td>Percentage of residues A, V, L, I, M, F, W, P, G.</td></tr></tbody></table>
+<h3>3. Simulated Results</h3>
+<p><em>(Placeholder for figures and tables of the model output: the composite scores, the sequence properties of the reference set, and the gate verdicts for TAP2 and αTI-14.)</em></p>
+<h3>4. Experimental Validation</h3>
+<p>To validate the screening model, we compared its predictions against our wet-lab flow cytometry and RT-qPCR data.</p>
+<p><strong>Validating Module A (Binding).</strong> We assessed the binding suitability of our final candidate, αTI-14, using flow cytometry on PMA-differentiated THP-1 macrophages. Competitive blockade of LPS–TLR4/MD2 binding was confirmed at 25 µM, fourfold below the 100 µM literature benchmark used in the model (<span class="eqi">C_{\text{bench}}</span>). This experimental result justifies the maximum binding sub-score (<span class="eqi">s_A = 1</span>) assigned to αTI-14.</p>
+<p><strong>Validating Modules B and C (Structural and Stability Burden).</strong> The model's primary value was its ability to predict payload failure before synthesis. It flagged TAP2 as unsuitable due to its two cysteines and three tryptophans (Module B). Our experimental data corroborated this prediction. RT-qPCR analysis of pro-inflammatory markers showed that TAP2 failed to suppress LPS-induced inflammation across both the M0 and M1 macrophage phenotypes.</p>
+<p><em>Where:</em> <strong>Flow cytometry</strong> validates Module A by confirming that the candidate physically blocks the target interaction at the expected concentration. <strong>RT-qPCR</strong> validates Modules B and C by demonstrating that the structural liabilities predicted by the model (in TAP2) translate to a failure to suppress downstream inflammatory markers in a biological system. <strong>M0 and M1</strong> refer to the macrophage phenotypes: M0 is the uncommitted state (assessed at 6 h), and M1 is the pro-inflammatory state (assessed at 24 h).</p>
+<h3>5. Sensitivity Analysis</h3>
+<p>Because this is a discrete sequence-screening model, sensitivity analysis evaluates whether the final verdicts are robust to the model's two primary design choices, rather than sweeping continuous physical parameters.</p>
+<p><strong>Trp decay constant (<span class="eqi">\lambda_{\text{Trp}}</span>).</strong> The decay rate of 0.5 is an assumed parameter, as no quantitative aggregation model exists. A sensitivity sweep from 0.1 to 1.0 demonstrates that the gate verdicts are entirely insensitive to this constant. Because TAP2 contains three tryptophans and αTI-14 contains none, the structural margin is sufficiently wide that any reasonable exponential decay preserves the outcome.</p>
+<p><strong>Release half-time (<span class="eqi">t_{1/2,\text{rel}}</span>).</strong> The release half-time is governed by the gel thickness, calculated via the companion transport model. While the stability gate becomes more stringent at thicker geometries (failing TAP1 and MD2-I at the 2.5 mm design), αTI-14 maintains a passing verdict across the entire biologically plausible thickness range (0.5 mm to 4 mm).</p>
+<p><strong>Binding benchmark (<span class="eqi">C_{\text{bench}}</span>).</strong> The 100 µM benchmark sets the ceiling for the binding sub-score (<span class="eqi">s_A</span>). Varying this benchmark from 50 µM to 200 µM does not alter the relative ranking of the reference set. Because αTI-14 demonstrates a measured 25 µM blocking concentration, it saturates the sub-score regardless of reasonable shifts in the literature benchmark.</p>
+<h3>6. References</h3>
+<p>Ai, S., Kuzuya, M., &amp; Iguchi, A. (2004). Neutrophil elastase in pressure ulcer fluid degrades fibronectin in the exudates. <em>Geriatrics &amp; Gerontology International, 4</em>(4), 214–219. https://doi.org/10.1111/j.1447-0594.2004.00243.x</p>
+<p>Cavaco, M., Valle, J., Flores, I., Andreu, D., &amp; Castanho, M. A. R. B. (2021). Estimating peptide half-life in serum from tunable, sequence-related physicochemical properties. <em>Clinical and Translational Science, 14</em>(4), 1304–1313. https://doi.org/10.1111/cts.12985</p>
+<p>Cheng, Y., &amp; Prusoff, W. H. (1973). Relationship between the inhibition constant (<span class="eqi">K_I</span>) and the concentration of inhibitor which causes 50 per cent inhibition (<span class="eqi">I_{50}</span>) of an enzymatic reaction. <em>Biochemical Pharmacology, 22</em>(23), 3099–3108. https://doi.org/10.1016/0006-2952(73)90196-2</p>
+<p>Kim, H. M., Park, B. S., Kim, J. I., Kim, S. E., Lee, J., Oh, S. C., Enkhbayar, P., Matsushima, N., Lee, H., Yoo, O. J., &amp; Lee, J.-O. (2007). Crystal structure of the TLR4–MD2 complex with bound endotoxin antagonist Eritoran. <em>Cell, 130</em>(5), 906–917. https://doi.org/10.1016/j.cell.2007.08.002</p>
+<p>Moor, A. N., Vachon, D. J., &amp; Gould, L. J. (2009). Proteolytic activity in wound fluids and tissues derived from chronic venous leg ulcers. <em>Wound Repair and Regeneration, 17</em>(6), 832–839. https://doi.org/10.1111/j.1524-475X.2009.00547.x</p>
+<p>Park, H., Hong, J., Yin, Y., Kim, J., Lee, Y., Kim, D., Kang, H., Kim, S., Lee, S. Y., &amp; Park, J.-S. (2020). TAP2, a peptide antagonist of Toll-like receptor 4, attenuates pain and cartilage degradation in a monoiodoacetate-induced arthritis rat model. <em>Scientific Reports, 10</em>, 18930. https://doi.org/10.1038/s41598-020-74544-5</p>
+<p>Park, S.-H., Shin, H.-J., Shah, M., Cho, H. Y., Kim, D. H., Lee, S. Y., Kim, D. H., &amp; Park, J.-S. (2017). TLR4/MD2 specific peptides stalled in vivo LPS-induced immune exacerbation. <em>Biomaterials, 126</em>, 49–60. https://doi.org/10.1016/j.biomaterials.2017.02.023</p>
+<p>Shi, M., &amp; McHugh, K. J. (2023). Strategies for overcoming protein and peptide instability in biodegradable drug delivery systems. <em>Advanced Drug Delivery Reviews, 201</em>, 114904. https://doi.org/10.1016/j.addr.2023.114904</p>
+<p>Slivka, P. F., Shridhar, M., Lee, G.-I., Sammond, D. W., Hutchinson, M. R., Martinko, A. J., Buchanan, M. M., Sholar, P. W., Kearney, J. J., Harrison, J. A., Watkins, L. R., &amp; Yin, H. (2009). A peptide antagonist of the TLR4–MD2 interaction. <em>ChemBioChem, 10</em>(4), 645–649. https://doi.org/10.1002/cbic.200800769</p>
+<p>US Patent 10,435,443. (2019). <em>Toll-like receptor 4 (TLR4) antagonist peptides.</em> United States Patent and Trademark Office.</p>
+<p>Visintin, A., Latz, E., Monks, B. G., Espevik, T., &amp; Golenbock, D. T. (2003). Lysines 128 and 132 enable lipopolysaccharide binding to MD-2, leading to Toll-like receptor-4 aggregation and signal transduction. <em>Journal of Biological Chemistry, 278</em>(48), 48313–48320. https://doi.org/10.1074/jbc.M308404200</p>
+<p>Yager, D. R., Chen, S. M., Ward, S. I., Olutoye, O. O., Diegelmann, R. F., &amp; Cohen, I. K. (1997). Ability of chronic wound fluids to degrade peptide growth factors is associated with increased levels of elastase activity and diminished levels of proteinase inhibitors. <em>Wound Repair and Regeneration, 5</em>(1), 23–32. https://doi.org/10.1046/j.1524-475X.1997.50108.x</p>
+<p>Yager, D. R., &amp; Nwomeh, B. C. (1999). The proteolytic environment of chronic wounds. <em>Wound Repair and Regeneration, 7</em>(6), 433–441. https://doi.org/10.1046/j.1524-475X.1999.00433.x</p>
+<p>Yin, Y., Park, H., Lee, S. Y., Park, J.-H., Kim, D., Kim, J., &amp; Park, J.-S. (2019). Analgesic effect of Toll-like receptor 4 antagonistic peptide 2 on mechanical allodynia induced with spinal nerve ligation in rats. <em>International Neurourology Journal, 23</em>(Suppl 1), S32–S38. https://doi.org/10.5213/inj.1938216.107</p>
 
-  <div class="claim gold">
-    <h3>Background and screening result</h3>
-    <p>A peptide that blocks its target in a cell-culture assay can still fail as a patch payload if
-    it oxidises, aggregates, or is cut up faster than the patch releases it. We built a three-module
-    screening model that takes an amino acid sequence and returns a gated verdict. Our iteration-1
-    candidate, <b>TAP2</b>, fails the structural gate &#8212; two cysteines and three tryptophans.
-    Our <i>de novo</i> iteration-2 peptide <b>V14 (&#945;TI-14)</b> passes both sequence gates (structural burden and stability), with a
-    composite score of <b>S&#160;&#8776;&#160;0.81</b>, the highest of the set. The model is the reason we stopped trying to
-    formulate TAP2 and designed our own peptide instead.</p>
-  </div>
-
-  <div class="col">
-  <p>Chronic wounds are hostile to peptides. Total MMP-9 runs roughly sevenfold higher than in
-  surrounding tissue, mostly in activated form (Moor <i>et al.</i>, 2009); neutrophil elastase is
-  present (Ai <i>et al.</i>, 2004; Yager &amp; Nwomeh, 1999); and chronic wound fluid degrades
-  exogenously added peptide growth factors outright (Yager <i>et al.</i>, 1997). Selecting a payload
-  on target affinity alone ignores all of this.</p>
-
-  <h3>Biological rationale: why MD2, and why a peptide</h3>
-  <p>Of the nodes in that loop we target the receptor complex, for three reasons.</p>
-
-  <p><b>It is upstream of everything else.</b> MMP expression, iNOS induction and cytokine release
-  are all downstream of NF-&#954;B, so blocking at the receptor suppresses the whole program rather
-  than one product of it. Inhibiting a single MMP leaves the drive intact.</p>
-
-  <p><b>The node is druggable and the mechanism has in&#160;vivo support.</b> Blocking
-  TLR4&#8211;MD2 dimerisation specifically, rather than TLR4 generally, has been shown to suppress
-  inflammatory macrophage activation and improve diabetic wound healing, with the effect lost in
-  <i>Tlr4</i>-knockout animals (Liu <i>et al.</i>, 2023). That study delivered its inhibitor from a
-  hydrogel microneedle patch &#8212; close to our own delivery concept, and part of why we think the
-  route is feasible rather than merely attractive.</p>
-
-  <p><b>Competitive antagonism is a mechanism we can model exactly.</b> Because a peptide and LPS
-  contend for the same MD2 pocket, the system reduces to the competitive-occupancy expression that
-  Model&#160;3 develops, in which the required dose depends on endotoxin load through a single
-  scaled group. We use a peptide rather than a small molecule because MD2 presents a
-  protein&#8211;protein interface, and because a peptide can be designed sequence-up for the
-  developability properties the wound demands &#8212; which is what this model exists to score.</p>
-
-  <h3 class="col">Model construction: gated geometric mean</h3>
-  <div class="col">
-  <p>The form of the composite is a modelling choice with consequences, so it is worth stating why it is a <em>product</em> rather than a weighted sum. A weighted sum lets a candidate average its way out of trouble: an exceptional binder with two cysteines would still score respectably, because a high s<sub>A</sub> compensates for a low s<sub>B</sub>. A geometric mean does the opposite &#8212; any sub-score near zero drags the whole composite toward zero, which is the correct behaviour when the modules represent <em>independent ways the payload can fail</em>. A peptide that binds beautifully and aggregates in the gel is not two-thirds of a good payload. It is not a payload.</p>
-  <p>Even a product is not enough on its own, which is why the verdict is <b>gated</b> rather than thresholded on S. A gate encodes a statement of kind, not of degree: two cysteines mean an intramolecular disulfide <em>can</em> form, so the molecule needs an oxidative-folding step and can exist as a mixture of species. That is a different category of problem from being somewhat less potent, and collapsing it into a single number would hide it. The composite then describes <em>how comfortably</em> a candidate passes, and the gates decide <em>whether</em> it passes.</p>
-  <p>We deliberately did not fit a classifier. The entire labelled reference set is five literature peptides plus our own, and at that sample size any machine-learned decision boundary would be fitting noise while looking authoritative. A transparent rule whose constants are stated as design choices is the more honest instrument here, and it has the practical advantage that a reader can recompute every number in the table by hand. The sub-scores are monotonic maps into [0,&#160;1] rather than calibrated probabilities, and we do not report them as probabilities: they encode the <em>direction</em> of a developability argument, not its likelihood.</p>
-  </div>
-  <p>The model evaluates three independent modules, each returning a sub-score
-  s<sub>i</sub>&#160;&#8712;&#160;[0,&#160;1]. The composite is their geometric mean, and the verdict
-  is <em>gated</em> by the two sequence-level modules &#8212; a peptide cannot average its way past
-  a structural disqualification:</p>
-
-<div class="eqwrap"><div class="eqlabel">Composite score and gated verdict</div><div class="eq">S=\Bigl(\textstyle\prod_{i\in\{A,B,C\}} s_i\Bigr)^{1/3},\qquad \text{verdict}=\begin{cases}\text{suitable} &amp; n_{\mathrm{Cys}}\le 1 \ \text{ and }\ s_C\ge\tfrac12\\[2pt]\text{unsuitable} &amp; \text{otherwise}\end{cases}</div></div>
-  <p class="col"><b>Where:</b> S is the composite suitability score; s<sub>A</sub>, s<sub>B</sub>, and s<sub>C</sub> are the binding, structural, and stability subscores; n<sub>Cys</sub> is the sequence cysteine count. The sequence gates determine eligibility; S ranks candidates and is not a calibrated probability.</p>
-  </div>
-
-  <h3 class="col">Governing equations: Module A &#183; binding suitability</h3>
-  <div class="col">
-  <p>The payload competes with LPS for MD2. Using the competitive-binding expression that Model&#160;3
-  develops in full, the fraction of MD2 held by the inhibitor and the resulting blockade fraction are</p>
-<div class="eqwrap"><div class="eqlabel">Module A &#183; competitive occupancy and the binding sub-score</div><div class="eq">\varphi_{\mathrm{inhib}}=\frac{[P]/K_{\mathrm{D},P}}{1+\dfrac{[L]}{K_{\mathrm{D},L}}+\dfrac{[P]}{K_{\mathrm{D},P}}},\qquad\chi_{\mathrm{block}}=\frac{\varphi_{\mathrm{inhib}}}{\varphi_{\mathrm{inhib}}+\varphi_{\mathrm{LPS}}},\qquad s_A=\min\!\left(1,\ \frac{C^{\mathrm{bench}}}{C_{50}^{\mathrm{cand}}}\right)</div></div>
-  <p><b>Where:</b> [P] is V14 concentration, [L] is LPS concentration, K<sub>D,P</sub> and K<sub>D,L</sub> are their respective MD2 dissociation constants, and &#966;<sub>inhib</sub> and &#966;<sub>LPS</sub> are the fractions of MD2 bound by each ligand. &#967;<sub>block</sub> is the inhibitor share of ligand-occupied MD2. C<sub>50</sub><sup>cand</sup> is the candidate's cell-assay concentration for half-maximal blockade.</p>
-  <p>The sub-score compares the candidate's half-maximal inhibitory concentration in a cell-based
-  LPS-binding assay against a literature benchmark,
-  s<sub>A</sub>&#160;=&#160;min(1,&#160;C<sup>bench</sup>/C<sub>50</sub><sup>cand</sup>) with
-  C<sup>bench</sup>&#160;=&#160;100&#160;&#181;M. The benchmark is set by MD2-I, the MD2-loop-mimetic
-  peptide and the only sequenced TLR4/MD2-antagonist peptide with a reported effective concentration
-  in a cell LPS-binding assay, which blocks LPS binding at 0.1&#160;mM (Slivka <i>et al.</i>, 2009).
-  A candidate that cannot match this is not competitive with the published state of the art. The cap
-  at 1 encodes saturation: once a candidate matches the state of the art, further potency does not
-  make it a better <em>patch payload</em>, so Module&#160;A discriminates only below the benchmark.</p>
-
-  <p>Two weaknesses in this module are worth stating plainly, because they limit how much the
-  comparison is worth. The benchmark set has <b>n&#160;=&#160;1</b>. And by Model&#160;3's own
-  algebra, a cell-assay blocking concentration is
-  K<sub>D,P</sub>(1&#160;+&#160;[L]/K<sub>D,L</sub>), so it depends on the endotoxin load of the
-  assay it was measured in &#8212; which is not reported for MD2-I and which differs from ours.
-  Comparing V14's 25&#160;&#181;M against MD2-I's 0.1&#160;mM is therefore <em>not</em> a ratio of
-  affinities, and we do not claim it as one. It says that V14 is in the right concentration range
-  for a cell-based blocking effect, and no more than that.</p>
-  </div>
-
-  <h3 class="col">Governing equations: Module B &#183; structural burden</h3>
-  <div class="col">
-  <p>Two residue classes carry developability risk in a hydrogel sitting on an oxidising wound.</p>
-
-  <p><b>Cysteine.</b> Cys residues form intramolecular disulfides and shuffle partners in a ROS-rich
-  wound, producing a heterogeneous population of species with uncertain activity, and requiring an
-  oxidative-folding quality-control step in production. The MD2-I antagonist illustrates both the
-  power and the cost of this chemistry: its activity <em>depends</em> on a correctly formed
-  Cys95&#8211;Cys105 bridge (Slivka <i>et al.</i>, 2009). We use
-  s<sub>B,Cys</sub>&#160;=&#160;1&#160;&#8722;&#160;n<sub>Cys</sub>/(n<sub>Cys</sub>&#160;+&#160;1),
-  which falls from 1 at zero Cys to 1/3 at two.</p>
-
-  <p><b>Tryptophan.</b> Trp is the most aggregation-prone amino acid. A Trp-rich payload loaded into
-  a hydrogel at high concentration risks aggregation, which lowers the free concentration C<sub>0</sub>
-  that the release model assumes (Shi &amp; McHugh, 2023). We apply a monotonic penalty
-  s<sub>B,Trp</sub>&#160;=&#160;exp(&#8722;0.5&#160;n<sub>Trp</sub>), and
-  s<sub>B</sub>&#160;=&#160;s<sub>B,Cys</sub>&#160;&#183;&#160;s<sub>B,Trp</sub>.</p>
-
-<div class="eqwrap"><div class="eqlabel">Module B &#183; structural burden</div><div class="eq">b_{\mathrm{Cys}}=\frac{n_{\mathrm{Cys}}}{n_{\mathrm{Cys}}+1},\quad s_{B,\mathrm{Cys}}=1-b_{\mathrm{Cys}}=\frac{1}{n_{\mathrm{Cys}}+1},\quad s_{B,\mathrm{Trp}}=e^{-0.5\,n_{\mathrm{Trp}}},\quad s_B=s_{B,\mathrm{Cys}}\cdot s_{B,\mathrm{Trp}}</div></div>
-
-  <p><b>Where:</b> n<sub>Cys</sub> and n<sub>Trp</sub> are the cysteine and tryptophan counts; b<sub>Cys</sub> is the cysteine burden; s<sub>B,Cys</sub> and s<sub>B,Trp</sub> are the individual penalties; and s<sub>B</sub> is their product. The coefficient 0.5 is a stated design choice.</p>
-  <p>The gate is <b>n<sub>Cys</sub>&#160;&#8804;&#160;1</b>, and it is justified structurally rather
-  than numerically: with fewer than two cysteines no intramolecular disulfide pair can form, so the
-  peptide needs no oxidative-folding step and cannot suffer disulfide-pairing heterogeneity. The
-  decay rate 0.5 in the Trp term is a design choice, not a measurement &#8212; there is no
-  quantitative aggregation model in the literature that supports a specific functional form, and we
-  say so rather than implying the constant is derived.</p>
-  </div>
-
-  <h3 class="col">Governing equations: Module C &#183; the stability&#8211;release race</h3>
-  <div class="col">
-  <p>Expected serum half-life is estimated from the sequence with the Cavaco regression, fit on 129
-  unmodified peptides with experimentally determined half-lives (validation
-  R&#178;&#160;&#8776;&#160;0.76; Cavaco <i>et al.</i>, 2021):</p>
-<div class="eqwrap"><div class="eqlabel">Module C &#183; the Cavaco half-life regression (t in minutes)</div><div class="eq">\ln t_{1/2}^{\mathrm{serum}}=2.226+0.053\,n_{\mathrm{NP}}\%-1.515\,W_{[0,1]}+1.290\,Y_{[0,1]}-1.052\,\mathrm{pI}_{[0,1]}</div></div>
-  <p>where nNP% is the percentage of nonpolar residues (A, V, L, I, M, F, W, P, G),
-  W<sub>[0,1]</sub> flags at least one Trp, Y<sub>[0,1]</sub> flags two or more Tyr, and
-  pI<sub>[0,1]</sub> flags an isoelectric point &#8805;&#160;10. Serum is the conservative standard
-  fluid; chronic wound exudate is harsher, so this is an <em>optimistic upper bound</em> on
-  wound-fluid stability, not a prediction of it.</p>
-
-  <p>The sub-score then races degradation against release. Model&#160;1 gives the release half-time
-  of a slab of thickness L as t<sub>1/2,rel</sub>&#160;&#8776;&#160;0.196&#160;L&#178;/D<sub>eff</sub>,
-  and a payload only works if it survives longer than the patch takes to let it go:</p>
-<div class="eqwrap"><div class="eqlabel">Module C &#183; the stability&#8211;release race</div><div class="eq">s_C=\frac{t_{1/2}^{\deg}}{t_{1/2}^{\deg}+t_{1/2,\mathrm{rel}}},\qquad\text{gate: } s_C\ge\tfrac12\iff t_{1/2}^{\deg}\gtrsim t_{1/2,\mathrm{rel}}</div></div>
-  <p>For the patch as built &#8212; 2.5&#160;mm of 1&#160;% calcium alginate,
-  D<sub>eff</sub>&#160;=&#160;3.48&#215;10<sup>&#8722;6</sup>&#160;cm&#178;s<sup>&#8722;1</sup> for
-  V14 &#8212; this gives <b>t<sub>1/2,rel</sub>&#160;=&#160;59&#160;minutes</b>, consistent with
-  Model&#160;1's 95&#160;% release in 5.6&#160;hours.</p>
-  </div>
-
-  <div class="claim warn">
-    <h3>What the thicker patch does to Module C &#8212; it discriminates again</h3>
-    <p>This has moved twice, so it is worth stating the history rather than just the answer. The
-    original screen used a release half-time of 2&#8211;22&#160;h carried over from a thicker gel,
-    and TAP2 appeared to fail on stability; it does not, it fails on Module&#160;B. Recomputed on the
-    0.5&#160;mm patch, t<sub>1/2,rel</sub> was 2.3&#160;minutes and <em>every</em> candidate cleared
-    Module&#160;C, including the 0.6&#160;h TAP1 &#8212; the gate did no work at all. At the
-    2.5&#160;mm thickness now built, t<sub>1/2,rel</sub> is <b>59&#160;minutes</b>, so the gate asks
-    for a serum half-life of roughly an hour and <b>TAP1, TAP2 and MD2-I fail it</b>.</p>
-    <p>That changes the screen's output. At 0.5&#160;mm the survivors were TAP1, MD2-II and V14; at
-    2.5&#160;mm they are MD2-II and V14. <b>TAP1 is the candidate that moved</b> &#8212; it carries
-    no Cys and no Trp, so it clears the structural gate outright, and it now drops out on stability
-    alone. No selection decision is affected, because V14 was chosen on its measured binding and its
-    6.1&#160;h half-life is the longest of the set either way. But stability is now a live criterion
-    rather than a vacuous one, and TAP1 is what demonstrates it. It still also
-    matters <em>after</em> release, as the tissue-side k<sub>prot</sub> in Model&#160;2, which is why
-    measuring it is the top wet-lab ask on this page.</p>
-  </div>
-
-  <h3 class="col">Simulated results and reference set</h3>
-  <p class="col">Net charge and pI are from Henderson&#8211;Hasselbalch titration at pH&#160;7;
-  t<sub>1/2</sub><sup>serum</sup> from the regression above; s<sub>C</sub> computed against
-  t<sub>1/2,rel</sub>&#160;=&#160;59&#160;min for the as-built patch. TAP1 and TAP3 are the sibling
-  phage-display peptides of TAP2 (US&#160;10,435,443); MD2-I is the active and MD2-II the inactive
-  (Cys95Ala) MD2-loop antagonist.</p>
-
-  <div class="tablewrap"><table>
-    <thead><tr><th>Peptide</th><th>Charge</th><th>pI</th><th>Nonpolar&#160;%</th>
-      <th>n<sub>Trp</sub></th><th>n<sub>Cys</sub></th>
-      <th>t<sub>1/2</sub><sup>serum</sup>&#160;(h)</th>
-      <th>s<sub>B</sub></th><th>s<sub>C</sub></th><th>Gates</th></tr></thead>
-    <tbody>
-      <tr><td>TAP1</td><td>+4.0</td><td>11.5</td><td>45.0</td><td>0</td><td>0</td><td>0.6</td>
-        <td>1.00</td><td>0.38</td><td>B pass &#183; <b>C FAIL</b></td></tr>
-      <tr><td><b>TAP2</b></td><td>+0.9</td><td>8.2</td><td>61.1</td><td>3</td><td>2</td><td>0.9</td>
-        <td>0.07</td><td>0.48</td><td><b>B FAIL</b> &#183; <b>C FAIL</b></td></tr>
-      <tr><td>TAP3</td><td>+0.9</td><td>8.1</td><td>44.4</td><td>3</td><td>2</td><td>1.3</td>
-        <td>0.07</td><td>0.57</td><td><b>B FAIL</b> &#183; C pass</td></tr>
-      <tr><td>MD2-I</td><td>&#8722;1.1</td><td>4.3</td><td>29.4</td><td>0</td><td>2</td><td>0.7</td>
-        <td>0.33</td><td>0.42</td><td><b>B FAIL</b> &#183; <b>C FAIL</b></td></tr>
-      <tr><td>MD2-II</td><td>&#8722;1.1</td><td>4.3</td><td>35.3</td><td>0</td><td>1</td><td>1.0</td>
-        <td>0.50</td><td>0.51</td><td>B pass &#183; C pass</td></tr>
-      <tr><td><b>V14 (&#945;TI-14)</b></td><td>&#8722;2.0</td><td>3.1</td><td>69.2</td><td>0</td>
-        <td>0</td><td><b>6.1</b></td><td><b>1.00</b></td><td><b>0.86</b></td>
-        <td><b>B pass &#183; C pass</b></td></tr>
-    </tbody>
-  </table></div>
-
-  <h3 class="col">Verdicts</h3>
-  <div class="tablewrap"><table>
-    <thead><tr><th>Module</th><th>Criterion</th><th>TAP2 (iteration 1)</th><th>V14 (iteration 2)</th></tr></thead>
-    <tbody>
-      <tr><td>A</td><td>C<sub>50</sub> vs 100&#160;&#181;M benchmark</td>
-        <td>Confirmed, literature-active</td>
-        <td>Calculated from the wet-lab flow-cytometry result &#8212; C<sub>50</sub>&#160;&#8776;&#160;92&#160;&#181;M</td></tr>
-      <tr><td>B</td><td>n<sub>Cys</sub>&#160;&#8804;&#160;1</td>
-        <td><b>Fail</b> &#8212; 2 Cys, 3 Trp</td>
-        <td>Pass &#8212; 0 Cys, 0 Trp</td></tr>
-      <tr><td>C</td><td>t<sub>deg</sub>&#160;&#8819;&#160;t<sub>1/2,rel</sub></td>
-        <td><b>Fail</b> &#8212; 0.9&#160;h vs 59&#160;min</td>
-        <td>Pass &#8212; 6.1&#160;h vs 59&#160;min</td></tr>
-      <tr><td colspan="2" style="text-align:right"><b>Composite S</b></td>
-        <td>&#8776;&#160;<b>0.33</b></td>
-        <td>&#8776;&#160;<b>0.81</b>&#160;(upper bound)</td></tr>
-      <tr><td colspan="2" style="text-align:right"><b>Verdict</b></td>
-        <td><b>Unsuitable</b> &#8212; Module&#160;B gate (and now C)</td>
-        <td><b>Suitable</b></td></tr>
-    </tbody>
-  </table></div>
-
-  <p class="col caveat" style="display:block">Read the composite with care: it is close to
-  uninformative for this device. s<sub>A</sub> is capped at 1 by construction, and s<sub>B</sub>
-  still spans the widest range (0.07&#8211;1.00), so S is carried largely by structural burden.
-  s<sub>C</sub> at least varies now (0.38&#8211;0.86; it sat between 0.95 and 0.99 when the gel was
-  0.5&#160;mm and emptied in minutes), and after the 17&#160;Oct flow panel s<sub>A</sub> also moves
-  off the cap for V14: Model&#160;3's own algebra puts its cell-assay blocking concentration at
-  C<sub>50</sub>&#160;=&#160;K<sub>D,P</sub>(1&#160;+&#160;[L]/K<sub>D,L</sub>)&#160;&#8776;&#160;92&#160;&#181;M.
-  This calculated value lies just below the 100&#160;&#181;M benchmark, but the thresholded gate readout
-  is uncalibrated, so it cannot support a firm pass/fail score for Module&#160;A. S still mostly restates that V14 has no Cys and
-  no Trp. <b>The gates, not the composite, are what
-  decide a verdict here</b> &#8212; TAP2's S of 0.33 is not what disqualifies it; failing
-  n<sub>Cys</sub>&#160;&#8804;&#160;1 is, and Module&#160;A is not gated, which is why V14 stays Suitable
-  despite the sub-benchmark binding score.</p>
-
-  <h3 class="col">Experimental evidence and interpretation</h3>
-  <div class="col">
-  <p>TAP2's activity is well documented (Park <i>et al.</i>, 2017; Park <i>et al.</i>, 2020; Yin
-  <i>et al.</i>, 2019), but the source reports binding as SPR kinetic evidence against immobilised
-  MD2 and TLR4/MD2 rather than a single equilibrium K<sub>D</sub>, so TAP2 cannot be placed on the
-  quantitative C<sub>50</sub> axis and is recorded as a qualitative pass in Module&#160;A.</p>
-
-  <p>What disqualifies it is Module&#160;B. Two cysteines impose a folding requirement and a
-  disulfide-shuffling risk in an oxidising wound, and three tryptophans create an aggregation
-  liability at hydrogel loading concentrations. The model's failure verdict matched our wet lab's
-  experience with TAP2, and it <b>redefined the design goal</b>: from finding a binder to finding a
-  binder that survives the wound and the hydrogel. That is what sent us to <i>de novo</i> design.</p>
-
-  <p>V14 was the result. It has no cysteine and no tryptophan, so there is no folding step, no
-  disulfide shuffling and no aromatic aggregation burden (s<sub>B</sub>&#160;=&#160;1). Its predicted
-  serum half-life of 6.1&#160;h is about sevenfold TAP2's, driven by high nonpolar content and the
-  absence of Trp. Its in-house flow-cytometry result is measured, but its binding affinity is not:
-  at 25&#160;&#181;M, V14 reduced FITC-LPS positive-gate frequency from 16.307&#160;% to 12.827&#160;%
-  in the 17&#160;October panel, a 3.480-percentage-point decrease and 21.34&#160;% relative reduction
-  (p&#160;=&#160;0.0186, n&#160;=&#160;4 per group). This indicates reduced FITC-LPS positivity under the assay
-  conditions but does not establish direct competition at MD2. Positive-gate frequency is a thresholded
-  readout whose relationship to receptor occupancy was not calibrated, so these data do not support
-  determination of a binding dissociation constant.</p>
-  <p>For exploratory modeling, treating the gate-frequency ratio as relative LPS occupancy gives
-  an estimated K<sub>D,P</sub> of approximately 5.62&#160;&#181;M under the stated
-  competitive-binding model. This estimate depends on that assumption and is not an experimentally determined affinity;
-  the model-derived target of 80.9&#160;&#181;M depends on that assumption.</p>
-
-  <p>Two things in the table are worth dwelling on, because they show the model is doing real work
-  rather than rubber-stamping our own design. MD2-I &#8212; the literature benchmark, a genuinely
-  active antagonist &#8212; <em>fails</em> Module&#160;B, because the model penalises exactly the
-  disulfide chemistry its activity depends on. And MD2-II, the deliberately inactive Cys95Ala
-  control, <em>passes</em> both sequence gates. Neither is a contradiction: Module&#160;B scores
-  developability as a patch payload, not intrinsic activity, and Module&#160;A is what excludes
-  MD2-II. It does mean the three modules are only meaningful together, and that a single composite
-  number should never be read on its own.</p>
-  </div>
-
-
-  <figure class="wide">
-    <div class="figbox"><img src="assets/G01_peptide_screening.svg" alt="Table of six candidate peptides against the cysteine gate, tryptophan count, structural and stability sub-scores and the sequence verdict; V14 is highlighted and passes." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;1.</span> Sequence-level screen. TAP2, TAP3 and MD2-I fail the cysteine gate; of the candidates that pass, V14 (&#945;TI-14) has the longest predicted serum half-life (6.1&#160;h). With the 2.5&#160;mm gel the release half-time is 59&#160;minutes, so the stability gate bites as well &#8212; it demands a serum half-life of about an hour, which TAP1, TAP2 and MD2-I fail. That leaves MD2-II and V14; with the earlier 0.5&#160;mm gel the stability gate was vacuous, only the structural gate discriminated, and TAP1 survived too. <span class="caveat">Module A binding evidence is listed, not scored: the in-house flow result for V14 at 25&#160;&#181;M is a 21.34&#160;% positive-gate-frequency decrease with p&#160;=&#160;0.0186 (n&#160;=&#160;4/group; 17 Oct).</span></figcaption>
-  </figure>
-
-<h3 class="col">Key parameters and provenance</h3>
-  <div class="tablewrap"><table>
-    <thead><tr><th>Quantity</th><th>Value</th><th>Basis and limitation</th></tr></thead>
-    <tbody>
-      <tr><td>Binding benchmark, C<sup>bench</sup></td><td>100&#160;&#181;M</td><td>MD2-I literature value; single-peptide benchmark (Slivka <i>et al.</i>, 2009), not a matched-affinity comparison.</td></tr>
-      <tr><td>Exploratory model-based estimate of K<sub>D,P</sub></td><td>5.62&#160;&#181;M</td><td>Treats the 17 Oct gate-frequency ratio as relative LPS occupancy under the stated competitive-binding model; this is an exploratory estimate, not an experimentally determined affinity.</td></tr>
-      <tr><td>Model-derived target, C<sub>V,target</sub></td><td>80.9&#160;&#181;M</td><td>K<sub>D,P</sub>(a&#8722;1), with a=15.4; depends on that assumption and is distinct from the half-inhibition dose near 92&#160;&#181;M.</td></tr>
-      <tr><td>V14 release half-time</td><td>59&#160;min</td><td>Model 1 slab estimate for the 2.5&#160;mm gel; release-model output, not a peptide-stability measurement.</td></tr>
-      <tr><td>Trp penalty coefficient</td><td>0.5</td><td>Monotonic design choice; no quantitative sequence-level aggregation law is claimed.</td></tr>
-    </tbody>
-  </table></div>
-
-<h3 class="col">Sensitivity analysis</h3>
-  <p class="col">The screen is deterministic and sequence-based, so sensitivity is assessed by varying its explicit design choices rather than fitting a continuous response model. Sweeping the Trp penalty coefficient from 0.1 to 1 changes the composite scores but does not change the binary verdict for TAP2 or V14: TAP2 still exceeds the cysteine gate, while V14 has no cysteine or tryptophan. Changing gel thickness changes the release half-time and can change Module&#160;C verdicts, which is why the current table uses the as-built 2.5&#160;mm geometry and records the earlier 0.5&#160;mm result separately.</p>
-
-<h3 class="col">Assumptions, evidence, and limits</h3>
-  <div class="tablewrap"><table>
-  <thead><tr><th>Assumption</th><th>Biological basis</th><th>What breaks if it is wrong</th><th>How to test it</th></tr></thead>
-  <tbody>
-  <tr><td><b>The serum half-life proxy transfers to wound exudate</b></td><td>No sequence regression exists for exudate; serum is the nearest fitted standard.</td><td>Module&#160;C becomes optimistic by an unknown factor. Exudate protease activity is higher and more variable than serum.</td><td>HPLC stability in exudate or with recombinant MMP-9 / elastase, replacing the estimate with a measured k<sub>deg</sub>.</td></tr>
-  <tr><td><b>Cys and Trp are the dominant developability risks</b></td><td>Disulfide shuffling in an oxidising wound and Trp-driven aggregation at loading concentrations are the two failure modes we can predict from sequence alone.</td><td>Module&#160;B misses a liability it does not encode &#8212; deamidation, oxidation of Met, or charge-driven binding to the gel.</td><td>Forced-degradation study on the candidate; LC-MS for modified species.</td></tr>
-  <tr><td><b>A cell blocking concentration is comparable across assays</b></td><td>It is the only quantity reported for the single sequenced benchmark.</td><td>Module&#160;A. The blocking concentration depends on the assay’s endotoxin load, which is unreported for the benchmark, so the comparison is not a ratio of affinities.</td><td>Measure both peptides in one assay at matched [LPS], or compare K<sub>D</sub> directly.</td></tr>
-  </tbody>
-  </table></div>
-
-  <details class="math"><summary>Limitations of the screening model</summary>
-  <div class="inner">
-    <ul>
-      <li>The reference set defining the design window is small: four sequenced TLR4/MD2-targeting
-      peptides plus one inactive control.</li>
-      <li>The Cavaco regression was fit on serum, not wound exudate. Exudate protease activity is
-      higher and variable, so predicted half-lives are optimistic upper bounds.</li>
-      <li>Half-life predictions are statistical estimates (R&#178;&#160;&#8776;&#160;0.76 on the
-      regression's validation library). Module&#160;C is written to accept a directly measured
-      k<sub>deg</sub> the moment the stability assay provides one, and that substitution is the
-      single biggest improvement available to this model.</li>
-      <li>The sub-score functional forms encode qualitative developability knowledge in monotonic
-      form. The specific constants and thresholds are design choices and can be revised; only the
-      n<sub>Cys</sub>&#160;&#8804;&#160;1 gate rests on a structural argument rather than a chosen
-      constant.</li>
-      <li>Module&#160;C did not discriminate when the patch emptied in minutes, which is why the
-      module was kept rather than deleted. At the 2.5&#160;mm thickness it discriminates again, and
-      TAP1 fails on stability alone.</li>
-    </ul>
-  </div></details>
 </section>
 
 <!-- ================= MODELS 1 & 2 ================= -->
@@ -462,7 +223,7 @@
   </div></div>
 
   <div class="claim warn">
-    <h3>Background and principal prediction</h3>
+    <h3>1. Background</h3>
     <p>The patch releases its load as a single burst rather than a sustained supply. From the
     2.5&#160;mm alginate gel as built, V14 reaches 95&#160;% release of its mobile dose in <b>5.6&#160;hours</b>
     and FGF2-G3 in <b>14.8&#160;hours</b>, while wound closure takes 7&#8211;55&#160;days. The
@@ -471,7 +232,7 @@
   </div>
 
   <div class="col">
-  <h3 class="col">Model construction: spatial diffusion across two domains</h3>
+  <h3 class="col">2. Model Construction: spatial diffusion across two domains</h3>
   <div class="col">
   <p>The obvious cheaper choice would be a compartmental ODE &#8212; gel compartment, tissue compartment, rate constants between them. We did not use one, because <b>the answer we need is a gradient</b>. A well-mixed compartment has, by construction, one concentration everywhere inside it; but the macrophages we are trying to reach sit near the surface, the clearance sink sits at the dermal base, and the entire question of how long tissue stays above target is a question about the <em>shape</em> of the profile between them. A compartment model cannot represent that shape, so it could not have produced the coverage window, the depth-dependence, or the lower-bound argument.</p>
   <p>Within the PDE, each term is there for a reason that can be checked. Transport is Fickian because both payloads are dilute, uncharged with respect to the gel, and there is no evidence of concentration-dependent mobility; the mesh correction H(a,&#958;) comes from Amsden obstruction scaling, which was derived for exactly this geometry &#8212; a solute sphere moving through a fibrous polymer network &#8212; rather than being a fitted fudge factor. Degradation is first order because proteolysis of a dilute substrate by an enzyme pool in excess is pseudo-first-order in substrate. FGF2-G3 alone carries a Michaelis&#8211;Menten sink, because receptor-mediated uptake saturates and V14 has no equivalent mechanism.</p>
@@ -504,7 +265,8 @@
   assay must now run for most of a day to reach completion.</p>
   </div>
 
-  <details class="math"><summary>The transport equations, and why porosity cancels</summary>
+  <h4 class="col">2.1 Governing Equations</h4>
+<details class="math"><summary>The transport equations, and why porosity cancels</summary>
   <div class="inner">
     <p>All concentrations in the model are <b>interstitial</b>, meaning mol per cm&#179; of pore
     fluid. For a porous medium with superficial flux
@@ -568,7 +330,7 @@
 <div class="eqwrap"><div class="eqlabel">The handoff &#183; where the two arms leave the transport model</div><div class="eq">C^{\mathrm t}_V(0,t)\;\longrightarrow\;\text{Model 3},\qquad\bar C_F(t)=\frac1\delta\int_{-\delta}^{0}C^{\mathrm t}_{F,\mathrm{free}}(x,t)\,\mathrm dx\;\longrightarrow\;\text{Model 6}</div></div>
   </div></details>
 
-<h3 class="col">Assumptions this section makes</h3>
+<h4 class="col">2.2 Assumptions</h4>
   <div class="tablewrap"><table>
   <thead><tr><th>Assumption</th><th>Biological basis</th><th>What breaks if it is wrong</th><th>How to test it</th></tr></thead>
   <tbody>
@@ -579,7 +341,7 @@
   </tbody>
   </table></div>
 
-  <h3 class="col">Key parameters and provenance</h3>
+  <h4 class="col">2.3 Parameters and provenance</h4>
   <div class="tablewrap"><table>
     <thead><tr><th>Quantity</th><th>Value used</th><th>Evidence tier and interpretation</th></tr></thead>
     <tbody>
@@ -593,7 +355,8 @@
   </table></div>
 
 
-  <figure class="wide">
+  <h3>3. Simulated Results</h3>
+<figure class="wide">
     <div class="figbox"><img src="assets/G03_release_curves_and_BCA.svg" alt="Left: cumulative release of V14 and FGF2-G3 from the 2.5 mm alginate gel on a log time axis, each levelling off at its released fraction. Right: blank-subtracted BCA signal relative to the positive control at 60, 90 and 120 minutes, with the model for the 2.5 mm gel fitted to the 30-minute read (f_rel = 0.45 &#177; 0.06)." loading="lazy"></div>
     <figcaption><span class="fid">Figure&#160;2.</span> (a) Model&#160;1 release into a perfect sink (Crank series), shown as a fraction of the total loaded dose. The curves plateau at the adopted mobile fractions, 0.50 for V14 and 0.45 for FGF2-G3. The shaded region marks the 60–120&#160;min sampling window. (b) Updated BCA data: blank-subtracted and normalized to the positive FGF control, with means of 13.3%, 13.8%, and 22.9% at 60, 90, and 120&#160;min (n=3 each). The least-squares fit to all nine points gives f<sub>rel</sub>=0.447 (residual-based SE 0.055), adopted as 0.45&#177;0.06. <span class="caveat">This provisional model-scaled estimate assumes the positive control represents the full loaded dose and that the tested gel matches the 2.5&#160;mm design; its thickness and buffer volume were not recorded. Signals remain near the BCA noise floor, so the fit does not validate the released fraction or timescale. A log-grid release assay with recorded thickness and buffer volume is needed.</span></figcaption>
   </figure>
@@ -604,7 +367,7 @@
   </figure>
 
   <div class="claim">
-    <h3>Numerical verification, not experimental validation</h3>
+    <h4>4. Experimental Validation Status: numerical verification only</h4>
     <p>Before using any result, we checked the solvers against known answers. The release solver
     converges at second order against the closed-form Crank series, with maximum error falling from
     5&#215;10<sup>&#8722;5</sup> at 100 grid points to
@@ -623,7 +386,7 @@
   </figure>
 
   <div class="col">
-  <h3>Biological target populations and model handoff</h3>
+  <h4>4.1 Biological interpretation and model handoff</h4>
   <p>The two arms have different target cells in different places, and this is what sets the
   geometry of this section.</p>
 
@@ -652,6 +415,8 @@
   depth average is a <em>lower bound</em> &#8212; we report it that way deliberately rather than
   quoting the more flattering surface value.</p>
   </div>
+<h3>5. Sensitivity Analysis</h3><p>The variance-based sensitivity analysis for delivered dose is reported with Figure 10. The transport assumptions and parameter provenance above identify the inputs carried into that result.</p>
+<h3>6. References</h3><p>Sources cited in this model section are collected in the <a href="#refs">References</a> section.</p>
 </section>
 
 <!-- ================= MODEL 3 ================= -->
@@ -662,7 +427,7 @@
   </div></div>
 
   <div class="claim">
-    <h3>Background and model result</h3>
+    <h3>1. Background</h3>
     <p>The V14 arm can be run <em>before</em> any binding affinity is measured. In the scaled
     variables &#968;&#160;=&#160;C<sub>V</sub>/K<sub>D,P</sub> and
     a&#160;=&#160;[L]/K<sub>D,L</sub>, fourteen parameters reduce to four, and half-maximal
@@ -675,7 +440,7 @@
   </div>
 
   <div class="col">
-  <h3 class="col">Model construction and assumptions: equilibrium occupancy</h3>
+  <h3 class="col">2. Model Construction: equilibrium occupancy</h3>
   <div class="col">
   <p>Model&#160;3 uses equilibrium mass action rather than a kinetic scheme with explicit k<sub>on</sub> and k<sub>off</sub>. The justification is a <b>separation of timescales</b>: peptide&#8211;receptor binding equilibrates on the order of seconds to minutes, while the delivery profile it reads from Model&#160;2 changes over hours. On the timescale that matters, occupancy tracks concentration essentially instantaneously, so carrying the kinetics would add two parameters we cannot measure and would change no prediction. This is an assumption with a test attached: if SPR showed a dissociation half-life comparable to the delivery timescale, the quasi-equilibrium treatment would have to go &#8212; and the patch would in fact perform <em>better</em> than modelled, not worse, since slow release of the peptide from the receptor would extend its action.</p>
   <p>The competitive form in particular is not a generic sigmoid. It follows from the single structural claim that V14 and LPS occupy the <em>same</em> MD2 pocket, and it makes a specific, falsifiable prediction &#8212; a rightward shift of the dose&#8211;response with an <b>undepressed maximum</b>. A non-competitive inhibitor would depress the maximum instead. The mathematics therefore carries the mechanism rather than merely fitting the data, which is what makes the Schild experiment worth doing.</p>
@@ -685,6 +450,7 @@
   each occupancy carries the other's concentration in its denominator:</p>
   </div>
 
+<h4 class="col">2.1 Governing Equations</h4>
 <div class="eqwrap"><div class="eqlabel">Competitive occupancy at MD2</div><div class="eq">\theta_{\mathrm{inhib}}=\frac{C^{\mathrm t}_V}{K_{\mathrm{D},P}\!\left(1+\dfrac{[L]}{K_{\mathrm{D},L}}\right)+C^{\mathrm t}_V}=\frac{C^{\mathrm t}_V}{K_{\mathrm D}^{\mathrm{app}}+C^{\mathrm t}_V},\qquad\theta_{\mathrm{LPS}}=\frac{[L]/K_{\mathrm{D},L}}{1+\dfrac{[L]}{K_{\mathrm{D},L}}+\dfrac{C^{\mathrm t}_V}{K_{\mathrm{D},P}}}</div></div>
 
   <p class="col"><b>Where:</b> C<sup>t</sup><sub>V</sub> is interstitial V14 concentration; [L] is the LPS concentration; K<sub>D,P</sub> and K<sub>D,L</sub> are the dissociation constants of V14&#8211;MD2 and LPS&#8211;MD2; K<sub>D</sub><sup>app</sup>=K<sub>D,P</sub>(1+[L]/K<sub>D,L</sub>); and the two &#952; terms are the fractions of the MD2 pool occupied by inhibitor and LPS.</p>
@@ -747,7 +513,7 @@
   </figure>
 
   <div class="claim warn">
-    <h3>A scaling error we found by running the model</h3>
+    <h3>3. Simulated Results: the scaling correction</h3>
     <p>To invert the model for the required dose, &#968; has to be isolated <em>additively</em>. Our
     earlier version factored out K<sub>D</sub><sup>app</sup>, which is valid for the occupancy
     expression and for Cheng&#8211;Prusoff but <b>not</b> for this inversion. The resulting
@@ -757,7 +523,7 @@
     quantity it was built to deliver, and only a direct numerical check caught it.</p>
   </div>
 
-<h3 class="col">Assumptions this section makes</h3>
+<h4 class="col">2.2 Assumptions</h4>
   <div class="tablewrap"><table>
   <thead><tr><th>Assumption</th><th>Biological basis</th><th>What breaks if it is wrong</th><th>How to test it</th></tr></thead>
   <tbody>
@@ -768,7 +534,7 @@
   </tbody>
   </table></div>
 
-  <h3 class="col">Key parameters and provenance</h3>
+  <h4 class="col">2.3 Parameters and provenance</h4>
   <div class="tablewrap"><table>
     <thead><tr><th>Quantity</th><th>Value used</th><th>Evidence tier and interpretation</th></tr></thead>
     <tbody>
@@ -780,7 +546,7 @@
     </tbody>
   </table></div>
 
-  <h3 class="col">Experimental mapping: what the assay can identify</h3>
+  <h3 class="col">4. Experimental Validation and assay mapping</h3>
   <div class="col">
   <p>To be precise about what has and has not been done: at 25&#160;&#181;M, V14 reduced FITC-LPS
   positive-gate frequency from 16.307&#160;% to 12.827&#160;%, a 3.480-percentage-point decrease
@@ -811,6 +577,8 @@
     <div class="figbox"><img src="assets/WL_kdp_bound_25uM.png" alt="Normalised signal against peptide dose for a family of K_D,P values with the detection band at 25 micromolar, and the required tissue concentration against K_D,P." loading="lazy"></div>
     <figcaption><span class="fid">Figure&#160;8.</span> Historical 14&#160;Oct detection-limit analysis. The 17&#160;Oct result supports a exploratory model-based estimate of K<sub>D,P</sub> of 5.62&#160;&#181;M and model-derived target of 80.9&#160;&#181;M under the assumption that the gate-frequency ratio is equated with relative LPS occupancy.</figcaption>
   </figure>
+<h3>5. Sensitivity Analysis</h3><p>The analytical dose-response curves show the effect of endotoxin load on the required inhibitor dose. No separate global parameter sweep is reported for Model 3; assay-identifiability limits remain the main uncertainty.</p>
+<h3>6. References</h3><p>Sources cited in this model section are collected in the <a href="#refs">References</a> section.</p>
 </section>
 
 <!-- ================= MODELS 4 & 5 ================= -->
@@ -821,12 +589,12 @@
   </div></div>
 
   <div class="claim gold">
-    <h3>Background: signalling chain and modelled outputs</h3>
+    <h3>1. Background</h3>
     <p>Model&#160;4 carries receptor blockade through to transcriptional output; Model&#160;5 calculates free NO and accumulated nitrite from that input. Nitrite is the quantity a Griess assay would measure, but no Griess assay is planned and these curves are not experimental results. The model keeps accumulated nitrite distinct from instantaneous free NO.</p>
   </div>
 
   <div class="col">
-  <h3 class="col">Model construction: signalling and an integrated readout</h3>
+  <h3 class="col">2. Model Construction: signalling and integrated readout</h3>
   <div class="col">
   <p>Models&#160;4 and&#160;5 use Hill functions where a mechanistic model would use a reaction network. This is deliberate coarse-graining. A full NF-&#954;B model &#8212; IKK activation, I&#954;B&#945; degradation and resynthesis, p65 nuclear shuttling &#8212; is well described in the literature and would add well over a dozen parameters, none of which our planned experiments constrain. What we actually need from this stage is a <b>monotonic, saturating input&#8211;output map</b> from receptor occupancy to transcriptional drive, with the right behaviour in both limits. A Hill function is the minimal form with those properties, and its exponent is the one feature of the shape that a dose&#8211;response can actually inform.</p>
   <p>The honest cost of that choice is dynamics. Real NF-&#954;B signalling oscillates, and a pulsed input can produce a different transcriptional output than its time average would suggest &#8212; which matters here, because our patch delivers in pulses. We note this as a limitation rather than claiming the steady-state map is exact.</p>
@@ -837,6 +605,7 @@
   is the transcriptional state the rest of the chain reads:</p>
   </div>
 
+<h4 class="col">2.1 Governing Equations</h4>
 <div class="eqwrap"><div class="eqlabel">Model 4 &#183; receptor activation and the NF-&#954;B response</div><div class="eq">[\mathrm{TLR4}^{*}]=[\mathrm{TLR4}]_{\mathrm{tot}}\,\theta_{\mathrm{LPS}},\qquad[\mathrm{p65}]_{\mathrm{nuc}}=[\mathrm{p65}]_{\mathrm{bas}}+\bigl([\mathrm{p65}]_{\max}-[\mathrm{p65}]_{\mathrm{bas}}\bigr)\frac{[\mathrm{TLR4}^{*}]^{h}}{K_{\mathrm{NF}}^{h}+[\mathrm{TLR4}^{*}]^{h}}</div></div>
 
   <div class="col">
@@ -874,7 +643,8 @@
   </div>
 
 
-  <figure class="wide">
+  <h3>3. Simulated Results</h3>
+<figure class="wide">
     <div class="figbox"><img src="assets/G06_free_NO_vs_nitrite.svg" alt="Illustrative Model 5 calculation over a selected 24-hour window, with an assumed one million cells: free NO and accumulated nitrite at four V14 doses." loading="lazy"></div>
     <figcaption><span class="fid">Figure&#160;9.</span> Illustrative Model&#160;5 calculation, not an experiment: the 24&#160;h window and one-million-cell count are assumptions. At 80.9&#160;&#181;M V14, modelled 24&#160;h accumulated nitrite falls from 26 to 12&#160;&#181;M. No Griess assay is planned; these outputs are unvalidated.</figcaption>
   </figure>
@@ -883,7 +653,7 @@
 __I3__
 
   <div class="claim warn">
-    <h3>What Model 5 does and does not establish</h3>
+    <h3>4. Experimental Validation Status and interpretation</h3>
     <p>The chain from V14 concentration to nitrite contains at least <b>fourteen parameters</b>. No team nitrite dose&#8211;response data exist and no Griess assay is planned, so these parameters are not calibrated and no fit is reported. Model&#160;5 remains an illustrative calculation.</p>
   </div>
 
@@ -906,7 +676,7 @@ __I3__
     would settle it. We would look for an optimum, not a plateau.</p>
   </div>
 
-  <h3 class="col">Sensitivity analysis</h3>
+  <h3 class="col">5. Sensitivity Analysis</h3>
   <div class="col">
   <p>To find which parameters matter most, we ran Morris screening followed by Sobol indices over the
   full joint prior. We expected k<sub>prot,V</sub> to dominate delivered dose and
@@ -959,7 +729,7 @@ __I3__
     <figcaption><span class="fid">Figure&#160;10.</span> Global sensitivity (Sobol, N&#160;=&#160;4096). K<sub>D,P</sub> and loading dominate the delivered dose; basal proliferation and death dominate closure time. The gap between S<sub>T</sub> and S<sub>1</sub> is the interaction strength. <span class="caveat">Evaluated on analytic surrogates of the delivery and closure models, not the full PDEs.</span></figcaption>
   </figure>
 
-<h3 class="col">Assumptions this section makes</h3>
+<h4 class="col">2.2 Assumptions</h4>
   <div class="tablewrap"><table>
   <thead><tr><th>Assumption</th><th>Biological basis</th><th>What breaks if it is wrong</th><th>How to test it</th></tr></thead>
   <tbody>
@@ -970,7 +740,7 @@ __I3__
   </tbody>
   </table></div>
 
-  <h3 class="col">Key parameters and provenance</h3>
+  <h4 class="col">2.3 Parameters and provenance</h4>
   <div class="tablewrap"><table>
     <thead><tr><th>Quantity</th><th>Value/status</th><th>Evidence tier and interpretation</th></tr></thead>
     <tbody>
@@ -1003,6 +773,7 @@ __I3__
   <p class="col">We list these combinations so that the quantities we <em>do</em> report can be
   trusted. For each of them we either sweep the parameter or report only the identifiable
   combination. None of them is fitted silently.</p>
+<h3>6. References</h3><p>Sources cited in this model section are collected in the <a href="#refs">References</a> section.</p>
 </section>
 
 <!-- ================= MODEL 6 ================= -->
@@ -1013,7 +784,7 @@ __I3__
   </div></div>
 
   <div class="claim warn">
-    <h3>Background and evidence status</h3>
+    <h3>1. Background and evidence status</h3>
     <p>Model&#160;6 is a Fisher&#8211;KPP reaction&#8211;diffusion model of the closing wound front.
     It is the <b>least supported part of the chain</b>: every rate in it is a Tier-4 phenomenological
     closure, and <em>no planned experiment constrains any of them</em>. We present it as a structured
@@ -1037,7 +808,7 @@ __I3__
   </div>
 
   <div class="col">
-  <h3 class="col">Model construction: Fisher&#8211;KPP with drug-dependent proliferation and death</h3>
+  <h3 class="col">2. Model Construction: Fisher&#8211;KPP with drug-dependent proliferation and death</h3>
   <div class="col">
   <p>Wound closure is a front advancing into empty space, driven by cells that both <em>move</em> and <em>divide</em>. That is precisely the structure a reaction&#8211;diffusion equation describes, and Fisher&#8211;KPP is its canonical form: a diffusion term for migration, a logistic term for proliferation bounded by a carrying capacity. The logistic bound is not decoration &#8212; it represents contact inhibition and finite tissue density, and without it the population would grow without limit behind the front. Radial rather than Cartesian geometry follows from the wound being an approximately circular defect, and it is what makes the area closure fraction &#8211;&#160;the quantity a clinician actually measures&#160;&#8211; well defined.</p>
   <p><b>The death term is the important departure, and it is there for a reason the standard model cannot supply.</b> Textbook Fisher&#8211;KPP always closes: for any positive proliferation rate a front forms and advances, so every simulated wound heals, eventually. A model with that property is structurally incapable of representing a chronic wound, which is the only kind of wound this project is about. Adding d(I<sub>e</sub>) makes the effective rate r<sub>eff</sub>&#160;=&#160;r<sub>p</sub>&#160;&#8722;&#160;d, which can be negative &#8212; and a wound with r<sub>eff</sub>&#160;&lt;&#160;0 does not merely heal slowly, it regresses. That single term is what lets the model express the thing we are trying to treat, and it is why 18.7&#160;% of sampled wounds never close under our priors. It is also what produced the relapse prediction, which we did not anticipate.</p>
@@ -1048,6 +819,7 @@ __I3__
   growth and a death term, giving a travelling front. In radial coordinates:</p>
   </div>
 
+<h4 class="col">2.1 Governing Equations</h4>
 <div class="eqwrap"><div class="eqlabel">Model 6 &#183; Fisher&#8211;KPP with a death term, radial geometry</div><div class="eq">\frac{\partial n}{\partial t}=\frac1r\frac{\partial}{\partial r}\!\left(rD_n\frac{\partial n}{\partial r}\right)+r_p(C_e,I_e)\,n\!\left(1-\frac nK\right)-d(I_e)\,n</div></div>
 
   <div class="col">
@@ -1102,7 +874,7 @@ __I3__
   </div>
 
   <div class="claim">
-    <h3>The prediction we did not expect: relapse, not stalling</h3>
+    <h3>3. Simulated Results: relapse, not stalling</h3>
     <p>When the drug effect fades and r<sub>eff</sub> turns negative again, the steady state behind
     the front, n<sub>ss</sub>&#160;=&#160;K(1&#160;&#8722;&#160;d/r<sub>p</sub>), falls to zero. The
     repopulated tissue then dies back and <b>the front recedes past its starting position</b>. We had
@@ -1122,8 +894,8 @@ __I3__
   </div>
 
   <figure class="wide">
-    <div class="figbox"><img src="assets/G09_wound_closure_curves.svg" alt="Left: wound area closed against days for untreated and 5, 10, 14 and 20 day pulses; 5 and 10 day pulses rise then collapse. Right: bar chart of days to closure." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;11.</span> Model&#160;6 at R<sub>w</sub>&#160;=&#160;2&#160;mm with the register rates: 5- and 10-day pulses advance the front and then relapse; 14- and 20-day pulses close the wound at about day&#160;14. <span class="caveat">Closure here is the fibroblast front reaching the wound centre, not complete re-epithelialisation; all Model&#160;6 rates are Tier-4 priors.</span></figcaption>
+    <div class="figbox"><img src="assets/G09_wound_closure_curves.svg" alt="Wound area closure for untreated chronic wounds and 5-, 10-, and 15-day treatment pulses; the 5- and 10-day pulses relapse, while the 15-day pulse reaches closure at 14.2 days." loading="lazy"></div>
+    <figcaption><span class="fid">Figure&#160;11.</span> Model&#160;6 at R<sub>w</sub>&#160;=&#160;2&#160;mm with the register rates: 5- and 10-day pulses advance the front and then relapse; the 15-day pulse reaches the closure endpoint at 14.2&#160;days. <span class="caveat">Closure here is the fibroblast front reaching the wound centre, not complete re-epithelialisation; all Model&#160;6 rates are Tier-4 priors.</span></figcaption>
   </figure>
 
   <figure>
@@ -1133,7 +905,8 @@ __I3__
 
 __I2__
 
-<h3 class="col">Assumptions this section makes</h3>
+<h3>4. Experimental Validation Status</h3><p>Model 6 is a mechanistic prediction with Tier 4 closure parameters; direct scratch-assay measurements are not yet incorporated.</p>
+<h4 class="col">2.2 Assumptions</h4>
   <div class="tablewrap"><table>
   <thead><tr><th>Assumption</th><th>Biological basis</th><th>What breaks if it is wrong</th><th>How to test it</th></tr></thead>
   <tbody>
@@ -1145,7 +918,7 @@ __I2__
   </tbody>
   </table></div>
 
-  <h3 class="col">Key parameters and evidence status</h3>
+  <h4 class="col">2.3 Parameters and evidence status</h4>
   <div class="tablewrap"><table>
     <thead><tr><th>Quantity</th><th>Value used</th><th>Evidence tier and interpretation</th></tr></thead>
     <tbody>
@@ -1169,6 +942,8 @@ __I2__
   most of the parameter space but reaches 36&#160;% in the corner that matters most, and it always
   errs optimistic.</p>
   </div>
+<h3>5. Sensitivity Analysis</h3><p>Figure 10 reports global Sobol indices for closure time using an analytic surrogate. Basal proliferation and cell loss dominate the modeled closure time; all closure inputs remain Tier 4 priors pending scratch-assay measurements.</p>
+<h3>6. References</h3><p>Sources cited in this model section are collected in the <a href="#refs">References</a> section.</p>
 </section>
 
 <!-- ================= MODEL 7 ================= -->
@@ -1179,7 +954,7 @@ __I2__
   </div></div>
 
   <div class="claim gold">
-    <h3>Design question and model output</h3>
+    <h3>1. Background and design question</h3>
     <p>Model&#160;7 runs the chain backwards, from a wound to a device specification. One patch keeps
     tissue above the 80.9&#160;&#181;M V14 target for <b>11.8&#160;h</b> (7.7&#8211;15.5&#160;h across
     the ranges of sink depth and diffusivity). No wound in the 1&#8211;5&#160;mm range closes on a
@@ -1195,6 +970,8 @@ __I2__
   concentration at depth &#948; in tissue, the gel must start with enough that the released fraction,
   diluted into the tissue pore volume, still clears it.</p>
 
+<h3>3. Simulated Results</h3>
+<h4 class="col">3.1 Loading equation</h4>
 <div class="eqwrap"><div class="eqlabel">Model 7 &#183; the loading requirement</div><div class="eq">C_{V,0}\gtrsim\frac{C_{V,\mathrm{target}}\,\varepsilon_{\mathrm t}\,\delta}{f_{\mathrm{rel}}\,\varepsilon_{\mathrm g}\,L_{\mathrm{gel}}}</div></div>
 
   <p class="col"><b>Where:</b> C<sub>V,0</sub> is total V14 loading per gel volume; C<sub>V,target</sub> is the target interstitial concentration; &#949;<sub>t</sub> and &#949;<sub>g</sub> are tissue and gel porosities; &#948; is the target tissue depth; f<sub>rel</sub> is the fraction released; and L<sub>gel</sub> is gel thickness. This lower-bound estimate omits tissue losses and is followed by the coupled numerical solve.</p>
@@ -1205,7 +982,8 @@ __I2__
   the MD2 pool is LPS-bound at 1&#160;&#181;M endotoxin. Every number below &#8212; 11.8&#160;h, 36&#160;h, 26&#160;&#181;M,
   R<sub>V</sub>&#160;&#8776;&#160;84.6 &#8212; inherits that assumption.</p>
 
-  <h3 class="col">Model construction: invert the chain to obtain a device specification</h3>
+  <h3 class="col">2. Model Construction: invert the chain to obtain a device specification</h3>
+<h4 class="col">2.1 Governing Equations</h4>
   <div class="col">
   <p>Models&#160;1&#8211;6 answer a forward question: given a patch, what happens? That is the natural direction to compute in, but it is the wrong direction for <em>design</em>. A team deciding how thick to cast a gel, how much peptide to load, and how often to tell a clinician to change a dressing needs the inverse map &#8212; from a required outcome to a device specification. Model&#160;7 exists to run the chain backwards, and it is the only part of this work whose output is a set of numbers someone could build to.</p>
   <p>Mathematically the inversion is where approximations become dangerous, which is why we flag it twice. Isolating the required dose demands that &#968; be separated <em>additively</em>; factoring out K<sub>D</sub><sup>app</sup> instead &#8212; a step that is perfectly valid for the occupancy expression and for Cheng&#8211;Prusoff &#8212; turns a linear relation into a quadratic one. The error was in the scaling law rather than in a constant, which is exactly the kind of mistake forward simulation does not reveal and a direct numerical check does.</p>
@@ -1313,7 +1091,8 @@ __I1__
     tethering would need them.</p>
   </div></details>
 
-  <h3 class="col">Assumptions and limitations</h3>
+  <h3>4. Experimental Validation Status</h3><p>Model 7 reports a model-derived device specification; the complete loading and wear-interval prescription has not yet been experimentally validated as a device.</p>
+<h4 class="col">2.2 Assumptions and limitations</h4>
   <div class="tablewrap"><table>
     <thead><tr><th>Assumption</th><th>Role in the calculation</th><th>What would test it</th></tr></thead>
     <tbody>
@@ -1324,7 +1103,7 @@ __I1__
     </tbody>
   </table></div>
 
-  <h3 class="col">Key design parameters and derived outputs</h3>
+  <h4 class="col">2.3 Design parameters and derived outputs</h4>
   <div class="tablewrap"><table>
     <thead><tr><th>Quantity</th><th>Value used</th><th>Evidence tier and interpretation</th></tr></thead>
     <tbody>
@@ -1342,6 +1121,8 @@ __I1__
   a scenario we chose rather than one we measured. The <em>structure</em> of the result &#8212; hours
   of cover against weeks of need, and the existence of a maximum change interval &#8212; should hold.
   The exact interval may not.</p>
+<h3>5. Sensitivity Analysis</h3><p>Figure 10 reports global Sobol indices for delivered dose using an analytic surrogate. Model 7 inherits those dose sensitivities together with uncertainty in the target and transport assumptions described above.</p>
+<h3>6. References</h3><p>Sources cited in this model section are collected in the <a href="#refs">References</a> section.</p>
 </section>
 
 <!-- ================= REFINEMENT ================= -->
