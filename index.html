@@ -561,6 +561,7 @@ body.noscroll{overflow:hidden}
   <li><a href="#m45">Models 4 &amp; 5</a></li>
   <li><a href="#m6">Model 6</a></li>
   <li><a href="#m7">Model 7</a></li>
+  <li><a href="#global-sensitivity">Global sensitivity</a></li>
   <li><a href="#wrong">Refinement</a></li>
   <li><a href="#asks">Wet lab</a></li>
   <li><a href="#conclusion">Conclusion</a></li>
@@ -931,7 +932,7 @@ body.noscroll{overflow:hidden}
 
   <figure>
     <div class="figbox"><img src="assets/G11_numerical_convergence.svg" alt="Left: log-log plot of release-solver error against grid points with a slope-2 reference. Right: numerical against analytic Fisher-KPP front speed with a one-to-one line." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;4.</span> Solver verification. (a) The release solver converges at second order to the closed-form solution. (b) The Fisher&#8211;KPP front speed matches the analytic pulled-front speed to within a few per cent.</figcaption>
+    <figcaption><span class="fid">Figure&#160;4.</span> Numerical verification across two model components. (a) The release solver used in Models&#160;1&#8211;2 converges at second order to the closed-form solution. (b) The Fisher&#8211;KPP solver used in Model&#160;6 matches the analytic pulled-front speed to within a few per cent.</figcaption>
   </figure>
 
   <div class="col">
@@ -964,7 +965,7 @@ body.noscroll{overflow:hidden}
   depth average is a <em>lower bound</em> &#8212; we report it that way deliberately rather than
   quoting the more flattering surface value.</p>
   </div>
-<h3>5. Sensitivity Analysis</h3><p>Figure 10 reports the variance-based sensitivity analysis for delivered dose and closure time. For Models&#160;1&#8211;2, the transport assumptions and parameter provenance above identify the inputs included in that analysis.</p>
+<h3>5. Sensitivity Analysis</h3><p>Figure 14 reports the variance-based sensitivity analysis for delivered dose and closure time. For Models&#160;1&#8211;2, the transport assumptions and parameter provenance above identify the inputs included in that analysis.</p>
 <h3>6. References</h3><p>Key sources for these models: <a href="#ref-grassi">Grassi et al. (2009)</a> on calcium-alginate structure; <a href="#ref-freeman">Freeman et al. (2008)</a> on alginate binding; and <a href="#ref-yager1997">Yager et al. (1997)</a> and <a href="#ref-moor">Moor et al. (2009)</a> on wound-fluid proteolysis. Full citations are listed below.</p>
 </section>
 
@@ -1236,7 +1237,7 @@ body.noscroll{overflow:hidden}
   <div class="w-body">
     <div class="w-controls">
       <label class="ctl"><span class="ctl-top"><span>V14 concentration C<sub>V</sub></span><output id="i3-cv-v"></output></span>
-        <input type="range" id="i3-cv" min="-1" max="3.7" step="0.01" value="2.1614"></label>
+        <input type="range" id="i3-cv" min="-1" max="3.7" step="0.001" value="1.90741"></label>
       <label class="ctl"><span class="ctl-top"><span>Endotoxin [LPS]</span><output id="i3-l-v"></output></span>
         <input type="range" id="i3-l" min="-2" max="1" step="0.01" value="0"></label>
       <label class="ctl"><span class="ctl-top"><span>V14 affinity K<sub>D,P</sub></span><output id="i3-kd-v"></output></span>
@@ -1282,58 +1283,7 @@ body.noscroll{overflow:hidden}
     would settle it. We would look for an optimum, not a plateau.</p>
   </div>
 
-  <h3 class="col">5. Sensitivity Analysis</h3>
-  <div class="col">
-  <p>To find which parameters matter most, we ran Morris screening followed by Sobol indices over the
-  full joint prior. We expected k<sub>prot,V</sub> to dominate delivered dose and
-  D<sub>n</sub> to dominate closure time. The computed indices <b>confirm the first and refute the
-  second</b>. Delivered dose is dominated by K<sub>D,P</sub> (S<sub>T</sub>&#160;=&#160;0.63), the
-  loading C<sub>V,0</sub> (0.50) and k<sub>prot,V</sub> (0.42); closure time by r<sub>0</sub>
-  (0.63), with D<sub>n</sub> the <em>least</em> influential of the ten factors
-  (S<sub>T</sub>&#160;=&#160;0.014), because t<sub>c</sub>&#160;&#8733;&#160;D<sub>n</sub><sup>&#8722;1/2</sup>
-  is a weak dependence and physiology bounds D<sub>n</sub> to about 1.5 decades.</p>
-
-  <p class="caveat">An earlier version of this page reported that <em>both</em> expectations had been
-  refuted, with k<sub>prot,V</sub> ranking fifth at S<sub>T</sub>&#160;=&#160;0.023. That was an
-  artefact of our own code: the analytic surrogate for delivered dose carried a spurious extra
-  factor &#923;/&#948; in the depth average, which cancelled most of the k<sub>prot,V</sub>
-  dependence. The depth average of C<sub>0</sub>e<sup>&#8722;x/&#923;</sup> over [0,&#160;&#948;]
-  is C&#772;&#160;=&#160;M(1&#160;&#8722;&#160;e<sup>&#8722;&#948;/&#923;</sup>)/(&#949;<sub>t</sub>&#948;),
-  which is what the module's own documentation stated and what it now computes. Correcting it raises
-  k<sub>prot,V</sub> to third place and removes a tension we had previously had to explain away:
-  the design section argues that k<sub>prot,V</sub> is the most useful parameter to <em>act</em> on,
-  and the variance ranking now agrees with that instead of contradicting it. We record the error
-  because the corrected result is less flattering to our original framing, not more.</p>
-
-  <p>Two points affect interpretation. A Sobol ranking reflects the width of the priors as much as the
-  physics, and K<sub>D,P</sub> and C<sub>V,0</sub> have the widest ranges. And share of variance is
-  not the same as what we can <em>change</em>: gel thickness L<sub>gel</sub> ranks fourth for
-  delivered dose but is a design variable we control directly, while the gel material &#8212;
-  porosity, mesh size &#8212; contributes essentially nothing. The practical lever and the
-  statistical leader are not the same parameter. L<sub>gel</sub> illustrates the first caveat
-  too: its share more than doubled (S<sub>T</sub> 0.13&#160;&#8594;&#160;0.29) when we widened its
-  prior from 0.3&#8211;1&#160;mm to 0.5&#8211;4&#160;mm to cover the 2.5&#160;mm build. That is a
-  change of prior, not of physics.</p>
-
-  <p>Propagating the full joint prior through to closure gives a result we think is the most
-  important single number in the uncertainty analysis: under the current priors, <b>18.7&#160;% of
-  sampled wounds never close at all</b>. This is a statement about the priors rather than a
-  prediction for any particular wound, but it is the main reason we keep the death term in
-  Model&#160;6. A model without it would return a finite closure time for every one of those
-  samples, and would quietly convert a chronic wound into a healing one by construction.</p>
-
-  <p>One further result constrains how this page should be read. A one-parameter-at-a-time sweep
-  &#8212; what any slider performs &#8212; captures only the first-order variance: <b>34&#160;%</b>
-  for delivered dose and <b>51&#160;%</b> for closure time. Most of the behaviour of the delivery
-  arm, and half of the closure arm, lives in
-  interactions that no single-slider exploration can show. That is why this page reports the
-  variance-based analysis rather than inviting readers to tune one parameter at a time.</p>
-  </div>
-
-  <figure class="wide">
-    <div class="figbox"><img src="assets/G08_global_sensitivity_sobol.svg" alt="Paired horizontal bars of first-order and total-order Sobol indices for the delivered scaled dose and for closure time." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;10.</span> Global sensitivity (Sobol, N&#160;=&#160;4096). K<sub>D,P</sub> and loading dominate the delivered dose; basal proliferation and death dominate closure time. The gap between S<sub>T</sub> and S<sub>1</sub> is the interaction strength. <span class="caveat">Evaluated on analytic surrogates of the delivery and closure models, not the full PDEs.</span></figcaption>
-  </figure>
+<h3 class="col">5. Sensitivity Analysis</h3><p>No separate global parameter sweep is reported for Models&#160;4&#8211;5. The cross-model sensitivity analysis covers delivered dose and closure time in <a href="#global-sensitivity">Figure&#160;14</a>.</p>
 
 <h4 class="col">2.2 Assumptions</h4>
   <div class="tablewrap"><table>
@@ -1422,7 +1372,7 @@ body.noscroll{overflow:hidden}
   capacity. This bound represents contact inhibition and finite tissue density. Radial geometry is
   used because the wound is approximated as a circular defect; it also allows the model to calculate
   the area-based closure fraction.</p>
-  <p>The model adds a death term, d(I<sub>e</sub>), to the standard Fisher&#8211;KPP equation. This
+  <p>The numerical Fisher&#8211;KPP check is shown in <a href="#m12">Figure&#160;4(b)</a>; it verifies the solver against the analytic front speed. The model adds a death term, d(I<sub>e</sub>), to the standard Fisher&#8211;KPP equation. This
   makes the effective growth rate r<sub>eff</sub>&#160;=&#160;r<sub>p</sub>&#160;&#8722;&#160;d,
   which can be negative. When r<sub>eff</sub>&#160;&lt;&#160;0, the model predicts regression rather
   than slow closure. This feature allows the model to represent chronic wounds that do not close
@@ -1618,7 +1568,7 @@ body.noscroll{overflow:hidden}
   most of the parameter space but reaches 36&#160;% in the corner that matters most, and it always
   errs optimistic.</p>
   </div>
-<h3>5. Sensitivity Analysis</h3><p>Figure 10 reports global Sobol indices for closure time using an analytic surrogate. Basal proliferation and cell loss dominate the modeled closure time; all closure inputs remain Tier 4 priors pending scratch-assay measurements.</p>
+<h3>5. Sensitivity Analysis</h3><p>Figure 14 reports global Sobol indices for closure time using an analytic surrogate. Basal proliferation and cell loss dominate the modeled closure time; all closure inputs remain Tier 4 priors pending scratch-assay measurements.</p>
 <h3>6. References</h3><p>Key source for the fibroblast-response limitation: <a href="#ref-kim2003">Kim et al. (2003)</a>. Full citation and other sources used on this page are listed below.</p>
 </section>
 
@@ -1757,7 +1707,7 @@ body.noscroll{overflow:hidden}
     </div>
   </div>
   <p class="w-foot"><b>Read this before trusting a slider.</b> A one-parameter-at-a-time sweep can only
-  reach the first-order share of the variance (37&#160;% for delivered dose, Figure&#160;10); every
+  reach the first-order share of the variance (37&#160;% for delivered dose, Figure&#160;14); every
   interaction between parameters is invisible here, so this is a presentation tool and not a sensitivity
   analysis. The longest workable change interval does not depend on wound size: whether a wound closes at
   all is set by whether the time-averaged drug effect keeps cells growing faster than they die, which is
@@ -1858,8 +1808,65 @@ body.noscroll{overflow:hidden}
   a scenario we chose rather than one we measured. The <em>structure</em> of the result &#8212; hours
   of cover against weeks of need, and the existence of a maximum change interval &#8212; should hold.
   The exact interval may not.</p>
-<h3>5. Sensitivity Analysis</h3><p>Figure 10 reports global Sobol indices for delivered dose using an analytic surrogate. Model 7 inherits those dose sensitivities together with uncertainty in the target and transport assumptions described above.</p>
+<h3>5. Sensitivity Analysis</h3><p>Figure 14 reports global Sobol indices for delivered dose using an analytic surrogate. Model 7 inherits those dose sensitivities together with uncertainty in the target and transport assumptions described above.</p>
 <h3>6. References</h3><p>Model&#160;7 combines the sources used in the release, transport, receptor and closure models. See the relevant citations for <a href="#ref-grassi">alginate structure</a>, <a href="#ref-slivka">MD2-targeting peptides</a> and <a href="#ref-kim2003">fibroblast response</a>; full citations are listed below.</p>
+</section>
+
+<section class="act wrap" id="global-sensitivity">
+<div class="act-head"><div class="num">&#8721;</div><div><p class="eyebrow">Cross-model analysis</p><h2>Global sensitivity across delivery and closure</h2></div></div>
+  <h3 class="col">5. Sensitivity Analysis</h3>
+  <div class="col">
+  <p>To find which parameters matter most, we ran Morris screening followed by Sobol indices over the
+  full joint prior. We expected k<sub>prot,V</sub> to dominate delivered dose and
+  D<sub>n</sub> to dominate closure time. The computed indices <b>confirm the first and refute the
+  second</b>. Delivered dose is dominated by K<sub>D,P</sub> (S<sub>T</sub>&#160;=&#160;0.63), the
+  loading C<sub>V,0</sub> (0.50) and k<sub>prot,V</sub> (0.42); closure time by r<sub>0</sub>
+  (0.63), with D<sub>n</sub> the <em>least</em> influential of the ten factors
+  (S<sub>T</sub>&#160;=&#160;0.014), because t<sub>c</sub>&#160;&#8733;&#160;D<sub>n</sub><sup>&#8722;1/2</sup>
+  is a weak dependence and physiology bounds D<sub>n</sub> to about 1.5 decades.</p>
+
+  <p class="caveat">An earlier version of this page reported that <em>both</em> expectations had been
+  refuted, with k<sub>prot,V</sub> ranking fifth at S<sub>T</sub>&#160;=&#160;0.023. That was an
+  artefact of our own code: the analytic surrogate for delivered dose carried a spurious extra
+  factor &#923;/&#948; in the depth average, which cancelled most of the k<sub>prot,V</sub>
+  dependence. The depth average of C<sub>0</sub>e<sup>&#8722;x/&#923;</sup> over [0,&#160;&#948;]
+  is C&#772;&#160;=&#160;M(1&#160;&#8722;&#160;e<sup>&#8722;&#948;/&#923;</sup>)/(&#949;<sub>t</sub>&#948;),
+  which is what the module's own documentation stated and what it now computes. Correcting it raises
+  k<sub>prot,V</sub> to third place and removes a tension we had previously had to explain away:
+  the design section argues that k<sub>prot,V</sub> is the most useful parameter to <em>act</em> on,
+  and the variance ranking now agrees with that instead of contradicting it. We record the error
+  because the corrected result is less flattering to our original framing, not more.</p>
+
+  <p>Two points affect interpretation. A Sobol ranking reflects the width of the priors as much as the
+  physics, and K<sub>D,P</sub> and C<sub>V,0</sub> have the widest ranges. And share of variance is
+  not the same as what we can <em>change</em>: gel thickness L<sub>gel</sub> ranks fourth for
+  delivered dose but is a design variable we control directly, while the gel material &#8212;
+  porosity, mesh size &#8212; contributes essentially nothing. The practical lever and the
+  statistical leader are not the same parameter. L<sub>gel</sub> illustrates the first caveat
+  too: its share more than doubled (S<sub>T</sub> 0.13&#160;&#8594;&#160;0.29) when we widened its
+  prior from 0.3&#8211;1&#160;mm to 0.5&#8211;4&#160;mm to cover the 2.5&#160;mm build. That is a
+  change of prior, not of physics.</p>
+
+  <p>Propagating the full joint prior through to closure gives a result we think is the most
+  important single number in the uncertainty analysis: under the current priors, <b>18.7&#160;% of
+  sampled wounds never close at all</b>. This is a statement about the priors rather than a
+  prediction for any particular wound, but it is the main reason we keep the death term in
+  Model&#160;6. A model without it would return a finite closure time for every one of those
+  samples, and would quietly convert a chronic wound into a healing one by construction.</p>
+
+  <p>One further result constrains how this page should be read. A one-parameter-at-a-time sweep
+  &#8212; what any slider performs &#8212; captures only the first-order variance: <b>34&#160;%</b>
+  for delivered dose and <b>51&#160;%</b> for closure time. Most of the behaviour of the delivery
+  arm, and half of the closure arm, lives in
+  interactions that no single-slider exploration can show. That is why this page reports the
+  variance-based analysis rather than inviting readers to tune one parameter at a time.</p>
+  </div>
+
+  <figure class="wide">
+    <div class="figbox"><img src="assets/G08_global_sensitivity_sobol.svg" alt="Paired horizontal bars of first-order and total-order Sobol indices for the delivered scaled dose and for closure time." loading="lazy"></div>
+    <figcaption><span class="fid">Figure&#160;14.</span> Global sensitivity (Sobol, N&#160;=&#160;4096). K<sub>D,P</sub> and loading dominate the delivered dose; basal proliferation and death dominate closure time. The gap between S<sub>T</sub> and S<sub>1</sub> is the interaction strength. <span class="caveat">Evaluated on analytic surrogates of the delivery and closure models, not the full PDEs.</span></figcaption>
+  </figure>
+
 </section>
 
 <!-- ================= REFINEMENT ================= -->
@@ -2119,7 +2126,7 @@ body.noscroll{overflow:hidden}
 
   <figure>
     <div class="figbox"><img src="assets/G13_parameter_provenance.svg" alt="Stacked horizontal bars counting parameters per model module by evidence tier, with the number not yet scheduled for measurement." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;14.</span> Where every parameter comes from, by module and evidence tier (T1 measured in house to T4 order-of-magnitude prior).</figcaption>
+    <figcaption><span class="fid">Figure&#160;15.</span> Where every parameter comes from, by module and evidence tier (T1 measured in house to T4 order-of-magnitude prior).</figcaption>
   </figure>
 </section>
 
