@@ -39,104 +39,99 @@
 
   <div class="col">
   <h3>Biological background and modelling question</h3>
-  <p>The modelling is organised as a chain. A screening model comes first and asks whether the
-  peptide is suitable as a payload. Seven linked models then follow the amount of drug loaded into the
-  hydrogel and carry it to a healing outcome, along two arms &#8212; a V14 arm (release, transport,
-  receptor binding, signalling, nitric oxide) and an FGF2-G3 arm (release, transport, fibroblast
-  growth, closure). The two arms meet at a single point, where the therapeutic state of the tissue
-  sets the closure rate. Without that meeting point this would be two unrelated models rather than a
-  model of a combination patch.</p>
+  <p>We built a screening model and seven linked models to follow the patch from peptide choice to
+  wound closure. The V14 arm represents release, transport, receptor binding, signalling and nitric
+  oxide. The FGF2-G3 arm represents release, transport and fibroblast growth. Model&#160;6 brings the
+  two arms together: the modelled treatment state changes the rate of wound closure.</p>
 
-  <p>The biological context is important because each model describes one part of the wound-healing
-  process.</p>
+  <p>Each model represents one part of the wound-healing process.</p>
 
   <h3>Why chronic wounds can remain inflamed</h3>
-  <p>Acute wounds pass through haemostasis, inflammation, proliferation and remodelling. Chronic
-  wounds &#8212; diabetic foot ulcers, venous leg ulcers, pressure ulcers &#8212; stall between the
-  second and the third, held there by a loop that sustains itself:</p>
+  <p>Acute wounds usually move through four stages: haemostasis, inflammation, proliferation and
+  remodelling. Chronic wounds, including diabetic foot ulcers, venous leg ulcers and pressure ulcers,
+  can remain in the inflammatory stage. Several processes can keep that inflammation going:</p>
 
   <ul class="bio">
-    <li><b>The receptor stays on.</b> Bacterial LPS from a colonised wound bed, together with
-    host damage-associated molecular patterns from dying tissue, engages TLR4. TLR4 cannot bind LPS
-    by itself; it needs the accessory protein <b>MD2</b>, which holds the lipid&#160;A moiety and
-    drives receptor dimerisation. In human diabetic wounds TLR4 expression and downstream signalling
-    are elevated rather than transient (Dasu &amp; Martin, 2014).</li>
+    <li><b>The receptor keeps receiving inflammatory signals.</b> Bacterial LPS and molecules
+    released by damaged host cells can activate TLR4. TLR4 needs the accessory protein <b>MD2</b> to
+    bind LPS and bring two receptor molecules together. In human diabetic wounds, TLR4 expression
+    and downstream signalling are elevated rather than short-lived (Dasu &amp; Martin, 2014).</li>
 
-    <li><b>The signal drives a destructive program.</b> TLR4/MD2 dimerisation recruits MyD88 and
-    activates NF-&#954;B, raising pro-inflammatory cytokines, inducible nitric oxide synthase (iNOS)
-    and matrix metalloproteinases.</li>
+    <li><b>The signal activates inflammatory pathways.</b> When TLR4 and MD2 come together, they
+    recruit MyD88 and activate NF-&#954;B. This increases inflammatory cytokines, inducible nitric
+    oxide synthase (iNOS) and matrix metalloproteinases.</li>
 
-    <li><b>Those products prevent repair.</b> Chronic wound fluid carries roughly sevenfold higher
-    total MMP-9 than surrounding tissue, mostly activated (Moor <i>et al.</i>, 2009), together with
-    neutrophil elastase (Ai <i>et al.</i>, 2004; Yager &amp; Nwomeh, 1999). That protease load
-    degrades the provisional matrix cells migrate across, and degrades growth factors directly
-    (Yager <i>et al.</i>, 1997).</li>
+    <li><b>Inflammation can damage the tissue needed for repair.</b> Chronic wound fluid contains
+    roughly seven times more total MMP-9 than surrounding tissue, mostly in its active form (Moor
+    <i>et al.</i>, 2009). It also contains neutrophil elastase (Ai <i>et al.</i>, 2004; Yager &amp;
+    Nwomeh, 1999). These enzymes break down the temporary matrix that cells move across and can
+    also break down growth factors (Yager <i>et al.</i>, 1997).</li>
 
-    <li><b>Degraded matrix and dying cells release more DAMPs back onto TLR4.</b> The loop closes.</li>
+    <li><b>Damage can add to the original signal.</b> Damaged cells and matrix release more signals
+    that can activate TLR4, helping the inflammatory cycle continue.</li>
   </ul>
 
-  <p>This motivates a two-payload patch. Growth factor alone would be delivered into a wound
-  environment containing proteases that can degrade it, a limitation reported for exogenous growth
-  factors in chronic wounds (Yager <i>et al.</i>, 1997). The design therefore combines V14, which is
-  intended to reduce inflammatory signalling, with FGF2-G3, which supports fibroblast growth. Model&#160;6
-  combines these two effects in the predicted closure response.</p>
+  <p>This motivates a patch with two payloads. FGF2-G3 is intended to support fibroblast growth,
+  while V14 is intended to reduce inflammatory signalling. Delivering a growth factor on its own may
+  be less effective in a wound environment where proteases can break it down, as reported for
+  exogenous growth factors in chronic wounds (Yager <i>et al.</i>, 1997). Model&#160;6 combines the
+  two modelled effects when it estimates wound closure.</p>
 
-  <p>The chain reads as follows.</p>
+  <p>The table summarises what each stage asks and what evidence supports it.</p>
   </div>
 
   <div class="tablewrap"><table>
-    <thead><tr><th>Stage</th><th>Question it answers</th><th>Status</th></tr></thead>
+    <thead><tr><th>Stage</th><th>Question it answers</th><th>What supports the result</th></tr></thead>
     <tbody>
       <tr><td><b>Peptide suitability</b></td>
-        <td>Which candidate peptide can survive the wound and the hydrogel long enough to be a payload?</td>
-        <td>Predictive now &#8212; sequence-derived, with one measured input</td></tr>
+        <td>Which peptide is suitable as a payload in the wound and hydrogel?</td>
+        <td>Sequence-based screening with one measured input</td></tr>
       <tr><td><b>Model 1</b> &#183; release</td>
-        <td>How fast does each molecule leave the gel?</td>
-        <td>Predictive now</td></tr>
+        <td>How quickly does each molecule leave the gel?</td>
+        <td>Model prediction using the patch properties</td></tr>
       <tr><td><b>Model 2</b> &#183; tissue transport</td>
-        <td>How deep into the dermis does it get, and for how long?</td>
-        <td>Predictive now</td></tr>
+        <td>How far does each molecule move into the wound tissue, and for how long?</td>
+        <td>Model prediction using the tissue and transport properties</td></tr>
       <tr><td><b>Model 3</b> &#183; MD2/TLR4 competition</td>
-        <td>How much receptor does V14 block against a given endotoxin load?</td>
-        <td>Predictive in scaled form; 5.62&#160;&#181;M is an exploratory model-based estimate that assumes the positive-gate ratio equals relative LPS occupancy</td></tr>
+        <td>How much V14 is needed to reduce receptor activation at a given endotoxin level?</td>
+        <td>Scaled prediction; 5.62&#160;&#181;M is an exploratory estimate based on treating the positive-gate ratio as relative LPS occupancy</td></tr>
       <tr><td><b>Model 4</b> &#183; NF-&#954;B signalling</td>
-        <td>How does receptor blockade translate into transcriptional output?</td>
-        <td>Predictive in scaled form</td></tr>
-      <tr><td><b>Model 5</b> &#183; iNOS &#8594; nitrite</td>
-        <td>What does the model calculate for NO and accumulated nitrite?</td>
-        <td>Illustrative, unvalidated calculation; no Griess assay is planned</td></tr>
+        <td>How does receptor activation affect the downstream inflammatory signal?</td>
+        <td>Scaled model prediction</td></tr>
+      <tr><td><b>Model 5</b> &#183; iNOS and nitrite</td>
+        <td>What nitric oxide and accumulated nitrite levels does the model calculate?</td>
+        <td>Illustrative calculation; no Griess assay is planned</td></tr>
       <tr><td><b>Model 6</b> &#183; Fisher&#8211;KPP closure</td>
-        <td>Does the wound close, and how fast?</td>
-        <td>Structured hypothesis &#8212; Tier-4 throughout, nothing planned constrains it</td></tr>
+        <td>Does the modelled wound close, and how long does it take?</td>
+        <td>Structured hypothesis; all parameters are Tier&#160;4 and no planned experiment currently constrains them</td></tr>
       <tr><td><b>Model 7</b> &#183; design inversion</td>
-        <td>Given a wound, what must the device do?</td>
-        <td>Inherits the confidence of whatever it is inverting</td></tr>
+        <td>For a chosen wound and target, what must the patch deliver?</td>
+        <td>Depends on the evidence supporting the models it uses</td></tr>
     </tbody>
   </table></div>
 
   <div class="col">
-  <p>The models have different levels of evidence, so their conclusions should not be treated as
-  equally certain. Models&#160;1&#8211;2 can be used to make predictions
-  now, because their parameters come from the V14 sequence, the patch geometry and the literature.
-  Models&#160;3&#8211;4 run in <em>scaled</em> form; the current exploratory model-based estimate of 5.62&#160;&#181;M gives
-  a provisional axis scale but does not validate absolute affinity. Model&#160;5 is theoretical and unvalidated; no Griess assay is planned. Model&#160;6 is a structured hypothesis: its coupling functions are phenomenological and
-  no planned experiment constrains them yet. Every parameter in the register carries a provenance
-  tier, and where a value is Tier&#160;3 or Tier&#160;4 the tier, rather than a citation, is the
-  statement of confidence.</p>
+  <p>The evidence differs across the model chain, so the results do not all have the same level of
+  confidence. Models&#160;1&#8211;2 use the peptide sequence, patch geometry and published values to
+  predict release and tissue transport. Models&#160;3&#8211;4 give scaled predictions. The current
+  5.62&#160;&#181;M estimate in Model&#160;3 is exploratory: it sets a provisional scale but does not
+  establish an absolute binding affinity. Model&#160;5 is an illustrative calculation without planned
+  Griess measurements. Model&#160;6 uses assumed response functions, and no planned experiment
+  currently constrains its parameters. Each parameter has an evidence tier in the register; Tier&#160;3
+  and Tier&#160;4 values are assumptions or estimates rather than direct measurements.</p>
 
   <h3>The device</h3>
-  <p>The patch is a single acellular calcium-alginate hydrogel layer, 2.5&#160;mm thick:
-  1&#160;% w/v sodium alginate, cross-linked with 100&#160;mM calcium chloride, in HEPES-buffered
-  saline at pH&#160;7.4. Its outer face is sealed by an impermeable backing and its inner face sits
-  on the wound bed. Two active molecules are mixed into the gel during casting: <b>V14</b>
-  (<code>SVQELLELLAAGL</code>, 1355.59&#160;Da), variant 14 of our own <i>de novo</i> designs
-  against the TLR4/MD2 complex, and <b>FGF2-G3</b>, an engineered, highly stable growth factor. The
-  device contains no live bacteria.</p>
+  <p>The patch is a 2.5&#160;mm layer of calcium-alginate hydrogel. It contains 1&#160;% w/v sodium
+  alginate cross-linked with 100&#160;mM calcium chloride, in HEPES-buffered saline at pH&#160;7.4.
+  An impermeable backing seals the outer face, while the inner face contacts the wound bed. V14
+  (<code>SVQELLELLAAGL</code>, 1355.59&#160;Da) and FGF2-G3 are mixed into the gel during casting.
+  V14 is variant 14 of our <i>de novo</i> peptide designs against the TLR4/MD2 complex. FGF2-G3 is
+  an engineered growth factor designed for greater stability. The patch contains no live bacteria.</p>
 
-  <p class="caveat" style="display:block;margin-top:1em">A note on naming. V14 and
-  <b>&#945;TI-14</b> are the same molecule: <code>SVQELLELLAAGL</code>. The peptide-screening
-  document uses &#945;TI-14 and the device models use V14. This page uses V14 throughout and gives
-  the alias at first mention in each section.</p>
+  <p class="caveat" style="display:block;margin-top:1em">V14 and <b>&#945;TI-14</b> are two names
+  for the same molecule: <code>SVQELLELLAAGL</code>. The peptide-screening section uses
+  &#945;TI-14; the device models use V14. This page uses V14 throughout and gives the other name
+  when it is first mentioned in each section.</p>
   </div>
 </section>
 
