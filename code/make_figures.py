@@ -32,7 +32,6 @@ ORDER = [
     ("13", "fig13_nitrite_fit.py",     "nitrite fit -- NEEDS THE WET-LAB CSV"),
     ("14", "fig14_no_vs_nitrite.py",   "free NO vs cumulative nitrite"),
     ("15", "fig15_sobol.py",           "Sobol tornado (SLOW, ~1 min)"),
-    ("16", "fig16_uncertainty.py",     "closure under the joint prior"),
     ("17", "fig17_slider.py",          "slider deficit (needs 15 first)"),
     ("18", "fig18_provenance.py",      "parameter provenance"),
 ]

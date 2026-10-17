@@ -543,9 +543,8 @@ body.noscroll{overflow:hidden}
   growth factor FGF2-G3. To understand how the patch behaves, we built a set of linked
   mathematical models that run from the choice of the peptide itself, through release from the
   hydrogel into the wound tissue, onto the receptor, and through to wound closure.</p>
-  <p class="thesis">The aim of this work is not to build the most complex model possible, but one
-  that is detailed enough to choose the payload, to guide the design of the patch, and to tell the
-  wet lab which experiment to do next.</p>
+  <p class="thesis">The aim is to build models that are detailed enough to guide payload selection
+  and patch design, while identifying which wet-lab measurements would most improve the predictions.</p>
   <div class="keystrip">
     <div><div class="v">3 modules</div><div class="k">screened the payload before synthesis: the iteration-1 peptide fails the structural gate, V14 passes all three</div></div>
     <div><div class="v">5.6 h</div><div class="k">to 95&#160;% release of the mobile V14 dose from the 2.5&#160;mm alginate gel &#8212; hours, not minutes, because release time scales with thickness squared</div></div>
@@ -577,19 +576,18 @@ body.noscroll{overflow:hidden}
 
   <div class="col">
   <h3>Biological background and modelling question</h3>
-  <p>The modelling runs as a chain. A screening model sits at the front and answers a question that
-  has to be settled before anything else is worth computing: <em>is this peptide a usable payload
-  at all?</em> Downstream of it, seven linked models take the amount of drug we load into the
+  <p>The modelling is organised as a chain. A screening model comes first and asks whether the
+  peptide is suitable as a payload. Seven linked models then follow the amount of drug loaded into the
   hydrogel and carry it to a healing outcome, along two arms &#8212; a V14 arm (release, transport,
   receptor binding, signalling, nitric oxide) and an FGF2-G3 arm (release, transport, fibroblast
   growth, closure). The two arms meet at a single point, where the therapeutic state of the tissue
   sets the closure rate. Without that meeting point this would be two unrelated models rather than a
   model of a combination patch.</p>
 
-  <p>Before any of that is worth computing, it is worth saying what the wound is doing, because
-  every model below is a quantitative statement about one link in it.</p>
+  <p>The biological context is important because each model describes one part of the wound-healing
+  process.</p>
 
-  <h3>A chronic wound is arrested, not slow</h3>
+  <h3>Why chronic wounds can remain inflamed</h3>
   <p>Acute wounds pass through haemostasis, inflammation, proliferation and remodelling. Chronic
   wounds &#8212; diabetic foot ulcers, venous leg ulcers, pressure ulcers &#8212; stall between the
   second and the third, held there by a loop that sustains itself:</p>
@@ -614,11 +612,11 @@ body.noscroll{overflow:hidden}
     <li><b>Degraded matrix and dying cells release more DAMPs back onto TLR4.</b> The loop closes.</li>
   </ul>
 
-  <p>This is the argument for a two-payload patch rather than a simpler one. Adding growth factor
-  alone puts substrate into a compartment full of the proteases that destroy it, which is the
-  documented failure mode of exogenous growth-factor therapy in chronic wounds (Yager
-  <i>et al.</i>, 1997). The inflammatory drive has to come down <em>and</em> the proliferative drive
-  has to go up. V14 does the first, FGF2-G3 the second, and Model&#160;6 is where the two meet.</p>
+  <p>This motivates a two-payload patch. Growth factor alone would be delivered into a wound
+  environment containing proteases that can degrade it, a limitation reported for exogenous growth
+  factors in chronic wounds (Yager <i>et al.</i>, 1997). The design therefore combines V14, which is
+  intended to reduce inflammatory signalling, with FGF2-G3, which supports fibroblast growth. Model&#160;6
+  combines these two effects in the predicted closure response.</p>
 
   <p>The chain reads as follows.</p>
   </div>
@@ -654,8 +652,8 @@ body.noscroll{overflow:hidden}
   </table></div>
 
   <div class="col">
-  <p>The parts are not equally well supported, and we have marked this everywhere rather than
-  presenting the chain as uniformly reliable. Models&#160;1&#8211;2 can be used to make predictions
+  <p>The models have different levels of evidence, so their conclusions should not be treated as
+  equally certain. Models&#160;1&#8211;2 can be used to make predictions
   now, because their parameters come from the V14 sequence, the patch geometry and the literature.
   Models&#160;3&#8211;4 run in <em>scaled</em> form; the current exploratory model-based estimate of 5.62&#160;&#181;M gives
   a provisional axis scale but does not validate absolute affinity. Model&#160;5 is theoretical and unvalidated; no Griess assay is planned. Model&#160;6 is a structured hypothesis: its coupling functions are phenomenological and
@@ -772,10 +770,23 @@ body.noscroll{overflow:hidden}
   <div class="col">
   <h3 class="col">2. Model Construction: spatial diffusion across two domains</h3>
   <div class="col">
-  <p>The obvious cheaper choice would be a compartmental ODE &#8212; gel compartment, tissue compartment, rate constants between them. We did not use one, because <b>the answer we need is a gradient</b>. A well-mixed compartment has, by construction, one concentration everywhere inside it; but the macrophages we are trying to reach sit near the surface, the clearance sink sits at the dermal base, and the entire question of how long tissue stays above target is a question about the <em>shape</em> of the profile between them. A compartment model cannot represent that shape, so it could not have produced the coverage window, the depth-dependence, or the lower-bound argument.</p>
-  <p>Within the PDE, each term is there for a reason that can be checked. Transport is Fickian because both payloads are dilute, uncharged with respect to the gel, and there is no evidence of concentration-dependent mobility; the mesh correction H(a,&#958;) comes from Amsden obstruction scaling, which was derived for exactly this geometry &#8212; a solute sphere moving through a fibrous polymer network &#8212; rather than being a fitted fudge factor. Degradation is first order because proteolysis of a dilute substrate by an enzyme pool in excess is pseudo-first-order in substrate. FGF2-G3 alone carries a Michaelis&#8211;Menten sink, because receptor-mediated uptake saturates and V14 has no equivalent mechanism.</p>
-  <p>We solve the gel and the tissue as <b>two coupled domains with an explicit interface</b> rather than smearing them into one effective medium. That costs more to solve, but an effective medium would destroy the two things that matter most: the partition at the interface, and the fact that the two phases have genuinely different diffusivities and porosities. The flux-matching condition is what conserves mass across that seam, and the porosity convention inside it is precisely where our earlier version went wrong.</p>
-  <p>Reducing to <b>one spatial dimension</b> is justified by aspect ratio: the patch is centimetres across and 2.5&#160;mm thick, so over the region that feeds a millimetre-scale wound the lateral gradients are negligible compared with the axial one. This is a geometric argument, not a convenience, and it would fail for a patch comparable in width to its thickness.</p>
+  <p>A compartmental ordinary differential equation could represent the gel and tissue as well-mixed
+  regions, but the main output needed here is a spatial concentration gradient. Macrophages are
+  concentrated near the wound surface, while clearance occurs deeper in the dermis. The duration for
+  which tissue remains above target therefore depends on the concentration profile with depth. A
+  well-mixed compartment model cannot resolve that profile or calculate the depth-dependent coverage
+  window.</p>
+  <p>Each term in the partial differential equation represents a specified process. Transport is
+  modelled as Fickian because the payloads are dilute and no concentration-dependent mobility has
+  been established. The mesh correction H(a,&#958;) uses Amsden obstruction scaling for solute movement
+  through a fibrous polymer network. Degradation is first order, consistent with pseudo-first-order
+  loss when the enzyme pool is in excess. FGF2-G3 also has a Michaelis&#8211;Menten uptake term to
+  represent saturable receptor-mediated uptake; V14 has no corresponding uptake term.</p>
+  <p>The gel and tissue are represented as <b>two coupled domains with an explicit interface</b>.
+  This preserves the partition at the gel&#8211;tissue boundary and allows each domain to have its own
+  diffusivity and porosity. Flux matching conserves mass across the interface. The porosity convention
+  used in that condition was corrected after an error was identified in an earlier version.</p>
+  <p>Reducing to <b>one spatial dimension</b> is justified by aspect ratio: the patch is centimetres across and 2.5&#160;mm thick, so over the region that feeds a millimetre-scale wound the lateral gradients are negligible compared with the axial one. This approximation follows from the geometry and would not apply to a patch whose width is comparable to its thickness.</p>
   </div>
   <p>Release half-times are 59&#160;minutes for V14 and 154&#160;minutes for FGF2-G3. The gap
   between the release curves and the closure window is the central result of this section: the two
@@ -787,7 +798,7 @@ body.noscroll{overflow:hidden}
   release assay. Second, the model predicts only a <em>small</em> closure benefit from an unmodified
   gel &#8212; this is a prediction of the model, not a failure of it. Third, if release kinetics are
   to matter for efficacy at all, retention would have to be <em>added</em> to the gel; Model&#160;7
-  asks what that would achieve, and the answer is less than we expected.</p>
+  evaluates the effect of adding retention to the current design.</p>
 
   <p>Our gel is plain alginate, which binds neither molecule: FGF-2 showed no measurable binding to
   unmodified alginate (Freeman <i>et al.</i>, 2008), and V14 has no hydrophobic surface to stick to.
@@ -953,8 +964,8 @@ body.noscroll{overflow:hidden}
   depth average is a <em>lower bound</em> &#8212; we report it that way deliberately rather than
   quoting the more flattering surface value.</p>
   </div>
-<h3>5. Sensitivity Analysis</h3><p>The variance-based sensitivity analysis for delivered dose is reported with Figure 10. The transport assumptions and parameter provenance above identify the inputs carried into that result.</p>
-<h3>6. References</h3><p>Sources cited in this model section are collected in the <a href="#refs">References</a> section.</p>
+<h3>5. Sensitivity Analysis</h3><p>Figure 10 reports the variance-based sensitivity analysis for delivered dose and closure time. For Models&#160;1&#8211;2, the transport assumptions and parameter provenance above identify the inputs included in that analysis.</p>
+<h3>6. References</h3><p>Key sources for these models: <a href="#ref-grassi">Grassi et al. (2009)</a> on calcium-alginate structure; <a href="#ref-freeman">Freeman et al. (2008)</a> on alginate binding; and <a href="#ref-yager1997">Yager et al. (1997)</a> and <a href="#ref-moor">Moor et al. (2009)</a> on wound-fluid proteolysis. Full citations are listed below.</p>
 </section>
 
 <!-- ================= MODEL 3 ================= -->
@@ -980,9 +991,26 @@ body.noscroll{overflow:hidden}
   <div class="col">
   <h3 class="col">2. Model Construction: equilibrium occupancy</h3>
   <div class="col">
-  <p>Model&#160;3 uses equilibrium mass action rather than a kinetic scheme with explicit k<sub>on</sub> and k<sub>off</sub>. The justification is a <b>separation of timescales</b>: peptide&#8211;receptor binding equilibrates on the order of seconds to minutes, while the delivery profile it reads from Model&#160;2 changes over hours. On the timescale that matters, occupancy tracks concentration essentially instantaneously, so carrying the kinetics would add two parameters we cannot measure and would change no prediction. This is an assumption with a test attached: if SPR showed a dissociation half-life comparable to the delivery timescale, the quasi-equilibrium treatment would have to go &#8212; and the patch would in fact perform <em>better</em> than modelled, not worse, since slow release of the peptide from the receptor would extend its action.</p>
-  <p>The competitive form in particular is not a generic sigmoid. It follows from the single structural claim that V14 and LPS occupy the <em>same</em> MD2 pocket, and it makes a specific, falsifiable prediction &#8212; a rightward shift of the dose&#8211;response with an <b>undepressed maximum</b>. A non-competitive inhibitor would depress the maximum instead. The mathematics therefore carries the mechanism rather than merely fitting the data, which is what makes the Schild experiment worth doing.</p>
-  <p><b>Non-dimensionalisation is the choice that paid for itself.</b> The raw chain carries fourteen parameters, of which the binding affinity K<sub>D,P</sub> was the one we did not have. By rescaling concentration as &#968;&#160;=&#160;C<sub>V</sub>/K<sub>D,P</sub> and endotoxin as a&#160;=&#160;[L]/K<sub>D,L</sub>, the unknown becomes the <em>unit of the axis</em> rather than a free parameter in the answer. The dose&#8211;response shape, the sensitivity structure and the exact half-suppression point all follow without it. That is why the dry lab was never blocked on the binding assay: measuring K<sub>D,P</sub> relabels the axis and calibrates the model, but it does not change any of its conclusions. For a team working on an iGEM timeline, with wet-lab results arriving late, this is the single most useful property the model has.</p>
+  <p>Model&#160;3 uses equilibrium mass action and does not include explicit association and
+  dissociation rate constants, k<sub>on</sub> and k<sub>off</sub>. This choice assumes a
+  <b>separation of timescales</b>: peptide&#8211;receptor binding equilibrates within seconds to
+  minutes, while the concentration delivered by Model&#160;2 changes over hours. Under this
+  assumption, receptor occupancy tracks concentration without a measurable delay, and explicit
+  kinetic rates would add parameters without changing the current predictions. Surface plasmon
+  resonance (SPR) could test this assumption. If the measured dissociation half-life were comparable
+  to the delivery timescale, the quasi-equilibrium model would need revision; slower dissociation
+  could also extend peptide activity beyond the prediction.</p>
+  <p>The competitive form follows from the assumption that V14 and LPS bind the same MD2 pocket. It
+  predicts a rightward shift in the dose&#8211;response curve without a reduced maximum. A
+  non-competitive mechanism would instead reduce the maximum response. This distinction makes a
+  Schild analysis a useful test of the proposed competitive mechanism.</p>
+  <p><b>Non-dimensionalisation allows the model to run without an absolute binding affinity.</b>
+  The chain contains fourteen parameters, including the currently unknown K<sub>D,P</sub>. Rescaling
+  concentration as &#968;&#160;=&#160;C<sub>V</sub>/K<sub>D,P</sub> and endotoxin as
+  a&#160;=&#160;[L]/K<sub>D,L</sub> expresses the predictions in terms of dimensionless quantities.
+  The dose&#8211;response shape, sensitivity structure and half-suppression point can then be
+  calculated without specifying K<sub>D,P</sub>. Measuring K<sub>D,P</sub> would calibrate the
+  concentration scale, but would not change these scaled predictions.</p>
   </div>
   <p>V14 (&#945;TI-14) is a competitive antagonist: it and LPS contend for the same MD2 site, so
   each occupancy carries the other's concentration in its denominator:</p>
@@ -1107,16 +1135,16 @@ body.noscroll{overflow:hidden}
   </div>
 
   <figure class="wide">
-    <div class="figbox"><img src="assets/WL_positive_gate_trials2_3.png" alt="Positive-gate frequency for viability-only, FITC-LPS alone and FITC-LPS with three peptide variants, each replicate shown, trials 2 and 3." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;7.</span> Wet-lab flow cytometry (trials 2&#8211;3): FITC-LPS positive-gate frequency with and without peptide variants at 25&#160;&#181;M. <span class="caveat">Exploratory statistics; trial-2 duplicates share a specimen.</span></figcaption>
+    <div class="figbox"><img src="assets/WL_positive_gate_trials2_3.png" alt="Positive-gate frequencies: updated viability-only, FITC-LPS, V14 and V5 groups from Specimens 3 and 7, alongside earlier V12 and V16 trial data; each sample shown." loading="lazy"></div>
+    <figcaption><span class="fid">Figure&#160;7.</span> Wet-lab flow cytometry positive-gate frequency. Viability-only, FITC-LPS, V14 and V5 use the updated Specimens 3/7 data; V12 and V16 use the earlier Trials 2/3 data. The panels show raw frequencies and values normalised to the matching specimen or trial LPS-alone mean. <span class="caveat">Exploratory sample-level statistics; the two cohorts have different specimen structures and raw frequencies across them are not directly comparable.</span></figcaption>
   </figure>
 
   <figure class="wide">
-    <div class="figbox"><img src="assets/WL_kdp_bound_25uM.png" alt="Normalised signal against peptide dose for a family of K_D,P values with the detection band at 25 micromolar, and the required tissue concentration against K_D,P." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;8.</span> Historical 14&#160;Oct detection-limit analysis. The 17&#160;Oct result supports a exploratory model-based estimate of K<sub>D,P</sub> of 5.62&#160;&#181;M and model-derived target of 80.9&#160;&#181;M under the assumption that the gate-frequency ratio is equated with relative LPS occupancy.</figcaption>
+    <div class="figbox"><img src="assets/WL_kdp_bound_25uM.png" alt="17 October flow result: FITC-LPS and V14 positive-gate frequencies, with modelled V14 delivery requirements across K_D,P values and the current proxy marked." loading="lazy"></div>
+    <figcaption><span class="fid">Figure&#160;8.</span> (A) Positive-gate frequency was 16.31&#160;% for FITC-LPS and 12.83&#160;% with 25&#160;&#181;M V14 (21.34&#160;% relative decrease, p&#160;=&#160;0.0186, n&#160;=&#160;4/group). (B) Modelled tissue V14 concentration required for 50&#160;% or 90&#160;% suppression across K<sub>D,P</sub>; the marker shows the 17&#160;Oct proxy of 5.62&#160;&#181;M and its derived target of 80.9&#160;&#181;M. The proxy assumes the gate-frequency ratio equals relative LPS occupancy.</figcaption>
   </figure>
-<h3>5. Sensitivity Analysis</h3><p>The analytical dose-response curves show the effect of endotoxin load on the required inhibitor dose. No separate global parameter sweep is reported for Model 3; assay-identifiability limits remain the main uncertainty.</p>
-<h3>6. References</h3><p>Sources cited in this model section are collected in the <a href="#refs">References</a> section.</p>
+<h3>5. Sensitivity Analysis</h3><p>The analytical dose&#8211;response curves show how endotoxin load changes the required inhibitor dose. No separate global parameter sweep is reported for Model&#160;3; the main limitation is that one flow-cytometry dose cannot identify absolute K<sub>D,P</sub>.</p>
+<h3>6. References</h3><p>Key sources for this model: <a href="#ref-slivka">Slivka et al. (2009)</a> for the MD2 peptide benchmark; <a href="#ref-park2017">Park et al. (2017)</a> for TLR4/MD2-targeting peptides; and <a href="#ref-liu">Liu et al. (2023)</a> for TLR4&#8211;MD2 inhibition in a hydrogel-delivery study. Full citations are listed below.</p>
 </section>
 
 <!-- ================= MODELS 4 & 5 ================= -->
@@ -1134,8 +1162,16 @@ body.noscroll{overflow:hidden}
   <div class="col">
   <h3 class="col">2. Model Construction: signalling and integrated readout</h3>
   <div class="col">
-  <p>Models&#160;4 and&#160;5 use Hill functions where a mechanistic model would use a reaction network. This is deliberate coarse-graining. A full NF-&#954;B model &#8212; IKK activation, I&#954;B&#945; degradation and resynthesis, p65 nuclear shuttling &#8212; is well described in the literature and would add well over a dozen parameters, none of which our planned experiments constrain. What we actually need from this stage is a <b>monotonic, saturating input&#8211;output map</b> from receptor occupancy to transcriptional drive, with the right behaviour in both limits. A Hill function is the minimal form with those properties, and its exponent is the one feature of the shape that a dose&#8211;response can actually inform.</p>
-  <p>The honest cost of that choice is dynamics. Real NF-&#954;B signalling oscillates, and a pulsed input can produce a different transcriptional output than its time average would suggest &#8212; which matters here, because our patch delivers in pulses. We note this as a limitation rather than claiming the steady-state map is exact.</p>
+  <p>Models&#160;4 and&#160;5 use Hill functions to represent the signalling response without a full
+  reaction network. A detailed NF-&#954;B model could include IKK activation, I&#954;B&#945;
+  degradation and resynthesis, and p65 nuclear shuttling. Such a model would introduce more than a
+  dozen additional parameters, which the planned experiments do not constrain. The current models
+  instead use a <b>monotonic, saturating input&#8211;output relationship</b> between receptor
+  occupancy and transcriptional drive. A Hill function is a compact form for this relationship, and
+  its exponent can in principle be estimated from dose&#8211;response data.</p>
+  <p>This simplification does not represent signalling dynamics. NF-&#954;B can oscillate, so a pulsed
+  input may produce a different transcriptional response from a steady input with the same average.
+  The steady-state response should therefore be interpreted as an approximation.</p>
   <p><b>Model&#160;5 distinguishes two calculated quantities.</b> Free NO approaches a quasi-steady level on the modelled timescale, while accumulated nitrite integrates the predicted production rate. The model therefore reports both the instantaneous free-NO concentration and the integral for nitrite. The earlier version matched a free-NO expression to nitrite values from literature, hiding a 10<sup>4</sup>&#215; error in the per-cell iNOS rate; the current formulation keeps those quantities separate. These remain theoretical outputs, not a fit to team measurements.</p>
   <p>A reduced sigmoid could describe a dose&#8211;response if such data existed, but no Griess experiment is planned. The internal constants are not calibrated, and no fitted IC<sub>50</sub><sup>NO</sup> or n<sub>app</sub> is reported.</p>
   </div>
@@ -1269,7 +1305,7 @@ body.noscroll{overflow:hidden}
   and the variance ranking now agrees with that instead of contradicting it. We record the error
   because the corrected result is less flattering to our original framing, not more.</p>
 
-  <p>Two caveats keep this honest. A Sobol ranking reflects the width of the priors as much as the
+  <p>Two points affect interpretation. A Sobol ranking reflects the width of the priors as much as the
   physics, and K<sub>D,P</sub> and C<sub>V,0</sub> have the widest ranges. And share of variance is
   not the same as what we can <em>change</em>: gel thickness L<sub>gel</sub> ranks fourth for
   delivered dose but is a design variable we control directly, while the gel material &#8212;
@@ -1343,28 +1379,28 @@ body.noscroll{overflow:hidden}
   <p class="col">We list these combinations so that the quantities we <em>do</em> report can be
   trusted. For each of them we either sweep the parameter or report only the identifiable
   combination. None of them is fitted silently.</p>
-<h3>6. References</h3><p>Sources cited in this model section are collected in the <a href="#refs">References</a> section.</p>
+<h3>6. References</h3><p>Key sources for Models&#160;4&#8211;5: <a href="#ref-dasu">Dasu and Martin (2014)</a> on TLR4 signalling in diabetic wounds and <a href="#ref-krausz">Krausz and Friedman (2015)</a> on the role of nitric oxide in wound repair. Full citations are listed below.</p>
 </section>
 
 <!-- ================= MODEL 6 ================= -->
 <section class="act wrap" id="m6">
   <div class="act-head"><div class="num">05</div><div>
     <p class="eyebrow">Model 6</p>
-    <h2>Wound closure, and why a short treatment is worse than none</h2>
+    <h2>Wound closure under continuous and time-limited treatment</h2>
   </div></div>
 
   <div class="claim warn">
     <h3>1. Background and evidence status</h3>
-    <p>Model&#160;6 is a Fisher&#8211;KPP reaction&#8211;diffusion model of the closing wound front.
-    It is the <b>least supported part of the chain</b>: every rate in it is a Tier-4 phenomenological
-    closure, and <em>no planned experiment constrains any of them</em>. We present it as a structured
-    hypothesis that generates testable predictions, not as a quantitative forecast, and we have
-    marked it that way everywhere rather than letting it borrow credibility from Models&#160;1&#8211;2.</p>
+    <p>Model&#160;6 uses the Fisher&#8211;KPP reaction&#8211;diffusion equation to represent the
+    advancing wound front. It is the <b>least supported part of the chain</b>: its rates are Tier-4
+    phenomenological parameters, and <em>no planned experiment currently constrains them</em>. Its
+    outputs should therefore be read as testable model predictions rather than quantitative clinical
+    forecasts. This evidence limitation is separate from the support for Models&#160;1&#8211;2.</p>
   </div>
 
   <div class="claim warn">
     <h3>What this model calls &#8220;closure&#8221; is not re-epithelialisation</h3>
-    <p>This is the most important biological caveat on the page. Model&#160;6 describes a
+    <p>A key biological limitation is that Model&#160;6 describes a
     <b>fibroblast</b> population repopulating the defect. In real wound healing, fibroblasts build
     the granulation tissue that fills the wound, but the epithelial surface is closed by
     <b>keratinocytes</b> migrating in from the wound margins and from hair follicle remnants &#8212;
@@ -1374,15 +1410,28 @@ body.noscroll{overflow:hidden}
     event, and the one we predict is the earlier one. <b>Every closure time on this page should be
     read as a granulation-filling time, and as a lower bound on the time to a closed epithelium.</b>
     Reporting the two separately &#8212; and adding a keratinocyte layer before claiming closure
-    times &#8212; is the single largest structural improvement available to this model.</p>
+    times &#8212; would be a major structural improvement to this model.</p>
   </div>
 
   <div class="col">
   <h3 class="col">2. Model Construction: Fisher&#8211;KPP with drug-dependent proliferation and death</h3>
   <div class="col">
-  <p>Wound closure is a front advancing into empty space, driven by cells that both <em>move</em> and <em>divide</em>. That is precisely the structure a reaction&#8211;diffusion equation describes, and Fisher&#8211;KPP is its canonical form: a diffusion term for migration, a logistic term for proliferation bounded by a carrying capacity. The logistic bound is not decoration &#8212; it represents contact inhibition and finite tissue density, and without it the population would grow without limit behind the front. Radial rather than Cartesian geometry follows from the wound being an approximately circular defect, and it is what makes the area closure fraction &#8211;&#160;the quantity a clinician actually measures&#160;&#8211; well defined.</p>
-  <p><b>The death term is the important departure, and it is there for a reason the standard model cannot supply.</b> Textbook Fisher&#8211;KPP always closes: for any positive proliferation rate a front forms and advances, so every simulated wound heals, eventually. A model with that property is structurally incapable of representing a chronic wound, which is the only kind of wound this project is about. Adding d(I<sub>e</sub>) makes the effective rate r<sub>eff</sub>&#160;=&#160;r<sub>p</sub>&#160;&#8722;&#160;d, which can be negative &#8212; and a wound with r<sub>eff</sub>&#160;&lt;&#160;0 does not merely heal slowly, it regresses. That single term is what lets the model express the thing we are trying to treat, and it is why 18.7&#160;% of sampled wounds never close under our priors. It is also what produced the relapse prediction, which we did not anticipate.</p>
-  <p>We did not build an agent-based model, although cell-level simulation is fashionable for wound healing. The reason is constraint, not computation: an ABM would introduce rules for adhesion, contact inhibition, chemotaxis and division that no experiment on our list could pin down, so it would add parameters without adding evidence, and it would be harder to tell when it was wrong. The continuum model has four parameters in its front behaviour, two of which are degenerate &#8212; and we would rather report that degeneracy honestly than bury it inside a simulation with forty.</p>
+  <p>Wound closure is represented as a front advancing into unoccupied tissue as cells migrate and
+  divide. The Fisher&#8211;KPP reaction&#8211;diffusion equation captures these processes through a
+  diffusion term for migration and a logistic term for proliferation, bounded by a carrying
+  capacity. This bound represents contact inhibition and finite tissue density. Radial geometry is
+  used because the wound is approximated as a circular defect; it also allows the model to calculate
+  the area-based closure fraction.</p>
+  <p>The model adds a death term, d(I<sub>e</sub>), to the standard Fisher&#8211;KPP equation. This
+  makes the effective growth rate r<sub>eff</sub>&#160;=&#160;r<sub>p</sub>&#160;&#8722;&#160;d,
+  which can be negative. When r<sub>eff</sub>&#160;&lt;&#160;0, the model predicts regression rather
+  than slow closure. This feature allows the model to represent chronic wounds that do not close
+  under some conditions; 18.7&#160;% of the sampled parameter sets produced no closure. The same
+  formulation also produced the predicted relapse after treatment stops.</p>
+  <p>An agent-based model was not used because its additional rules for adhesion, contact inhibition,
+  chemotaxis and cell division are not constrained by the planned experiments. The continuum model
+  uses fewer parameters, although two front-behaviour parameters remain degenerate. This limitation
+  is reported explicitly rather than introducing additional unconstrained detail.</p>
   <p>The same reasoning sets the limits of what we claim. This is a <em>minimal</em> model of one cell population. It has no keratinocytes, no myofibroblast contraction and no angiogenesis, and each of those omissions is recorded above rather than left for a reader to discover.</p>
   </div>
   <p>The model treats the wound as a fibroblast population spreading into a defect with logistic
@@ -1466,11 +1515,6 @@ body.noscroll{overflow:hidden}
   <figure class="wide">
     <div class="figbox"><img src="assets/G09_wound_closure_curves.svg" alt="Wound area closure for untreated chronic wounds and 5-, 10-, and 15-day treatment pulses; the 5- and 10-day pulses relapse, while the 15-day pulse reaches closure at 14.2 days." loading="lazy"></div>
     <figcaption><span class="fid">Figure&#160;11.</span> Model&#160;6 at R<sub>w</sub>&#160;=&#160;2&#160;mm with the register rates: 5- and 10-day pulses advance the front and then relapse; the 15-day pulse reaches the closure endpoint at 14.2&#160;days. <span class="caveat">Closure here is the fibroblast front reaching the wound centre, not complete re-epithelialisation; all Model&#160;6 rates are Tier-4 priors.</span></figcaption>
-  </figure>
-
-  <figure>
-    <div class="figbox"><img src="assets/G12_closure_prediction_uncertainty.svg" alt="Cumulative percentage of parameter samples closed against days, plateauing near 81 percent." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;12.</span> Closure under the joint Model&#160;6 prior: 81&#160;% of parameter samples close, with a wide spread of closure times. The plateau is the fraction with r<sub>p</sub>&#160;&gt;&#160;d.</figcaption>
   </figure>
 
 <section class="widget" id="i2" aria-labelledby="i2-title">
@@ -1575,7 +1619,7 @@ body.noscroll{overflow:hidden}
   errs optimistic.</p>
   </div>
 <h3>5. Sensitivity Analysis</h3><p>Figure 10 reports global Sobol indices for closure time using an analytic surrogate. Basal proliferation and cell loss dominate the modeled closure time; all closure inputs remain Tier 4 priors pending scratch-assay measurements.</p>
-<h3>6. References</h3><p>Sources cited in this model section are collected in the <a href="#refs">References</a> section.</p>
+<h3>6. References</h3><p>Key source for the fibroblast-response limitation: <a href="#ref-kim2003">Kim et al. (2003)</a>. Full citation and other sources used on this page are listed below.</p>
 </section>
 
 <!-- ================= MODEL 7 ================= -->
@@ -1617,12 +1661,22 @@ body.noscroll{overflow:hidden}
   <h3 class="col">2. Model Construction: invert the chain to obtain a device specification</h3>
 <h4 class="col">2.1 Governing Equations</h4>
   <div class="col">
-  <p>Models&#160;1&#8211;6 answer a forward question: given a patch, what happens? That is the natural direction to compute in, but it is the wrong direction for <em>design</em>. A team deciding how thick to cast a gel, how much peptide to load, and how often to tell a clinician to change a dressing needs the inverse map &#8212; from a required outcome to a device specification. Model&#160;7 exists to run the chain backwards, and it is the only part of this work whose output is a set of numbers someone could build to.</p>
-  <p>Mathematically the inversion is where approximations become dangerous, which is why we flag it twice. Isolating the required dose demands that &#968; be separated <em>additively</em>; factoring out K<sub>D</sub><sup>app</sup> instead &#8212; a step that is perfectly valid for the occupancy expression and for Cheng&#8211;Prusoff &#8212; turns a linear relation into a quadratic one. The error was in the scaling law rather than in a constant, which is exactly the kind of mistake forward simulation does not reveal and a direct numerical check does.</p>
-  <p>The delay between drug arriving and tissue responding is represented by an <b>effect compartment</b> rather than by modelling the intervening biology. This is the standard pharmacodynamic device for a response that lags exposure, and it is appropriate here because the lag spans transcription, translation and matrix turnover &#8212; processes we have no intention of resolving individually. It buys the right qualitative behaviour with one parameter, k<sub>e0</sub>, at the price of that parameter being Tier&#160;4.</p>
-  <p>Finally, the output is deliberately expressed as a <b>maximum change interval</b> rather than as a dose. A dose is a number a chemist can hit; an interval is an instruction a clinician can follow, and it turns out to depend on the patch rather than on the wound, which makes it a genuine device specification rather than a per-patient calculation. Reporting the result in that form is what turned the modelling into something the wet lab and the eventual user could both act on.</p>
+  <p>Models&#160;1&#8211;6 predict outcomes for a specified patch. Model&#160;7 reverses this chain,
+  starting from the desired tissue response to calculate a device specification. It relates gel
+  thickness, peptide loading and dressing-change interval to the modelled treatment outcome.</p>
+  <p>The inversion requires careful algebra. The required dose is obtained by separating
+  &#968; <em>additively</em>; factoring out K<sub>D</sub><sup>app</sup> instead would turn a linear
+  relation into a quadratic one. That earlier error affected the scaling law rather than a single
+  constant, so it was identified through a direct numerical check.</p>
+  <p>The delay between drug arrival and tissue response is represented by an <b>effect
+  compartment</b>. This standard pharmacodynamic approach approximates the combined delay from
+  transcription, translation and matrix turnover with one parameter, k<sub>e0</sub>. That parameter
+  is Tier&#160;4 and remains unmeasured.</p>
+  <p>The model reports a <b>maximum change interval</b> as its output. This gives a practical device
+  specification that can be related to patch performance, while the treatment duration still depends
+  on the wound.</p>
   </div>
-  <h3 class="col">Why retention is still not the lever &#8212; for a different reason now</h3>
+  <h3 class="col">How retention affects the redesigned patch</h3>
   <div class="col">
   <p>We began by writing retention up as something to be maximised. Running the coupled solve showed
   otherwise. Retention works by <em>binding</em>, so the free concentration that drives delivery is
@@ -1630,8 +1684,7 @@ body.noscroll{overflow:hidden}
   equal proportion. Whether that trade pays depends entirely on how much headroom the peak tissue
   concentration has above the target.</p>
 
-  <p><b>The redesign flipped this conclusion, and we are flagging it rather than quietly restating
-  it.</b> At the old 0.5&#160;mm / 738&#160;&#181;M design the peak was only 1.9&#215; the target, so
+  <p><b>The redesign changed this conclusion.</b> At the old 0.5&#160;mm / 738&#160;&#181;M design the peak was only 1.9&#215; the target, so
   retention now lengthens the window. At 2.5&#160;mm and 3&#160;mg&#160;mL<sup>&#8722;1</sup> the peak is
   522&#160;&#181;M, about 6.5&#215; the target, and coverage rises from 11.8&#160;h at R<sub>V</sub>&#160;=&#160;1
   to 14.0&#160;h at R<sub>V</sub>&#160;=&#160;1.5, 15.5&#160;h at R<sub>V</sub>&#160;=&#160;2, and
@@ -1654,12 +1707,12 @@ body.noscroll{overflow:hidden}
 
   <figure class="wide">
     <div class="figbox"><img src="assets/G10_design_feasibility_map.svg" alt="Filled contour map of hours above the 80.9 micromolar target against V14 loading and gel thickness, with the demonstrated loading marked and the current 2.5 millimetre design starred." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;13.</span> Model&#160;7 design space: hours one patch keeps the top 500&#160;&#181;m of tissue above 80.9&#160;&#181;M. The current design (2.5&#160;mm, 2213&#160;&#181;M) gives about 11.8&#160;h; thicker gels extend this (about 13.7&#160;h at 4&#160;mm). The x axis is the <em>total</em> loading, of which f<sub>rel</sub>&#160;=&#160;0.5 is mobile. <span class="caveat">Loadings to the right of 2213&#160;&#181;M go beyond the 3&#160;mg&#160;mL<sup>&#8722;1</sup> the team has actually dissolved, so their solubility is unverified rather than known to be impossible.</span></figcaption>
+    <figcaption><span class="fid">Figure&#160;12.</span> Model&#160;7 design space: hours one patch keeps the top 500&#160;&#181;m of tissue above 80.9&#160;&#181;M. The current design (2.5&#160;mm, 2213&#160;&#181;M) gives about 11.8&#160;h; thicker gels extend this (about 13.7&#160;h at 4&#160;mm). The x axis is the <em>total</em> loading, of which f<sub>rel</sub>&#160;=&#160;0.5 is mobile. <span class="caveat">Loadings to the right of 2213&#160;&#181;M go beyond the 3&#160;mg&#160;mL<sup>&#8722;1</sup> the team has actually dissolved, so their solubility is unverified rather than known to be impossible.</span></figcaption>
   </figure>
 
   <figure class="wide">
     <div class="figbox"><img src="assets/G07_time_above_target_vs_dressing_interval.svg" alt="Left: depth-averaged free V14 against hours after one patch with the 80.9 micromolar target line. Right: closure time against patch-change interval for 1, 2 and 3 millimetre wounds, with the longest closing interval marked." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;14.</span> The dressing-change interval at the 80.9&#160;&#181;M target. (a) One patch holds tissue above target for about 11.8&#160;h (7.7&#8211;15.5&#160;h across the tissue ranges); the shaded band marks the far longer period over which FGF2-G3 stays above its EC<sub>50</sub>. (b) Through the 18&#160;h drug-effect compartment, the longest change interval that still closes is about 36&#160;h, the same for 1, 2 and 3&#160;mm wounds &#8212; so a 24&#160;h change sits just inside it.</figcaption>
+    <figcaption><span class="fid">Figure&#160;13.</span> The dressing-change interval at the 80.9&#160;&#181;M target. (a) One patch holds tissue above target for about 11.8&#160;h (7.7&#8211;15.5&#160;h across the tissue ranges); the shaded band marks the far longer period over which FGF2-G3 stays above its EC<sub>50</sub>. (b) Through the 18&#160;h drug-effect compartment, the longest change interval that still closes is about 36&#160;h, the same for 1, 2 and 3&#160;mm wounds &#8212; so a 24&#160;h change sits just inside it.</figcaption>
   </figure>
 
 <section class="widget" id="i1" aria-labelledby="i1-title">
@@ -1718,41 +1771,41 @@ body.noscroll{overflow:hidden}
 
   <h3 class="col">The device specification</h3>
   <div class="col">
-  <p>Combining delivery with closure gives the end-to-end result, and it takes the form of a
-  specification rather than a prediction. Each patch's 11.8&#160;h of cover is passed through the
+  <p>Combining the delivery and closure models gives an end-to-end device specification. Each patch's
+  11.8&#160;h of cover is passed through the
   18&#160;h drug-effect delay, which sets a maximum change interval of <b>36&#160;h</b> &#8212; and
   that interval is a property of <em>the patch, not the wound</em>. Wound size changes only how long
   treatment must continue, not how often the dressing is changed. Repeat dosing is therefore part of
   the design, not a fallback for a patch that failed to release slowly.</p>
 
-  <p>Why does the interval come out at 36&#160;h? The drug effect averaged over a cycle equals the
+  <p>The predicted 36&#160;h interval follows from the model's average drug effect over a cycle. It equals the
   fraction of time a patch keeps tissue above target. Above 2.3&#160;% the wound stops getting worse.
   To reach the density we count as closed, the average must exceed <b>33&#160;%</b>, so 11.8&#160;h of
   cover sustains closure for change intervals up to about 36&#160;h. A once-daily change needs
   7.9&#160;h of cover per patch, and the 2.5&#160;mm patch supplies 11.8&#160;h &#8212; a duty cycle of
   36&#160;% against a 33&#160;% requirement.</p>
 
-  <p class="caveat" style="display:block"><b>Read that margin carefully.</b> It is about 10&#160;%,
+  <p class="caveat" style="display:block"><b>This margin is small.</b> It is about 10&#160;%,
   and the 33&#160;% threshold behind it is computed entirely from Tier-4 closure parameters with no
   planned experiment. A 15&#160;% shortfall in coverage &#8212; well inside the 7.7&#8211;15.5&#160;h
   band that the tissue parameters alone produce &#8212; would put a daily change back outside the
-  envelope. The honest claim is that once-daily dosing is <em>predicted</em> to work, not
-  <em>demonstrated</em> to; the design should not be trimmed further on the strength of it.</p>
+  envelope. The model therefore supports once-daily dosing as a prediction, not as a demonstrated
+  outcome. Further design reductions should wait for measurements of the closure parameters.</p>
 
-  <p>Gel thickness and dermal drainage, not gel chemistry, set the single-patch window. Thickness is
-  the strongest design lever, and it is the one the team pulled: 0.5, 1.0, 1.5 and 2.5&#160;mm gels
+  <p>Gel thickness and dermal drainage, rather than gel chemistry, set the single-patch coverage
+  window in this model. Thickness is the strongest design lever: 0.5, 1.0, 1.5 and 2.5&#160;mm gels
   give 3.4, 5.5, 6.9 and 11.8&#160;h above 80.9&#160;&#181;M. The gain is far less than proportional
   &#8212; a 25&#215; larger reservoir buys about 4&#215; the hours &#8212; because a thicker gel holds
   the peptide longer and the register degrades it inside the gel at the same rate as in serum. That
-  is also why the next millimetre is poor value: 4&#160;mm gives about 13.7&#160;h. By contrast, reducing
+  a 4&#160;mm gel gives about 13.7&#160;h. By contrast, reducing
   k<sub>prot</sub> thirtyfold lengthens the window to 13.0&#160;h, and moderate retention adds several
   hours &#8212; within the 7.7&#8211;15.5&#160;h spread the tissue parameters produce.</p>
 
   <p>Finally, FGF2-G3 is not the constraint. Even without any retention the 2.5&#160;mm gel
   keeps it above its EC<sub>50</sub> for <b>5.9&#160;days</b>, about five times the change interval. The
   closure model requires both arms to be satisfied at once, but the FGF2-G3 condition is met
-  continuously after the first few minutes and never binds. Adding alginate-sulfate to hold it for
-  weeks would be wasted effort when the dressing comes off daily. <b>V14 sets the schedule.</b></p>
+  continuously after the first few minutes and does not constrain the schedule. Retaining FGF2-G3
+  for weeks is therefore not expected to improve the current design. <b>V14 sets the schedule.</b></p>
   </div>
 
   <details class="math"><summary>Retention chemistries &#8212; the equations, and why this build
@@ -1764,8 +1817,8 @@ body.noscroll{overflow:hidden}
 <div class="eqwrap"><div class="eqlabel">FGF2-G3 with a saturable binder (heparin-type)</div><div class="eq">R_F(C)\frac{\partial C^{\mathrm g}_F}{\partial t}=D^{\mathrm g}_{\mathrm{eff},F}\frac{\partial^2 C^{\mathrm g}_F}{\partial x^2}-k^{\mathrm g}_{\deg,F}C^{\mathrm g}_F,\qquad R_F(C)=1+\frac{S_{\max}K_{d,\mathrm{hep}}}{(K_{d,\mathrm{hep}}+C)^2}</div></div>
 <div class="eqwrap"><div class="eqlabel">V14 with linear sorption</div><div class="eq">R_V\frac{\partial C^{\mathrm g}_V}{\partial t}=D^{\mathrm g}_{\mathrm{eff},V}\frac{\partial^2 C^{\mathrm g}_V}{\partial x^2}-k^{\mathrm g}_{\deg,V}C^{\mathrm g}_V,\qquad R_V=1+K_{\mathrm{sorb}}</div></div>
 <div class="eqwrap"><div class="eqlabel">The constraint that kills it &#183; free concentration falls as 1/R<sub>V</sub></div><div class="eq">C_{\mathrm{free},0}=\frac{C_{\mathrm{tot},0}}{R_V}\le\frac{C_{\mathrm{sol}}}{R_V}</div></div>
-    <p>The last line is the whole argument against retention for this device, and it is also the
-    modelling error we made and corrected: the loaded concentration is the <b>total</b>, so the free
+    <p>The last line sets the retention constraint for this device. It also shows the modelling
+    error that was corrected: the loaded concentration is the <b>total</b>, so the free
     concentration driving delivery is C<sub>tot</sub>/R<sub>V</sub>. Treating the loading as free
     puts R<sub>V</sub> times more drug into the model than solubility allows, and over-predicts
     sustained release by orders of magnitude.</p>
@@ -1806,7 +1859,7 @@ body.noscroll{overflow:hidden}
   of cover against weeks of need, and the existence of a maximum change interval &#8212; should hold.
   The exact interval may not.</p>
 <h3>5. Sensitivity Analysis</h3><p>Figure 10 reports global Sobol indices for delivered dose using an analytic surrogate. Model 7 inherits those dose sensitivities together with uncertainty in the target and transport assumptions described above.</p>
-<h3>6. References</h3><p>Sources cited in this model section are collected in the <a href="#refs">References</a> section.</p>
+<h3>6. References</h3><p>Model&#160;7 combines the sources used in the release, transport, receptor and closure models. See the relevant citations for <a href="#ref-grassi">alginate structure</a>, <a href="#ref-slivka">MD2-targeting peptides</a> and <a href="#ref-kim2003">fibroblast response</a>; full citations are listed below.</p>
 </section>
 
 <!-- ================= REFINEMENT ================= -->
@@ -1815,16 +1868,17 @@ body.noscroll{overflow:hidden}
     <p class="eyebrow">Iteration</p>
     <h2>Model refinement: what changed and why</h2>
   </div></div>
-  <p class="col">Running the code corrected several statements in our written equation reference and
-  did not support two of our predictions. We record them here so that future teams can see how the
-  model was refined, and so that no number on this page carries more confidence than it earned.</p>
+  <p class="col">Re-running the model corrected several statements in the equation reference and did
+  not support two earlier predictions. These revisions are recorded so that the reasoning behind
+  each change is transparent and conclusions are not presented with more confidence than the
+  evidence supports.</p>
 
   <h3 class="col">Model change: removing the NO sensor</h3>
   <div class="col">
-  <p>Our original design sensed wound nitric oxide with a NorR/P<i>norV</i> promoter and responded by
-  secreting the peptide &#8212; a closed-loop device that switches itself off. The promoter activity
-  experiment did not work. Rather than record a failed experiment and move on, we asked the model
-  whether the design could have worked <em>at all</em>.</p>
+  <p>The original design used a NorR/P<i>norV</i> promoter to sense wound nitric oxide and trigger
+  peptide secretion, forming a closed-loop device. The promoter-activity experiment did not produce
+  a usable response. We therefore used the model to assess whether nitric oxide could reach the
+  sensing layer at a concentration sufficient to activate the promoter.</p>
 
   <p>For NO diffusing through a porous layer while being consumed, the steady penetration depth is
   L<sub>d</sub>&#160;=&#160;&#8730;(D<sub>eff</sub>/k<sub>decay</sub>). Using a half-life of
@@ -1974,28 +2028,30 @@ body.noscroll{overflow:hidden}
     <p class="eyebrow">Model &#8594; wet lab</p>
     <h2>Experimental plan mapped to model uncertainties</h2>
   </div></div>
-  <p class="col">The model is meant to guide the next wet-lab measurements. Each recommendation names the quantity to measure, the model parameter it constrains, and the downstream predictions it can change. The list combines expected information gain with practical readiness; it is not a numerical ranking.</p>
+  <p class="col">The model guides the next wet-lab measurements. Each recommendation identifies the
+  quantity to measure, the parameter it constrains, and the downstream predictions it could change.
+  The list considers both expected information gain and practical readiness; it is not a numerical
+  ranking.</p>
 
   <ul class="asks">
     <li><span class="st">&#9633;</span><div><b>V14 stability in serum or with recombinant MMP-9 / neutrophil elastase, by HPLC.</b>
       Fixes k<sub>prot,V</sub>, the highest-priority unmeasured parameter in the register
       (currently a serum half-life proxy of 6.1&#160;h), and replaces the Cavaco estimate in the
-      peptide screen with a measured k<sub>deg</sub>. One day of work, and it upgrades two models at
-      once.</div></li>
+      peptide screen with a measured k<sub>deg</sub>. This measurement would improve the peptide
+      screen and the transport model.</div></li>
     <li><span class="st">&#9633;</span><div><b>Saturation solubility of V14 in the casting buffer.</b>
       3&#160;mg&#160;mL<sup>&#8722;1</sup> (2213&#160;&#181;M) is now known to dissolve, so this is a
       lower bound rather than the assumption it used to be. Measuring the true saturation point
-      bounds how much further the loading lever can be pushed &#8212; it is no longer needed to show
-      the target is reachable. Trivial, cheap, and currently unplanned.</div></li>
+      bounds how much further loading could be increased. It is not required to show that the current
+      target is reachable, but would inform future formulation choices.</div></li>
     <li><span class="st">&#9633;</span><div><b>Swelling and dissolution of the alginate gel in simulated wound fluid.</b>
       Calcium alginate absorbs exudate and slowly dissolves as sodium replaces calcium. The model
       assumes a fixed 2.5&#160;mm reservoir; swelling would dilute it and shorten the change
       interval. Weighing gels over 24&#160;h is enough.</div></li>
     <li><span class="st">&#9633;</span><div><b>Run the release assay against a RAW&#160;264.7 layer rather than a stirred bath.</b>
-      Every planned experiment probes one module in isolation, so a seam error &#8212; a wrong
-      interface value, a wrong porosity convention at the flux match &#8212; would pass all of
-      them and still break the integrated prediction. This one test spans Models&#160;1,&#160;3
-      and&#160;5 at once.</div></li>
+      Existing experiments probe individual modules. A combined assay could reveal errors at the
+      gel&#8211;tissue interface or in the flux-matching condition that separate tests might miss.
+      This measurement links Models&#160;1,&#160;3 and&#160;5.</div></li>
     <li><span class="st">&#9633;</span><div><b>The same release assay for FGF2-G3.</b>
       Every FGF gel parameter is otherwise unconstrained, and it tests the predicted
       2.6&#215; arrival separation directly.</div></li>
@@ -2004,7 +2060,7 @@ body.noscroll{overflow:hidden}
       D<sub>n</sub>&#160;/&#160;r<sub>p</sub> degeneracy. This is the only experiment that would move
       Model&#160;6 off Tier&#160;4.</div></li>
     <li><span class="st">&#9633;</span><div><b>Two or three LPS concentrations in the existing flow-cytometry panel.</b>
-      Without them K<sub>D,P</sub> is not recoverable &#8212; only K<sub>D</sub><sup>app</sup>.
+      Without them, the absolute K<sub>D,P</sub> cannot be recovered; only K<sub>D</sub><sup>app</sup> is identifiable.
       Also run a Schild analysis: a depressed maximum would invalidate the competitive mechanism
       the whole V14 arm assumes.</div></li>
     <li><span class="st">&#9633;</span><div><b><i>Nos2</i> as one of the two pro-inflammatory qPCR markers.</b>
@@ -2012,14 +2068,13 @@ body.noscroll{overflow:hidden}
     <li><span class="st">&#9633;</span><div><b>Run the release assay to completion on a log grid from ~1&#160;min.</b>
       From the 2.5&#160;mm gel, 95&#160;% of the mobile dose takes 5.6&#160;h (V14) and 14.8&#160;h
       (FGF2-G3), so the assay must run for most of a day rather than an hour. It is now the
-      <b>highest-value release experiment available</b>, because it measures two things at once: the
-      timescale, and the released fraction f<sub>rel</sub> &#8212; currently a Tier-4 estimate of 0.5
+      <b>highest-priority release experiment</b>, because it measures both the
+      timescale and the released fraction f<sub>rel</sub> &#8212; currently a Tier-4 estimate of 0.5
       for V14 and, for FGF2-G3, 0.45&#160;&#177;&#160;0.06 fitted to the updated BCA run at its noise floor. Every coverage number depends on it linearly.</div></li>
     <li><span class="st">&#9633;</span><div><b>Test a patch-change protocol, not a single patch.</b>
-      The model puts the longest change interval that still closes a wound at about 36&#160;h for
-      the 2.5&#160;mm gel, so a once-daily protocol should close and a 36&#160;h one should not. That
-      is a sharp, falsifiable prediction with only a 10&#160;% margin, and it is the single most
-      informative in&#160;vivo test the model offers.</div></li>
+      The model predicts a maximum change interval of about 36&#160;h for the 2.5&#160;mm gel. A
+      once-daily protocol is predicted to close, while a 36&#160;h interval is at the modelled limit.
+      This test would directly assess the predicted schedule, which has a 10&#160;% margin.</div></li>
   </ul>
 
   <p class="col"><b>One limitation.</b> If FGF2-G3 is assayed on fibroblasts and V14 on
@@ -2035,20 +2090,19 @@ body.noscroll{overflow:hidden}
     <h2>Integrated results, evidence, and limits</h2>
   </div></div>
   <div class="col">
-  <p>The modelling changed the project twice before it ever described it. The peptide screen rejected
-  our iteration-1 candidate on developability grounds and sent us to <i>de novo</i> design, which
-  produced V14. The NO penetration calculation showed that our original closed-loop sensor could not
-  have worked at any promoter strength, and turned the device into an open-loop two-armed patch.
-  Neither conclusion came from an experiment that failed; both came from asking the model a question
-  the experiment could not answer.</p>
+  <p>The models informed two design changes. The peptide screen identified developability concerns
+  with the iteration-1 candidate and informed the <i>de novo</i> design of V14. The nitric-oxide
+  penetration calculation indicated that the original closed-loop sensor could not receive enough
+  signal through the device layers, leading to an open-loop, two-payload patch. These conclusions
+  came from model analysis alongside the experimental results.</p>
 
   <p>What the chain says about the device as built is consistent across every model in it. The
   2.5&#160;mm alginate patch releases its mobile dose over hours and keeps tissue above the
   80.9&#160;&#181;M V14 target for about 11.8&#160;hours, while closing a wound takes days to weeks. A
-  single patch therefore still cannot close a wound, and repeat application remains structural. But
-  the patch need only be changed every 36&#160;h, so <b>a once-daily dressing change closes the
-  wound</b> &#8212; ordinary clinical practice rather than the four-times-daily schedule the earlier
-  0.5&#160;mm design demanded. Thickness was the lever that did it, and the margin is about
+  single patch therefore cannot close a wound, and repeat application remains necessary. The model
+  predicts a maximum change interval of about 36&#160;h, so a once-daily schedule falls within the
+  predicted interval. This is less frequent than the four-times-daily schedule associated with the
+  earlier 0.5&#160;mm design. Thickness increased the predicted coverage, and the margin is about
   10&#160;% on Tier-4 closure parameters: predicted, not demonstrated.</p>
 
   <p>Retention improves V14 coverage across the tested range: about 11.8&#160;h at R<sub>V</sub>=1,
@@ -2056,16 +2110,16 @@ body.noscroll{overflow:hidden}
   measuring V14 partitioning in alginate is needed before choosing a retention design. FGF2-G3
   lasts about 5.9&#160;days without retention, so V14 sets the schedule.</p>
 
-  <p>We are equally clear about what the chain does not establish. Models&#160;1&#8211;2 are
+  <p>The model chain also has clear limits. Models&#160;1&#8211;2 are
   predictive now. Models&#160;3&#8211;5 are predictive in scaled form and wait only on calibration.
   Model&#160;6 is a hypothesis built on Tier-4 parameters with no experiment behind it, and
   Model&#160;7 inherits that uncertainty wherever it touches closure. The wet-lab experiments listed
-  above are ordered by how much each would narrow that gap, and the first three are cheap.</p>
+  above are ordered by how much each could narrow these evidence gaps, with practical readiness also considered.</p>
   </div>
 
   <figure>
     <div class="figbox"><img src="assets/G13_parameter_provenance.svg" alt="Stacked horizontal bars counting parameters per model module by evidence tier, with the number not yet scheduled for measurement." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;15.</span> Where every parameter comes from, by module and evidence tier (T1 measured in house to T4 order-of-magnitude prior).</figcaption>
+    <figcaption><span class="fid">Figure&#160;14.</span> Where every parameter comes from, by module and evidence tier (T1 measured in house to T4 order-of-magnitude prior).</figcaption>
   </figure>
 </section>
 
@@ -2080,31 +2134,31 @@ body.noscroll{overflow:hidden}
   this list covers the claims made in the prose above.</p>
 
   <ol class="refs">
-    <li>Ai S., Kuzuya M., Iguchi A. Neutrophil elastase in pressure ulcer fluid degrades
+    <li id="ref-ai">Ai S., Kuzuya M., Iguchi A. Neutrophil elastase in pressure ulcer fluid degrades
       fibronectin in the exudates. <i>Geriatrics &amp; Gerontology International</i> 2004.
       doi:<a href="https://doi.org/10.1111/j.1447-0594.2004.00243.x">10.1111/j.1447-0594.2004.00243.x</a></li>
 
-    <li>Cavaco M., Valle J., Flores I., Andreu D., Castanho M.A.R.B. Estimating peptide half-life
+    <li id="ref-cavaco">Cavaco M., Valle J., Flores I., Andreu D., Castanho M.A.R.B. Estimating peptide half-life
       in serum from tunable, sequence-related physicochemical properties. <i>Clinical and
       Translational Science</i> 2021;14(4):1349&#8211;1358.
       doi:<a href="https://doi.org/10.1111/cts.12985">10.1111/cts.12985</a>
       <span class="caveat">Source of the Module&#160;C half-life regression.</span></li>
 
-    <li>Dasu M.R., Martin S.J. Toll-like receptor expression and signaling in human diabetic
+    <li id="ref-dasu">Dasu M.R., Martin S.J. Toll-like receptor expression and signaling in human diabetic
       wounds. <i>World Journal of Diabetes</i> 2014;5(2):219&#8211;223.
       doi:<a href="https://doi.org/10.4239/wjd.v5.i2.219">10.4239/wjd.v5.i2.219</a>
       <span class="caveat">Source of the claim that TLR4 expression and downstream signalling are
       elevated rather than transient in <em>human</em> diabetic wounds &#8212; the premise the whole
       device rests on.</span></li>
 
-    <li>Freeman I., Kedem A., Cohen S. The effect of sulfation of alginate hydrogels on the
+    <li id="ref-freeman">Freeman I., Kedem A., Cohen S. The effect of sulfation of alginate hydrogels on the
       specific binding and controlled release of heparin-binding proteins. <i>Biomaterials</i>
       2008;29(22). PMID:<a href="https://pubmed.ncbi.nlm.nih.gov/18462788/">18462788</a>
       <span class="caveat">Source of the claim that heparin-binding proteins, including FGF-2,
       bind alginate-sulfate and heparin but show no measurable binding to <em>unmodified</em>
       alginate. Page numbers differ between secondary listings; cited here by PMID.</span></li>
 
-    <li>Grassi M., Sandolo C., Perin D., Coviello T., Lapasin R., Grassi G. Structural
+    <li id="ref-grassi">Grassi M., Sandolo C., Perin D., Coviello T., Lapasin R., Grassi G. Structural
       characterization of calcium alginate matrices by means of mechanical and release tests.
       <i>Molecules</i> 2009;14:3003&#8211;3017.
       doi:<a href="https://doi.org/10.3390/molecules14083003">10.3390/molecules14083003</a>
@@ -2112,7 +2166,7 @@ body.noscroll{overflow:hidden}
       &#8212; 14&#160;nm from mechanical (Flory) analysis and 26&#160;nm from release
       (free-volume) analysis. We use the mechanical value and sweep the range.</span></li>
 
-    <li>Kim B.C., Kim H.T., Park S.H., Cha J.S., Yufit T., Kim S.J., Falanga V. Fibroblasts from
+    <li id="ref-kim2003">Kim B.C., Kim H.T., Park S.H., Cha J.S., Yufit T., Kim S.J., Falanga V. Fibroblasts from
       chronic wounds show altered TGF-&#946; signaling and decreased TGF-&#946; type II receptor
       expression. <i>Journal of Cellular Physiology</i> 2003;195(3):331&#8211;336.
       doi:<a href="https://doi.org/10.1002/jcp.10301">10.1002/jcp.10301</a>
@@ -2120,14 +2174,14 @@ body.noscroll{overflow:hidden}
       chronic-wound fibroblasts show reduced type&#160;II receptor expression, impaired Smad2/3 and
       MAPK phosphorylation, and a weaker proliferative response.</span></li>
 
-    <li>Krausz A., Friedman A.J. Nitric oxide as a surgical adjuvant. <i>Future Science OA</i>
+    <li id="ref-krausz">Krausz A., Friedman A.J. Nitric oxide as a surgical adjuvant. <i>Future Science OA</i>
       2015;1(1):FSO56.
       doi:<a href="https://doi.org/10.4155/fso.15.56">10.4155/fso.15.56</a>
       <span class="caveat">Source of the dual-role argument in Models&#160;4&#160;&amp;&#160;5: iNOS
       deficiency or inhibition delays re-epithelialisation and reduces collagen deposition and
       tensile strength, so nitric oxide is required for normal repair.</span></li>
 
-    <li>Liu Y., Xia G., Chen Y., Xia H., Xu J., Guo L., Lin S., Liu Y. Purpurolide C-based
+    <li id="ref-liu">Liu Y., Xia G., Chen Y., Xia H., Xu J., Guo L., Lin S., Liu Y. Purpurolide C-based
       microneedle promotes macrophage-mediated diabetic wound healing via inhibiting TLR4-MD2
       dimerization and MYD88 phosphorylation. <i>Acta Pharmaceutica Sinica B</i>
       2023;13(12):5060&#8211;5073.
@@ -2136,7 +2190,7 @@ body.noscroll{overflow:hidden}
       specifically, delivered from a hydrogel microneedle patch; the effect is lost in
       <i>Tlr4</i>-knockout animals.</span></li>
 
-    <li>Moor A.N., Vachon D.J., Gould L.J. Proteolytic activity in wound fluids and tissues
+    <li id="ref-moor">Moor A.N., Vachon D.J., Gould L.J. Proteolytic activity in wound fluids and tissues
       derived from chronic venous leg ulcers. <i>Wound Repair and Regeneration</i>
       2009;17:832&#8211;839.
       doi:<a href="https://doi.org/10.1111/j.1524-475X.2009.00547.x">10.1111/j.1524-475X.2009.00547.x</a></li>
@@ -2146,7 +2200,7 @@ body.noscroll{overflow:hidden}
       <i>Scientific Reports</i> 2020;10:18930.
       doi:<a href="https://doi.org/10.1038/s41598-020-74544-5">10.1038/s41598-020-74544-5</a></li>
 
-    <li>Park S.-H., Shin H.-J., Shah M., <i>et al.</i> TLR4/MD2 specific peptides stalled in vivo
+    <li id="ref-park2017">Park S.-H., Shin H.-J., Shah M., <i>et al.</i> TLR4/MD2 specific peptides stalled in vivo
       LPS-induced immune exacerbation. <i>Biomaterials</i> 2017.
       doi:<a href="https://doi.org/10.1016/j.biomaterials.2017.02.023">10.1016/j.biomaterials.2017.02.023</a></li>
 
@@ -2154,7 +2208,7 @@ body.noscroll{overflow:hidden}
       biodegradable drug delivery systems. <i>Advanced Drug Delivery Reviews</i> 2023;201:114904.
       doi:<a href="https://doi.org/10.1016/j.addr.2023.114904">10.1016/j.addr.2023.114904</a></li>
 
-    <li>Slivka P.F., Shridhar M., Lee G.-I., <i>et al.</i> A peptide antagonist of the
+    <li id="ref-slivka">Slivka P.F., Shridhar M., Lee G.-I., <i>et al.</i> A peptide antagonist of the
       TLR4&#8211;MD2 interaction. <i>ChemBioChem</i> 2009;10:645&#8211;649.
       doi:<a href="https://doi.org/10.1002/cbic.200800769">10.1002/cbic.200800769</a>
       <span class="caveat">Source of the 100&#160;&#181;M Module&#160;A benchmark, and of both
@@ -2163,13 +2217,13 @@ body.noscroll{overflow:hidden}
     <li>US Patent 10,435,443. Toll-like receptor 4 (TLR4) antagonist peptides. 2019.
       <span class="caveat">Source of the TAP1, TAP2 and TAP3 sequences.</span></li>
 
-    <li>Yager D.R., Chen S.M., Ward S.I., <i>et al.</i> Ability of chronic wound fluids to degrade
+    <li id="ref-yager1997">Yager D.R., Chen S.M., Ward S.I., <i>et al.</i> Ability of chronic wound fluids to degrade
       peptide growth factors is associated with increased levels of elastase activity and
       diminished levels of proteinase inhibitors. <i>Wound Repair and Regeneration</i>
       1997;5:23&#8211;32.
       doi:<a href="https://doi.org/10.1046/j.1524-475X.1997.50108.x">10.1046/j.1524-475X.1997.50108.x</a></li>
 
-    <li>Yager D.R., Nwomeh B.C. The proteolytic environment of chronic wounds. <i>Wound Repair and
+    <li id="ref-yager1999">Yager D.R., Nwomeh B.C. The proteolytic environment of chronic wounds. <i>Wound Repair and
       Regeneration</i> 1999;7:433&#8211;441.
       doi:<a href="https://doi.org/10.1046/j.1524-475X.1999.00433.x">10.1046/j.1524-475X.1999.00433.x</a></li>
 
