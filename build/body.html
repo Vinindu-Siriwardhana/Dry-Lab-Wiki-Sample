@@ -47,6 +47,91 @@
   two arms together: the modelled treatment state changes the rate of wound closure.</p>
 
   <p>Each model represents one part of the wound-healing process.</p>
+  </div>
+
+<figure class="wide flowfig">
+    <div class="figbox">
+<svg viewBox="0 0 920 336" class="flowchart fc-wide" role="img" aria-label="Flowchart of the model chain. Loading feeds two arms. The V14 arm runs Model 1 release, Model 2 tissue transport, Model 3 MD2/TLR4 competition, Model 4 NF-kB signalling and Model 5 iNOS to nitrite. The FGF2-G3 arm runs Model 1 release and Model 2 tissue transport into Model 6. An arrow from Model 5 to Model 6 is labelled: inflammation sets death rate. Model 6 is the single end point and gives the closure time.">
+<title>Model chain: loading, the two payload arms, and the closure time</title>
+<defs>
+    <marker id="war" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--ink-3)"/></marker>
+    <marker id="warv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--v14)"/></marker>
+    <marker id="warf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--fgf)"/></marker>
+    <marker id="warj" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--gold)"/></marker>
+  </defs>
+<text x="160" y="50" class="fc-arm fc-arm-v">V14 arm</text>
+<text x="160" y="210" class="fc-arm fc-arm-f">FGF2-G3 arm</text>
+<g><rect x="20" y="150" width="110" height="66" rx="8" class="fc-box fc-load"/><text x="75.0" y="172" class="fc-k">Loading</text><text x="75.0" y="189" class="fc-s">peptide and</text><text x="75.0" y="202" class="fc-s">growth factor</text></g>
+<line x1="130" y1="183" x2="145" y2="183" class="fc-line" stroke="var(--ink-3)"/>
+<path d="M145 183 V99.0 H158" class="fc-line" stroke="var(--v14)" marker-end="url(#warv)"/>
+<path d="M145 183 V259.0 H158" class="fc-line" stroke="var(--fgf)" marker-end="url(#warf)"/>
+<a href="#m12"><g><rect x="160" y="66" width="126" height="66" rx="8" class="fc-box fc-v"/><text x="223.0" y="88" class="fc-k">Model 1</text><text x="223.0" y="105" class="fc-s">Release</text><text x="223.0" y="118" class="fc-s">from the gel</text></g></a>
+<line x1="286" y1="99.0" x2="310" y2="99.0" class="fc-line" stroke="var(--v14)" marker-end="url(#warv)"/>
+<a href="#m12"><g><rect x="312" y="66" width="126" height="66" rx="8" class="fc-box fc-v"/><text x="375.0" y="88" class="fc-k">Model 2</text><text x="375.0" y="105" class="fc-s">Tissue</text><text x="375.0" y="118" class="fc-s">transport</text></g></a>
+<line x1="438" y1="99.0" x2="462" y2="99.0" class="fc-line" stroke="var(--v14)" marker-end="url(#warv)"/>
+<a href="#m3"><g><rect x="464" y="66" width="126" height="66" rx="8" class="fc-box fc-v"/><text x="527.0" y="88" class="fc-k">Model 3</text><text x="527.0" y="105" class="fc-s">MD2/TLR4</text><text x="527.0" y="118" class="fc-s">competition</text></g></a>
+<line x1="590" y1="99.0" x2="614" y2="99.0" class="fc-line" stroke="var(--v14)" marker-end="url(#warv)"/>
+<a href="#m45"><g><rect x="616" y="66" width="126" height="66" rx="8" class="fc-box fc-v"/><text x="679.0" y="88" class="fc-k">Model 4</text><text x="679.0" y="105" class="fc-s">NF-&#954;B</text><text x="679.0" y="118" class="fc-s">signalling</text></g></a>
+<line x1="742" y1="99.0" x2="766" y2="99.0" class="fc-line" stroke="var(--v14)" marker-end="url(#warv)"/>
+<a href="#m45"><g><rect x="768" y="66" width="126" height="66" rx="8" class="fc-box fc-v"/><text x="831.0" y="88" class="fc-k">Model 5</text><text x="831.0" y="105" class="fc-s">iNOS &#8594;</text><text x="831.0" y="118" class="fc-s">nitrite</text></g></a>
+<a href="#m12"><g><rect x="160" y="226" width="126" height="66" rx="8" class="fc-box fc-f"/><text x="223.0" y="248" class="fc-k">Model 1</text><text x="223.0" y="265" class="fc-s">Release</text><text x="223.0" y="278" class="fc-s">from the gel</text></g></a>
+<a href="#m12"><g><rect x="312" y="226" width="126" height="66" rx="8" class="fc-box fc-f"/><text x="375.0" y="248" class="fc-k">Model 2</text><text x="375.0" y="265" class="fc-s">Tissue</text><text x="375.0" y="278" class="fc-s">transport</text></g></a>
+<line x1="286" y1="259.0" x2="310" y2="259.0" class="fc-line" stroke="var(--fgf)" marker-end="url(#warf)"/>
+<line x1="438" y1="259.0" x2="766" y2="259.0" class="fc-line" stroke="var(--fgf)" marker-end="url(#warf)"/>
+<text x="603.0" y="250.0" class="fc-lab fc-lab-f">FGF2-G3 raises proliferation</text>
+<a href="#m6"><g><rect x="768" y="226" width="126" height="66" rx="8" class="fc-box fc-end-box"/><text x="831.0" y="249" class="fc-k">Model 6</text><text x="831.0" y="278" class="fc-end">Closure time</text></g></a>
+<line x1="831.0" y1="132" x2="831.0" y2="224" class="fc-line fc-line-j" marker-end="url(#warj)"/>
+<rect x="643.0" y="167.0" width="176" height="24" rx="5" class="fc-pill"/>
+<text x="731.0" y="183.0" class="fc-lab fc-lab-j">Inflammation sets death rate</text>
+</svg>
+<svg viewBox="0 0 360 600" class="flowchart fc-narrow" role="img" aria-label="Flowchart of the model chain. Loading feeds two arms. The V14 arm runs Model 1 release, Model 2 tissue transport, Model 3 MD2/TLR4 competition, Model 4 NF-kB signalling and Model 5 iNOS to nitrite. The FGF2-G3 arm runs Model 1 release and Model 2 tissue transport into Model 6. An arrow from Model 5 to Model 6 is labelled: inflammation sets death rate. Model 6 is the single end point and gives the closure time.">
+<title>Model chain: loading, the two payload arms, and the closure time</title>
+<defs>
+    <marker id="nar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--ink-3)"/></marker>
+    <marker id="narv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--v14)"/></marker>
+    <marker id="narf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--fgf)"/></marker>
+    <marker id="narj" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--gold)"/></marker>
+  </defs>
+<g><rect x="90" y="8" width="180" height="48" rx="8" class="fc-box fc-load"/><text x="180.0" y="30" class="fc-k">Loading</text><text x="180.0" y="47" class="fc-s">peptide and growth factor</text></g>
+<path d="M150 56 V68 H91.0 V76" class="fc-line" stroke="var(--v14)"/>
+<path d="M210 56 V68 H269.0 V76" class="fc-line" stroke="var(--fgf)"/>
+<text x="91.0" y="94" class="fc-arm fc-arm-v" style="font-size:11px">V14 arm</text>
+<text x="269.0" y="94" class="fc-arm fc-arm-f" style="font-size:11px">FGF2-G3 arm</text>
+<line x1="91.0" y1="101" x2="91.0" y2="116" class="fc-line" stroke="var(--v14)" marker-end="url(#narv)"/>
+<line x1="269.0" y1="101" x2="269.0" y2="116" class="fc-line" stroke="var(--fgf)" marker-end="url(#narf)"/>
+<a href="#m12"><g><rect x="16" y="118" width="150" height="56" rx="8" class="fc-box fc-v"/><text x="91.0" y="140" class="fc-k">Model 1</text><text x="91.0" y="157" class="fc-s">Release from the gel</text></g></a>
+<line x1="91.0" y1="174" x2="91.0" y2="190" class="fc-line" stroke="var(--v14)" marker-end="url(#narv)"/>
+<a href="#m12"><g><rect x="16" y="192" width="150" height="56" rx="8" class="fc-box fc-v"/><text x="91.0" y="214" class="fc-k">Model 2</text><text x="91.0" y="231" class="fc-s">Tissue transport</text></g></a>
+<line x1="91.0" y1="248" x2="91.0" y2="264" class="fc-line" stroke="var(--v14)" marker-end="url(#narv)"/>
+<a href="#m3"><g><rect x="16" y="266" width="150" height="56" rx="8" class="fc-box fc-v"/><text x="91.0" y="288" class="fc-k">Model 3</text><text x="91.0" y="305" class="fc-s">MD2/TLR4 competition</text></g></a>
+<line x1="91.0" y1="322" x2="91.0" y2="338" class="fc-line" stroke="var(--v14)" marker-end="url(#narv)"/>
+<a href="#m45"><g><rect x="16" y="340" width="150" height="56" rx="8" class="fc-box fc-v"/><text x="91.0" y="362" class="fc-k">Model 4</text><text x="91.0" y="379" class="fc-s">NF-&#954;B signalling</text></g></a>
+<line x1="91.0" y1="396" x2="91.0" y2="412" class="fc-line" stroke="var(--v14)" marker-end="url(#narv)"/>
+<a href="#m45"><g><rect x="16" y="414" width="150" height="56" rx="8" class="fc-box fc-v"/><text x="91.0" y="436" class="fc-k">Model 5</text><text x="91.0" y="453" class="fc-s">iNOS &#8594; nitrite</text></g></a>
+<a href="#m12"><g><rect x="194" y="118" width="150" height="56" rx="8" class="fc-box fc-f"/><text x="269.0" y="140" class="fc-k">Model 1</text><text x="269.0" y="157" class="fc-s">Release from the gel</text></g></a>
+<a href="#m12"><g><rect x="194" y="192" width="150" height="56" rx="8" class="fc-box fc-f"/><text x="269.0" y="214" class="fc-k">Model 2</text><text x="269.0" y="231" class="fc-s">Tissue transport</text></g></a>
+<line x1="269.0" y1="174" x2="269.0" y2="190" class="fc-line" stroke="var(--fgf)" marker-end="url(#narf)"/>
+<a href="#m6"><g><rect x="70" y="526" width="220" height="62" rx="8" class="fc-box fc-end-box"/><text x="180.0" y="549" class="fc-k">Model 6</text><text x="180.0" y="574" class="fc-end">Closure time</text></g></a>
+<path d="M269.0 248 V524" class="fc-line" stroke="var(--fgf)" marker-end="url(#narf)"/>
+<text x="261.0" y="286" class="fc-lab fc-lab-f" style="text-anchor:end">FGF2-G3 raises</text>
+<text x="261.0" y="299" class="fc-lab fc-lab-f" style="text-anchor:end">proliferation</text>
+<path d="M91.0 470 V524" class="fc-line fc-line-j" marker-end="url(#narj)"/>
+<text x="99.0" y="492" class="fc-lab fc-lab-j" style="text-anchor:start">Inflammation</text>
+<text x="99.0" y="505" class="fc-lab fc-lab-j" style="text-anchor:start">sets death rate</text>
+</svg>
+    </div>
+    <figcaption><span class="fid">Model map.</span> How the patch is followed from loading to wound closure. Each payload runs through its own release (Model&#160;1) and tissue-transport (Model&#160;2) solve. The V14 arm continues through receptor competition (Model&#160;3), NF-&#954;B signalling (Model&#160;4) and iNOS and nitrite (Model&#160;5). The arrow from Model&#160;5 carries the inflammatory state into Model&#160;6, where it sets the death rate; the FGF2-G3 arm enters Model&#160;6 through the proliferation rate. Model&#160;6 is the single end point and returns the closure time. <span class="caveat">Blue is the V14 arm, red is the FGF2-G3 arm, and the orange arrow is the junction where the two meet. Each box links to its section.</span></figcaption>
+  </figure>
+
+  <div class="col">
 
   <h3>Why chronic wounds can remain inflamed</h3>
   <p>Acute wounds usually move through four stages: haemostasis, inflammation, proliferation and
