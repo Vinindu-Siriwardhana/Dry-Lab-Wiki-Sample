@@ -700,7 +700,7 @@ __I3__
   <h3>3. Solver Verification</h3>
   <p>Before using any result, we checked the solver against known answers. Verification of this kind establishes that the code reproduces known mathematics; it is not validation against experiment, and we do not present it as such.</p>
   <p><b>Front speed against the analytic value.</b> For a pulled front the asymptotic speed is <span class="eqi">c=2\sqrt{D_n r_{\mathrm{eff}}}</span>. We fitted the numerical front position over the middle of the traverse for four parameter sets, <span class="eqi">D_n</span> = 10&#8315;&#8313; and 10&#8315;&#8312; cm&#178;/s, proliferation rates of 1 and 2 day&#8315;&#185;, and loss rates of 0, 0.3 and 0.5 day&#8315;&#185;. The numerical speed matches the analytic value to 2.1%, 6.2%, 2.4% and 1.8%, and in every case it sits just below the analytic line, which is the expected behaviour for a discretised pulled front (Fisher, 1937; Kolmogorov <i>et al.</i>, 1937).</p>
-  <p><b>The planar closure estimate is a lower bound.</b> The simple estimate <span class="eqi">R_w/c</span> neglects the time taken to form the travelling front from the initial condition. Curvature does accelerate the front, by 5&#8211;21% relative to Cartesian geometry, but the formation transient outweighs that gain, so the computed radial closure time exceeds <span class="eqi">R_w/c</span> by 4&#8211;15%. <span class="eqi">R_w/c</span> should therefore be used as a lower bound on the closure time, not an upper one.</p>
+  <p><b>The planar closure estimate is a lower bound.</b> The simple estimate <span class="eqi">R_w/c</span> neglects the time taken to form the travelling front from the initial condition. Curvature does accelerate the front, by 5&#8211;21% relative to Cartesian geometry, but the formation transient outweighs that gain, so the computed radial closure time exceeds <span class="eqi">R_w/c</span> by 4&#8211;15%. These percentages were found with an earlier parameter set and have not been recomputed for the current register values. <span class="eqi">R_w/c</span> should therefore be used as a lower bound on the closure time, not an upper one.</p>
   <p>The relapse result in Section 5 uses only this solver and does not depend on the delivery model.</p>
   </div>
 
@@ -823,9 +823,9 @@ __I2__
 
   <h4 class="col">4.2 Refinement: how retention affects the redesigned patch</h4>
   <p>We began by writing retention up as something to be maximised. Running the coupled solve showed otherwise. Retention works by binding, so the free concentration that drives delivery is <span class="eqi">C_{\mathrm{total}}/R_V</span> (Eq. 4): residence time is gained and driving concentration is lost in equal proportion. Whether that trade pays depends on how much headroom the peak tissue concentration has above the target.</p>
-  <p><b>The redesign changed this conclusion.</b> At the earlier 0.5 mm, 738 &#181;M design the peak was only 1.9 times the target, so there was little headroom to spend. At 2.5 mm and 3 mg/mL the peak is 522 &#181;M, about 6.5 times the target, and coverage rises from 11.8 h at <span class="eqi">R_V</span> = 1 to 14.0 h at <span class="eqi">R_V</span> = 1.5, 15.5 h at <span class="eqi">R_V</span> = 2 and 16.7 h at <span class="eqi">R_V</span> = 3. The revised target makes moderate retention more useful, but the partitioning still needs to be measured before choosing a retained formulation.</p>
+  <p><b>The redesign changed this conclusion.</b> At the earlier 0.5 mm, 738 &#181;M design the peak was only about 1.7 times the target (at the current target and <span class="eqi">f_{\mathrm{rel}}</span> = 0.5), so there was little headroom to spend, and retention shortened the window: 1.9 h at <span class="eqi">R_V</span> = 1, 1.6 h at 1.5, 0.9 h at 2, and none at 3. At 2.5 mm and 3 mg/mL the peak is 522 &#181;M, about 6.5 times the target, and coverage rises, with diminishing returns, from 11.8 h at <span class="eqi">R_V</span> = 1 to 14.0 h at <span class="eqi">R_V</span> = 1.5, 15.5 h at <span class="eqi">R_V</span> = 2 and 16.7 h at <span class="eqi">R_V</span> = 3. The revised target makes moderate retention more useful, but the partitioning still needs to be measured before choosing a retained formulation.</p>
   <p>The solubility limit that used to sit behind this has moved out of the way. An 80.9 &#181;M target at 500 &#181;m depth needs a total loading of only 26 &#181;M at <span class="eqi">f_{\mathrm{rel}}</span> = 0.5, which is 1.2% of the 3 mg/mL the team has dissolved. Retention would only become unformulable above <span class="eqi">R_V</span> &#8776; 84.6.</p>
-  <p>For V14 specifically, the chemistry is not available. Neither heparin nor alginate sulfate can help: both are strongly anionic, and V14 carries a net charge of &#8722;2 with no Lys, Arg or His, so they repel. Retaining V14 in alginate would require covalent tethering, which means the two arms of the patch would need different chemistry. We abandoned retention as a design direction on these three grounds together: the trade-off, the loading headroom and the chemistry.</p>
+  <p>For V14 specifically, the chemistry is not available. Neither heparin nor alginate sulfate can help: both are strongly anionic, and V14 carries a net charge of &#8722;2 with no Lys, Arg or His, so they repel. Retaining V14 in alginate would require covalent tethering, which means the two arms of the patch would need different chemistry. We do not use retention in this build, for two reasons that do not depend on the size of the gain: V14 in alginate would need covalent tethering chemistry, and the partitioning has not been measured. The retention entry in Section 3.3 of the Refinement record explains why the earlier argument, that the gain was under an hour, no longer holds.</p>
 
   <h3>5. Simulated Results</h3>
   <p><b>The patch can be changed once a day, and V14 sets the schedule.</b> Each patch's 11.8 h of cover is passed through the 18 h drug-effect delay, which sets a maximum change interval of about 36 h. That interval is a property of the patch, not the wound. Repeat dosing is therefore part of the design, not a fallback for a patch that failed to release slowly. The table gives the closure time from the radial solver for the repeat-dose model at several change intervals:</p>
@@ -1092,165 +1092,66 @@ __I1__
     <p class="eyebrow">Iteration</p>
     <h2>Model refinement: what changed and why</h2>
   </div></div>
-  <p class="col">Re-running the model corrected several statements in the equation reference and did
-  not support two earlier predictions. These revisions are recorded so that the reasoning behind
-  each change is transparent and conclusions are not presented with more confidence than the
-  evidence supports.</p>
 
-  <h3 class="col">Model change: removing the NO sensor</h3>
-  <div class="col">
-  <p>The original design used a NorR/P<i>norV</i> promoter to sense wound nitric oxide and trigger
-  peptide secretion, forming a closed-loop device. The promoter-activity experiment did not produce
-  a usable response. We therefore used the model to assess whether nitric oxide could reach the
-  sensing layer at a concentration sufficient to activate the promoter.</p>
+  <h3>1. Background</h3>
+  <p>Re-running the models corrected several statements in our equation reference and did not support two earlier predictions. We record these revisions so that the reasoning behind each change is transparent, and so that conclusions are not presented with more confidence than the evidence supports.</p>
+  <p>For each revision we state what we had said, what we found, and what changed. Old values appear only in these records. Where a value belongs to an earlier version of the design, we say so and give the date. The first revision is a change to the design itself, the removal of the NO sensor. The rest are corrections to the models and to our reading of them, grouped by module.</p>
 
-  <p>For NO diffusing through a porous layer while being consumed, the steady penetration depth is
-  L<sub>d</sub>&#160;=&#160;&#8730;(D<sub>eff</sub>/k<sub>decay</sub>). Using a half-life of
-  0.09&#8211;2&#160;s and sweeping the tortuosity group over its plausible range gives
-  <b>L<sub>d</sub>&#160;=&#160;11&#8211;93&#160;&#181;m</b>, everywhere in the swept range. The current patch is <b>2.5&#160;mm</b> thick, and the 1&#160;mm minimum dressing thickness is the thinnest layer that would still manage exudate. Across the whole range, NO reaching the chassis is at most 2&#215;10<sup>&#8722;12</sup> of wound NO at 2.5&#160;mm (2&#215;10<sup>&#8722;5</sup> at 1&#160;mm) &#8212; far below any plausible NorR activation threshold. The full analysis is in <a href="#no-sensing">Learning Cycle 1</a>. The problem is geometric, not biological, and no promoter engineering
-  could have fixed it.</p>
+  <h3 class="col">2. Model change: removing the NO sensor</h3>
+  <p>The original design used a NorR/P<i>norV</i> promoter to sense wound nitric oxide and trigger peptide secretion, forming a closed-loop device. The promoter-activity experiment did not produce a usable response. We therefore used the model to assess whether nitric oxide could reach the sensing layer at a concentration sufficient to activate the promoter.</p>
+  <p>For NO diffusing through a porous layer while being consumed, the steady penetration depth is <span class="eqi">L_d=\sqrt{D_{\mathrm{eff}}/k_{\mathrm{decay}}}</span>. Using a tissue half-life of 0.09&#8211;2 s and sweeping the tortuosity group over its plausible range gives <b>L<sub>d</sub> = 11&#8211;93 &#181;m</b> everywhere in the swept range. The current patch is 2.5 mm thick, and the 1 mm minimum dressing thickness is the thinnest layer that would still manage exudate. Across the whole range, NO reaching the chassis is at most 2&#215;10<sup>&#8722;12</sup> of wound NO at 2.5 mm (2&#215;10<sup>&#8722;5</sup> at 1 mm), far below any plausible NorR activation threshold. The problem is geometric, not biological, and no promoter engineering could have fixed it. The full analysis is in <a href="#no-sensing">Learning Cycle 1</a>.</p>
+  <p>The opposite bound leads to the same place. Measured in vivo wound NO (about 3.18 &#181;M) sits above the likely half-activation constant of the promoter, so had NO reached the chassis the promoter would have been saturated and permanently on. Either way the design had no usable dynamic range. We removed the sensing branch but kept its equations: the two-layer transport operator became Model 1, and the expression and secretion kinetics became an upstream production model for recombinant V14 and FGF2-G3. As a result, <b>NO is now an output of the model and never an input</b>, and the device is open-loop and two-armed.</p>
 
-  <p>The opposite bound leads to the same place. Measured <i>in vivo</i> wound NO
-  (~3.18&#160;&#181;M) sits above the likely half-activation constant of the promoter, so had NO
-  reached the chassis the promoter would have been saturated and permanently on. Either way the
-  design had no usable dynamic range. We removed the sensing branch, but kept its equations: the
-  two-layer transport operator became Model&#160;1, and the expression and secretion kinetics became
-  an upstream production model for recombinant V14 and FGF2-G3. The result is that <b>NO is now an
-  output of the model and never an input</b>, and the device is open-loop and two-armed.</p>
-  </div>
+  <h3 class="col">3. Corrections and refuted expectations</h3>
+  <p>The tables below list each revision by module. A revision that overturned a stated conclusion says so in its first column.</p>
 
-  <h3 class="col">Dated corrections and refuted expectations</h3>
-  <ol class="corr">
-    <li><b>18 October 2026: daily-duty arithmetic and screening interpretation corrected.</b>
-    The current 11.8&#160;h coverage per 24&#160;h is about 49&#160;% duty, not the previously
-    quoted 36&#160;%; the relative margin above the 33&#160;% threshold is about 49&#160;%,
-    not 10&#160;%. A roughly 33&#160;% coverage shortfall exhausts that margin. The peptide
-    section now distinguishes positive-gate evidence from unvalidated occupancy and mechanism
-    assumptions, and its written gate matches the implemented cysteine-count and stability rules.</li>
-    <li><b>18 October 2026: captions and interpretation synchronized with current outputs.</b>
-    The peptide release half-time is 59&#160;min and its serum-to-release half-life ratio is about
-    6.2. The transport caption now distinguishes surface coverage from depth-averaged coverage.
-    The thickness sweep uses the current target and separates reservoir volume from diffusion
-    timescale. The dose-requirement curves are labelled by absolute occupancy, and proteolysis
-    is described as the third-ranked dose uncertainty. The screening figure and consecutive
-    figure numbering have been restored; proposed scratch assays are identified as future work.</li>
-    <li><b>&#8220;A once-daily dressing change is not within reach of thickness or loading alone.&#8221;
-    We said that, and on 16&#160;Oct 2026 we were proved wrong by our own wet lab.</b> The claim was
-    true of the patch it described &#8212; 0.5&#160;mm of gel, 1&#160;mg&#160;mL<sup>&#8722;1</sup> of
-    V14 &#8212; which held tissue above target for only 2.2&#160;h and so needed changing every
-    6.8&#160;h. The team then cast the gel at 2.5&#160;mm and loaded 3&#160;mg&#160;mL<sup>&#8722;1</sup>,
-    and the same solver now returns 11.8&#160;h of cover and a 36&#160;h limit. Thickness was the
-    lever, and we had under-rated it because we were reading its effect off a prior that only ran to
-    1&#160;mm. Two caveats keep this honest: the released fraction is now taken as
-    f<sub>rel</sub>&#160;=&#160;0.5 rather than 1, which costs half the loading back; and the daily
-    relative margin is about 49&#160;% on Tier-4 closure parameters, so this is a prediction, not a
-    demonstration.</li>
+  <h4 class="col">3.1 Modules 1 and 2: release and transport</h4>
+  <div class="tablewrap"><table>
+  <thead><tr><th>Revision</th><th>What we had said</th><th>What we found</th><th>What changed</th></tr></thead>
+  <tbody>
+  <tr><td><b>The far-field boundary condition fails exactly where the device works.</b></td><td>A zero-flux deep boundary would do.</td><td>A zero-flux boundary needs L<sub>tis</sub> &#8811; &#923;, but &#923; is 1.1 mm at k = 10&#8315;&#8308; s&#8315;&#185; and 11 mm at 10&#8315;&#8310;, against a dermis of 1&#8211;2 mm.</td><td>The model uses a Dirichlet systemic sink, with no distributed clearance term as well.</td></tr>
+  <tr><td><b>The gel Damk&#246;hler number is small, so nearly the whole dose escapes.</b></td><td>True of the 0.5 mm gel.</td><td>Da<sub>V</sub> is 0.007&#8211;0.07 at 0.5 mm but 0.18&#8211;1.8 at 2.5 mm for k between 10&#8315;&#8309; and 10&#8315;&#8308; s&#8315;&#185; (0.57 at the register rate).</td><td>In-gel degradation now takes a real share of the mobile dose. The analytic surrogate behind the delivery sensitivity analysis still assumes full escape and is correspondingly optimistic, so every coverage number we quote comes from the two-domain solver, which does not.</td></tr>
+  <tr><td><b>The retention model treated the loaded concentration as free.</b></td><td>The loaded concentration enters the gel as free drug.</td><td>With retention the loading is the total, free plus bound, so the free initial concentration is C<sub>total</sub>/R<sub>V</sub>.</td><td>Treating the loading as free puts R<sub>V</sub> times more drug into the model than solubility allows and over-predicts sustained release by orders of magnitude. It is easy to repeat, so we record it.</td></tr>
+  </tbody>
+  </table></div>
 
-    <li><b>&#8220;The gel Damk&#246;hler number is small, so nearly the whole dose escapes.&#8221;</b>
-    True at 0.5&#160;mm (Da<sub>V</sub>&#160;=&#160;0.007&#8211;0.07), false at 2.5&#160;mm
-    (0.18&#8211;1.8, and 0.57 at the register rate). In-gel degradation now eats a real share of the
-    mobile dose. At fixed area and loading, increasing thickness from 0.5 to 2.5&#160;mm
-    gives a 5&#215; reservoir and a 25&#215; pure-diffusion timescale, while coverage rises
-    from 5.0 to 11.8&#160;h at the current target (about 2.3&#215;). The analytic surrogate behind the delivery sensitivity analysis still assumes full escape
-    and is correspondingly optimistic; every coverage number we quote comes from the two-domain
-    solver, which does not.</li>
+  <h4 class="col">3.2 Modules 3 to 5: receptor, signalling and NO</h4>
+  <div class="tablewrap"><table>
+  <thead><tr><th>Revision</th><th>What we had said</th><th>What we found</th><th>What changed</th></tr></thead>
+  <tbody>
+  <tr><td><b>The dose inversion had the wrong scaling law, not the wrong prefactor.</b></td><td>The required dose could be written with the apparent dissociation constant factored out.</td><td>That is valid for occupancy and for Cheng&#8211;Prusoff but not for the inversion. It turned a linear relation quadratic and over-estimated the dose by about 2&#215; at low endotoxin load and about 2500&#215; at high load.</td><td>The corrected, linear form is used throughout, and the exact half-maximal dose &#968;<sub>50</sub> = 1 + <i>a</i> serves as a standing check.</td></tr>
+  <tr><td><b>The K<sub>D,P</sub> input changed between the 14 and 17 October panels.</b></td><td>On 14 Oct, with no significant V14 drop, we reported a one-sided lower bound of 10.08 &#181;M.</td><td>On 17 Oct a significant drop appeared in positive-gate frequency (21.34%, p = 0.0186, n = 4 per group).</td><td>The 17 Oct ratio, treated directly as the relative LPS occupancy ratio, gives the proxy K<sub>D,P</sub> = 5.62 &#181;M and the target 80.9 &#181;M. The 14 Oct bound is historical. Neither value is a calibrated affinity, because the gate-to-occupancy mapping is not validated.</td></tr>
+  <tr><td><b>The iNOS rate was four orders of magnitude too high.</b></td><td>The per-cell rate gave a plausible steady-state NO concentration.</td><td>The scavenging term acts on free NO, but the literature values it was matched against are nitrite measurements.</td><td>The model now keeps free NO and accumulated nitrite as separate observables. Writing the two side by side is what exposed the error.</td></tr>
+  <tr><td><b>"NO half-life" was one symbol doing two jobs.</b></td><td>We carried 3&#8211;10 s in the written model while the constants register held 0.09&#8211;2 s.</td><td>Neither was simply wrong. Tissue consumption, which sets the penetration depth, and autoxidation in culture medium, which sets free NO in a well, differ by about two decades.</td><td>They are now two named constants. Using the medium figure for tissue had overstated L<sub>d</sub> by about 2.4&#215;, which made the NO-sensing geometry look more viable than it was. The corrected 11&#8211;93 &#181;m strengthens the learning-cycle conclusion.</td></tr>
+  </tbody>
+  </table></div>
 
-    <li><b>&#8220;A peptide with GRAVY&#160;=&#160;+1.16 may not dissolve at the required
-    concentration.&#8221; Withdrawn on evidence.</b> We flagged solubility as a possible showstopper
-    against an <em>assumed</em> 1&#160;mg&#160;mL<sup>&#8722;1</sup> ceiling. The team has since
-    dissolved 3&#160;mg&#160;mL<sup>&#8722;1</sup> in the casting buffer, and the thicker gel cut the
-    requirement to 26&#160;&#181;M, so the demonstrated loading clears it roughly 47&#215; over. The
-    saturation solubility is still unmeasured &#8212; what changed is that it is no longer on the
-    critical path.</li>
+  <h4 class="col">3.3 Modules 6 and 7: closure and device design</h4>
+  <div class="tablewrap"><table>
+  <thead><tr><th>Revision</th><th>What we had said</th><th>What we found</th><th>What changed</th></tr></thead>
+  <tbody>
+  <tr><td><b>A sub-threshold pulse causes relapse, not stalling.</b></td><td>A transient crossing of the r<sub>p</sub> &gt; <i>d</i> threshold would simply fail to finish.</td><td>It reverses: the tissue behind the front dies back and the front recedes past its starting position.</td><td>Treatment duration, not peak dose, is the variable that matters. Under-treating is actively harmful, not merely insufficient.</td></tr>
+  <tr><td><b>The planar closure estimate is a lower bound, not an upper bound.</b></td><td>The estimate R<sub>w</sub>/<i>c</i> bounds the closure time from above.</td><td>Curvature does accelerate the front, by 5&#8211;21% relative to Cartesian, but R<sub>w</sub>/<i>c</i> neglects the time to form the travelling front, and that transient outweighs the curvature gain. Radial closure exceeds R<sub>w</sub>/<i>c</i> by 4&#8211;15%.</td><td>R<sub>w</sub>/<i>c</i> is used as a lower bound. These percentages were found with the earlier parameter set and have not been recomputed for the current register values.</td></tr>
+  <tr><td><b>The Jensen gap was quoted at 15%.</b></td><td>The gap between the proliferation rate at the mean FGF2 concentration and its depth average was about 15%, inherited from an earlier calculation.</td><td>Recomputed for this geometry it is 0.2&#8211;36%, with a median of 2.7%, and it is always in the optimistic direction.</td><td>The inherited figure was neither typical nor an upper bound. The gap is small in most of the parameter space but reaches 36% in the corner that matters most.</td></tr>
+  <tr><td><b>19 Oct 2026. The chronic steady state was understated.</b></td><td>With the register's chronic values, the density behind the front is about &#8722;0.02<i>K</i>, because death exceeds proliferation by about 2%.</td><td>Recomputed from the register, proliferation is 0.497 and loss is 0.512 day<sup>&#8722;1</sup>, so the density is about &#8722;0.03<i>K</i> and death exceeds proliferation by about 3%.</td><td>Module 6 states the recomputed values. The classification of the untreated wound as chronic is unchanged, and it still rests on a small margin between two Tier-4 numbers.</td></tr>
+  <tr><td><b>"A once-daily dressing change is not within reach of thickness or loading alone."</b> We said that, and on 16 Oct 2026 we were proved wrong by our own wet lab.</td><td>The claim was true of the patch it described: 0.5 mm of gel and 1 mg mL<sup>&#8722;1</sup> of V14, which held tissue above target for only 2.2 h and so needed changing every 6.8 h (figures at the target of that date).</td><td>The team then cast the gel at 2.5 mm and loaded 3 mg mL<sup>&#8722;1</sup>. The same solver now returns 11.8 h of cover and a 36 h limit. Thickness was the lever, and we had under-rated it because we were reading its effect off a prior that only ran to 1 mm.</td><td>The design is changed once a day. Two caveats keep this honest: the released fraction is taken as 0.5 rather than 1, which costs half the loading back, and the daily margin of about 49% rests on Tier-4 closure parameters, so this is a prediction, not a demonstration.</td></tr>
+  <tr><td><b>Changing the gel from GelMA to calcium alginate mattered less than its thickness.</b></td><td>The earlier build used GelMA, so the move to calcium alginate changed the material and the thickness together.</td><td>Alginate binds neither molecule strongly and its 14 nm mesh barely slows them, so the gel material drops out of the sensitivity analysis. Thickness moved the answer: at the current loading and target, 0.5 mm gives 5.0 h of cover and 2.5 mm gives 11.8 h.</td><td>Thickness remains the strongest lever, enough to turn a four-times-daily dressing change into a once-daily one.</td></tr>
+  <tr><td><b>"A peptide with GRAVY = +1.16 may not dissolve at the required concentration." Withdrawn on evidence.</b></td><td>Solubility was a possible showstopper, against an assumed ceiling of 1 mg mL<sup>&#8722;1</sup>.</td><td>The team has since dissolved 3 mg mL<sup>&#8722;1</sup> in the casting buffer, and the thicker gel cut the requirement to 26 &#181;M total, so the demonstrated loading clears it more than eighty times over.</td><td>The saturation solubility is still unmeasured. What changed is that it is no longer on the critical path.</td></tr>
+  <tr><td><b>Retention: our reason for not pursuing it was overturned on 16 Oct 2026, and has been checked again at the current target.</b></td><td>We first wrote retention up as something to be maximised, then reported the opposite, and later that the gain was under an hour and cheaper to buy with thickness.</td><td>At the 0.5 mm, 738 &#181;M design, the coupled solve shows retention shortening the window (1.9 h at R<sub>V</sub> = 1, 1.6 h at 1.5, 0.9 h at 2, none at 3), because the peak is only about 1.7 times the target. At the 2.5 mm, 3 mg mL<sup>&#8722;1</sup> build, the peak is 6.5 times the target, and coverage rises with diminishing returns: 11.8, 14.0, 15.5 and 16.7 h at R<sub>V</sub> = 1, 1.5, 2 and 3.</td><td>The gain from moderate retention is several hours, not under one hour, so that earlier argument no longer holds. We still do not use retention, for two reasons that do not depend on its size: V14 in alginate would need covalent tethering chemistry, since heparin and alginate sulfate repel a net-negative peptide, and the partitioning has not been measured.</td></tr>
+  <tr><td><b>19 Oct 2026. FGF2-G3 cover compared with the change interval.</b></td><td>The 2.5 mm gel keeps FGF2-G3 above its EC<sub>50</sub> for 5.9 days, about five times the change interval.</td><td>5.9 days is 141.5 h, which is about four times the 36 h maximum change interval and about six times a daily change.</td><td>The wiki now says four times the 36 h interval. The conclusion is unchanged: FGF2-G3 does not constrain the schedule, and V14 does.</td></tr>
+  <tr><td><b>18 Oct 2026. Daily-duty arithmetic corrected.</b></td><td>The current coverage gives about 36% duty, and the relative margin above the 33% threshold is about 10%.</td><td>The current 11.8 h of coverage per 24 h is about 49% duty, and the relative margin is about 49%.</td><td>A coverage shortfall of about 33% exhausts that margin. The margin is a model prediction on Tier-4 closure parameters.</td></tr>
+  </tbody>
+  </table></div>
 
-    <li><b>The planar closure estimate is a lower bound, not an upper bound.</b> Curvature does
-    accelerate the front, by 5&#8211;21&#160;% relative to Cartesian &#8212; but the formula
-    R<sub>w</sub>/c neglects the time to <i>form</i> the travelling front, and that transient
-    outweighs the curvature gain. Radial closure exceeds R<sub>w</sub>/c by 4&#8211;15&#160;%
-    (found with the earlier parameter set; not recomputed for the register update).</li>
-
-    <li><b>The far-field boundary condition fails exactly where the device works.</b> A zero-flux
-    deep boundary needs L<sub>tis</sub>&#160;&#8811;&#160;&#923;, but &#923; is 1.1&#160;mm at
-    k&#160;=&#160;10<sup>&#8722;4</sup>&#160;s<sup>&#8722;1</sup> and 11&#160;mm at
-    10<sup>&#8722;6</sup>, against a dermis of 1&#8211;2&#160;mm. V3 therefore uses a Dirichlet
-    systemic sink, with no distributed clearance term as well.</li>
-
-    <li><b>The Jensen gap was quoted at 15&#160;%; recomputed for this geometry it is
-    0.2&#8211;36&#160;%, median 2.7&#160;%.</b> The inherited figure was neither typical nor an
-    upper bound. The gap is small in most of the parameter space but reaches 36&#160;% in the
-    corner that matters most, and it is always in the optimistic direction.</li>
-
-    <li><b>Retention is not a lever worth pulling &#8212; but our reason for saying so was
-    overturned on 16&#160;Oct 2026.</b> We first wrote retention up as something to be maximised,
-    then reported the opposite: at the 0.5&#160;mm / 738&#160;&#181;M design the coupled solve showed
-    it <em>shortening</em> the window (2.2&#160;h at R<sub>V</sub>&#160;=&#160;1, 1.5&#160;h at
-    R<sub>V</sub>&#160;=&#160;2, zero by R<sub>V</sub>&#160;&#8776;&#160;3). At the 2.5&#160;mm /
-    3&#160;mg&#160;mL<sup>&#8722;1</sup> build the peak tissue concentration is 3.6&#215; the target
-    rather than 1.9&#215;, so the trade now pays and a shallow optimum reappears near
-    R<sub>V</sub>&#160;&#8776;&#160;1.5&#8211;2 (8.7&#160;&#8594;&#160;9.5&#160;h in the 16&#160;Oct calculation). <b>The conclusion
-    survives; the argument for it does not.</b> We still do not recommend retention, because the gain
-    is under an hour, the same hour is cheaper to buy with thickness, and for V14 in alginate it
-    would need new tethering chemistry.</li>
-
-    <li><b>Changing the gel from GelMA to calcium alginate mattered less than its thickness.</b>
-    Alginate binds neither molecule and its 14&#160;nm mesh barely slows them, so the gel material
-    drops out of the sensitivity analysis. Thickness is what moved the answer, twice: it remains the
-    strongest lever, and the move from 0.5&#160;mm to 2.5&#160;mm on 16&#160;Oct 2026 took one
-    patch's cover from 3.4&#160;h to 11.8&#160;h &#8212; enough to turn a four-times-daily dressing
-    change into a once-daily one.</li>
-
-    <li><b>A sub-threshold pulse causes relapse, not stalling.</b> We had assumed a transient
-    crossing of the r<sub>p</sub>&#160;&gt;&#160;d threshold would simply fail to finish. It
-    reverses.</li>
-
-    <li><b>The iNOS rate was four orders of magnitude too high</b>, and looked right because it was
-    matched against nitrite data using a free-NO expression. Writing the two observables side by
-    side is what exposed it.</li>
-
-    <li><b>The dose inversion had the wrong scaling law, not the wrong prefactor.</b> Factoring out
-    K<sub>D</sub><sup>app</sup> is valid for occupancy and for Cheng&#8211;Prusoff but not for the
-    inversion, turning a linear relation quadratic and over-estimating by up to ~2500&#215;.</li>
-
-    <li><b>The peptide screen's stability gate was compared against a stale release half-time
-    &#8212; and has now swung back.</b> Module&#160;C originally used 2&#8211;22&#160;h, carried over
-    from a thicker gel. Recomputed on the 0.5&#160;mm patch, t<sub>1/2,rel</sub> was 2.3&#160;minutes
-    and the gate stopped discriminating at all: every candidate passed it, so the stated reason for
-    rejecting TAP2 was half wrong. On the 2.5&#160;mm patch as now built t<sub>1/2,rel</sub> is
-    59&#160;minutes, and the gate discriminates again &#8212; it demands a serum half-life of about an
-    hour, which TAP1, TAP2 and MD2-I fail. That moves the survivor set from TAP1, MD2-II and V14 to
-    MD2-II and V14: TAP1 passes the structural gate outright and now fails on stability alone. No
-    selection decision ever turned on this &#8212; V14 has the longest half-life of the set under
-    either release time &#8212; but the gate has gone from vacuous to load-bearing.</li>
-
-    <li><b>Our sensitivity code underestimated the importance of proteolysis.</b>
-    We previously reported k<sub>prot,V</sub> at S<sub>T</sub>&#160;=&#160;0.023, fifth of eight. The analytic surrogate carried a
-    spurious extra factor &#923;/&#948; in the depth average, which cancelled most of the
-    k<sub>prot,V</sub> dependence &#8212; and disagreed with the formula written in the module's own
-    documentation. Corrected, k<sub>prot,V</sub> ranks <b>third at
-    S<sub>T</sub>&#160;=&#160;0.42</b>, while first-order variance for delivered dose falls
-    from 52&#160;% to 34&#160;%. The expected dominance of proteolysis is still not supported:
-    it ranks behind affinity and loading. This correction establishes greater sensitivity to
-    proteolysis; practical control of the device is a separate question.</li>
-
-    <li><b>&#8220;NO half-life&#8221; was one symbol doing two jobs.</b> We carried
-    3&#8211;10&#160;s in the written model while the constants register held
-    0.09&#8211;2&#160;s, and neither was simply wrong: tissue consumption (which sets the
-    penetration depth L<sub>d</sub>) and autoxidation in culture medium (which sets free NO in a
-    well) differ by about two decades. No single number is correct for both. They are now two named
-    constants. Using the medium figure for tissue had overstated L<sub>d</sub> by ~2.4&#215;, which
-    made the NO-sensing geometry look <em>more</em> viable than it was &#8212; the corrected
-    11&#8211;93&#160;&#181;m strengthens the learning-cycle conclusion rather than weakening
-    it.</li>
-  </ol>
-
-  <div class="col">
-  <p>We also found one modelling error during solver verification, and we note it because it is
-  easy to repeat. <b>With retention, the loaded concentration has to be treated as the total
-  (free&#160;+&#160;bound)</b>, so the free initial concentration is
-  C<sub>total</sub>/R<sub>V</sub>. Treating the loading as free puts R<sub>V</sub> times more
-  drug into the model than the solubility limit allows, and over-predicts sustained release by
-  orders of magnitude.</p>
-  </div>
+  <h4 class="col">3.4 The peptide screen and the sensitivity analysis</h4>
+  <div class="tablewrap"><table>
+  <thead><tr><th>Revision</th><th>What we had said</th><th>What we found</th><th>What changed</th></tr></thead>
+  <tbody>
+  <tr><td><b>The peptide screen's stability gate was compared against a stale release half-time, and has since swung back.</b></td><td>The gate used a release half-time of 2&#8211;22 h, carried over from a thicker gel.</td><td>Recomputed on the 0.5 mm patch, the release half-time was 2.3 minutes and the gate stopped discriminating: every candidate passed it, so the stated reason for rejecting TAP2 was half wrong. On the 2.5 mm patch as now built, the release half-time is 59 minutes and the gate discriminates again.</td><td>It now demands a serum half-life of about an hour, which TAP1, TAP2 and MD2-I fail. The survivor set moves from TAP1, MD2-II and V14 to MD2-II and V14, since TAP1 passes the structural gate and now fails on stability alone. No selection decision ever turned on this, because V14 has the longest half-life of the set under either release time, but the gate has gone from vacuous to load-bearing.</td></tr>
+  <tr><td><b>Our sensitivity code underestimated the importance of proteolysis.</b></td><td>k<sub>prot,V</sub> had S<sub>T</sub> = 0.023, fifth of eight.</td><td>The analytic surrogate carried a spurious extra factor &#923;/&#948; in the depth average, which cancelled most of the k<sub>prot,V</sub> dependence and disagreed with the formula in the module's own documentation. Corrected, k<sub>prot,V</sub> ranks third at S<sub>T</sub> = 0.42, while first-order variance for delivered dose falls from 52% to 34%.</td><td>The expected dominance of proteolysis is still not supported: it ranks behind affinity and loading. This establishes greater sensitivity to proteolysis, and practical control of the device is a separate question.</td></tr>
+  <tr><td><b>18 Oct 2026. Captions and interpretation synchronised with current outputs.</b></td><td>Several captions and a screening interpretation were out of step with the model.</td><td>The peptide release half-time is 59 minutes and its serum-to-release half-life ratio is about 6.2. The transport caption now distinguishes surface coverage from depth-averaged coverage, and the thickness sweep separates reservoir volume from diffusion timescale.</td><td>The dose-requirement curves are labelled by absolute occupancy, and proteolysis is described as the third-ranked dose uncertainty. The peptide section distinguishes positive-gate evidence from unvalidated occupancy and mechanism assumptions, and its written gate matches the implemented cysteine-count and stability rules. Proposed scratch assays are identified as future work.</td></tr>
+  </tbody>
+  </table></div>
 </section>
 
 <!-- ================= ASKS ================= -->
