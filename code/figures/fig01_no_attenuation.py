@@ -3,8 +3,8 @@ F1 -- Why NO-responsive sensing was geometrically infeasible.
 
 Steady penetration depth for diffusion with first-order consumption,
 L_d = sqrt(D_eff / k_decay), k_decay = ln2 / t_half.  Attenuation across a
-stack of thickness L is exp(-L/L_d).  Plotted against the actual 0.5-3 mm
-bacterial-cellulose + hydrogel stack of the V2 device.
+layer of thickness L is exp(-L/L_d).  Plotted against the 2.5 mm V3 patch
+(P.L_GEL); the 1 mm minimum dressing thickness is marked for reference.
 """
 import sys, os, numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -29,9 +29,13 @@ ax.fill_between(L * 10, np.exp(-L / ld_lo), np.exp(-L / ld_hi),
 ax.plot(L * 10, np.exp(-L / Ld(0.5, P.NO_HALFLIFE[1])), color=S.C_V14,
         label="central case, $L_d$ = %.0f µm" % (Ld(0.5, P.NO_HALFLIFE[1]) * 1e4))
 
-ax.axvspan(*P.STACK_MM, color=S.C_GREY, alpha=0.35, lw=0)
-ax.text(1.75, 1e-6, "actual device stack\n0.5 – 3 mm", ha="center", va="center",
+Lp = P.L_GEL * 10                          # patch thickness, mm
+ax.axvline(Lp, color=S.C_GREY, lw=2.0)
+ax.text(Lp - 0.06, 1e-5, "V3 patch\n%.1f mm" % Lp, ha="right", va="center",
         fontsize=9, color="#555555", weight="bold")
+ax.axvline(1.0, color=S.C_GREY, lw=1.0, ls="--")
+ax.text(1.04, 1e-9, "1 mm minimum\ndressing", ha="left", va="center",
+        fontsize=7.8, color="#555555")
 
 ax.axhline(1e-2, color=S.C_THRESH, ls=":", lw=1.4)
 ax.text(0.04, 1.3e-2, "most optimistic NorR activation threshold",
@@ -39,18 +43,18 @@ ax.text(0.04, 1.3e-2, "most optimistic NorR activation threshold",
 
 for Lx, lab in ((0.1, None), (0.2, None)):
     pass
-Ls = P.STACK_MM[0] / 10                    # thinnest stack, cm
-a_hi, a_lo = np.exp(-Ls / ld_hi), max(np.exp(-Ls / ld_lo), 1e-12)
+Ls = P.L_GEL                               # patch thickness, cm
+a_hi, a_lo = np.exp(-Ls / ld_hi), max(np.exp(-Ls / ld_lo), 1e-14)
 ax.annotate("", xy=(Ls * 10, a_lo), xytext=(Ls * 10, a_hi),
             arrowprops=dict(arrowstyle="<->", color=S.C_DERIVED, lw=1.3))
-ax.text(Ls * 10 + 0.08, a_hi * 1e-2,
+ax.text(Ls * 10 + 0.08, a_hi * 1e-1,
         "at %.1f mm:\n$\\leq 10^{%d}$" % (Ls * 10, int(np.ceil(np.log10(a_hi)))),
         fontsize=8.5, va="center", color=S.C_DERIVED, weight="bold")
 
 ax.set_yscale("log")
-ax.set_ylim(1e-12, 2)
+ax.set_ylim(1e-14, 2)
 ax.set_xlim(0, 3.2)
-ax.set_xlabel("depth into the patch stack, $L$  (mm)")
+ax.set_xlabel("depth into the patch, $L$  (mm)")
 ax.set_ylabel("fraction of wound NO reaching the chassis,  $e^{-L/L_d}$")
 ax.set_title("NO could never have reached the sensor")
 ax.legend(loc="upper right")

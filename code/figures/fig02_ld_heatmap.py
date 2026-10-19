@@ -2,7 +2,7 @@
 F2 -- Penetration depth across the whole swept parameter range.
 
 Shows the Act-1 conclusion does not depend on one parameter choice: L_d stays
-far below the stack thickness everywhere in the (1/tau, t_half) box.
+far below the patch thickness everywhere in the (1/tau, t_half) box.
 """
 import sys, os, numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -32,4 +32,4 @@ ax.grid(False)
 cb = fig.colorbar(im, ax=ax, fraction=0.046)
 cb.outline.set_visible(False)
 S.save(fig, "fig02_ld_heatmap")
-print(f"  L_d spans {G.min():.0f}-{G.max():.0f} um; stack is 500-3000 um")
+print(f"  L_d spans {G.min():.0f}-{G.max():.0f} um; patch is %.0f um" % (P.L_GEL * 1e4))
