@@ -497,153 +497,131 @@
 <!-- ================= MODELS 4 & 5 ================= -->
 <section class="act wrap" id="m45">
   <div class="act-head"><div class="num">04</div><div>
-    <p class="eyebrow">Models 4 and 5</p>
+    <p class="eyebrow">Modules 4 and 5 &#183; Signalling and NO output (Models 4 and 5)</p>
     <h2>NF-&#954;B signalling and modelled nitric oxide / nitrite outputs</h2>
   </div></div>
 
-  <div class="claim gold">
-    <h3>1. Background</h3>
-    <p>Model&#160;4 carries receptor blockade through to transcriptional output; Model&#160;5 calculates free NO and accumulated nitrite from that input. Nitrite is the quantity a Griess assay would measure, but no Griess assay is planned and these curves are not experimental results. The model keeps accumulated nitrite distinct from instantaneous free NO.</p>
-  </div>
+  <h3>1. Background</h3>
+  <p>In human diabetic wounds, TLR4 expression and downstream signalling are elevated rather than transient (Dasu &amp; Martin, 2014), which is the premise the device rests on. Model 3 tells us what fraction of MD2 remains occupied by LPS once V14 is present. That fraction is not yet a biological outcome. Receptor activation has to be carried through to transcriptional output, and the output of interest here is the inflammatory enzyme iNOS, which makes the nitric oxide (NO) that chronic wounds overproduce.</p>
+  <p>The model represents this system as two linked steps. Model 4 takes the surviving active receptor through a Hill response to nuclear NF-&#954;B p65, which is the transcriptional state the rest of the chain reads. Model 5 drives iNOS from p65 and calculates two quantities from it: free NO, which reaches a quasi-steady level within minutes, and accumulated nitrite, which integrates the production rate over the day. Nitrite is the quantity a Griess assay would measure, but no Griess assay is planned, and these curves are not experimental results.</p>
+  <p>The models output the nuclear p65 level and the modelled free NO and nitrite as functions of the V14 concentration in the tissue. The p65 output also gives the V14 concentration required to reach a chosen signalling state, and nitrite is the readout that Model 6 couples to wound closure.</p>
 
-  <div class="col">
-  <h3 class="col">2. Model Construction: signalling and integrated readout</h3>
-  <div class="col">
-  <p>Models&#160;4 and&#160;5 use Hill functions to represent the signalling response without a full
-  reaction network. A detailed NF-&#954;B model could include IKK activation, I&#954;B&#945;
-  degradation and resynthesis, and p65 nuclear shuttling. Such a model would introduce more than a
-  dozen additional parameters, which the planned experiments do not constrain. The current models
-  instead use a <b>monotonic, saturating input&#8211;output relationship</b> between receptor
-  occupancy and transcriptional drive. A Hill function is a compact form for this relationship, and
-  its exponent can in principle be estimated from dose&#8211;response data.</p>
-  <p>This simplification does not represent signalling dynamics. NF-&#954;B can oscillate, so a pulsed
-  input may produce a different transcriptional response from a steady input with the same average.
-  The steady-state response should therefore be interpreted as an approximation.</p>
-  <p><b>Model&#160;5 distinguishes two calculated quantities.</b> Free NO approaches a quasi-steady level on the modelled timescale, while accumulated nitrite integrates the predicted production rate. The model therefore reports both the instantaneous free-NO concentration and the integral for nitrite. The earlier version matched a free-NO expression to nitrite values from literature, hiding a 10<sup>4</sup>&#215; error in the per-cell iNOS rate; the current formulation keeps those quantities separate. These remain theoretical outputs, not a fit to team measurements.</p>
-  <p>A reduced sigmoid could describe a dose&#8211;response if such data existed, but no Griess experiment is planned. The internal constants are not calibrated, and no fitted IC<sub>50</sub><sup>NO</sup> or n<sub>app</sub> is reported.</p>
-  </div>
-  <p>Model&#160;4 takes the surviving active receptor through a Hill response to nuclear p65, which
-  is the transcriptional state the rest of the chain reads:</p>
-  </div>
-
-<h4 class="col">2.1 Governing Equations</h4>
-<div class="eqwrap"><div class="eqlabel">Model 4 &#183; receptor activation and the NF-&#954;B response</div><div class="eq">[\mathrm{TLR4}^{*}]=[\mathrm{TLR4}]_{\mathrm{tot}}\,\theta_{\mathrm{LPS}},\qquad[\mathrm{p65}]_{\mathrm{nuc}}=[\mathrm{p65}]_{\mathrm{bas}}+\bigl([\mathrm{p65}]_{\max}-[\mathrm{p65}]_{\mathrm{bas}}\bigr)\frac{[\mathrm{TLR4}^{*}]^{h}}{K_{\mathrm{NF}}^{h}+[\mathrm{TLR4}^{*}]^{h}}</div></div>
-
-  <div class="col">
-  <p><b>Where:</b> [TLR4*] is active receptor concentration; [TLR4]<sub>tot</sub> is total receptor; [p65]<sub>nuc</sub> is nuclear p65; h is the Hill coefficient; K<sub>NF</sub> is the signalling half-response scale; and the bas/max subscripts denote baseline and maximal p65 concentrations.</p>
-  <p>Inverting that chain gives the payload concentration required for a target signalling state.
-  This is the expression whose scaling law we had wrong, and it is the one place where
-  K<sub>D,P</sub> cannot be scaled away: the requirement depends on the wound's endotoxin load, and
-  it is <em>linear</em> in it, not quadratic.</p>
-  </div>
-
-<div class="eqwrap"><div class="eqlabel">The dose inversion &#183; corrected</div><div class="eq">\boxed{\;[P]_{\mathrm{req}}=K_{\mathrm{D},P}\!\left[\frac{[L]}{K_{\mathrm{D},L}}\!\left(\frac{[\mathrm{TLR4}]_{\mathrm{tot}}}{[\mathrm{TLR4}^{*}]_{\mathrm{tgt}}}-1\right)-1\right]\;}\qquad[\mathrm{TLR4}^{*}]_{\mathrm{tgt}}=K_{\mathrm{NF}}\!\left(\frac{[\mathrm{p65}]_{\mathrm{tgt}}-[\mathrm{p65}]_{\mathrm{bas}}}{[\mathrm{p65}]_{\max}-[\mathrm{p65}]_{\mathrm{tgt}}}\right)^{\!1/h}</div></div>
-
-  <div class="col">
-  <p>Model&#160;5 then drives iNOS from p65 and converts its output into the two observables, which
-  differ by about 600&#215; and must never be compared to each other:</p>
-  </div>
-
-<div class="eqwrap"><div class="eqlabel">Model 5 &#183; iNOS induction and the quasi-steady free-NO level</div><div class="eq">\frac{\mathrm{d}R_{\mathrm{rel}}}{\mathrm{d}t}=k_{\mathrm{turn}}\!\left[N_{\mathrm{cell}}q_{\max}\frac{[\mathrm{p65}]_{\mathrm{nuc}}^{\,p}}{K_{\mathrm{iNOS}}^{p}+[\mathrm{p65}]_{\mathrm{nuc}}^{\,p}}-R_{\mathrm{rel}}\right],\qquad [\mathrm{NO}]\simeq\frac{R_{\mathrm{rel}}}{k_{\mathrm{scav}}}</div></div>
-<div class="eqwrap"><div class="eqlabel">Accumulated nitrite &#183; modelled state</div><div class="eq">\boxed{\;\frac{\mathrm{d}[\mathrm{NO}_2^-]}{\mathrm{d}t}=\phi R_{\mathrm{rel}}(t)\;\Longrightarrow\;[\mathrm{NO}_2^-](t)=\phi\!\int_0^t\! R_{\mathrm{rel}}\,\mathrm{d}t^{\prime}\;}\qquad\frac{[\mathrm{NO}_2^-](C^{\mathrm t}_V)}{[\mathrm{NO}_2^-](0)}=\frac{1}{1+\bigl(C^{\mathrm t}_V/\mathrm{IC}_{50}^{\mathrm{NO}}\bigr)^{n_{\mathrm{app}}}}</div></div>
-
-  <div class="col">
-  <p><b>Where:</b> R<sub>rel</sub> is the induced iNOS production rate; k<sub>turn</sub> is its turnover rate; N<sub>cell</sub> is the assumed cell count in this illustrative calculation; q<sub>max</sub> is the maximal per-cell rate; k<sub>scav</sub> describes NO loss in culture medium; &#966; is the NO-to-nitrite yield; and IC<sub>50</sub><sup>NO</sup> and n<sub>app</sub> would describe a reduced dose&#8211;response if measured.</p>
-  <p>The right-hand expression is a possible reduced description if a dose&#8211;response were measured. No fit is made; the upstream constants remain uncalibrated.</p>
-
-  <p>Free NO reaches a quasi-steady state within minutes (1/k<sub>scav</sub>&#160;=&#160;100&#160;s)
-  at tens of nanomolar &#8212; around 44&#160;nM &#8212; while nitrite accumulates across the whole
-  day and reaches roughly 26&#160;&#181;M at 24&#160;h. The ratio is about 600&#215;.</p>
-
-  <p>This distinction is not pedantic; it is how we found a real error. The per-cell iNOS rate in our
-  earlier version was about <b>10<sup>4</sup>&#215; too high</b>. It had passed review because it
-  gave a plausible steady-state NO concentration &#8212; but the scavenging term acts on free NO,
-  while the literature values it had been matched against are nitrite measurements. Matching the
-  right number against the wrong quantity hid a four-order-of-magnitude error, and only writing the
-  two observables down side by side exposed it.</p>
-  </div>
-
-
-  <h3>3. Simulated Results</h3>
-<figure class="wide">
-    <div class="figbox"><img src="assets/G06_free_NO_vs_nitrite.svg" alt="Illustrative Model 5 calculation over a selected 24-hour window, with an assumed one million cells: free NO and accumulated nitrite at four V14 doses." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;9.</span> Illustrative Model&#160;5 calculation, not an experiment: the 24&#160;h window and one-million-cell count are assumptions. At 80.9&#160;&#181;M V14, modelled 24&#160;h accumulated nitrite falls from 26 to 12&#160;&#181;M. No Griess assay is planned; these outputs are unvalidated.</figcaption>
-  </figure>
-
-
-__I3__
-
-  <div class="claim warn">
-    <h3>4. Experimental Validation Status and interpretation</h3>
-    <p>The chain from V14 concentration to nitrite contains at least <b>fourteen parameters</b>. No team nitrite dose&#8211;response data exist and no Griess assay is planned, so these parameters are not calibrated and no fit is reported. Model&#160;5 remains an illustrative calculation.</p>
-  </div>
-
-  <div class="claim warn">
-    <h3>The assumption we are least comfortable with</h3>
-    <p>Model&#160;6 reads nitrite as a monotonic index of harm: more nitrite means lower
-    proliferation and higher death. The biology does not straightforwardly support that. Nitric
-    oxide is <b>required</b> for normal repair &#8212; iNOS-deficient animals and animals given iNOS
-    inhibitors show delayed re-epithelialisation and reduced collagen deposition and tensile
-    strength, and NO has a central role in the angiogenesis that granulation tissue depends on
-    (Krausz &amp; Friedman, 2015). Macrophage-derived NO also contributes to antimicrobial defence in
-    a wound that is, by assumption here, colonised.</p>
-    <p>So the true relationship is plausibly <b>biphasic</b>: too little NO impairs healing, too much
-    sustains inflammatory damage, and the therapeutic goal is to move a chronically elevated wound
-    back toward an optimum rather than to drive iNOS output to zero. Our coupling encodes only the
-    descending limb. Within the range a competitive antagonist can reach &#8212; partial, reversible
-    blockade of one receptor, against a wound already far above baseline &#8212; we think the
-    monotonic approximation is defensible. But it is an approximation, it is not conservative, and a
-    dose&#8211;response for <em>healing outcome</em> rather than for nitrite is the experiment that
-    would settle it. We would look for an optimum, not a plateau.</p>
-  </div>
-
-<h3 class="col">5. Sensitivity Analysis</h3><p>No separate global parameter sweep is reported for Models&#160;4&#8211;5. The cross-model sensitivity analysis covers delivered dose and closure time in <a href="#global-sensitivity">Figure&#160;13</a>.</p>
-
-<h4 class="col">2.2 Assumptions</h4>
+  <h3 class="col">2. Model Construction</h3>
+  <h4 class="col">2.1 Assumptions</h4>
   <div class="tablewrap"><table>
-  <thead><tr><th>Assumption</th><th>Biological basis</th><th>What breaks if it is wrong</th><th>How to test it</th></tr></thead>
+  <thead><tr><th>Assumption</th><th>Justification</th></tr></thead>
   <tbody>
-  <tr><td><b>NF-&#954;B response to receptor activation is a Hill function at steady state</b></td><td>Signalling equilibrates in minutes to hours, far faster than the days over which delivery changes.</td><td>Dynamics only. Real NF-&#954;B signalling oscillates, and a pulsed input can give a different transcriptional output than its time average.</td><td>Time-resolved p65 nuclear translocation under a pulsed LPS stimulus.</td></tr>
-  <tr><td><b>Nitrite reports the inflammatory state of the wound</b></td><td>It is the stable, measurable end product of the iNOS arm and rises with inflammatory drive.</td><td>The sign of the coupling at low NO, and therefore the direction of benefit at strong blockade &#8212; see the warning above.</td><td>Healing-outcome dose&#8211;response, looking for an optimum rather than assuming monotonicity.</td></tr>
-  <tr><td><b>One macrophage population, uniformly responsive</b></td><td>The model carries a single cell density and one response curve.</td><td>Magnitude. Wound macrophages are a mixed and shifting M1/M2 population, and only part of it is the pro-inflammatory compartment the peptide acts on.</td><td>Polarisation markers alongside <i>Nos2</i> in the qPCR panel.</td></tr>
-  <tr><td><b>RAW&#160;264.7 and THP-1 responses transfer to human wound macrophages</b></td><td>They are the standard tractable models for TLR4 signalling.</td><td>External validity. Cell lines differ from primary wound macrophages in a hyperglycaemic, protease-rich environment.</td><td>Repeat the key dose&#8211;response on primary monocyte-derived macrophages.</td></tr>
+  <tr><td><b>The NF-&#954;B response to receptor activation is a Hill function at steady state.</b></td><td>A detailed NF-&#954;B model would include IKK activation, I&#954;B&#945; degradation and resynthesis, and p65 nuclear shuttling. That would add more than a dozen parameters that the planned experiments do not constrain. A monotonic, saturating Hill function is a compact form for the input&#8211;output relationship, and its exponent can in principle be estimated from dose&#8211;response data.</td></tr>
+  <tr><td><b>Signalling dynamics are not represented.</b></td><td>NF-&#954;B can oscillate, so a pulsed input may produce a different transcriptional response from a steady input with the same average. The steady-state response should therefore be interpreted as an approximation. Signalling equilibrates in minutes to hours, far faster than the days over which delivery changes.</td></tr>
+  <tr><td><b>Free NO is quasi-steady, and nitrite is accumulated.</b></td><td>NO is lost in culture medium with a rate of 0.01 s&#8315;&#185; (1/k<sub>scav</sub> = 100 s), far faster than iNOS turnover (a few hours), so free NO follows its production rate almost instantly. Nitrite is the stable end product and integrates that rate. The model therefore reports the two separately.</td></tr>
+  <tr><td><b>Nitrite reports the inflammatory state of the wound.</b></td><td>It is the stable, measurable end product of the iNOS arm and rises with inflammatory drive. Section 4.3 discusses the limits of reading it as a monotonic index of harm.</td></tr>
+  <tr><td><b>One macrophage population, uniformly responsive.</b></td><td>The model carries a single cell density and one response curve. Wound macrophages are a mixed and shifting M1/M2 population, and only part of it is the pro-inflammatory compartment the peptide acts on.</td></tr>
+  <tr><td><b>RAW 264.7 and THP-1 responses transfer to human wound macrophages.</b></td><td>They are the standard tractable models for TLR4 signalling. Cell lines differ from primary wound macrophages in a hyperglycaemic, protease-rich environment.</td></tr>
   </tbody>
   </table></div>
 
-  <h4 class="col">2.3 Parameters and provenance</h4>
+  <h4 class="col">2.2 Governing Equations</h4>
+  <p><b>Receptor activation and the NF-&#954;B response (Model 4).</b> The active receptor is the fraction of the total TLR4 pool that LPS-bound MD2 engages, which is the occupancy <span class="eqi">\theta_{\mathrm{LPS}}</span> of Model 3. Nuclear p65 then follows a Hill response to that active receptor:</p>
+<div class="eqwrap"><div class="eqlabel">(1) Active receptor</div><div class="eq">[\mathrm{TLR4}^{*}]=[\mathrm{TLR4}]_{\mathrm{tot}}\,\theta_{\mathrm{LPS}}</div></div>
+<div class="eqwrap"><div class="eqlabel">(2) Nuclear p65</div><div class="eq">[\mathrm{p65}]_{\mathrm{nuc}}=[\mathrm{p65}]_{\mathrm{bas}}+\bigl([\mathrm{p65}]_{\max}-[\mathrm{p65}]_{\mathrm{bas}}\bigr)\frac{[\mathrm{TLR4}^{*}]^{h}}{K_{\mathrm{NF}}^{h}+[\mathrm{TLR4}^{*}]^{h}}</div></div>
+  <p class="col"><b>Where:</b> [TLR4*] is the active receptor concentration; [TLR4]<sub>tot</sub> is the total receptor; [p65]<sub>nuc</sub> is nuclear p65; <i>h</i> is the Hill coefficient; <span class="eqi">K_{\mathrm{NF}}</span> is the signalling half-response scale; and the bas and max subscripts denote the baseline and maximal p65 concentrations.</p>
+
+  <p><b>The required dose.</b> Inverting this chain gives the V14 concentration needed to reach a chosen signalling state. This is the expression whose scaling law we had wrong (Section 4.2). It is the one place where <span class="eqi">K_{\mathrm{D},P}</span> cannot be scaled away: the requirement depends on the wound's endotoxin load, and it is linear in it, not quadratic.</p>
+<div class="eqwrap"><div class="eqlabel">(3) The dose inversion &#183; corrected</div><div class="eq">\boxed{\;[P]_{\mathrm{req}}=K_{\mathrm{D},P}\!\left[\frac{[L]}{K_{\mathrm{D},L}}\!\left(\frac{[\mathrm{TLR4}]_{\mathrm{tot}}}{[\mathrm{TLR4}^{*}]_{\mathrm{tgt}}}-1\right)-1\right]\;},\qquad[\mathrm{TLR4}^{*}]_{\mathrm{tgt}}=K_{\mathrm{NF}}\!\left(\frac{[\mathrm{p65}]_{\mathrm{tgt}}-[\mathrm{p65}]_{\mathrm{bas}}}{[\mathrm{p65}]_{\max}-[\mathrm{p65}]_{\mathrm{tgt}}}\right)^{\!1/h}</div></div>
+  <p class="col"><b>Where:</b> [<i>P</i>]<sub>req</sub> is the required V14 concentration in the tissue; [<i>L</i>] is the LPS concentration; and [p65]<sub>tgt</sub> and [TLR4*]<sub>tgt</sub> are the target nuclear p65 and the active receptor level that produces it. A negative result means the target cannot be reached at that endotoxin load, and the model returns no dose.</p>
+
+  <p><b>iNOS induction and free NO (Model 5).</b> Model 5 drives iNOS from p65. The induced production rate relaxes toward a p65-dependent drive with a turnover time of a few hours, and free NO follows that rate quasi-steadily:</p>
+<div class="eqwrap"><div class="eqlabel">(4) iNOS induction and the quasi-steady free-NO level</div><div class="eq">\frac{\mathrm{d}R_{\mathrm{rel}}}{\mathrm{d}t}=k_{\mathrm{turn}}\!\left[N_{\mathrm{cell}}\,q_{\max}\frac{[\mathrm{p65}]_{\mathrm{nuc}}^{\,p}}{K_{\mathrm{iNOS}}^{\,p}+[\mathrm{p65}]_{\mathrm{nuc}}^{\,p}}-R_{\mathrm{rel}}\right],\qquad[\mathrm{NO}]\simeq\frac{R_{\mathrm{rel}}}{k_{\mathrm{scav}}}</div></div>
+  <p class="col"><b>Where:</b> <span class="eqi">R_{\mathrm{rel}}</span> is the induced iNOS production rate; <span class="eqi">k_{\mathrm{turn}}</span> is its turnover rate; <span class="eqi">N_{\mathrm{cell}}</span> is the assumed cell count in this illustrative calculation; <span class="eqi">q_{\max}</span> is the per-cell rate at full induction (in the illustration, the sustained chronic rate); <span class="eqi">K_{\mathrm{iNOS}}</span> and <i>p</i> are the iNOS induction threshold and Hill coefficient, with p65 expressed relative to its maximum; and <span class="eqi">k_{\mathrm{scav}}</span> describes NO loss in culture medium.</p>
+
+  <p><b>Accumulated nitrite.</b> Nitrite is the stable end product, so it integrates the production rate. This is the quantity a Griess assay would measure:</p>
+<div class="eqwrap"><div class="eqlabel">(5) Accumulated nitrite &#183; modelled state</div><div class="eq">\boxed{\;\frac{\mathrm{d}[\mathrm{NO}_2^-]}{\mathrm{d}t}=\phi\,R_{\mathrm{rel}}(t)\;\Longrightarrow\;[\mathrm{NO}_2^-](t)=\phi\!\int_0^t\! R_{\mathrm{rel}}\,\mathrm{d}t^{\prime}\;}</div></div>
+  <p class="col"><b>Where:</b> &#966; is the NO-to-nitrite yield.</p>
+
+  <p>If a dose&#8211;response were measured, the whole chain could be summarised by a reduced sigmoid with two parameters:</p>
+<div class="eqwrap"><div class="eqlabel">(6) Reduced description, if a dose&#8211;response were measured</div><div class="eq">\frac{[\mathrm{NO}_2^-](C^{\mathrm t}_V)}{[\mathrm{NO}_2^-](0)}=\frac{1}{1+\bigl(C^{\mathrm t}_V/\mathrm{IC}_{50}^{\mathrm{NO}}\bigr)^{n_{\mathrm{app}}}}</div></div>
+  <p class="col"><b>Where:</b> <span class="eqi">\mathrm{IC}_{50}^{\mathrm{NO}}</span> and <span class="eqi">n_{\mathrm{app}}</span> are the half-inhibitory V14 concentration and the apparent Hill slope of the nitrite response. No fit is made, and the upstream constants remain uncalibrated.</p>
+
+  <p><b>Two observables that differ by about 600&#215;.</b> Free NO reaches a quasi-steady state within minutes (1/<span class="eqi">k_{\mathrm{scav}}</span> = 100 s) at tens of nanomolar, around 44 nM, while nitrite accumulates across the whole day and reaches roughly 26 &#181;M at 24 h. The ratio is about 600&#215;, and the two must never be compared with each other.</p>
+
+  <h4 class="col">2.3 Parameters</h4>
   <div class="tablewrap"><table>
-    <thead><tr><th>Quantity</th><th>Value/status</th><th>Evidence tier and interpretation</th></tr></thead>
-    <tbody>
-      <tr><td>Hill coefficient, h</td><td>2</td><td>Literature analogue (T3); signalling dynamics are represented by a steady-state response.</td></tr>
-      <tr><td>Scaled receptor density, &#947;</td><td>0.1</td><td>Derived from Tier-4 receptor and NF-&#954;B scales.</td></tr>
-      <tr><td>Culture-medium NO scavenging, k<sub>scav</sub></td><td>0.01&#160;s<sup>&#8722;1</sup></td><td>Literature analogue (T3); distinct from tissue NO consumption used in penetration estimates.</td></tr>
-      <tr><td>iNOS turnover, k<sub>turn</sub></td><td>ln(2)/(4&#160;h)</td><td>Tier-4 assumption.</td></tr>
-      <tr><td>IC<sub>50</sub><sup>NO</sup>, n<sub>app</sub></td><td>Not yet fitted</td><td>Not calibrated: no Griess experiment is planned, so these quantities are not fitted.</td></tr>
-    </tbody>
+  <thead><tr><th>Parameter / Property</th><th>Symbol</th><th>Value / Range</th><th>Source / Justification</th></tr></thead>
+  <tbody>
+  <tr><td>Total TLR4</td><td><span class="eqi">[\mathrm{TLR4}]_{\mathrm{tot}}</span></td><td>1 nM</td><td>Register value (T4).</td></tr>
+  <tr><td>NF-&#954;B half-response scale</td><td><span class="eqi">K_{\mathrm{NF}}</span></td><td>10 nM</td><td>Register value (T4).</td></tr>
+  <tr><td>Scaled receptor density</td><td>&#947;</td><td>0.1</td><td>Derived from the two Tier-4 scales above: &#947; = [TLR4]<sub>tot</sub>/<span class="eqi">K_{\mathrm{NF}}</span>.</td></tr>
+  <tr><td>Baseline and maximal nuclear p65</td><td>[p65]<sub>bas</sub>, [p65]<sub>max</sub></td><td>0.5 nM, 50 nM</td><td>Register values (T4).</td></tr>
+  <tr><td>p65 Hill coefficient</td><td><i>h</i></td><td>2</td><td>Literature analogue (T3). Signalling dynamics are represented by a steady-state response.</td></tr>
+  <tr><td>Culture-medium NO scavenging</td><td><span class="eqi">k_{\mathrm{scav}}</span></td><td>0.01 s&#8315;&#185; (<span class="eqi">t_{1/2}</span> = 69 s)</td><td>Literature analogue (T3). Distinct from the tissue NO consumption used in the penetration estimates of Learning Cycle 1.</td></tr>
+  <tr><td>iNOS rate per cell, as used in the illustration</td><td><span class="eqi">q_{\max}</span></td><td>5.0&#215;10&#8315;&#185;&#8313; mol cell&#8315;&#185; s&#8315;&#185;</td><td>Sustained chronic rate (T3; chronic band 3.5&#8211;8.1&#215;10&#8315;&#185;&#8313;). The acute activated-M1 ceiling, 8.17&#215;10&#8315;&#185;&#8311;, is not used here.</td></tr>
+  <tr><td>Untreated p65 relative to its maximum</td><td>&#8212;</td><td>0.85</td><td>Assumption of the illustrative calculation (Tier 4).</td></tr>
+  <tr><td>Cell count in the illustrative calculation</td><td><span class="eqi">N_{\mathrm{cell}}</span></td><td>10&#8310; cells</td><td>Assumption of the illustrative calculation; not a measurement.</td></tr>
+  <tr><td>iNOS induction threshold and Hill coefficient</td><td><span class="eqi">K_{\mathrm{iNOS}}</span>, <i>p</i></td><td>0.3 of [p65]<sub>max</sub>, 2</td><td>Tier-4 assumptions.</td></tr>
+  <tr><td>iNOS turnover</td><td><span class="eqi">k_{\mathrm{turn}}</span></td><td>ln 2 / (4 h)</td><td>Tier-4 assumption.</td></tr>
+  <tr><td>NO-to-nitrite yield</td><td>&#966;</td><td>0.9</td><td>Tier-4 assumption.</td></tr>
+  <tr><td>Reduced-sigmoid constants</td><td><span class="eqi">\mathrm{IC}_{50}^{\mathrm{NO}}</span>, <span class="eqi">n_{\mathrm{app}}</span></td><td>Not yet fitted</td><td>Not calibrated: no Griess experiment is planned, so these quantities are not fitted.</td></tr>
+  </tbody>
   </table></div>
 
-  <h3 class="col">Parameters that cannot be identified from the planned data</h3>
+  <div class="claim">
+  <h3>3. Solver Verification</h3>
+  <p>Before using any result, we checked the model against known answers. Verification of this kind establishes that the code reproduces known mathematics; it is not validation against experiment, and we do not present it as such.</p>
+  <p><b>Dose inversion.</b> Equation (3) is algebraic, so it can be checked by a round trip. We computed the required V14 concentration for target active-receptor fractions of 0.9, 0.5, 0.2 and 0.05, then substituted each result back into the occupancy of Model 3. Every case returned the target fraction exactly. At a target of 0.5 the required dose is 80.9 &#181;M, which reproduces the design target of Model 3.</p>
+  <p><b>iNOS and nitrite integrator.</b> For a constant p65 drive, Eqs. (4) and (5) have closed-form solutions: the rate rises as 1 &#8722; e<sup>&#8722;kt</sup> toward the drive, and nitrite is &#966; times the drive multiplied by (<i>t</i> &#8722; (1 &#8722; e<sup>&#8722;kt</sup>)/<i>k</i>). We integrated the 24 h window at time steps of 60, 30 and 15 s. At 60 s the maximum relative error in the rate is 0.14% and in the final nitrite 0.04%, and both halve each time the step halves, which is the expected first-order behaviour of the explicit scheme.</p>
+  <p>The model also reproduces the physical limits by inspection: with no V14 the p65 response sits at its untreated value, and as the V14 concentration grows the active receptor and the downstream signals fall monotonically toward baseline.</p>
+  </div>
+
+  <h3 class="col">4. Experimental Comparison &amp; Model Refinement</h3>
+  <h4 class="col">4.1 Experimental status</h4>
+  <p>There is no experimental comparison for these models yet. The chain from V14 concentration to nitrite contains at least fourteen parameters. No team nitrite dose&#8211;response data exist and no Griess assay is planned, so these parameters are not calibrated and no fit is reported. Model 5 remains an illustrative calculation, and we do not present its outputs as predictions that have been tested.</p>
+
+  <h4 class="col">4.2 Refinement: free NO and nitrite are different quantities</h4>
+  <p>The model was refined to keep accumulated nitrite distinct from instantaneous free NO. Our earlier version matched a free-NO expression to nitrite values from the literature. The per-cell iNOS rate in that version was about 10<sup>4</sup>&#215; too high. It had passed review because it gave a plausible steady-state NO concentration, but the scavenging term acts on free NO, while the literature values it had been matched against are nitrite measurements. Matching the right number against the wrong quantity hid a four-order-of-magnitude error, and only writing the two observables down side by side exposed it.</p>
+  <p>A second correction concerns Eq. (3). The earlier dose inversion factored out the apparent dissociation constant, which made the required dose quadratic in the endotoxin load instead of linear, and over-estimated it by about 2&#215; at low load and about 2500&#215; at high load. This is the same scaling error described for Model 3, and the corrected form is the one used here.</p>
+
+  <h4 class="col">4.3 The assumption we are least comfortable with</h4>
+  <p>Model 6 reads nitrite as a monotonic index of harm: more nitrite means lower proliferation and higher death. The biology does not straightforwardly support that. Nitric oxide is required for normal repair. iNOS-deficient animals and animals given iNOS inhibitors show delayed re-epithelialisation and reduced collagen deposition and tensile strength, and NO has a central role in the angiogenesis that granulation tissue depends on (Krausz &amp; Friedman, 2015). Macrophage-derived NO also contributes to antimicrobial defence in a wound that is, by assumption here, colonised.</p>
+  <p>So the true relationship is plausibly biphasic: too little NO impairs healing, too much sustains inflammatory damage, and the therapeutic goal is to move a chronically elevated wound back toward an optimum rather than to drive iNOS output to zero. Our coupling encodes only the descending limb. Within the range a competitive antagonist can reach, a partial and reversible blockade of one receptor against a wound already far above baseline, we think the monotonic approximation is defensible. But it is an approximation, it is not conservative, and a dose&#8211;response for healing outcome rather than for nitrite is the experiment that would settle it. We would look for an optimum, not a plateau.</p>
+
+  <h4 class="col">4.4 Parameters that cannot be identified from the planned data</h4>
+  <p>We list the combinations below so that the quantities we do report can be trusted. For each of them we either sweep the parameter or report only the identifiable combination. None of them is fitted silently.</p>
   <div class="tablewrap"><table>
     <thead><tr><th>Combination</th><th>Why it cannot be recovered</th><th>What would break it</th></tr></thead>
     <tbody>
       <tr><td><b>D<sub>n</sub> &#183; r<sub>eff</sub></b></td>
-        <td>They enter the front speed only as a product, so a fourfold rise in either produces the same doubling of c.</td>
-        <td>Scratch assay &#177; mitomycin C; or report front width, since c&#183;w<sub>f</sub> &#8733; D<sub>n</sub> and c/w<sub>f</sub> &#8733; r<sub>eff</sub>.</td></tr>
+        <td>They enter the front speed only as a product, so a fourfold rise in either produces the same doubling of <i>c</i>.</td>
+        <td>Scratch assay &#177; mitomycin C; or report front width, since <i>c</i>&#183;<i>w</i><sub>f</sub> &#8733; D<sub>n</sub> and <i>c</i>/<i>w</i><sub>f</sub> &#8733; r<sub>eff</sub>.</td></tr>
       <tr><td><b>r<sub>p</sub> &#8722; d</b></td>
         <td>Only the difference appears in the front speed. The death term is kept for a structural reason, not a fitted one.</td>
-        <td>Independent proliferation and apoptosis measurements &#8212; or sweep it. Never fit it to closure data.</td></tr>
-      <tr><td><b>the NO chain constants</b></td>
-        <td>&#8805;14 parameters against a ~3-d.o.f. sigmoid.</td>
+        <td>Independent proliferation and apoptosis measurements, or sweep it. Never fit it to closure data.</td></tr>
+      <tr><td><b>The NO chain constants</b></td>
+        <td>At least 14 parameters against a sigmoid with about three degrees of freedom.</td>
         <td>Nothing cheap. Fit the reduced two-parameter form and report only that.</td></tr>
       <tr><td><b>K<sub>D,P</sub></b></td>
-        <td>The competitive model predicts IC<sub>50</sub> = K<sub>D,P</sub>(1 + [L]/K<sub>D,L</sub>); an assay using a thresholded positive-gate readout does not directly return this value without a calibrated response mapping.</td>
-        <td>Two or three LPS concentrations. <i>Ratios</i> between variants are already identifiable at fixed [L], so the variant screen works as planned.</td></tr>
+        <td>The competitive model predicts IC<sub>50</sub> = K<sub>D,P</sub>(1 + [<i>L</i>]/K<sub>D,L</sub>); an assay using a thresholded positive-gate readout does not directly return this value without a calibrated response mapping.</td>
+        <td>Two or three LPS concentrations. Ratios between variants are already identifiable at fixed [<i>L</i>], so the variant screen works as planned.</td></tr>
     </tbody>
   </table></div>
-  <p class="col">We list these combinations so that the quantities we <em>do</em> report can be
-  trusted. For each of them we either sweep the parameter or report only the identifiable
-  combination. None of them is fitted silently.</p>
-<h3>6. References</h3><p>Key sources for Models&#160;4&#8211;5: <a href="#ref-dasu">Dasu and Martin (2014)</a> on TLR4 signalling in diabetic wounds and <a href="#ref-krausz">Krausz and Friedman (2015)</a> on the role of nitric oxide in wound repair. Full citations are listed below.</p>
+
+  <h3>5. Simulated Results</h3>
+  <p><b>Free NO is fast and small; nitrite is slow and large.</b> At the untreated state, free NO reaches its quasi-steady level of about 44 nM within minutes, while accumulated nitrite climbs across the day to roughly 26 &#181;M at 24 h. At 80.9 &#181;M V14, the modelled 24 h nitrite falls from 26 to 12 &#181;M. These are illustrative calculations over an assumed 24 h window with an assumed one million cells, not experiments.</p>
+
+<figure class="wide">
+    <div class="figbox"><img src="assets/G06_free_NO_vs_nitrite.svg" alt="Illustrative Model 5 calculation over a selected 24-hour window, with an assumed one million cells: free NO and accumulated nitrite at four V14 doses." loading="lazy"></div>
+    <figcaption><span class="fid">Figure&#160;9.</span> Illustrative Model&#160;5 calculation, not an experiment: the 24&#160;h window and one-million-cell count are assumptions. At 80.9&#160;&#181;M V14, modelled 24&#160;h accumulated nitrite falls from 26 to 12&#160;&#181;M. <span class="caveat">No Griess assay is planned; these outputs are unvalidated.</span></figcaption>
+  </figure>
+
+__I3__
+
+  <p><b>Sensitivity.</b> No separate global parameter sweep is reported for Models 4 and 5. The cross-model sensitivity analysis covers delivered dose and closure time in <a href="#global-sensitivity">Figure&#160;13</a>.</p>
+  <p><b>Output.</b> The nuclear p65 level and the modelled nitrite are the inputs to Model 6, which couples them to fibroblast proliferation and death.</p>
+
+  <h3>6. References</h3>
+  <ol class="refs">
+  <li>Dasu, M. R., &amp; Martin, S. J. (2014). Toll-like receptor expression and signaling in human diabetic wounds. <i>World Journal of Diabetes</i>, 5(2), 219&#8211;223. <a href="https://doi.org/10.4239/wjd.v5.i2.219">https://doi.org/10.4239/wjd.v5.i2.219</a></li>
+  <li>Krausz, A., &amp; Friedman, A. J. (2015). Nitric oxide as a surgical adjuvant. <i>Future Science OA</i>, 1(1), FSO56. <a href="https://doi.org/10.4155/fso.15.56">https://doi.org/10.4155/fso.15.56</a></li>
+  </ol>
 </section>
 
 <!-- ================= MODEL 6 ================= -->
