@@ -373,180 +373,125 @@
 <!-- ================= MODEL 3 ================= -->
 <section class="act wrap" id="m3">
   <div class="act-head"><div class="num">03</div><div>
-    <p class="eyebrow">Model 3</p>
+    <p class="eyebrow">Module 3 &#183; Receptor occupancy (Model 3)</p>
     <h2>Competition for MD2/TLR4</h2>
   </div></div>
 
-  <div class="claim">
-    <h3>1. Background</h3>
-    <p>The V14 arm can be run <em>before</em> any binding affinity is measured. In the scaled
-    variables &#968;&#160;=&#160;C<sub>V</sub>/K<sub>D,P</sub> and
-    a&#160;=&#160;[L]/K<sub>D,L</sub>, fourteen parameters reduce to four, and half-maximal
-    suppression occurs at <b>&#968;<sub>50</sub>&#160;=&#160;1&#160;+&#160;a exactly</b>, with no
-    fitted constant. The 17&#160;Oct positive-gate result does not determine K<sub>D,P</sub>. For
-    exploratory modeling, equating its gate-frequency ratio with relative LPS occupancy gives a
-    exploratory model-based K<sub>D,P</sub> estimate of 5.62&#160;&#181;M and a model-derived target of 80.9&#160;&#181;M.
-    This estimate depends on that assumption, so neither value is an experimentally
-    determined affinity or target.</p>
-  </div>
+  <h3>1. Background</h3>
+  <p>Lipopolysaccharide (LPS) from bacteria in the wound bed activates macrophages by binding the hydrophobic pocket of MD2, which then dimerises TLR4 and starts NF-&#954;B signalling. Our peptide &#945;TI-14 (V14) was designed to occupy the same pocket. If it does, it competes with LPS for MD2, and the fraction of receptors that LPS can occupy falls as the V14 concentration in the tissue rises.</p>
+  <p>The model represents this system as a single binding equilibrium. V14 and LPS compete for one pool of MD2, each forming a complex with its own dissociation constant, and the concentration of V14 delivered to the tissue by Model 2 sets how much of the pool is blocked. We solve the equilibrium in closed form and rescale it so that the predictions do not depend on the V14 affinity, which has not been measured.</p>
+  <p>The model outputs the fraction of MD2 occupied by LPS as a function of the V14 concentration in the tissue. This is the input to the NF-&#954;B signalling model (Model 4), and it sets the V14 concentration that the patch must hold in the tissue, which is the design target for Model 7.</p>
 
-  <div class="col">
-  <h3 class="col">2. Model Construction: equilibrium occupancy</h3>
-  <div class="col">
-  <p>Model&#160;3 uses equilibrium mass action and does not include explicit association and
-  dissociation rate constants, k<sub>on</sub> and k<sub>off</sub>. This choice assumes a
-  <b>separation of timescales</b>: peptide&#8211;receptor binding equilibrates within seconds to
-  minutes, while the concentration delivered by Model&#160;2 changes over hours. Under this
-  assumption, receptor occupancy tracks concentration without a measurable delay, and explicit
-  kinetic rates would add parameters without changing the current predictions. Surface plasmon
-  resonance (SPR) could test this assumption. If the measured dissociation half-life were comparable
-  to the delivery timescale, the quasi-equilibrium model would need revision; slower dissociation
-  could also extend peptide activity beyond the prediction.</p>
-  <p>The competitive form follows from the assumption that V14 and LPS bind the same MD2 pocket. It
-  predicts a rightward shift in the dose&#8211;response curve without a reduced maximum. A
-  non-competitive mechanism would instead reduce the maximum response. This distinction makes a
-  Schild analysis a useful test of the proposed competitive mechanism.</p>
-  <p><b>Non-dimensionalisation allows the model to run without an absolute binding affinity.</b>
-  The chain contains fourteen parameters, including the currently unknown K<sub>D,P</sub>. Rescaling
-  concentration as &#968;&#160;=&#160;C<sub>V</sub>/K<sub>D,P</sub> and endotoxin as
-  a&#160;=&#160;[L]/K<sub>D,L</sub> expresses the predictions in terms of dimensionless quantities.
-  The dose&#8211;response shape, sensitivity structure and half-suppression point can then be
-  calculated without specifying K<sub>D,P</sub>. Measuring K<sub>D,P</sub> would calibrate the
-  concentration scale, but would not change these scaled predictions.</p>
-  </div>
-  <p>V14 (&#945;TI-14) is a competitive antagonist: it and LPS contend for the same MD2 site, so
-  each occupancy carries the other's concentration in its denominator:</p>
-  </div>
-
-<h4 class="col">2.1 Governing Equations</h4>
-<div class="eqwrap"><div class="eqlabel">Competitive occupancy at MD2</div><div class="eq">\theta_{\mathrm{inhib}}=\frac{C^{\mathrm t}_V}{K_{\mathrm{D},P}\!\left(1+\dfrac{[L]}{K_{\mathrm{D},L}}\right)+C^{\mathrm t}_V}=\frac{C^{\mathrm t}_V}{K_{\mathrm D}^{\mathrm{app}}+C^{\mathrm t}_V},\qquad\theta_{\mathrm{LPS}}=\frac{[L]/K_{\mathrm{D},L}}{1+\dfrac{[L]}{K_{\mathrm{D},L}}+\dfrac{C^{\mathrm t}_V}{K_{\mathrm{D},P}}}</div></div>
-
-  <p class="col"><b>Where:</b> C<sup>t</sup><sub>V</sub> is interstitial V14 concentration; [L] is the LPS concentration; K<sub>D,P</sub> and K<sub>D,L</sub> are the dissociation constants of V14&#8211;MD2 and LPS&#8211;MD2; K<sub>D</sub><sup>app</sup>=K<sub>D,P</sub>(1+[L]/K<sub>D,L</sub>); and the two &#952; terms are the fractions of the MD2 pool occupied by inhibitor and LPS.</p>
-
-  <div class="col">
-  <p>What the flow-cytometry assay reports is a normalised median fluorescence, and this is where
-  the identifiability limit enters: the half-maximal point of that readout is
-  K<sub>D</sub><sup>app</sup>, not K<sub>D,P</sub>. Ratios between variants <em>are</em> clean,
-  because the endotoxin factor cancels:</p>
-  </div>
-
-<div class="eqwrap"><div class="eqlabel">The assay readout, and what it can identify</div><div class="eq">\mathrm{MFI}=\mathrm{MFI}_{\mathrm{bg}}+(\mathrm{MFI}_{\max}-\mathrm{MFI}_{\mathrm{bg}})\frac{\theta_{\mathrm{LPS}}(C^{\mathrm t}_V)}{\theta_{\mathrm{LPS}}(0)},\qquad \mathrm{IC}_{50}=K_{\mathrm D}^{\mathrm{app}},\qquad \frac{\mathrm{IC}_{50}^{(v)}}{\mathrm{IC}_{50}^{(w)}}=\frac{K_{\mathrm{D},P}^{(v)}}{K_{\mathrm{D},P}^{(w)}}</div></div>
-
-  <div class="col">
-  <p>Rescaling by the two dissociation constants now removes them from the problem entirely. The
-  whole competition collapses onto a single curve family indexed by the scaled endotoxin load a,
-  which for our register value of 1&#160;&#181;M wound endotoxin is a&#160;=&#160;15.4:</p>
-  </div>
-
-<div class="eqwrap"><div class="eqlabel">The scaled variables &#183; fourteen parameters become four</div><div class="eq">\psi=\frac{C^{\mathrm t}_V}{K_{\mathrm{D},P}},\quad a=\frac{[L]}{K_{\mathrm{D},L}},\quad\gamma=\frac{[\mathrm{TLR4}]_{\mathrm{tot}}}{K_{\mathrm{NF}}}\quad\Longrightarrow\quad\theta_{\mathrm{inhib}}=\frac{\psi}{1+a+\psi},\quad\theta_{\mathrm{LPS}}=\frac{a}{1+a+\psi}</div></div>
-
-  <div class="col">
-  <p>The suppression ratio then has no free constant left in it, and setting it to one half gives
-  the result this section exists for &#8212; a half-maximal dose with no fitted parameter anywhere
-  in it:</p>
-  </div>
-
-<div class="eqwrap"><div class="eqlabel">Half-maximal suppression, exactly</div><div class="eq">\frac{\theta_{\mathrm{LPS}}(\psi)}{\theta_{\mathrm{LPS}}(0)}=\frac{1+a}{1+a+\psi}\qquad\Longrightarrow\qquad \boxed{\;\psi_{50}=1+a\;}</div></div>
-
-  <p class="col"><b>Where:</b> &#968;=C<sup>t</sup><sub>V</sub>/K<sub>D,P</sub> is dimensionless V14 concentration, a=[L]/K<sub>D,L</sub> is dimensionless endotoxin load, and &#947;=[TLR4]<sub>tot</sub>/K<sub>NF</sub> is the scaled receptor level. Thus &#968;<sub>50</sub>=1+a is an exact scaled dose; under the exploratory model-based K<sub>D,P</sub> estimate, it corresponds to about 92&#160;&#181;M. The design target of 80.9&#160;&#181;M is a distinct quantity, K<sub>D,P</sub>(a&#8722;1), and depends on that assumption.</p>
-
-  <div class="col">
-  <p class="col"><b>The biology this rests on is a single mechanistic claim:</b> that V14 occupies
-  the same MD2 pocket LPS does, and does nothing else. Competitive antagonism is what produces the
-  rightward shift with an undepressed maximum, and it is what makes the required dose scale with
-  endotoxin load. An allosteric or non-competitive inhibitor would change the functional form rather
-  than a constant, and the exact &#968;<sub>50</sub> result would simply be false. We therefore treat
-  this as a hypothesis to be refuted rather than a premise &#8212; which is why a Schild analysis is
-  on the wet-lab list, and why we say explicitly that a depressed maximum would send us back to
-  rebuild this model rather than refit it.</p>
-
-  <p>Because &#968;<sub>50</sub> is exact, it doubles as a closed-form check on any numerical
-  implementation of Models&#160;3&#8211;4, and we use it as one.</p>
-
-  <p>This matters for the project schedule more than it might appear. It means the V14 arm was not
-  blocked on the binding assay: the dose&#8211;response shape, the required scaled dose, and the
-  sensitivity structure were all available in advance, and the measurement when it came changed the
-  axis label rather than the conclusions.</p>
-  </div>
-
-
-  <figure class="wide">
-    <div class="figbox"><img src="assets/G04_md2_occupancy.svg" alt="Stacked area plot of LPS-bound, V14-bound and free MD2 against V14 concentration, with the 80.9 micromolar target marked; 50 percent of MD2 is LPS-bound at the target." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;5.</span> Model&#160;3 competitive occupancy of MD2 at 1&#160;&#181;M LPS (a&#160;=&#160;15.4). Without V14, 94&#160;% of MD2 is LPS-bound; this falls to 50&#160;% at the 80.9&#160;&#181;M target. <span class="caveat">The current model uses the exploratory model-based K<sub>D,P</sub> estimate of 5.62&#160;&#181;M, which assumes the gate-frequency ratio equals relative LPS occupancy.</span></figcaption>
-  </figure>
-
-  <figure class="wide">
-    <div class="figbox"><img src="assets/G05_competitive_dose_response_p65.svg" alt="Left: model-predicted LPS-bound MD2 ratio against V14 concentration for four endotoxin loads, with the 80.9 micromolar tissue target marked. Right: relative nuclear p65 against V14 occupancy." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;6.</span> (a) Competitive model prediction: increasing endotoxin shifts the inhibition curve right, with IC<sub>50</sub>&#160;=&#160;K<sub>D,P</sub>(1&#160;+&#160;a). Curves use the exploratory model-based K<sub>D,P</sub> estimate of 5.62&#160;&#181;M, under the assumption that the gate-frequency ratio equals relative LPS occupancy. The vertical marker shows the conditional tissue target concentration, 80.9&#160;&#181;M V14. (b) Predicted nuclear p65 relative to LPS-only levels as V14 occupancy rises; dashed curves use register values &#947;&#160;=&#160;0.1 and h&#160;=&#160;2.</figcaption>
-  </figure>
-
-  <div class="claim warn">
-    <h3>3. Simulated Results: the scaling correction</h3>
-    <p>To invert the model for the required dose, &#968; has to be isolated <em>additively</em>. Our
-    earlier version factored out K<sub>D</sub><sup>app</sup>, which is valid for the occupancy
-    expression and for Cheng&#8211;Prusoff but <b>not</b> for this inversion. The resulting
-    dose&#8211;load relation came out quadratic instead of linear, so the error was in the
-    <em>scaling law</em>, not merely in a prefactor: the over-estimate grows from about 2&#215; at
-    low endotoxin load to about 2500&#215; at high load. The earlier version mispredicted the very
-    quantity it was built to deliver, and only a direct numerical check caught it.</p>
-  </div>
-
-<h4 class="col">2.2 Assumptions</h4>
+  <h3 class="col">2. Model Construction</h3>
+  <h4 class="col">2.1 Assumptions</h4>
   <div class="tablewrap"><table>
-  <thead><tr><th>Assumption</th><th>Biological basis</th><th>What breaks if it is wrong</th><th>How to test it</th></tr></thead>
+  <thead><tr><th>Assumption</th><th>Justification</th></tr></thead>
   <tbody>
-  <tr><td><b>Receptor occupancy is at equilibrium on the timescale of interest</b></td><td>Binding and unbinding at MD2 are fast relative to the hours over which tissue concentration changes.</td><td>The quasi-steady treatment. If dissociation were slow, occupancy would lag concentration and the patch would behave better than modelled, not worse.</td><td>Association/dissociation kinetics by SPR; compare k<sub>off</sub><sup>&#8722;1</sup> against the hours-scale delivery profile.</td></tr>
-  <tr><td><b>Endotoxin is a uniform 1&#160;&#181;M field</b></td><td>A single scalar [L] is needed for the scaled load a&#160;=&#160;15.4.</td><td>Required dose is <em>linear</em> in [L], so a tenfold higher local load needs roughly tenfold more peptide. A biofilm-associated wound is heterogeneous in space and time.</td><td>Endotoxin quantification on wound fluid; model a distribution rather than a point value.</td></tr>
-  <tr><td><b>V14 acts only through MD2</b></td><td>It was designed against that interface and shows the expected blockade.</td><td>Attribution, not efficacy. Anti-inflammatory action by another route would still help the wound but would break the quantitative chain from occupancy to outcome.</td><td>Counter-screen on TLR4-null or MD2-null cells &#8212; the blockade should disappear.</td></tr>
-  <tr><td><b>Total receptor is constant</b></td><td>TLR4 is treated as a fixed pool that LPS and V14 compete for.</td><td>Long-horizon predictions. TLR4 is itself NF-&#954;B-inducible, so suppressing signalling may lower receptor number over days, making the model conservative.</td><td>TLR4 surface expression by flow cytometry at 24&#8211;72&#160;h under blockade.</td></tr>
+  <tr><td><b>V14 and LPS compete for the same MD2 pocket.</b></td><td>V14 was designed against the MD2 interface, and competitive antagonism predicts a rightward shift of the dose&#8211;response curve without a reduced maximum (Slivka <i>et al.</i>, 2009; Park <i>et al.</i>, 2017). This is a hypothesis to be tested, not a premise: a depressed maximum would indicate a non-competitive mechanism and would require the model to be rebuilt.</td></tr>
+  <tr><td><b>Binding is at equilibrium on the timescale of interest.</b></td><td>Peptide&#8211;receptor binding equilibrates within seconds to minutes, while the concentration delivered by Model 2 changes over hours. Occupancy therefore tracks concentration without a measurable delay, and explicit association and dissociation rates would add parameters without changing the current predictions.</td></tr>
+  <tr><td><b>Endotoxin is a uniform 1 &#181;M field.</b></td><td>A single scalar concentration [L] is needed for the scaled load a = 15.4. The required dose is linear in [L], so a tenfold higher local load needs roughly tenfold more peptide.</td></tr>
+  <tr><td><b>V14 acts only through MD2.</b></td><td>It was designed against that interface and shows the expected blockade. Any other anti-inflammatory route would still help the wound but would break the quantitative chain from occupancy to outcome.</td></tr>
+  <tr><td><b>The total receptor pool is constant.</b></td><td>TLR4 is treated as a fixed pool that LPS and V14 compete for. TLR4 is itself NF-&#954;B-inducible, so suppressing signalling may lower receptor number over days, which makes this assumption conservative.</td></tr>
   </tbody>
   </table></div>
 
-  <h4 class="col">2.3 Parameters and provenance</h4>
+  <h4 class="col">2.2 Governing Equations</h4>
+  <p>V14 (<i>P</i>) and LPS (<i>L</i>) compete for the same pocket of MD2, forming an inactive complex MD2&#183;<i>P</i> or an active pro-inflammatory complex MD2&#183;<i>L</i>. We write the mass balance on the receptor, apply mass action at equilibrium, and then rescale.</p>
+
+  <p><b>Mass balance and equilibria.</b> The total MD2 is shared between the free receptor and the two complexes:</p>
+<div class="eqwrap"><div class="eqlabel">(1) Receptor mass balance</div><div class="eq">[\mathrm{MD2}]_{\mathrm{tot}}=[\mathrm{MD2}]_{\mathrm{free}}+[\mathrm{MD2}\!\cdot\!P]+[\mathrm{MD2}\!\cdot\!L]</div></div>
+  <p>At rapid local equilibrium, with <span class="eqi">K_{\mathrm{D},P}=k_{\mathrm{off},P}/k_{\mathrm{on},P}</span> and <span class="eqi">K_{\mathrm{D},L}=k_{\mathrm{off},L}/k_{\mathrm{on},L}</span>,</p>
+<div class="eqwrap"><div class="eqlabel">(2) Equilibria</div><div class="eq">[\mathrm{MD2}\!\cdot\!P]=\frac{C^{\mathrm t}_V}{K_{\mathrm{D},P}}\,[\mathrm{MD2}]_{\mathrm{free}},\qquad[\mathrm{MD2}\!\cdot\!L]=\frac{[L]}{K_{\mathrm{D},L}}\,[\mathrm{MD2}]_{\mathrm{free}}</div></div>
+  <p class="col"><b>Where:</b> <span class="eqi">C^{\mathrm t}_V</span> is the interstitial V14 concentration in the tissue (the output of Model 2); [<i>L</i>] is the LPS concentration; <span class="eqi">K_{\mathrm{D},P}</span> and <span class="eqi">K_{\mathrm{D},L}</span> are the dissociation constants of the V14&#8211;MD2 and LPS&#8211;MD2 complexes.</p>
+
+  <p><b>Fractional occupancies.</b> Substituting Eq. (2) into Eq. (1) and eliminating the free receptor gives the fraction of MD2 held by each ligand. Each occupancy carries the other ligand's concentration in its denominator:</p>
+<div class="eqwrap"><div class="eqlabel">(3) Competitive occupancy at MD2</div><div class="eq">\theta_{\mathrm{inhib}}=\frac{C^{\mathrm t}_V}{K_{\mathrm{D},P}\!\left(1+\dfrac{[L]}{K_{\mathrm{D},L}}\right)+C^{\mathrm t}_V}=\frac{C^{\mathrm t}_V}{K_{\mathrm D}^{\mathrm{app}}+C^{\mathrm t}_V},\qquad\theta_{\mathrm{LPS}}=\frac{[L]/K_{\mathrm{D},L}}{1+\dfrac{[L]}{K_{\mathrm{D},L}}+\dfrac{C^{\mathrm t}_V}{K_{\mathrm{D},P}}}</div></div>
+  <p class="col"><b>Where:</b> <span class="eqi">\theta_{\mathrm{inhib}}</span> and <span class="eqi">\theta_{\mathrm{LPS}}</span> are the fractions of the MD2 pool occupied by V14 and by LPS, and <span class="eqi">K_{\mathrm D}^{\mathrm{app}}=K_{\mathrm{D},P}(1+[L]/K_{\mathrm{D},L})</span> is the apparent dissociation constant of V14 in the presence of LPS.</p>
+
+  <p><b>Scaled variables.</b> Rescaling concentration by the two dissociation constants removes them from the problem. The whole competition collapses onto a single curve family indexed by the scaled endotoxin load <i>a</i>, which for our register value of 1 &#181;M wound endotoxin is <i>a</i> = 15.4. Fourteen parameters reduce to four:</p>
+<div class="eqwrap"><div class="eqlabel">(4) Scaled variables</div><div class="eq">\psi=\frac{C^{\mathrm t}_V}{K_{\mathrm{D},P}},\qquad a=\frac{[L]}{K_{\mathrm{D},L}},\qquad\gamma=\frac{[\mathrm{TLR4}]_{\mathrm{tot}}}{K_{\mathrm{NF}}}\quad\Longrightarrow\quad\theta_{\mathrm{inhib}}=\frac{\psi}{1+a+\psi},\quad\theta_{\mathrm{LPS}}=\frac{a}{1+a+\psi}</div></div>
+  <p class="col"><b>Where:</b> &#968; is the dimensionless V14 concentration, <i>a</i> is the dimensionless endotoxin load, and &#947; is the scaled receptor level used by Model 4.</p>
+
+  <p><b>Half-maximal suppression.</b> The suppression ratio then has no free constant left in it. Setting it to one half gives a half-maximal dose with no fitted parameter anywhere in it:</p>
+<div class="eqwrap"><div class="eqlabel">(5) Suppression ratio and half-maximal dose</div><div class="eq">\frac{\theta_{\mathrm{LPS}}(\psi)}{\theta_{\mathrm{LPS}}(0)}=\frac{1+a}{1+a+\psi}\qquad\Longrightarrow\qquad\boxed{\;\psi_{50}=1+a\;}</div></div>
+  <p class="col"><b>Where:</b> &#968;<sub>50</sub> is the scaled V14 dose that halves the LPS-bound fraction of MD2 relative to its untreated value. With <i>a</i> = 15.4, &#968;<sub>50</sub> = 16.4.</p>
+
+  <p><b>The design target is a different quantity.</b> The tissue concentration that the patch must hold is set by absolute occupancy, not by the relative suppression in Eq. (5). Requiring half of the MD2 pool to be LPS-bound, <span class="eqi">\theta_{\mathrm{LPS}}=1/2</span>, gives <span class="eqi">\psi=a-1</span>:</p>
+<div class="eqwrap"><div class="eqlabel">(6) Design target</div><div class="eq">C_{V,\mathrm{target}}=K_{\mathrm{D},P}\,(a-1),\qquad\mathrm{IC}_{50}=K_{\mathrm D}^{\mathrm{app}}=K_{\mathrm{D},P}\,(1+a)</div></div>
+  <p class="col"><b>Where:</b> <span class="eqi">C_{V,\mathrm{target}}</span> is the tissue concentration at which half of MD2 is LPS-bound; IC<sub>50</sub> is the dose at which the LPS-bound fraction is half of its untreated value, which is the half-maximal point that a flow-cytometry dose&#8211;response would report. The two are not interchangeable.</p>
+
+  <p><b>The assay readout.</b> The flow-cytometry experiment reports a normalised fluorescence, not an occupancy. If the signal is the mean intensity (MFI), it is linear in the occupancy ratio:</p>
+<div class="eqwrap"><div class="eqlabel">(7) Readout and what it can identify</div><div class="eq">\mathrm{MFI}=\mathrm{MFI}_{\mathrm{bg}}+(\mathrm{MFI}_{\max}-\mathrm{MFI}_{\mathrm{bg}})\frac{\theta_{\mathrm{LPS}}(C^{\mathrm t}_V)}{\theta_{\mathrm{LPS}}(0)},\qquad\frac{\mathrm{IC}_{50}^{(v)}}{\mathrm{IC}_{50}^{(w)}}=\frac{K_{\mathrm{D},P}^{(v)}}{K_{\mathrm{D},P}^{(w)}}</div></div>
+  <p class="col"><b>Where:</b> MFI<sub>bg</sub> and MFI<sub>max</sub> are the negative and positive controls, and (<i>v</i>), (<i>w</i>) index two V14 variants assayed at the same LPS concentration. The half-maximal point of this readout is <span class="eqi">K_{\mathrm D}^{\mathrm{app}}</span>, not <span class="eqi">K_{\mathrm{D},P}</span>: recovering <span class="eqi">K_{\mathrm{D},P}</span> needs [<i>L</i>] and <span class="eqi">K_{\mathrm{D},L}</span> (Cheng and Prusoff, 1973). Ratios between variants are identifiable at a single fixed [<i>L</i>], because the endotoxin factor cancels.</p>
+  <p>Our measured readout is a positive-gate frequency, not an MFI. A gate frequency is a tail probability of the per-cell intensity distribution and is not linear in occupancy, so its relation to Eq. (7) was not calibrated. Section 4.1 explains what we assumed and why.</p>
+
+  <h4 class="col">2.3 Parameters</h4>
   <div class="tablewrap"><table>
-    <thead><tr><th>Quantity</th><th>Value used</th><th>Evidence tier and interpretation</th></tr></thead>
-    <tbody>
-      <tr><td>K<sub>D,L</sub></td><td>65&#160;nM</td><td>Literature value for LPS&#8211;MD2 (T3).</td></tr>
-      <tr><td>[L] and a=[L]/K<sub>D,L</sub></td><td>1&#160;&#181;M; a=15.4</td><td>Wound endotoxin concentration is a design prior (T4); a is derived.</td></tr>
-      <tr><td>Exploratory model-based estimate of K<sub>D,P</sub></td><td>5.62&#160;&#181;M</td><td>Treats the 17 Oct gate-frequency ratio as relative LPS occupancy under the stated competitive-binding model; this is an exploratory estimate, not an experimentally determined affinity.</td></tr>
-      <tr><td>C<sub>V,target</sub></td><td>80.9&#160;&#181;M</td><td>K<sub>D,P</sub>(a&#8722;1); distinct from &#968;<sub>50</sub>'s dose near 92&#160;&#181;M.</td></tr>
-      <tr><td>&#963;<sub>flow</sub></td><td>0.7</td><td>Tier-4 log-SD assumption; not fitted because no FCS histograms or MFI are available.</td></tr>
-    </tbody>
+  <thead><tr><th>Parameter / Property</th><th>Symbol</th><th>Value / Range</th><th>Source / Justification</th></tr></thead>
+  <tbody>
+  <tr><td>LPS&#8211;MD2 dissociation constant</td><td><span class="eqi">K_{\mathrm{D},L}</span></td><td>65 nM</td><td>Literature value for LPS&#8211;MD2 (T3), from the project parameter register.</td></tr>
+  <tr><td>Wound endotoxin concentration</td><td>[<i>L</i>]</td><td>1 &#181;M</td><td>Design prior (T4); not measured in our wounds.</td></tr>
+  <tr><td>Scaled endotoxin load</td><td><span class="eqi">a</span></td><td>15.4</td><td>Derived: <i>a</i> = [<i>L</i>]/<span class="eqi">K_{\mathrm{D},L}</span>. Untreated, 94% of MD2 is LPS-bound.</td></tr>
+  <tr><td>V14&#8211;MD2 dissociation constant (proxy)</td><td><span class="eqi">K_{\mathrm{D},P}</span></td><td>5.62 &#181;M</td><td>Exploratory model-based estimate (T4): the 17 Oct positive-gate ratio treated directly as the relative LPS occupancy ratio (Section 4.1). It is an uncalibrated single-dose proxy, not a measured affinity.</td></tr>
+  <tr><td>Design target</td><td><span class="eqi">C_{V,\mathrm{target}}</span></td><td>80.9 &#181;M</td><td>Derived from the proxy: <span class="eqi">K_{\mathrm{D},P}</span>(<i>a</i> &#8722; 1). Distinct from the dose <span class="eqi">\psi_{50}</span> corresponds to, about 92 &#181;M.</td></tr>
+  <tr><td>Total TLR4 and NF-&#954;B threshold</td><td><span class="eqi">[\mathrm{TLR4}]_{\mathrm{tot}}</span>, <span class="eqi">K_{\mathrm{NF}}</span></td><td>1 nM, 10 nM</td><td>Register values (T4), used by Model 4. Scaled receptor level &#947; = 0.1.</td></tr>
+  <tr><td>p65 Hill coefficient</td><td><i>h</i></td><td>2</td><td>Register value (T3), used by Model 4.</td></tr>
+  <tr><td>Per-cell log-SD of flow intensity</td><td><span class="eqi">\sigma_{\mathrm{flow}}</span></td><td>0.7</td><td>Tier-4 assumption. Not fitted, because no FCS histograms or MFI values are available.</td></tr>
+  </tbody>
   </table></div>
 
-  <h3 class="col">4. Experimental Validation and assay mapping</h3>
-  <div class="col">
-  <p>To be precise about what has and has not been done: at 25&#160;&#181;M, V14 reduced FITC-LPS
-  positive-gate frequency from 16.307&#160;% to 12.827&#160;%, a 3.480-percentage-point decrease
-  and 21.34&#160;% relative reduction (p&#160;=&#160;0.0186, n&#160;=&#160;4 per group). This indicates
-  reduced FITC-LPS positivity under the assay conditions but does not establish direct competition at MD2.
-  Because positive-gate frequency is a thresholded readout whose relationship to receptor occupancy was
-  not calibrated, these data do not support determination of a binding dissociation constant. For
-  exploratory modeling only, equating the gate-frequency ratio with relative LPS occupancy yields a
-  estimated K<sub>D,P</sub> of approximately 5.62&#160;&#181;M under the stated
-  competitive-binding model. This estimate depends on that assumption and is not an experimentally determined affinity.
-  An LPS titration and a calibrated occupancy-linked readout would be needed to identify absolute affinity;
-  positive-gate frequency alone does not provide it. <em>Ratios</em> between V14 variants are
-  already identifiable at a single fixed [L], so the variant screen works as planned; it is the
-  absolute affinity that does not come for free. We also ask for a Schild analysis in the same run,
-  because a depressed maximum would invalidate the competitive mechanism that the entire V14 arm
-  assumes &#8212; that is the one result that would force us to rebuild this model rather than
-  refit it.</p>
-  <div class="eqwrap"><div class="eqlabel">Exploratory model-based estimate (assumes gate ratio equals relative LPS occupancy)</div><div class="eq">r_{\mathrm{gate}}=\frac{12.827}{16.307}=0.7866,\qquad K_{\mathrm{D},P}=\frac{25}{\left(1+\frac{1}{0.065}\right)\left(\frac{1}{r_{\mathrm{gate}}}-1\right)}=5.62\,\mu\mathrm{M},\qquad C_{V,\mathrm{target}}=K_{\mathrm{D},P}(a-1)=80.9\,\mu\mathrm{M}</div></div>
-  <p class="col"><b>Where:</b> r<sub>gate</sub> is the V14 to LPS-only positive-gate-frequency ratio; treating it as relative LPS occupancy is an assumption. 25&#160;&#181;M is the tested V14 dose; a=[L]/K<sub>D,L</sub>=1/0.065=15.4. This estimated K<sub>D,P</sub> and model-derived target depend on that assumption and are not experimentally determined quantities.</p>
+  <div class="claim">
+  <h3>3. Solver Verification</h3>
+  <p>Before using any result, we checked the model against known answers. Verification of this kind establishes that the code reproduces known mathematics; it is not validation against experiment, and we do not present it as such.</p>
+  <p><b>Closed-form half-maximal dose.</b> Model 3 is algebraic, so there is no discretisation error to study. Instead the scaled result of Eq. (5) provides an exact check: the implementation must return a suppression ratio of exactly 1/2 at &#968; = 1 + <i>a</i> for every endotoxin load. We evaluated it at <i>a</i> = 0.5, 3, 15.4 and 100 and obtained 0.500 in each case. At <i>a</i> = 15.4 the implementation also returns a LPS-bound fraction of exactly 0.500 at &#968; = <i>a</i> &#8722; 1, which confirms Eq. (6).</p>
+  <p>The model also reproduces the physical limits by inspection: with no V14, the LPS-bound fraction tends to <i>a</i>/(1 + <i>a</i>) = 0.94; as the V14 concentration grows, it tends to zero; and the two occupancies together with the free fraction sum to one.</p>
   </div>
+
+  <h3 class="col">4. Experimental Comparison &amp; Model Refinement</h3>
+  <h4 class="col">4.1 The flow-cytometry assay</h4>
+  <p>The model's first quantitative test was a flow-cytometry assay of FITC-labelled LPS binding to cells, with and without V14. We state precisely what was and was not measured. At 25 &#181;M, V14 reduced the FITC-LPS positive-gate frequency from 16.307% to 12.827%, a 3.480-percentage-point decrease and a 21.34% relative reduction (p = 0.0186, n = 4 per group). This indicates reduced FITC-LPS positivity under the assay conditions. It does not establish direct competition at MD2.</p>
+  <p>Positive-gate frequency is a thresholded readout whose relationship to receptor occupancy was not calibrated, so these data do not determine a binding dissociation constant. For exploratory modelling only, we equate the gate-frequency ratio with the relative LPS occupancy ratio of Eq. (5). Solving Eq. (5) for <span class="eqi">K_{\mathrm{D},P}</span> at the tested dose gives:</p>
+<div class="eqwrap"><div class="eqlabel">(8) Exploratory model-based estimate (assumes gate ratio equals relative LPS occupancy)</div><div class="eq">r_{\mathrm{gate}}=\frac{12.827}{16.307}=0.7866,\qquad K_{\mathrm{D},P}=\frac{25}{\left(1+\frac{1}{0.065}\right)\left(\frac{1}{r_{\mathrm{gate}}}-1\right)}=5.62\,\mu\mathrm{M},\qquad C_{V,\mathrm{target}}=K_{\mathrm{D},P}(a-1)=80.9\,\mu\mathrm{M}</div></div>
+  <p class="col"><b>Where:</b> <span class="eqi">r_{\mathrm{gate}}</span> is the V14 to LPS-only positive-gate-frequency ratio; 25 &#181;M is the tested V14 dose; and <i>a</i> = [<i>L</i>]/<span class="eqi">K_{\mathrm{D},L}</span> = 1/0.065 = 15.4. The estimated <span class="eqi">K_{\mathrm{D},P}</span> and the derived target depend on the assumption that the gate ratio equals the relative LPS occupancy. They are not experimentally determined quantities.</p>
+  <p>This is a single-dose proxy. An LPS titration and a calibrated, occupancy-linked readout (MFI or FCS histograms) are needed to identify an absolute affinity; positive-gate frequency alone does not provide it. Ratios between V14 variants are already identifiable at a single fixed [<i>L</i>], so the variant screen works as planned. We also ask for a Schild analysis in the same run, because a depressed maximum would invalidate the competitive mechanism that the whole V14 arm assumes. That is the one result that would force us to rebuild this model rather than refit it.</p>
 
   <figure class="wide">
     <div class="figbox"><img src="assets/WL_positive_gate_trials2_3.png" alt="Positive-gate frequencies: updated viability-only, FITC-LPS, V14 and V5 groups from Specimens 3 and 7, alongside earlier V12 and V16 trial data; each sample shown." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;7.</span> Wet-lab flow cytometry positive-gate frequency. Viability-only, FITC-LPS, V14 and V5 use the updated Specimens 3/7 data; V12 and V16 use the earlier Trials 2/3 data. The panels show raw frequencies and values normalised to the matching specimen or trial LPS-alone mean. <span class="caveat">Exploratory sample-level statistics; the two cohorts have different specimen structures and raw frequencies across them are not directly comparable.</span></figcaption>
+    <figcaption><span class="fid">Figure&#160;5.</span> Wet-lab flow cytometry positive-gate frequency. Viability-only, FITC-LPS, V14 and V5 use the updated Specimens 3/7 data; V12 and V16 use the earlier Trials 2/3 data. The panels show raw frequencies and values normalised to the matching specimen or trial LPS-alone mean. <span class="caveat">Exploratory sample-level statistics; the two cohorts have different specimen structures and raw frequencies across them are not directly comparable.</span></figcaption>
   </figure>
 
   <figure class="wide">
     <div class="figbox"><img src="assets/WL_kdp_bound_25uM.png" alt="17 October flow result: FITC-LPS and V14 positive-gate frequencies, with modelled V14 delivery requirements across K_D,P values and the current proxy marked." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;8.</span> (A) Positive-gate frequency was 16.31&#160;% for FITC-LPS and 12.83&#160;% with 25&#160;&#181;M V14 (21.34&#160;% relative decrease, p&#160;=&#160;0.0186, n&#160;=&#160;4/group). (B) Modelled tissue V14 concentrations required for absolute LPS-bound MD2 fractions of 0.5 and 0.1 across K<sub>D,P</sub>. Untreated occupancy is about 0.939, so these correspond to approximately 46.8&#160;% and 89.4&#160;% relative suppression. The marker shows the 17&#160;Oct proxy of 5.62&#160;&#181;M and its derived target of 80.9&#160;&#181;M for 50&#160;% absolute occupancy; a 50&#160;% relative decrease requires about 92&#160;&#181;M. The proxy assumes the gate-frequency ratio equals relative LPS occupancy.</figcaption>
+    <figcaption><span class="fid">Figure&#160;6.</span> (A) Positive-gate frequency was 16.31% for FITC-LPS and 12.83% with 25 &#181;M V14 (21.34% relative decrease, p = 0.0186, n = 4/group). (B) Modelled tissue V14 concentrations required for absolute LPS-bound MD2 fractions of 0.5 and 0.1 across <span class="eqi">K_{\mathrm{D},P}</span>. Untreated occupancy is about 0.939, so these correspond to approximately 46.8% and 89.4% relative suppression. The marker shows the 17 Oct proxy of 5.62 &#181;M and its derived target of 80.9 &#181;M for 50% absolute occupancy; a 50% relative decrease requires about 92 &#181;M. <span class="caveat">The proxy assumes the gate-frequency ratio equals relative LPS occupancy.</span></figcaption>
   </figure>
-<h3>5. Sensitivity Analysis</h3><p>The analytical dose&#8211;response curves show how endotoxin load changes the required inhibitor dose. No separate global parameter sweep is reported for Model&#160;3; the main limitation is that one flow-cytometry dose cannot identify absolute K<sub>D,P</sub>.</p>
-<h3>6. References</h3><p>Key sources for this model: <a href="#ref-slivka">Slivka et al. (2009)</a> for the MD2 peptide benchmark; <a href="#ref-park2017">Park et al. (2017)</a> for TLR4/MD2-targeting peptides; and <a href="#ref-liu">Liu et al. (2023)</a> for TLR4&#8211;MD2 inhibition in a hydrogel-delivery study. Full citations are listed below.</p>
+
+  <h4 class="col">4.2 The scaling correction</h4>
+  <p>To invert the model for the required dose, &#968; has to be isolated additively. Our earlier version factored out <span class="eqi">K_{\mathrm D}^{\mathrm{app}}</span>, which is valid for the occupancy expression and for the Cheng&#8211;Prusoff relation but not for this inversion. The resulting dose&#8211;load relation came out quadratic in the endotoxin load instead of linear, so the error was in the scaling law and not merely in a prefactor: the over-estimate grew from about 2&#215; at low endotoxin load to about 2500&#215; at high load. The earlier version mispredicted the very quantity it was built to deliver, and only a direct numerical check caught it. The model now carries the exact result of Eq. (5), and we use it as a standing check on any numerical implementation of Models 3 and 4.</p>
+  <p>This also matters for the project schedule. The V14 arm was not blocked on the binding assay: the dose&#8211;response shape, the required scaled dose and the sensitivity structure were all available in advance, and the measurement, when it came, changed the axis label and not the conclusions.</p>
+
+  <h3>5. Simulated Results</h3>
+  <p><b>The required dose scales with the endotoxin load, not with the peptide affinity alone.</b> At 1 &#181;M LPS (<i>a</i> = 15.4), 94% of MD2 is LPS-bound without V14. Under the 5.62 &#181;M proxy, this falls to 50% at 80.9 &#181;M V14, and the suppression ratio of Eq. (5) falls to one half at about 92 &#181;M. Increasing the endotoxin load shifts the inhibition curve to the right without lowering its maximum, which is the signature of competitive antagonism. The required dose is linear in [<i>L</i>].</p>
+
+  <figure class="wide">
+    <div class="figbox"><img src="assets/G04_md2_occupancy.svg" alt="Stacked area plot of LPS-bound, V14-bound and free MD2 against V14 concentration, with the 80.9 micromolar target marked; 50 percent of MD2 is LPS-bound at the target." loading="lazy"></div>
+    <figcaption><span class="fid">Figure&#160;7.</span> Model&#160;3 competitive occupancy of MD2 at 1&#160;&#181;M LPS (<i>a</i>&#160;=&#160;15.4). Without V14, 94% of MD2 is LPS-bound; this falls to 50% at the 80.9&#160;&#181;M target. <span class="caveat">The current model uses the exploratory model-based <span class="eqi">K_{\mathrm{D},P}</span> estimate of 5.62&#160;&#181;M, which assumes the gate-frequency ratio equals relative LPS occupancy.</span></figcaption>
+  </figure>
+
+  <figure class="wide">
+    <div class="figbox"><img src="assets/G05_competitive_dose_response_p65.svg" alt="Left: model-predicted LPS-bound MD2 ratio against V14 concentration for four endotoxin loads, with the 80.9 micromolar tissue target marked. Right: relative nuclear p65 against V14 occupancy." loading="lazy"></div>
+    <figcaption><span class="fid">Figure&#160;8.</span> (a) Competitive model prediction: increasing endotoxin shifts the inhibition curve right, with IC<sub>50</sub>&#160;=&#160;<span class="eqi">K_{\mathrm{D},P}</span>(1&#160;+&#160;<i>a</i>). Curves use the exploratory model-based <span class="eqi">K_{\mathrm{D},P}</span> estimate of 5.62&#160;&#181;M, under the assumption that the gate-frequency ratio equals relative LPS occupancy. The vertical marker shows the conditional tissue target concentration, 80.9&#160;&#181;M V14. (b) Predicted nuclear p65 relative to LPS-only levels as V14 occupancy rises; dashed curves use register values &#947;&#160;=&#160;0.1 and <i>h</i>&#160;=&#160;2.</figcaption>
+  </figure>
+
+  <p><b>Sensitivity.</b> The analytical dose&#8211;response curves show how endotoxin load changes the required inhibitor dose. No separate global parameter sweep is reported for Model 3. The main limitation is that one flow-cytometry dose cannot identify the absolute <span class="eqi">K_{\mathrm{D},P}</span>, and the global sensitivity analysis later on this page treats it as the dominant uncertainty in the delivered dose.</p>
+  <p><b>Output.</b> Two quantities leave this section: the LPS-bound fraction <span class="eqi">\theta_{\mathrm{LPS}}</span> drives the NF-&#954;B signalling model (Model 4), and the target concentration <span class="eqi">C_{V,\mathrm{target}}</span> = 80.9 &#181;M is the design specification that Model 7 inverts the delivery chain to meet.</p>
+
+  <h3>6. References</h3>
+  <ol class="refs">
+  <li>Cheng, Y., &amp; Prusoff, W. H. (1973). Relationship between the inhibition constant (K<sub>I</sub>) and the concentration of inhibitor which causes 50 per cent inhibition (I<sub>50</sub>) of an enzymatic reaction. <i>Biochemical Pharmacology</i>, 22(23), 3099&#8211;3108. <a href="https://doi.org/10.1016/0006-2952(73)90196-2">https://doi.org/10.1016/0006-2952(73)90196-2</a></li>
+  <li>Liu, Y., Xia, G., Chen, Y., Xia, H., Xu, J., Guo, L., Lin, S., &amp; Liu, Y. (2023). Purpurolide C-based microneedle promotes macrophage-mediated diabetic wound healing via inhibiting TLR4-MD2 dimerization and MYD88 phosphorylation. <i>Acta Pharmaceutica Sinica B</i>, 13(12), 5060&#8211;5073. <a href="https://doi.org/10.1016/j.apsb.2023.05.032">https://doi.org/10.1016/j.apsb.2023.05.032</a></li>
+  <li>Park, S.-H., Shin, H.-J., Shah, M., <i>et al.</i> (2017). TLR4/MD2 specific peptides stalled in vivo LPS-induced immune exacerbation. <i>Biomaterials</i>. <a href="https://doi.org/10.1016/j.biomaterials.2017.02.023">https://doi.org/10.1016/j.biomaterials.2017.02.023</a></li>
+  <li>Slivka, P. F., Shridhar, M., Lee, G.-I., <i>et al.</i> (2009). A peptide antagonist of the TLR4&#8211;MD2 interaction. <i>ChemBioChem</i>, 10, 645&#8211;649. <a href="https://doi.org/10.1002/cbic.200800769">https://doi.org/10.1002/cbic.200800769</a></li>
+  </ol>
 </section>
 
 <!-- ================= MODELS 4 & 5 ================= -->
