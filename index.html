@@ -318,6 +318,9 @@ hr.soft{border:0;border-top:1px solid var(--rule);margin:2.4em 0;max-width:var(-
 .fc-lab-f{fill:var(--fgf)}
 .fc-lab-j{fill:var(--gold-ink)}
 .fc-pill{fill:var(--gold-wash);stroke:none}
+.fc-dry{fill:var(--v14-wash);stroke:var(--v14)}
+.fc-wet{fill:var(--fgf-wash);stroke:var(--fgf)}
+.fc-arm-w{fill:var(--fgf)} .fc-arm-j{fill:var(--gold-ink)}
 .flowchart a{cursor:pointer}
 .flowchart a:hover .fc-box{stroke-width:2.8}
 .flowfig .figbox{padding:14px 10px}
@@ -593,6 +596,7 @@ body.noscroll{overflow:hidden}
   <li><a href="#global-sensitivity">Global sensitivity</a></li>
   <li><a href="#no-sensing">NO sensing</a></li>
   <li><a href="#wrong">Refinement</a></li>
+  <li><a href="#integration">Integration</a></li>
   <li><a href="#asks">Wet lab</a></li>
   <li><a href="#conclusion">Conclusion</a></li>
   <li><a href="#code">Download code</a></li>
@@ -1889,6 +1893,111 @@ body.noscroll{overflow:hidden}
   </table></div>
 </section>
 
+<!-- ================= WET LAB / DRY LAB INTEGRATION ================= -->
+<section class="act wrap" id="integration">
+  <div class="act-head"><div class="num">&#8646;</div><div>
+    <p class="eyebrow">Integration</p>
+    <h2>How the wet lab and the dry lab work together</h2>
+  </div></div>
+
+  <div class="col">
+  <p>The models and the experiments were not run as two projects that met at the end. Each side was built to feed the other: the models say which measurement is worth making, the measurement then fixes or overturns a parameter, and the updated parameter moves every number downstream. This section sets out that loop, shows where it has already closed, and lists what is still open.</p>
+  </div>
+
+  <h3 class="col">1. The working cycle</h3>
+  <figure class="wide flowfig">
+    <div class="figbox">
+<svg viewBox="0 0 920 270" class="flowchart fc-wide" role="img" aria-label="Flowchart of the wet lab and dry lab cycle. The model predicts a number and its evidence tier. Sensitivity analysis ranks the unknowns and proposes an assay. The wet lab runs the assay. The result is used to refit or refute a parameter. A return arrow shows the updated parameter re-entering every model.">
+<title>Wet lab and dry lab cycle</title>
+<defs>
+    <marker id="iar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--ink-3)"/></marker>
+    <marker id="iarj" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--gold)"/></marker>
+  </defs>
+<text x="115" y="34" class="fc-arm fc-arm-v" style="text-anchor:middle">Dry lab</text>
+<text x="345" y="34" class="fc-arm fc-arm-v" style="text-anchor:middle">Dry lab</text>
+<text x="575" y="34" class="fc-arm fc-arm-w" style="text-anchor:middle">Wet lab</text>
+<text x="805" y="34" class="fc-arm fc-arm-j" style="text-anchor:middle">Both</text>
+<g><rect x="20" y="46" width="190" height="78" rx="8" class="fc-box fc-dry"/><text x="115" y="70" class="fc-k">1. Predict</text><text x="115" y="88" class="fc-s">Model returns a number</text><text x="115" y="102" class="fc-s">and its evidence tier</text></g>
+<line x1="210" y1="85" x2="248" y2="85" class="fc-line" stroke="var(--ink-3)" marker-end="url(#iar)"/>
+<g><rect x="250" y="46" width="190" height="78" rx="8" class="fc-box fc-dry"/><text x="345" y="70" class="fc-k">2. Ask</text><text x="345" y="88" class="fc-s">Sensitivity ranks the</text><text x="345" y="102" class="fc-s">unknowns; propose an assay</text></g>
+<line x1="440" y1="85" x2="478" y2="85" class="fc-line" stroke="var(--ink-3)" marker-end="url(#iar)"/>
+<g><rect x="480" y="46" width="190" height="78" rx="8" class="fc-box fc-wet"/><text x="575" y="70" class="fc-k">3. Measure</text><text x="575" y="88" class="fc-s">Wet lab runs the assay</text><text x="575" y="102" class="fc-s">and records the conditions</text></g>
+<line x1="670" y1="85" x2="708" y2="85" class="fc-line" stroke="var(--ink-3)" marker-end="url(#iar)"/>
+<g><rect x="710" y="46" width="190" height="78" rx="8" class="fc-box fc-end-box"/><text x="805" y="70" class="fc-k">4. Refit or refute</text><text x="805" y="88" class="fc-s">Update the master value,</text><text x="805" y="102" class="fc-s">or retire the assumption</text></g>
+<path d="M805 124 V196 H115 V126" class="fc-line fc-line-j" marker-end="url(#iarj)"/>
+<rect x="320" y="184" width="280" height="24" rx="5" class="fc-pill"/>
+<text x="460" y="200" class="fc-lab fc-lab-j">Updated parameter re-enters every model</text>
+<text x="460" y="242" class="fc-s">Evidence tiers T1&#8211;T4 record how far each value has moved from a prior toward a measurement</text>
+</svg>
+<svg viewBox="0 0 360 500" class="flowchart fc-narrow" role="img" aria-label="Flowchart of the wet lab and dry lab cycle. The model predicts a number and its evidence tier. Sensitivity analysis ranks the unknowns and proposes an assay. The wet lab runs the assay. The result is used to refit or refute a parameter. A return arrow shows the updated parameter re-entering every model.">
+<title>Wet lab and dry lab cycle</title>
+<defs>
+    <marker id="iarn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--ink-3)"/></marker>
+    <marker id="iarnj" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--gold)"/></marker>
+  </defs>
+<g><rect x="50" y="10" width="240" height="70" rx="8" class="fc-box fc-dry"/><text x="170" y="34" class="fc-k">1. Predict (dry lab)</text><text x="170" y="52" class="fc-s">Model returns a number</text><text x="170" y="66" class="fc-s">and its evidence tier</text></g>
+<line x1="170" y1="80" x2="170" y2="112" class="fc-line" stroke="var(--ink-3)" marker-end="url(#iarn)"/>
+<g><rect x="50" y="114" width="240" height="70" rx="8" class="fc-box fc-dry"/><text x="170" y="138" class="fc-k">2. Ask (dry lab)</text><text x="170" y="156" class="fc-s">Sensitivity ranks the unknowns;</text><text x="170" y="170" class="fc-s">propose an assay</text></g>
+<line x1="170" y1="184" x2="170" y2="216" class="fc-line" stroke="var(--ink-3)" marker-end="url(#iarn)"/>
+<g><rect x="50" y="218" width="240" height="70" rx="8" class="fc-box fc-wet"/><text x="170" y="242" class="fc-k">3. Measure (wet lab)</text><text x="170" y="260" class="fc-s">Run the assay and record</text><text x="170" y="274" class="fc-s">the conditions</text></g>
+<line x1="170" y1="288" x2="170" y2="320" class="fc-line" stroke="var(--ink-3)" marker-end="url(#iarn)"/>
+<g><rect x="50" y="322" width="240" height="70" rx="8" class="fc-box fc-end-box"/><text x="170" y="346" class="fc-k">4. Refit or refute (both)</text><text x="170" y="364" class="fc-s">Update the master value,</text><text x="170" y="378" class="fc-s">or retire the assumption</text></g>
+<path d="M290 357 H335 V45 H292" class="fc-line fc-line-j" marker-end="url(#iarnj)"/>
+<text x="170" y="424" class="fc-lab fc-lab-j">Updated parameter re-enters every model</text>
+<text x="170" y="456" class="fc-s">Evidence tiers T1&#8211;T4 record how far each</text>
+<text x="170" y="471" class="fc-s">value has moved from a prior toward a measurement</text>
+</svg>
+    </div>
+    <figcaption><span class="fid">Integration cycle.</span> One turn of the loop. The dry lab predicts a quantity and states how well it is known; the sensitivity analysis and the identifiability tables decide which measurement would narrow it most; the wet lab measures it; and the result either replaces a prior or refutes an assumption. The orange arrow is the step that makes it a loop: a changed value is written once in the parameter register and every downstream number is regenerated from it. <span class="caveat">Blue boxes are dry-lab steps, red is the wet-lab step, and the highlighted box is where the two meet.</span></figcaption>
+  </figure>
+
+  <h3 class="col">2. What passes in each direction</h3>
+  <div class="tablewrap"><table>
+  <thead><tr><th>Direction</th><th>What is handed over</th><th>What it changes on the other side</th></tr></thead>
+  <tbody>
+  <tr><td><b>Dry lab &#8594; wet lab</b></td><td>A ranked list of unmeasured parameters, from the global sensitivity analysis and the register tiers (<a href="#global-sensitivity">Global sensitivity</a>).</td><td>The proposed measurements in <a href="#asks">Wet lab</a> are ordered by how much each would narrow the model, not by convenience.</td></tr>
+  <tr><td><b>Dry lab &#8594; wet lab</b></td><td>Assay design requirements derived from the model. For example, a release assay must run for most of a day, because 95&#160;% of the mobile V14 dose takes 5.6&#160;h to leave the 2.5&#160;mm gel.</td><td>Sampling grid, run length, and what must be recorded (gel thickness, buffer volume) so that a result can be fitted rather than just observed.</td></tr>
+  <tr><td><b>Dry lab &#8594; wet lab</b></td><td>Identifiability limits: K<sub>D,P</sub> cannot be recovered absolutely from one LPS concentration, and D<sub>n</sub>&#183;r<sub>eff</sub> cannot be separated without a front-width readout.</td><td>Extra conditions are requested up front (an LPS titration, a Schild analysis, a scratch assay &#177; mitomycin C) so the first dataset is already informative.</td></tr>
+  <tr><td><b>Wet lab &#8594; dry lab</b></td><td>Measured values and their conditions: positive-gate frequencies, BCA reads, casting parameters, solubility.</td><td>A Tier-4 prior is replaced or a new parameter is introduced, written once in the master parameter file.</td></tr>
+  <tr><td><b>Wet lab &#8594; dry lab</b></td><td>Negative and ambiguous results, such as a failed promoter experiment or a signal at the assay noise floor.</td><td>An assumption is tested against the model and either retired or kept with an explicit caveat; the record goes in <a href="#wrong">Refinement</a>.</td></tr>
+  </tbody>
+  </table></div>
+
+  <h3 class="col">3. Where the loop has already closed</h3>
+  <div class="col"><p>Five results in this project changed the model, an experiment, or how we read one. In each case the model and the measurement constrained each other, and something was revised as a result.</p></div>
+  <div class="tablewrap"><table>
+  <thead><tr><th>Result</th><th>What the model said</th><th>What the bench showed</th><th>What changed</th></tr></thead>
+  <tbody>
+  <tr><td><b>FGF2-G3 BCA release assay</b></td><td>With a fully mobile load, release is essentially complete within a day, with 31&#8211;44&#160;% released between 60 and 120&#160;min.</td><td>13.3, 13.8 and 22.9&#160;% of the loaded dose at 60, 90 and 120&#160;min.</td><td>Model&#160;1 now carries a mobile fraction, f<sub>mob,F</sub> = 0.45&#160;&#177;&#160;0.06. It is provisional: three time points, signals near the BCA noise floor, and thickness and buffer volume not recorded. See <a href="#m12">Models 1 &amp; 2</a>.</td></tr>
+  <tr><td><b>17 Oct flow-cytometry panel</b></td><td>The dose&#8211;response shape and the dose inversion were ready before any binding data existed.</td><td>25&#160;&#181;M V14 lowered FITC-LPS positive-gate frequency by 21.34&#160;% (p&#160;=&#160;0.0186, n&#160;=&#160;4 per group).</td><td>The measurement set the axis label, not the conclusions: a K<sub>D,P</sub> proxy of 5.62&#160;&#181;M and a derived target of 80.9&#160;&#181;M, both conditional on the gate ratio standing in for occupancy. See <a href="#m3">Model 3</a>.</td></tr>
+  <tr><td><b>NorR/P<sub>norV</sub> promoter experiment</b></td><td>The penetration-depth calculation gave L<sub>d</sub> = 11&#8211;93&#160;&#181;m against a 2.5&#160;mm patch.</td><td>The promoter-activity experiment did not give a usable response.</td><td>The calculation explained the failure as geometric, the sensing branch was removed, and NO became an output of the model rather than an input. See <a href="#no-sensing">NO sensing</a>.</td></tr>
+  <tr><td><b>2.5&#160;mm casting at 3&#160;mg&#160;mL<sup>&#8722;1</sup></b></td><td>The earlier 0.5&#160;mm design needed a change every 6.8&#160;h, and we had written that once-daily changes were out of reach.</td><td>The team cast thicker gels and dissolved the higher loading.</td><td>The same solver returns 11.8&#160;h of cover and a 36&#160;h limit. The earlier claim was withdrawn in the Refinement record. See <a href="#wrong">Refinement</a>.</td></tr>
+  <tr><td><b>TAP2 RT-qPCR</b></td><td>The peptide screen rejected TAP2 on cysteine count and stability.</td><td>TAP2 did not suppress LPS-induced markers in the tested M0 and M1 conditions.</td><td>The outcome is consistent with the screen but does not identify the mechanism. The caveat is stated and structural measurements are requested. See <a href="#peptide">Peptide suitability</a>.</td></tr>
+  </tbody>
+  </table></div>
+
+  <h3 class="col">4. Keeping the two sides consistent</h3>
+  <div class="col">
+  <p><b>One value, one place.</b> Every model number starts in a single parameter file. The browser interactives cannot import it, so they carry copies, and the page build checks that all copies agree and refuses to build if they do not. A new wet-lab value therefore cannot appear in one figure and not another.</p>
+  <p><b>Evidence tiers.</b> Each parameter carries a tier, from T1 (measured in house) to T4 (order-of-magnitude prior). A result moves a parameter's tier only as far as its design supports. The BCA fit stays provisional for the reasons above, and the 17&#160;Oct proxy is described as an uncalibrated single-dose proxy, not a measured affinity.</p>
+  <p><b>Regression and regeneration.</b> After any change, the numerical solvers are re-verified against their closed forms and every figure is regenerated. A script lists each headline number that moved, so the prose is updated from a checklist and not from memory.</p>
+  <p><b>Superseded values stay on record.</b> When new data overturns a stated conclusion, the earlier statement is kept only inside a dated correction. The 14&#160;Oct lower bound on K<sub>D,P</sub> and the 0.5&#160;mm design are examples.</p>
+  </div>
+
+  <h3 class="col">5. What is still open</h3>
+  <ul class="asks">
+    <li><span class="st">&#9633;</span><div><b>A release assay that can be fitted.</b> A log time grid from about 1&#160;min, run to completion, with gel thickness and buffer volume recorded. It would turn the provisional f<sub>mob</sub> into a measurement and supply the diffusivity.</div></li>
+    <li><span class="st">&#9633;</span><div><b>An LPS titration with a calibrated readout.</b> MFI or FCS histograms at two or three LPS concentrations. It would turn the K<sub>D,P</sub> proxy into an affinity and test the competitive mechanism.</div></li>
+    <li><span class="st">&#9633;</span><div><b>Any data at all for Model&#160;6.</b> Every closure parameter is Tier&#160;4, so the wound-closure predictions are the part of the chain with the least experimental support.</div></li>
+    <li><span class="st">&#9633;</span><div><b>A repeat-dose test.</b> The once-daily schedule and its roughly 49&#160;% margin are predictions that no experiment has yet tested.</div></li>
+  </ul>
+  <p class="col caveat" style="display:block">Taken together, the loop has closed on the payload and delivery side (Models&#160;1&#8211;3) and is still open on the biological response side (Models&#160;4&#8211;6). The next experiments are listed in order in <a href="#asks">Wet lab</a>.</p>
+</section>
+
 <!-- ================= ASKS ================= -->
 <section class="act wrap" id="asks">
   <div class="act-head"><div class="num">&#8594;</div><div>
@@ -2122,7 +2231,7 @@ body.noscroll{overflow:hidden}
   <hr class="soft">
   <p><b>HKU iGEM 2026 &#183; Dry Lab.</b> Model V3. Solvers verified against closed-form
   benchmarks; all parameters carry a provenance tier; non-identifiable combinations are declared
-  and not fitted. Page rebuilt 19 October 2026.</p>
+  and not fitted. Page rebuilt 20 October 2026.</p>
   <p style="margin-top:1em">Equations, boundary conditions and the full assumption register are
   in the V3 equation-reference document; the peptide screen is documented in full in the peptide
   suitability model. Where a value is Tier&#160;3 or Tier&#160;4, the tier rather than a citation

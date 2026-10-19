@@ -305,6 +305,9 @@ hr.soft{border:0;border-top:1px solid var(--rule);margin:2.4em 0;max-width:var(-
 .fc-lab-f{fill:var(--fgf)}
 .fc-lab-j{fill:var(--gold-ink)}
 .fc-pill{fill:var(--gold-wash);stroke:none}
+.fc-dry{fill:var(--v14-wash);stroke:var(--v14)}
+.fc-wet{fill:var(--fgf-wash);stroke:var(--fgf)}
+.fc-arm-w{fill:var(--fgf)} .fc-arm-j{fill:var(--gold-ink)}
 .flowchart a{cursor:pointer}
 .flowchart a:hover .fc-box{stroke-width:2.8}
 .flowfig .figbox{padding:14px 10px}
