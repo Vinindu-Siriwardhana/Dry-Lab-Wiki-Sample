@@ -1197,132 +1197,108 @@ body.noscroll{overflow:hidden}
 <!-- ================= MODEL 6 ================= -->
 <section class="act wrap" id="m6">
   <div class="act-head"><div class="num">05</div><div>
-    <p class="eyebrow">Model 6</p>
+    <p class="eyebrow">Module 6 &#183; Wound closure (Model 6)</p>
     <h2>Wound closure under continuous and time-limited treatment</h2>
   </div></div>
 
-  <div class="claim warn">
-    <h3>1. Background and evidence status</h3>
-    <p>Model&#160;6 uses the Fisher&#8211;KPP reaction&#8211;diffusion equation to represent the
-    advancing wound front. It is the <b>least supported part of the chain</b>: its rates are Tier-4
-    phenomenological parameters, and <em>no planned experiment currently constrains them</em>. Its
-    outputs should therefore be read as testable model predictions rather than quantitative clinical
-    forecasts. This evidence limitation is separate from the support for Models&#160;1&#8211;2.</p>
-  </div>
+  <h3>1. Background</h3>
+  <p>The two arms of the patch converge on one question: does the wound close? FGF2-G3 raises the proliferation of the fibroblasts that rebuild the tissue, and V14 lowers the inflammation that suppresses them. Model 6 combines the two into a single prediction of how a population of fibroblasts repopulates a wound defect, with and without treatment.</p>
+  <p>The model represents the wound as a circular defect and the fibroblasts as a continuous density that spreads by random migration and grows logistically, with a death term that depends on inflammation. This is the Fisher&#8211;KPP reaction&#8211;diffusion equation, which produces a travelling front that advances into unoccupied tissue. The outputs are the position of the front over time, the fraction of the wound area that has closed, and the time at which the front reaches the centre.</p>
+  <p>Model 6 is the least supported part of the chain. Its rates are Tier-4 phenomenological parameters, and no planned experiment currently constrains them. Its outputs should therefore be read as testable model predictions, not as quantitative clinical forecasts. This evidence limitation is separate from the support for Models 1 and 2.</p>
+  <p><b>What this model calls "closure" is not re-epithelialisation.</b> Model 6 describes a fibroblast population repopulating the defect. In real wound healing, fibroblasts build the granulation tissue that fills the wound, but the epithelial surface is closed by keratinocytes migrating in from the wound margins and from hair follicle remnants, a cell type this model does not contain. A deep wound must be filled with granulation tissue before epithelium can cross it, so fibroblast repopulation is a genuine prerequisite, but it is the earlier of the two events. Every closure time on this page should be read as a granulation-filling time, and as a lower bound on the time to a closed epithelium.</p>
 
-  <div class="claim warn">
-    <h3>What this model calls &#8220;closure&#8221; is not re-epithelialisation</h3>
-    <p>A key biological limitation is that Model&#160;6 describes a
-    <b>fibroblast</b> population repopulating the defect. In real wound healing, fibroblasts build
-    the granulation tissue that fills the wound, but the epithelial surface is closed by
-    <b>keratinocytes</b> migrating in from the wound margins and from hair follicle remnants &#8212;
-    a cell type this model does not contain at all.</p>
-    <p>A deep wound must be filled with granulation tissue before epithelium can cross it, so the
-    two are ordered and fibroblast repopulation is a genuine prerequisite. But they are not the same
-    event, and the one we predict is the earlier one. <b>Every closure time on this page should be
-    read as a granulation-filling time, and as a lower bound on the time to a closed epithelium.</b>
-    Reporting the two separately &#8212; and adding a keratinocyte layer before claiming closure
-    times &#8212; would be a major structural improvement to this model.</p>
-  </div>
+  <h3 class="col">2. Model Construction</h3>
+  <h4 class="col">2.1 Assumptions</h4>
+  <div class="tablewrap"><table>
+  <thead><tr><th>Assumption</th><th>Justification</th></tr></thead>
+  <tbody>
+  <tr><td><b>A single fibroblast population with logistic growth.</b></td><td>Logistic growth with a carrying capacity is the standard minimal closure model, and the bound represents contact inhibition and finite tissue density. Chronic-wound fibroblasts include a senescent fraction that does not proliferate and secretes inflammatory mediators, so one mean rate averages over two populations behaving differently.</td></tr>
+  <tr><td><b>Migration is diffusive.</b></td><td>Random-walk spreading gives the Fisher&#8211;KPP form and the travelling front. Real fibroblast migration is directed by matrix alignment and chemotactic gradients, which diffusion does not represent, so the front shape is an approximation.</td></tr>
+  <tr><td><b>The wound is a flat circular defect of uniform depth.</b></td><td>This makes the radial geometry tractable and the closure fraction well defined. Clinical ulcers are irregular and variable in depth, and wound contraction, a myofibroblast-driven mechanism absent from this model, contributes substantially to area reduction in vivo.</td></tr>
+  <tr><td><b>Fibroblasts respond to FGF2-G3 with literature potency.</b></td><td>E<sub>max</sub> and EC<sub>50</sub> are taken from growth-factor responses and are Tier-4 priors. Fibroblasts from chronic wounds show altered growth-factor signalling and reduced receptor expression (<a href="#ref-kim2003">Kim <i>et al.</i>, 2003</a>, measured for TGF-&#946;), so we expect the response in the cells we are treating to be weaker than modelled. This sets the size of the whole therapeutic effect.</td></tr>
+  <tr><td><b>Inflammation enters through the nitrite ratio from Model 5.</b></td><td>The inflammatory state I<sub>e</sub> is the modelled nitrite relative to its untreated value, so more nitrite means lower proliferation and higher death (Section 4.3 of Models 4 and 5 discusses the limits of this coupling).</td></tr>
+  <tr><td><b>The drug effect lags exposure by one effect-compartment time constant.</b></td><td>A standard pharmacodynamic approach approximates the combined delay from transcription, translation and matrix turnover with one parameter, k<sub>e0</sub>. It is a Tier-4 assumption and remains unmeasured.</td></tr>
+  <tr><td><b>No infection dynamics.</b></td><td>The LPS load is an external constant. A biofilm that grows or is disrupted would change the endotoxin load over exactly the multi-day timescale this model runs on.</td></tr>
+  <tr><td><b>An agent-based model is not used.</b></td><td>Its additional rules for adhesion, contact inhibition, chemotaxis and cell division are not constrained by the planned experiments. The continuum model uses fewer parameters, although two front-behaviour parameters remain degenerate (Section 2.2). The model has no keratinocytes, no myofibroblast contraction and no angiogenesis.</td></tr>
+  </tbody>
+  </table></div>
 
-  <div class="col">
-  <h3 class="col">2. Model Construction: Fisher&#8211;KPP with drug-dependent proliferation and death</h3>
-  <div class="col">
-  <p>Wound closure is represented as a front advancing into unoccupied tissue as cells migrate and
-  divide. The Fisher&#8211;KPP reaction&#8211;diffusion equation captures these processes through a
-  diffusion term for migration and a logistic term for proliferation, bounded by a carrying
-  capacity. This bound represents contact inhibition and finite tissue density. Radial geometry is
-  used because the wound is approximated as a circular defect; it also allows the model to calculate
-  the area-based closure fraction.</p>
-  <p>The numerical Fisher&#8211;KPP check is shown in <a href="#m12">Figure&#160;2(b)</a>; it verifies the solver against the analytic front speed. The model adds a death term, d(I<sub>e</sub>), to the standard Fisher&#8211;KPP equation. This
-  makes the effective growth rate r<sub>eff</sub>&#160;=&#160;r<sub>p</sub>&#160;&#8722;&#160;d,
-  which can be negative. When r<sub>eff</sub>&#160;&lt;&#160;0, the model predicts regression rather
-  than slow closure. This feature allows the model to represent chronic wounds that do not close
-  under some conditions; 18.7&#160;% of the sampled parameter sets produced no closure. The same
-  formulation also produced the predicted relapse after treatment stops.</p>
-  <p>An agent-based model was not used because its additional rules for adhesion, contact inhibition,
-  chemotaxis and cell division are not constrained by the planned experiments. The continuum model
-  uses fewer parameters, although two front-behaviour parameters remain degenerate. This limitation
-  is reported explicitly rather than introducing additional unconstrained detail.</p>
-  <p>The same reasoning sets the limits of what we claim. This is a <em>minimal</em> model of one cell population. It has no keratinocytes, no myofibroblast contraction and no angiogenesis, and each of those omissions is recorded above rather than left for a reader to discover.</p>
-  </div>
-  <p>The model treats the wound as a fibroblast population spreading into a defect with logistic
-  growth and a death term, giving a travelling front. In radial coordinates:</p>
-  </div>
+  <h4 class="col">2.2 Governing Equations</h4>
+  <p><b>Fisher&#8211;KPP with a death term.</b> The normalised fibroblast density <i>n</i>(<i>r</i>, <i>t</i>) spreads by random motility and grows logistically, and cells are lost at a rate that depends on inflammation. In radial coordinates:</p>
+<div class="eqwrap"><div class="eqlabel">(1) Model 6 &#183; Fisher&#8211;KPP with a death term, radial geometry</div><div class="eq">\frac{\partial n}{\partial t}=\frac1r\frac{\partial}{\partial r}\!\left(rD_n\frac{\partial n}{\partial r}\right)+r_p(C_e,I_e)\,n\!\left(1-\frac nK\right)-d(I_e)\,n</div></div>
+  <p class="col"><b>Where:</b> <i>n</i>(<i>r</i>, <i>t</i>) is the normalised fibroblast density; <span class="eqi">D_n</span> is random motility; <i>K</i> is the carrying capacity; <span class="eqi">r_p</span> is proliferation; and <i>d</i> is cell loss. The radial coordinate <i>r</i> reflects the approximately circular wound geometry. The effective growth rate is <span class="eqi">r_{\mathrm{eff}}=r_p-d</span>, which can be negative. When <span class="eqi">r_{\mathrm{eff}}&lt;0</span> the model predicts regression instead of slow closure, which lets it represent chronic wounds that do not close.</p>
 
-<h4 class="col">2.1 Governing Equations</h4>
-<div class="eqwrap"><div class="eqlabel">Model 6 &#183; Fisher&#8211;KPP with a death term, radial geometry</div><div class="eq">\frac{\partial n}{\partial t}=\frac1r\frac{\partial}{\partial r}\!\left(rD_n\frac{\partial n}{\partial r}\right)+r_p(C_e,I_e)\,n\!\left(1-\frac nK\right)-d(I_e)\,n</div></div>
+  <p><b>The coupling.</b> Both arms of the patch enter here and nowhere else. FGF2-G3 raises the proliferation rate through an effect compartment, and the inflammatory state, read from the nitrite ratio that Model 5 produces, suppresses proliferation and raises death. This is the junction where the V14 arm and the FGF2-G3 arm meet:</p>
+<div class="eqwrap"><div class="eqlabel">(2) Proliferation</div><div class="eq">r_p=r_0\!\left[1+E_{\max}\frac{C_e}{\mathrm{EC}_{50,F}+C_e}\right]\!\left[1-\beta\frac{I_e}{K_I^{r}+I_e}\right]</div></div>
+<div class="eqwrap"><div class="eqlabel">(3) Cell loss</div><div class="eq">d=d_0+\Delta d\,\frac{I_e^{\,s}}{(K_I^{d})^{s}+I_e^{\,s}}</div></div>
+<div class="eqwrap"><div class="eqlabel">(4) Effect compartment and inflammatory input</div><div class="eq">\frac{\mathrm{d}C_e}{\mathrm{d}t}=k_{e0}\bigl(\bar C_F-C_e\bigr),\qquad I_e=\frac{[\mathrm{NO}_2^-]}{[\mathrm{NO}_2^-]_{\mathrm{untr}}}</div></div>
+  <p class="col"><b>Where:</b> <span class="eqi">C_e</span> is the effect-compartment FGF2 concentration, driven by the depth-averaged FGF2-G3 concentration <span class="eqi">\bar C_F</span> from Model 1; <span class="eqi">I_e</span> is the normalised inflammatory input; <span class="eqi">r_0</span>, <span class="eqi">E_{\max}</span> and <span class="eqi">\mathrm{EC}_{50,F}</span> set the FGF2 proliferation response; &#946; and <span class="eqi">K_I^{r}</span> set the inflammatory suppression of proliferation; and <span class="eqi">d_0</span>, &#916;<i>d</i>, <span class="eqi">K_I^{d}</span> and <i>s</i> set the inflammation-dependent loss term. <span class="eqi">k_{e0}</span> is the effect-compartment rate constant, and its reciprocal is the 18 h drug-effect delay that Model 7 passes each patch's coverage through.</p>
 
-  <div class="col">
-  <p><b>Where:</b> n(r,t) is the normalized fibroblast density; D<sub>n</sub> is random motility; K is carrying capacity; r<sub>p</sub> is proliferation; and d is cell loss. The radial coordinate r reflects the approximately circular wound geometry.</p>
-  <p>Both arms of the patch enter here and nowhere else. FGF2-G3 raises the proliferation rate
-  through an effect compartment; the inflammatory state I<sub>e</sub>, read from the nitrite ratio
-  Model&#160;5 produces, suppresses proliferation and raises death. <b>This is the junction where
-  the V14 arm and the FGF2-G3 arm meet.</b></p>
-  </div>
+  <p><b>Initial and boundary conditions.</b> The wound starts as a smoothed step of radius <span class="eqi">R_w</span>, the centre is symmetric, and the far field is fully populated. Behind the front the density settles at a steady state set by the balance of growth and loss:</p>
+<div class="eqwrap"><div class="eqlabel">(5) Initial and boundary conditions, and the state behind the front</div><div class="eq">n(r,0)=\tfrac K2\!\left[1+\tanh\frac{r-R_w}{w}\right],\quad\left.\frac{\partial n}{\partial r}\right|_0=0,\quad n(R_\infty)=K,\quad n_{\mathrm{ss}}=K\!\left(1-\frac{d}{r_p}\right)</div></div>
+  <p class="col"><b>Where:</b> <span class="eqi">R_w</span> is the wound radius, <i>w</i> the smoothing width of the initial edge, <span class="eqi">R_\infty</span> the outer boundary and <span class="eqi">n_{\mathrm{ss}}</span> the steady-state density behind the front. <b>A caution on the last expression.</b> With the register's chronic values, <span class="eqi">n_{\mathrm{ss}}</span> is formally negative (about &#8722;0.03<i>K</i>), not zero. The biological floor is zero and the solver clamps there, but the formula as written is outside its valid range in exactly the untreated regime we apply it to. The whole chronic classification rests on <i>d</i> exceeding <span class="eqi">r_p</span> by about 3%, and both numbers are Tier 4.</p>
 
-<div class="eqwrap"><div class="eqlabel">The coupling &#183; where the two arms meet</div><div class="eq">\begin{aligned}r_p&amp;=r_0\!\left[1+E_{\max}\frac{C_e}{\mathrm{EC}_{50,F}+C_e}\right]\!\left[1-\beta\frac{I_e}{K_I^{r}+I_e}\right],&amp;\qquad d&amp;=d_0+\Delta d\,\frac{I_e^{\,s}}{(K_I^{d})^{s}+I_e^{\,s}}\\[5pt]\frac{\mathrm{d}C_e}{\mathrm{d}t}&amp;=k_{e0}\bigl(\bar C_F-C_e\bigr),&amp;\qquad I_e&amp;=\frac{[\mathrm{NO}_2^-]}{[\mathrm{NO}_2^-]_{\mathrm{untr}}}\end{aligned}</div></div>
+  <p><b>Outputs.</b> The front position, the area closure fraction that an experimentalist would measure, and the closure time are then:</p>
+<div class="eqwrap"><div class="eqlabel">(6) Front position, area closure fraction, closure time</div><div class="eq">r_f(t):\;n=\tfrac12 n_{\mathrm{ss}},\qquad\mathcal A_c(t)=1-\left(\frac{r_f}{R_w}\right)^{\!2},\qquad t_c=\min\{t:r_f=0\}</div></div>
+  <p class="col"><b>Where:</b> <span class="eqi">r_f</span> is the front position, <span class="eqi">\mathcal A_c</span> the fraction of the wound area that has closed, and <span class="eqi">t_c</span> the first time the front reaches the centre. We do not run the model past closure.</p>
 
-  <div class="col">
-  <p><b>Where:</b> C<sub>e</sub> is effect-compartment FGF2 concentration; I<sub>e</sub> is the normalized inflammatory input; r<sub>0</sub>, E<sub>max</sub>, and EC<sub>50,F</sub> set the FGF2 proliferation response; &#946; and K<sub>I</sub><sup>r</sup> set inflammatory suppression of proliferation; and d<sub>0</sub>, &#916;d, K<sub>I</sub><sup>d</sup>, and s set the inflammation-dependent loss term. All Model 6 response coefficients remain Tier-4 priors.</p>
-  <p>k<sub>e0</sub> is the effect-compartment rate constant, and its reciprocal is the
-  <b>18&#160;h drug-effect delay</b> that Model&#160;7 passes each patch's coverage through. It is
-  Tier&#160;4. Chronic behaviour is encoded by r<sub>p</sub>&#160;&lt;&#160;d &#8212; the tissue
-  cannot repopulate itself &#8212; with register values r<sub>p</sub>&#160;=&#160;0.50 and
-  d&#160;=&#160;0.51&#160;d<sup>&#8722;1</sup>. The therapy raises r<sub>eff</sub> while drug is
-  present. We do not run the model past closure, and we define t<sub>c</sub> as the first time the
-  front reaches the centre.</p>
-  </div>
+  <p><b>Front speed and width.</b> For a pulled front the asymptotic speed and width are:</p>
+<div class="eqwrap"><div class="eqlabel">(7) Front speed and width &#183; the D<sub>n</sub>&#8211;r<sub>eff</sub> degeneracy</div><div class="eq">c=2\sqrt{D_n r_{\mathrm{eff}}},\qquad w_f\approx\sqrt{D_n/r_{\mathrm{eff}}},\qquad r_{\mathrm{eff}}=r_p-d</div></div>
+  <p class="col"><b>Where:</b> <i>c</i> is the front speed and <span class="eqi">w_f</span> the front width. <span class="eqi">D_n</span> and <span class="eqi">r_{\mathrm{eff}}</span> appear only as a product in the speed, so closure data alone can never separate them. Reporting the front width alongside its speed breaks the degeneracy, since <i>c</i>&#183;<span class="eqi">w_f</span> &#8733; <span class="eqi">D_n</span> and <i>c</i>/<span class="eqi">w_f</span> &#8733; <span class="eqi">r_{\mathrm{eff}}</span>. A future scratch assay should therefore report width as well as closure rate. This is a proposed measurement, not a currently planned experiment. The difference <span class="eqi">r_p-d</span> is likewise the only combination that enters the speed, so it is swept and never fitted to closure data.</p>
 
-<div class="eqwrap"><div class="eqlabel">Initial and boundary conditions, and the state behind the front</div><div class="eq">n(r,0)=\tfrac K2\!\left[1+\tanh\frac{r-R_w}{w}\right],\quad\left.\frac{\partial n}{\partial r}\right|_0=0,\quad n(R_\infty)=K,\quad n_{\mathrm{ss}}=K\!\left(1-\frac{d}{r_p}\right)</div></div>
-
-  <p class="col caveat" style="display:block">A caution on the last expression. With the register's
-  chronic values, n<sub>ss</sub> is formally <em>negative</em> (&#8722;0.02K), not zero. The
-  biological floor is zero and the solver clamps there, but the formula as written is outside its
-  valid range in exactly the untreated regime we apply it to. The whole chronic classification rests
-  on d exceeding r<sub>p</sub> by <b>2&#160;%</b>, and both numbers are Tier&#160;4.</p>
-
-  <div class="col">
-  <p>Front position, the closure fraction an experimentalist would actually measure, and closure
-  time are then:</p>
-  </div>
-
-<div class="eqwrap"><div class="eqlabel">Front position, area closure fraction, closure time</div><div class="eq">r_f(t):n=\tfrac12 n_{\mathrm{ss}},\qquad\mathcal A_c(t)=1-\left(\frac{r_f}{R_w}\right)^{\!2},\qquad t_c=\min\{t:r_f=0\}</div></div>
-
-  <div class="col">
-  <p>And for a pulled front the asymptotic speed and width give the degeneracy recorded in the
-  identifiability table &#8212; D<sub>n</sub> and r<sub>eff</sub> appear only as a product in the
-  speed, so closure data alone can never separate them:</p>
-  </div>
-
-<div class="eqwrap"><div class="eqlabel">Front speed and width &#183; the D<sub>n</sub>&#8211;r<sub>eff</sub> degeneracy</div><div class="eq">c=2\sqrt{D_n r_{\mathrm{eff}}},\qquad w_f\approx\sqrt{D_n/r_{\mathrm{eff}}},\qquad r_{\mathrm{eff}}=r_p-d</div></div>
-
-  <div class="col">
-  <p>Reporting the front <em>width</em> alongside its speed breaks the degeneracy, since
-  c&#183;w<sub>f</sub>&#160;&#8733;&#160;D<sub>n</sub> and
-  c/w<sub>f</sub>&#160;&#8733;&#160;r<sub>eff</sub>. A future scratch assay should therefore report width
-  as well as closure rate. This is a proposed measurement, not a currently planned experiment.</p>
-  </div>
+  <h4 class="col">2.3 Parameters</h4>
+  <p>Every closure parameter is a Tier-4 phenomenological prior. None has been measured in our hands, and no current wet-lab experiment calibrates them.</p>
+  <div class="tablewrap"><table>
+  <thead><tr><th>Parameter / Property</th><th>Symbol</th><th>Value / Range</th><th>Source / Justification</th></tr></thead>
+  <tbody>
+  <tr><td>Fibroblast motility</td><td><span class="eqi">D_n</span></td><td>10&#8315;&#8313; cm&#178;/s (10&#8315;&#185;&#8304;&#8211;10&#8315;&#8312;)</td><td>Tier-4 prior. A proposed scratch assay should measure front speed and width; none is currently planned.</td></tr>
+  <tr><td>Carrying capacity</td><td><i>K</i></td><td>1 (normalised)</td><td>Normalisation of the density; corresponds to about 5&#215;10&#8310; cells cm&#8315;&#179;.</td></tr>
+  <tr><td>Basal proliferation</td><td><span class="eqi">r_0</span></td><td>0.8 day&#8315;&#185;</td><td>Tier-4 prior; no current wet-lab calibration.</td></tr>
+  <tr><td>Basal cell loss</td><td><span class="eqi">d_0</span></td><td>0.24 day&#8315;&#185;</td><td>Tier-4 prior (calibrated on 9 Oct 2026); closure rates are scenario inputs.</td></tr>
+  <tr><td>Maximum inflammation-dependent loss</td><td>&#916;<i>d</i></td><td>0.3 day&#8315;&#185;</td><td>Tier-4 prior.</td></tr>
+  <tr><td>FGF2 maximum efficacy and potency</td><td><span class="eqi">E_{\max}</span>, <span class="eqi">\mathrm{EC}_{50,F}</span></td><td>2; 0.5 ng/mL</td><td>Tier-4 model inputs; fibroblast response under wound-like conditions is not measured.</td></tr>
+  <tr><td>Inflammatory suppression of proliferation</td><td>&#946;, <span class="eqi">K_I^{r}</span></td><td>0.5; 0.3</td><td>Tier-4 priors.</td></tr>
+  <tr><td>Inflammatory loss threshold and Hill exponent</td><td><span class="eqi">K_I^{d}</span>, <i>s</i></td><td>0.3; 2</td><td>Tier-4 priors.</td></tr>
+  <tr><td>Effect-compartment time constant</td><td><span class="eqi">k_{e0}^{-1}</span></td><td>18 h</td><td>Tier-4 assumption for the lag between exposure and tissue response.</td></tr>
+  <tr><td>Initial edge smoothing width</td><td><i>w</i></td><td>75 &#181;m (50&#8211;100)</td><td>Tier-4 numerical choice.</td></tr>
+  <tr><td>Chronic untreated rates</td><td><span class="eqi">r_p</span>, <i>d</i></td><td>0.50; 0.51 day&#8315;&#185;</td><td>Derived from the closures above at <span class="eqi">C_e</span> = 0 and <span class="eqi">I_e</span> = 0.94. The net rate is &#8722;0.015 day&#8315;&#185;, so the untreated wound never closes.</td></tr>
+  <tr><td>Therapeutic rates (scenario)</td><td><span class="eqi">r_p</span>, <i>d</i></td><td>1.11; 0.45 day&#8315;&#185;</td><td>A scenario we chose, not one we measured: FGF2-G3 at EC<sub>50</sub> and V14 at &#968;<sub>50</sub>.</td></tr>
+  </tbody>
+  </table></div>
 
   <div class="claim">
-    <h3>3. Simulated Results: relapse, not stalling</h3>
-    <p>When the drug effect fades and r<sub>eff</sub> turns negative again, the steady state behind
-    the front, n<sub>ss</sub>&#160;=&#160;K(1&#160;&#8722;&#160;d/r<sub>p</sub>), falls to zero. The
-    repopulated tissue then dies back and <b>the front recedes past its starting position</b>. We had
-    assumed a sub-threshold pulse would simply fail to finish. It reverses. A 5-day or 10-day pulse
-    produces temporary apparent healing followed by complete relapse, while 14&#160;days closes a
-    2&#160;mm wound. The minimum pulse duration for permanent closure grows roughly linearly with
-    wound radius, from about 7&#160;days at 1&#160;mm to 34&#160;days at 5&#160;mm.</p>
+  <h3>3. Solver Verification</h3>
+  <p>Before using any result, we checked the solver against known answers. Verification of this kind establishes that the code reproduces known mathematics; it is not validation against experiment, and we do not present it as such.</p>
+  <p><b>Front speed against the analytic value.</b> For a pulled front the asymptotic speed is <span class="eqi">c=2\sqrt{D_n r_{\mathrm{eff}}}</span>. We fitted the numerical front position over the middle of the traverse for four parameter sets, <span class="eqi">D_n</span> = 10&#8315;&#8313; and 10&#8315;&#8312; cm&#178;/s, proliferation rates of 1 and 2 day&#8315;&#185;, and loss rates of 0, 0.3 and 0.5 day&#8315;&#185;. The numerical speed matches the analytic value to 2.1%, 6.2%, 2.4% and 1.8%, and in every case it sits just below the analytic line, which is the expected behaviour for a discretised pulled front (Fisher, 1937; Kolmogorov <i>et al.</i>, 1937).</p>
+  <p><b>The planar closure estimate is a lower bound.</b> The simple estimate <span class="eqi">R_w/c</span> neglects the time taken to form the travelling front from the initial condition. Curvature does accelerate the front, by 5&#8211;21% relative to Cartesian geometry, but the formation transient outweighs that gain, so the computed radial closure time exceeds <span class="eqi">R_w/c</span> by 4&#8211;15%. <span class="eqi">R_w/c</span> should therefore be used as a lower bound on the closure time, not an upper one.</p>
+  <p>The relapse result in Section 5 uses only this solver and does not depend on the delivery model.</p>
   </div>
 
-  <div class="col">
-  <p>This resembles the relapse clinically observed in chronic wounds, and it is a falsifiable
-  prediction rather than a retrofit &#8212; the model produced it before we looked for it. It is
-  also the clearest argument for why treatment duration, not peak dose, is the variable that matters
-  for this device. If the mechanism is real, under-treating is actively harmful rather than merely
-  insufficient, because it costs the patient weeks and returns the wound to a worse position than it
-  started from.</p>
-  </div>
+  <h3 class="col">4. Experimental Comparison &amp; Model Refinement</h3>
+  <h4 class="col">4.1 Experimental status</h4>
+  <p>There is no experimental comparison for this model yet. Model 6 is a mechanistic prediction with Tier-4 closure parameters, and direct scratch-assay measurements are not incorporated. The structure of the result, hours of cover against weeks of need and the existence of a maximum change interval, should hold. The exact numbers may not.</p>
+
+  <h4 class="col">4.2 Refinement: corrections to our own reference</h4>
+  <p>Two numerical statements in our earlier equation reference were corrected by recomputation, and both erred in the optimistic direction.</p>
+  <p>The first is the planar closure estimate, which the earlier reference treated as an upper bound. As shown in Section 3, it is a lower bound by 4&#8211;15%.</p>
+  <p>The second is the Jensen gap. The earlier reference quoted a gap of about 15% between the proliferation rate at the mean FGF2 concentration and the mean of the rate across the active layer, inherited from an analogous earlier calculation. Recomputed for this geometry, with an exponential depth profile over the active layer against the saturating proliferation of Eq. (2), the gap lies between 0.2% and 36% with a median of 2.7%:</p>
+<div class="eqwrap"><div class="eqlabel">(8) The Jensen gap, recomputed</div><div class="eq">\frac{r_p(\bar C_F)-\langle r_p(C_F)\rangle_x}{\langle r_p(C_F)\rangle_x}\;\in\;[0.2\%,\;36\%],\qquad\text{median }2.7\%</div></div>
+  <p class="col"><b>Where:</b> the sweep covers an active depth of 300&#8211;1000 &#181;m, a decay length of 90&#8211;400 &#181;m and a surface concentration of 0.3&#8211;10 times EC<sub>50</sub>, and &#10216;&#183;&#10217;<sub>x</sub> is the average over depth.</p>
+  <p>The inherited 15% was neither typical nor an upper bound. The gap is small across most of the parameter space, but it reaches 36% in the corner that matters most, a steep profile at a dose near saturation, and it always errs optimistic.</p>
+
+  <h3>5. Simulated Results</h3>
+  <p><b>Relapse, not stalling.</b> When the drug effect fades and <span class="eqi">r_{\mathrm{eff}}</span> turns negative again, the steady state behind the front, <span class="eqi">n_{\mathrm{ss}}=K(1-d/r_p)</span>, falls to zero. The repopulated tissue then dies back, and the front recedes past its starting position. We had assumed a sub-threshold pulse would simply fail to finish. It reverses. At <span class="eqi">R_w</span> = 2 mm, a 5-day and a 10-day pulse advance the front to about 1.5 and 0.8 mm before it reverses, producing temporary apparent healing followed by complete relapse, while a 14-day pulse closes the wound.</p>
+  <p>The minimum pulse duration for permanent closure grows roughly linearly with wound radius. The table gives it for the therapeutic state of Section 2.3, with the drug effect relaxing over the 18 h effect-compartment time constant after the pulse ends:</p>
+  <div class="tablewrap"><table>
+  <thead><tr><th>Wound radius</th><th>Minimum pulse for permanent closure</th><th>In single-patch lifetimes (11.8 h)</th></tr></thead>
+  <tbody>
+  <tr><td>1 mm</td><td>6.5 days</td><td>18</td></tr>
+  <tr><td>2 mm</td><td>13.9 days</td><td>38</td></tr>
+  <tr><td>3 mm</td><td>20.8 days</td><td>57</td></tr>
+  <tr><td>5 mm</td><td>34.4 days</td><td>95</td></tr>
+  </tbody>
+  </table></div>
+  <p>This resembles the relapse clinically observed in chronic wounds, and it is a falsifiable prediction rather than a retrofit: the model produced it before we looked for it. It is also the clearest argument for why treatment duration, not peak dose, is the variable that matters for this device. If the mechanism is real, under-treating is actively harmful and not merely insufficient, because it costs the patient weeks and returns the wound to a worse position than it started from.</p>
 
   <figure class="wide">
     <div class="figbox"><img src="assets/G09_wound_closure_curves.svg" alt="Wound area closure for untreated chronic wounds and 5-, 10-, and 15-day treatment pulses; the 5- and 10-day pulses relapse, while the 15-day pulse reaches closure at 14.2 days." loading="lazy"></div>
@@ -1393,129 +1369,108 @@ body.noscroll{overflow:hidden}
 </section>
 
 
-<h3>4. Experimental Validation Status</h3><p>Model 6 is a mechanistic prediction with Tier 4 closure parameters; direct scratch-assay measurements are not yet incorporated.</p>
-<h4 class="col">2.2 Assumptions</h4>
-  <div class="tablewrap"><table>
-  <thead><tr><th>Assumption</th><th>Biological basis</th><th>What breaks if it is wrong</th><th>How to test it</th></tr></thead>
-  <tbody>
-  <tr><td><b>Fibroblasts respond to FGF2-G3 with literature potency</b></td><td>EC<sub>50</sub> and E<sub>max</sub> are taken from growth-factor responses in healthy cells.</td><td><b>The size of the whole therapeutic effect.</b> Fibroblasts from chronic wounds are growth-factor hyporesponsive, with reduced receptor expression and impaired downstream signalling (Kim <i>et al.</i>, 2003), so E<sub>max</sub> in the cells we are actually treating is plausibly lower than modelled.</td><td>Dose&#8211;response on patient-derived or high-glucose-conditioned fibroblasts, not only on a healthy line.</td></tr>
-  <tr><td><b>A single fibroblast population with one proliferation rate</b></td><td>Logistic growth with a carrying capacity is the standard minimal closure model.</td><td>Chronic wound fibroblasts include a senescent fraction that does not proliferate at all and secretes inflammatory mediators. A mean rate averages over two populations behaving differently.</td><td>Senescence markers on wound-edge biopsies; split the population if the fraction is large.</td></tr>
-  <tr><td><b>Migration is diffusive</b></td><td>Random-walk spreading gives the Fisher&#8211;KPP form and the travelling front.</td><td>Front shape. Real fibroblast migration is directed by matrix alignment and chemotactic gradients, which diffusion does not represent.</td><td>Scratch assay reporting front <em>width</em> as well as speed &#8212; width is also what breaks the D<sub>n</sub>/r<sub>eff</sub> degeneracy.</td></tr>
-  <tr><td><b>The wound is a flat circular defect of uniform depth</b></td><td>It makes the radial geometry tractable and the closure fraction well defined.</td><td>Geometric realism. Clinical ulcers are irregular, undermined and variable in depth, and contraction &#8212; a myofibroblast-driven mechanism absent from this model &#8212; contributes substantially to area reduction in vivo.</td><td>Planimetry on real wound shapes; add a contraction term before comparing to clinical area data.</td></tr>
-  <tr><td><b>No infection dynamics</b></td><td>The LPS load is an external constant.</td><td>Long-horizon predictions. A biofilm that grows or is disrupted changes [L] over exactly the multi-day timescale this model runs on.</td><td>Bioburden over time; couple a bacterial growth term to [L].</td></tr>
-  </tbody>
-  </table></div>
+  <p><b>Sensitivity.</b> Figure 13 reports global Sobol indices for closure time using an analytic surrogate. Basal proliferation and cell loss dominate the modelled closure time. Of the sampled parameter sets, 18.7% produced no closure at all. That is a statement about our prior ranges, not a prediction about real wounds, and all closure inputs remain Tier-4 priors pending scratch-assay measurements.</p>
+  <p><b>Output.</b> The closure time and the front position are the outputs that Model 7 inverts: given a wound, they set how long treatment must continue, and through the effect compartment they set the longest dressing-change interval that still closes.</p>
 
-  <h4 class="col">2.3 Parameters and evidence status</h4>
-  <div class="tablewrap"><table>
-    <thead><tr><th>Quantity</th><th>Value used</th><th>Evidence tier and interpretation</th></tr></thead>
-    <tbody>
-      <tr><td>Fibroblast motility, D<sub>n</sub></td><td>10<sup>&#8722;9</sup>&#160;cm<sup>2</sup>/s</td><td>Tier-4 prior; a proposed future scratch assay should measure front speed and width; none is currently planned.</td></tr>
-      <tr><td>Basal proliferation, r<sub>0</sub></td><td>0.8&#160;day<sup>&#8722;1</sup></td><td>Tier-4 prior; no current wet-lab calibration.</td></tr>
-      <tr><td>Basal cell loss, d<sub>0</sub></td><td>0.24&#160;day<sup>&#8722;1</sup></td><td>Tier-4 prior; closure rates are scenario inputs.</td></tr>
-      <tr><td>Maximum inflammation-dependent loss, &#916;d</td><td>0.3&#160;day<sup>&#8722;1</sup></td><td>Tier-4 prior.</td></tr>
-      <tr><td>FGF2 efficacy, E<sub>max</sub>, EC<sub>50,F</sub></td><td>2; 0.5&#160;ng/mL</td><td>Tier-4 model inputs; fibroblast response under wound-like conditions is not measured.</td></tr>
-      <tr><td>Effect-compartment time constant</td><td>18&#160;h</td><td>Tier-4 assumption for the lag between exposure and tissue response.</td></tr>
-    </tbody>
-  </table></div>
-
-  <div class="col">
-  <p>Two numerical corrections belong here, because both ran against our written equation reference.
-  The planar closure estimate R<sub>w</sub>/c is a <b>lower</b> bound, not an upper one: curvature
-  does accelerate the front by 5&#8211;21&#160;% relative to Cartesian, but R<sub>w</sub>/c neglects
-  the time taken to <em>form</em> the travelling front, and that transient outweighs the curvature
-  gain, so radial closure exceeds R<sub>w</sub>/c by 4&#8211;15&#160;%. And the Jensen gap, which our
-  reference quoted as 15&#160;%, recomputes for this geometry to 0.2&#8211;36&#160;% with a median of
-  2.7&#160;%: the inherited figure was neither typical nor an upper bound. The gap is small across
-  most of the parameter space but reaches 36&#160;% in the corner that matters most, and it always
-  errs optimistic.</p>
-  </div>
-<h3>5. Sensitivity Analysis</h3><p>Figure 13 reports global Sobol indices for closure time using an analytic surrogate. Basal proliferation and cell loss dominate the modeled closure time; all closure inputs remain Tier 4 priors pending scratch-assay measurements.</p>
-<h3>6. References</h3><p>Key source for the fibroblast-response limitation: <a href="#ref-kim2003">Kim et al. (2003)</a>. Full citation and other sources used on this page are listed below.</p>
+  <h3>6. References</h3>
+  <ol class="refs">
+  <li>Fisher, R. A. (1937). The wave of advance of advantageous genes. <i>Annals of Eugenics</i>, 7(4), 355&#8211;369. <a href="https://doi.org/10.1111/j.1469-1809.1937.tb02153.x">https://doi.org/10.1111/j.1469-1809.1937.tb02153.x</a></li>
+  <li>Kim, B. C., Kim, H. T., Park, S. H., Cha, J. S., Yufit, T., Kim, S. J., &amp; Falanga, V. (2003). Fibroblasts from chronic wounds show altered TGF-&#946; signaling and decreased TGF-&#946; type II receptor expression. <i>Journal of Cellular Physiology</i>, 195(3), 331&#8211;336. <a href="https://doi.org/10.1002/jcp.10301">https://doi.org/10.1002/jcp.10301</a></li>
+  <li>Kolmogorov, A. N., Petrovskii, I. G., &amp; Piskunov, N. S. (1937). &#201;tude de l'&#233;quation de la diffusion avec croissance de la quantit&#233; de mati&#232;re et son application &#224; un probl&#232;me biologique. <i>Bulletin of Moscow University, Mathematics Series A</i>, 1, 1&#8211;25.</li>
+  </ol>
 </section>
 
 <!-- ================= MODEL 7 ================= -->
 <section class="act wrap" id="m7">
   <div class="act-head"><div class="num">06</div><div>
-    <p class="eyebrow">Model 7</p>
+    <p class="eyebrow">Module 7 &#183; Device design (Model 7)</p>
     <h2>Inverting the chain: what the device has to do</h2>
   </div></div>
 
-  <div class="claim gold">
-    <h3>1. Background and design question</h3>
-    <p>Model&#160;7 runs the chain backwards, from a wound to a device specification. One patch keeps
-    tissue above the 80.9&#160;&#181;M V14 target for <b>11.8&#160;h</b> (7.7&#8211;15.5&#160;h across
-    the ranges of sink depth and diffusivity). No wound in the 1&#8211;5&#160;mm range closes on a
-    single patch: the continuous cover needed is <b>about 18&#8211;95&#215;</b> what one patch
-    supplies. But the patch need only be changed every <b>36&#160;h</b> &#8212; so for the 2.5&#160;mm
-    gel as built, <b>a once-daily dressing change is enough</b>. That is the single biggest change
-    from the earlier 0.5&#160;mm design, which demanded a change every 6.8&#160;h, four times a day.
-    A daily change gives about 49&#160;% duty against a 33&#160;% threshold, a relative margin
-    of about 49&#160;%. That threshold is computed from Tier-4 closure parameters.</p>
+  <h3>1. Background</h3>
+  <p>Models 1&#8211;6 predict outcomes for a specified patch. Model 7 runs the chain backwards, from the wound to a device specification. It relates gel thickness, peptide loading and dressing-change interval to the modelled treatment outcome, and answers the question the team has to settle: how much V14 must the patch hold, and how often must it be changed?</p>
+  <p>One patch keeps the tissue above the 80.9 &#181;M V14 target for 11.8 h (7.7&#8211;15.5 h across the ranges of sink depth and diffusivity). No wound in the 1&#8211;5 mm range closes on a single patch: the continuous cover needed is about 18&#8211;95 times what one patch supplies. But the patch need only be changed every 36 h, so for the 2.5 mm gel as built, a once-daily dressing change is enough. A daily change gives about 49% duty against a 33% threshold, a relative margin of about 49%. That threshold is computed from Tier-4 closure parameters.</p>
+  <p>This is the single biggest change from the earlier 0.5 mm design, which demanded a change every 6.8 h, four times a day. The model outputs a loading requirement, a single-patch coverage time and a maximum change interval. Every number in this section inherits the exploratory model-based target of 80.9 &#181;M, which was derived from the 17 October flow-cytometry positive-gate result with K<sub>D,P</sub> = 5.62 &#181;M (Module 3). That value is an assumption, not a measured affinity.</p>
+
+  <h3 class="col">2. Model Construction</h3>
+  <h4 class="col">2.1 Assumptions</h4>
+  <div class="tablewrap"><table>
+  <thead><tr><th>Assumption</th><th>Justification</th></tr></thead>
+  <tbody>
+  <tr><td><b>The target depth is 500 &#181;m.</b></td><td>It defines the interstitial band whose average concentration is compared with the target. It is a Tier-4 active band used for the design calculation; mapping macrophage and fibroblast locations in wound tissue would show whether it needs revising.</td></tr>
+  <tr><td><b>The released fraction of V14 is 0.50.</b></td><td>It scales the total loading to the mobile dose, and coverage changes linearly with it. It is a Tier-4 assumption; the current BCA analysis does not measure this fraction (Module 1).</td></tr>
+  <tr><td><b>The target uses an exploratory model-based K<sub>D,P</sub> estimate.</b></td><td>It sets 80.9 &#181;M, and the delivery and closure results use that target. It assumes that the positive-gate ratio at the tested dose equals the relative LPS occupancy (Module 3).</td></tr>
+  <tr><td><b>The gel is plain calcium alginate with no retention.</b></td><td>Plain alginate is not expected to bind either payload strongly, so the retardation factor R<sub>V</sub> is 1. Retention is analysed only as a prospective modification (Section 4.2).</td></tr>
+  <tr><td><b>A fresh patch is applied every T hours, and the drug effect lags by one effect compartment.</b></td><td>The effect compartment approximates the delay from transcription, translation and matrix turnover with one parameter, k<sub>e0</sub>, which is Tier 4 and unmeasured. The maximum change interval is reported as a property of the patch, not of the wound.</td></tr>
+  <tr><td><b>Closure and effect-compartment parameters are Tier 4.</b></td><td>They set the predicted 36 h maximum change interval and the approximately 49% relative daily-change margin. The treated state (FGF2-G3 at EC<sub>50</sub>, V14 at &#968;<sub>50</sub>) is a scenario we chose, not one we measured.</td></tr>
+  </tbody>
+  </table></div>
+
+  <h4 class="col">2.2 Governing Equations</h4>
+  <p><b>The loading requirement.</b> To hold a target concentration at depth &#948; in the tissue, the gel must start with enough peptide that the released fraction, diluted into the tissue pore volume, still clears the target. Only the mobile fraction of the load is released:</p>
+<div class="eqwrap"><div class="eqlabel">(1) The loading requirement</div><div class="eq">C_{V,0}\gtrsim\frac{C_{V,\mathrm{target}}\,\varepsilon_{\mathrm t}\,\delta}{f_{\mathrm{rel}}\,\varepsilon_{\mathrm g}\,L_{\mathrm{gel}}}</div></div>
+  <p class="col"><b>Where:</b> <span class="eqi">C_{V,0}</span> is the total V14 loading per gel volume; <span class="eqi">C_{V,\mathrm{target}}</span> is the target interstitial concentration; <span class="eqi">\varepsilon_{\mathrm t}</span> and <span class="eqi">\varepsilon_{\mathrm g}</span> are the tissue and gel porosities; &#948; is the target tissue depth; <span class="eqi">f_{\mathrm{rel}}</span> is the released fraction; and <span class="eqi">L_{\mathrm{gel}}</span> is the gel thickness. This lower-bound estimate omits tissue losses and is followed by the coupled numerical solve. The target itself comes from the dose inversion of Model 4, in which the required dose is obtained by separating &#968; additively. Factoring out <span class="eqi">K_{\mathrm D}^{\mathrm{app}}</span> instead would turn a linear relation into a quadratic one.</p>
+
+  <p><b>Retention.</b> This build does not retain either payload. We keep the equations because they define the counterfactual analysed in Section 4.2, and because a future build using covalent tethering would need them. Retention enters as a retardation factor multiplying the time derivative. For FGF2-G3 with a saturable heparin-type binder (Freeman <i>et al.</i>, 2008), it depends on concentration; for V14 with simple sorption, it is a constant:</p>
+<div class="eqwrap"><div class="eqlabel">(2) FGF2-G3 with a saturable binder (heparin-type)</div><div class="eq">R_F(C)\frac{\partial C^{\mathrm g}_F}{\partial t}=D^{\mathrm g}_{\mathrm{eff},F}\frac{\partial^2 C^{\mathrm g}_F}{\partial x^2}-k^{\mathrm g}_{\deg,F}C^{\mathrm g}_F,\qquad R_F(C)=1+\frac{S_{\max}K_{d,\mathrm{hep}}}{(K_{d,\mathrm{hep}}+C)^2}</div></div>
+<div class="eqwrap"><div class="eqlabel">(3) V14 with linear sorption</div><div class="eq">R_V\frac{\partial C^{\mathrm g}_V}{\partial t}=D^{\mathrm g}_{\mathrm{eff},V}\frac{\partial^2 C^{\mathrm g}_V}{\partial x^2}-k^{\mathrm g}_{\deg,V}C^{\mathrm g}_V,\qquad R_V=1+K_{\mathrm{sorb}}</div></div>
+<div class="eqwrap"><div class="eqlabel">(4) The constraint &#183; free concentration falls as 1/R<sub>V</sub></div><div class="eq">C_{\mathrm{free},0}=\frac{C_{\mathrm{tot},0}}{R_V}\le\frac{C_{\mathrm{sol}}}{R_V}</div></div>
+  <p class="col"><b>Where:</b> <span class="eqi">S_{\max}</span> and <span class="eqi">K_{d,\mathrm{hep}}</span> are the binding capacity and dissociation constant of a heparin-type binder; <span class="eqi">K_{\mathrm{sorb}}</span> is a linear sorption constant; <span class="eqi">C_{\mathrm{tot},0}</span> is the total loaded concentration; and <span class="eqi">C_{\mathrm{sol}}</span> is the solubility limit. Retention works by binding, so the loaded concentration is the total, and the free concentration that drives delivery is <span class="eqi">C_{\mathrm{tot}}/R_V</span>. Treating the loading as free would put <span class="eqi">R_V</span> times more drug into the model than solubility allows and would over-predict sustained release by orders of magnitude. This build sets <span class="eqi">R_V</span> = 1.</p>
+
+  <p><b>Repeat dosing.</b> A fresh patch applied every <i>T</i> hours sets an input <i>u</i>(<i>t</i>) = 1 while the latest patch holds the tissue above target, and <i>u</i> = 0 otherwise. The drug effect follows the effect compartment, and the Model 6 rates interpolate linearly in the effect between the chronic and therapeutic values:</p>
+<div class="eqwrap"><div class="eqlabel">(5) Repeat-dose model</div><div class="eq">\frac{\mathrm{d}s}{\mathrm{d}t}=k_{e0}\bigl(u(t)-s\bigr),\qquad r_p(s)=(1-s)\,r_p^{\mathrm{chr}}+s\,r_p^{\mathrm{ther}},\qquad d(s)=(1-s)\,d^{\mathrm{chr}}+s\,d^{\mathrm{ther}}</div></div>
+  <p class="col"><b>Where:</b> <i>s</i> is the normalised drug effect between 0 (untreated) and 1 (fully treated), and <span class="eqi">k_{e0}^{-1}</span> = 18 h. The front is tracked at a pinned density threshold, and closure times come from the radial solver of Model 6.</p>
+
+  <p><b>The maximum change interval.</b> Over one cycle the time-averaged effect is the duty cycle <span class="eqi">\bar s=t_{\mathrm{cov}}/T</span>, where <span class="eqi">t_{\mathrm{cov}}</span> is the cover per patch. The effective growth rate becomes positive once <span class="eqi">\bar s</span> exceeds 2.3%, so even a weekly patch stops the wound deteriorating. But closure is declared when the front reaches a pinned density, and the density the wound can reach exceeds that threshold only above a higher duty:</p>
+<div class="eqwrap"><div class="eqlabel">(6) The envelope &#183; duty threshold and maximum change interval</div><div class="eq">n_{\mathrm{thr}}=\tfrac12K\Bigl(1-\frac{d}{r_p}\Bigr)_{\mathrm{ther}}=0.30K,\qquad n_{\mathrm{ss}}(\bar s)>n_{\mathrm{thr}}\iff\bar s>33.0\%\quad\Longrightarrow\quad T_{\max}\simeq\frac{t_{\mathrm{cov}}}{0.33}</div></div>
+  <p class="col"><b>Where:</b> <span class="eqi">n_{\mathrm{thr}}</span> is the closure density, <span class="eqi">n_{\mathrm{ss}}(\bar s)=K[1-d(\bar s)/r_p(\bar s)]</span> is the density the wound can reach at duty <span class="eqi">\bar s</span>, and <span class="eqi">T_{\max}</span> is the longest change interval that still closes. With <span class="eqi">t_{\mathrm{cov}}</span> = 11.8 h this gives about 36 h. A once-daily change needs 7.9 h of cover in every 24 h, and the 2.5 mm patch supplies 11.8 h, a duty of 49% against the 33% requirement. Because the interval depends on the patch's cover and on closure parameters that do not involve wound size, it is the same for every wound radius. Wound size sets how long treatment must continue, not how often the dressing is changed.</p>
+
+  <h4 class="col">2.3 Parameters</h4>
+  <div class="tablewrap"><table>
+  <thead><tr><th>Parameter / Property</th><th>Symbol</th><th>Value / Range</th><th>Source / Justification</th></tr></thead>
+  <tbody>
+  <tr><td>Design target</td><td><span class="eqi">C_{V,\mathrm{target}}</span></td><td>80.9 &#181;M</td><td>Derived from the exploratory model-based K<sub>D,P</sub> estimate of 5.62 &#181;M, under the assumption that the gate ratio equals relative LPS occupancy (Module 3).</td></tr>
+  <tr><td>Gel thickness</td><td><span class="eqi">L_{\mathrm{gel}}</span></td><td>2.5 mm</td><td>As-built design.</td></tr>
+  <tr><td>Gel and tissue porosity</td><td><span class="eqi">\varepsilon_{\mathrm g}</span>, <span class="eqi">\varepsilon_{\mathrm t}</span></td><td>0.99; 0.80</td><td>See Module 1.</td></tr>
+  <tr><td>V14 released fraction</td><td><span class="eqi">f_{\mathrm{rel}}</span></td><td>0.50</td><td>Tier-4 assumption; the current BCA analysis does not measure this fraction.</td></tr>
+  <tr><td>Demonstrated V14 loading</td><td><span class="eqi">C_{\mathrm{tot},0}</span></td><td>3 mg/mL (2213 &#181;M)</td><td>Team formulation; a lower bound on the solubility, not a saturation measurement.</td></tr>
+  <tr><td>Target depth</td><td>&#948;</td><td>500 &#181;m</td><td>Tier-4 active band used for the design calculation.</td></tr>
+  <tr><td>Effect-compartment time constant</td><td><span class="eqi">k_{e0}^{-1}</span></td><td>18 h</td><td>Tier-4 assumption (Module 6).</td></tr>
+  <tr><td>Required loading, derived</td><td><span class="eqi">C_{V,0}</span></td><td>26 &#181;M (35 &#181;g/mL) at &#948; = 500 &#181;m; 52 &#181;M at &#948; = 1 mm</td><td>Eq. (1) at <span class="eqi">f_{\mathrm{rel}}</span> = 0.5. The 26 &#181;M figure is 1.2% of the 3 mg/mL the team has dissolved.</td></tr>
+  <tr><td>One-patch coverage, derived</td><td><span class="eqi">t_{\mathrm{cov}}</span></td><td>11.8 h (7.7&#8211;15.5 h)</td><td>Model prediction from the coupled two-domain solve; the range spans the tissue-diffusivity and sink-depth ranges.</td></tr>
+  <tr><td>Maximum change interval, derived</td><td><span class="eqi">T_{\max}</span></td><td>about 36 h</td><td>Model prediction under Tier-4 closure parameters (35.7 h closed form; 36.5 h from the front solver).</td></tr>
+  </tbody>
+  </table></div>
+
+  <div class="claim">
+  <h3>3. Solver Verification</h3>
+  <p>Before using any result, we checked the model against known answers. Verification of this kind establishes that the code reproduces known mathematics; it is not validation against experiment, and we do not present it as such.</p>
+  <p><b>Two routes to the change interval.</b> The maximum change interval can be computed in closed form from the duty-cycle condition of Eq. (6), and independently by running the repeat-dose model through the radial front solver and bisecting on the interval. The closed form gives 35.7 h and the front solver gives 36.5 h, a difference of 0.8 h (about 2%). The closed form uses the time-averaged effect, while the solver resolves each cycle, so we report the closed-form value as the headline and treat the difference as the numerical uncertainty of the interval.</p>
+  <p><b>Regression test.</b> The shipped regression script reproduces the release and tissue solvers and the front solver against their analytic benchmarks and passes all of its checks. For the two-domain solver these include second-order accuracy at the tissue steady state, recovery of the partition coefficient, first-order gel decay, and complete drainage of the domain through the sink after 20 days when nothing decays. Model 7 inherits the verification of Models 1, 2 and 6. The loading requirement of Eq. (1) is an analytical lower-bound estimate and is followed by the coupled numerical solve, not verified separately.</p>
   </div>
 
-  <p class="col">The loading requirement follows straight from the transport model: to hold a target
-  concentration at depth &#948; in tissue, the gel must start with enough that the released fraction,
-  diluted into the tissue pore volume, still clears it.</p>
+  <h3 class="col">4. Experimental Comparison &amp; Model Refinement</h3>
+  <h4 class="col">4.1 Experimental status</h4>
+  <p>Model 7 reports a model-derived device specification. The complete loading and wear-interval prescription has not been experimentally validated as a device. The closure side of this inversion rests entirely on Tier-4 closures, and the treated state is a scenario we chose, not one we measured. The structure of the result, hours of cover against weeks of need and the existence of a maximum change interval, should hold. The exact interval may not. Measurements of the closure parameters, a log-time release assay with the gel thickness and buffer volume recorded, and a validated repeat-dose schedule would each test part of it.</p>
 
-<h3>3. Simulated Results</h3>
-<h4 class="col">3.1 Loading equation</h4>
-<div class="eqwrap"><div class="eqlabel">Model 7 &#183; the loading requirement</div><div class="eq">C_{V,0}\gtrsim\frac{C_{V,\mathrm{target}}\,\varepsilon_{\mathrm t}\,\delta}{f_{\mathrm{rel}}\,\varepsilon_{\mathrm g}\,L_{\mathrm{gel}}}</div></div>
+  <h4 class="col">4.2 Refinement: how retention affects the redesigned patch</h4>
+  <p>We began by writing retention up as something to be maximised. Running the coupled solve showed otherwise. Retention works by binding, so the free concentration that drives delivery is <span class="eqi">C_{\mathrm{total}}/R_V</span> (Eq. 4): residence time is gained and driving concentration is lost in equal proportion. Whether that trade pays depends on how much headroom the peak tissue concentration has above the target.</p>
+  <p><b>The redesign changed this conclusion.</b> At the earlier 0.5 mm, 738 &#181;M design the peak was only 1.9 times the target, so there was little headroom to spend. At 2.5 mm and 3 mg/mL the peak is 522 &#181;M, about 6.5 times the target, and coverage rises from 11.8 h at <span class="eqi">R_V</span> = 1 to 14.0 h at <span class="eqi">R_V</span> = 1.5, 15.5 h at <span class="eqi">R_V</span> = 2 and 16.7 h at <span class="eqi">R_V</span> = 3. The revised target makes moderate retention more useful, but the partitioning still needs to be measured before choosing a retained formulation.</p>
+  <p>The solubility limit that used to sit behind this has moved out of the way. An 80.9 &#181;M target at 500 &#181;m depth needs a total loading of only 26 &#181;M at <span class="eqi">f_{\mathrm{rel}}</span> = 0.5, which is 1.2% of the 3 mg/mL the team has dissolved. Retention would only become unformulable above <span class="eqi">R_V</span> &#8776; 84.6.</p>
+  <p>For V14 specifically, the chemistry is not available. Neither heparin nor alginate sulfate can help: both are strongly anionic, and V14 carries a net charge of &#8722;2 with no Lys, Arg or His, so they repel. Retaining V14 in alginate would require covalent tethering, which means the two arms of the patch would need different chemistry. We abandoned retention as a design direction on these three grounds together: the trade-off, the loading headroom and the chemistry.</p>
 
-  <p class="col"><b>Where:</b> C<sub>V,0</sub> is total V14 loading per gel volume; C<sub>V,target</sub> is the target interstitial concentration; &#949;<sub>t</sub> and &#949;<sub>g</sub> are tissue and gel porosities; &#948; is the target tissue depth; f<sub>rel</sub> is the fraction released; and L<sub>gel</sub> is gel thickness. This lower-bound estimate omits tissue losses and is followed by the coupled numerical solve.</p>
-
-  <p class="col caveat" style="display:block">For exploratory modeling, C<sub>V,target</sub> is set to 80.9&#160;&#181;M, derived
-  from the 17&#160;October wet-lab flow-cytometry positive-gate result using the exploratory model-based K<sub>D,P</sub> estimate of 5.62&#160;&#181;M and
-  C<sub>V,target</sub>&#160;=&#160;K<sub>D,P</sub>(a&#160;&#8722;&#160;1), the concentration at which half of
-  the MD2 pool is LPS-bound at 1&#160;&#181;M endotoxin. Every number below &#8212; 11.8&#160;h, 36&#160;h, 26&#160;&#181;M,
-  R<sub>V</sub>&#160;&#8776;&#160;84.6 &#8212; inherits that assumption.</p>
-
-  <h3 class="col">2. Model Construction: invert the chain to obtain a device specification</h3>
-<h4 class="col">2.1 Governing Equations</h4>
-  <div class="col">
-  <p>Models&#160;1&#8211;6 predict outcomes for a specified patch. Model&#160;7 reverses this chain,
-  starting from the desired tissue response to calculate a device specification. It relates gel
-  thickness, peptide loading and dressing-change interval to the modelled treatment outcome.</p>
-  <p>The inversion requires careful algebra. The required dose is obtained by separating
-  &#968; <em>additively</em>; factoring out K<sub>D</sub><sup>app</sup> instead would turn a linear
-  relation into a quadratic one. That earlier error affected the scaling law rather than a single
-  constant, so it was identified through a direct numerical check.</p>
-  <p>The delay between drug arrival and tissue response is represented by an <b>effect
-  compartment</b>. This standard pharmacodynamic approach approximates the combined delay from
-  transcription, translation and matrix turnover with one parameter, k<sub>e0</sub>. That parameter
-  is Tier&#160;4 and remains unmeasured.</p>
-  <p>The model reports a <b>maximum change interval</b> as its output. This gives a practical device
-  specification that can be related to patch performance, while the treatment duration still depends
-  on the wound.</p>
-  </div>
-  <h3 class="col">How retention affects the redesigned patch</h3>
-  <div class="col">
-  <p>We began by writing retention up as something to be maximised. Running the coupled solve showed
-  otherwise. Retention works by <em>binding</em>, so the free concentration that drives delivery is
-  C<sub>total</sub>/R<sub>V</sub>: residence time is gained and driving concentration is lost in
-  equal proportion. Whether that trade pays depends entirely on how much headroom the peak tissue
-  concentration has above the target.</p>
-
-  <p><b>The redesign changed this conclusion.</b> At the old 0.5&#160;mm / 738&#160;&#181;M design the peak was only 1.9&#215; the target, so
-  retention now lengthens the window. At 2.5&#160;mm and 3&#160;mg&#160;mL<sup>&#8722;1</sup> the peak is
-  522&#160;&#181;M, about 6.5&#215; the target, and coverage rises from 11.8&#160;h at R<sub>V</sub>&#160;=&#160;1
-  to 14.0&#160;h at R<sub>V</sub>&#160;=&#160;1.5, 15.5&#160;h at R<sub>V</sub>&#160;=&#160;2, and
-  16.7&#160;h at R<sub>V</sub>&#160;=&#160;3. The revised target makes moderate retention more useful;
-  the partitioning still needs to be measured before choosing a retained formulation.</p>
-
-  <p>The solubility limit that used to sit behind this has moved out of the way entirely. A
-  80.9&#160;&#181;M target at 500&#160;&#181;m depth needs a <em>total</em> loading of only
-  <b>26&#160;&#181;M</b> (35&#160;&#181;g&#160;mL<sup>&#8722;1</sup>) at f<sub>rel</sub>&#160;=&#160;0.5,
-  which is 1.2&#160;% of the 3&#160;mg&#160;mL<sup>&#8722;1</sup> the team has now dissolved. Retention
-  would only become unformulable above R<sub>V</sub>&#160;&#8776;&#160;84.6.</p>
-
-  <p>And for V14 specifically, the chemistry is not available. Neither heparin nor alginate-sulfate
-  can help: both are strongly anionic, and V14 carries a net charge of &#8722;2 with no Lys, Arg or
-  His, so they repel. Retaining V14 in alginate would require covalent tethering, which means the two
-  arms of the patch would need different chemistry. We abandoned retention as a design direction on
-  these three grounds together.</p>
-  </div>
-
+  <h3>5. Simulated Results</h3>
+  <p><b>The patch can be changed once a day, and V14 sets the schedule.</b> Each patch's 11.8 h of cover is passed through the 18 h drug-effect delay, which sets a maximum change interval of about 36 h. That interval is a property of the patch, not the wound. Repeat dosing is therefore part of the design, not a fallback for a patch that failed to release slowly. The table gives the closure time from the radial solver for the repeat-dose model at several change intervals:</p>
+  <div class="tablewrap"><table>
+  <thead><tr><th>Wound radius</th><th>8 h</th><th>11.8 h</th><th>17 h</th><th>23 h</th><th>29 h</th><th>32 h</th></tr></thead>
+  <tbody>
+  <tr><td>1 mm</td><td>7.3 d</td><td>7.3 d</td><td>9.1 d</td><td>11.6 d</td><td>15.0 d</td><td>17.8 d</td></tr>
+  <tr><td>2 mm</td><td>14.5 d</td><td>14.5 d</td><td>18.1 d</td><td>22.4 d</td><td>28.1 d</td><td>31.3 d</td></tr>
+  <tr><td>3 mm</td><td>21.5 d</td><td>21.5 d</td><td>26.6 d</td><td>32.4 d</td><td>39.4 d</td><td>43.6 d</td></tr>
+  </tbody>
+  </table></div>
+  <p>Closure time rises with the interval, and the longest interval that still closes is the same for every wound radius tested. Because 36 h exceeds 24 h, a once-daily dressing change lies inside the envelope, in place of the four-times-daily schedule that the earlier 0.5 mm design required.</p>
+  <p><b>This margin is a model prediction.</b> The ratio of 11.8 h of coverage to the approximately 7.9 h daily requirement gives about a 49% relative margin. A coverage shortfall of about 33% would exhaust it, while a 15% shortfall would still leave about 10 h of cover. The lower end of the 7.7&#8211;15.5 h tissue uncertainty band is below the daily requirement. The 33% duty threshold itself comes entirely from Tier-4 closure parameters with no planned experiment, so the model supports once-daily dosing as a prediction, not as a demonstrated outcome. Further design reductions should wait for measurements of the closure parameters.</p>
 
   <figure class="wide">
     <div class="figbox"><img src="assets/G10_design_feasibility_map.svg" alt="Filled contour map of hours above the 80.9 micromolar target against V14 loading and gel thickness, with the demonstrated loading marked and the current 2.5 millimetre design starred." loading="lazy"></div>
@@ -1524,7 +1479,7 @@ body.noscroll{overflow:hidden}
 
   <figure class="wide">
     <div class="figbox"><img src="assets/G07_time_above_target_vs_dressing_interval.svg" alt="Left: depth-averaged free V14 against hours after one patch with the 80.9 micromolar target line. Right: closure time against patch-change interval for 1, 2 and 3 millimetre wounds, with the longest closing interval marked." loading="lazy"></div>
-    <figcaption><span class="fid">Figure&#160;12.</span> The dressing-change interval at the 80.9&#160;&#181;M target. (a) One patch holds tissue above target for about 11.8&#160;h (7.7&#8211;15.5&#160;h across the tissue ranges); the shaded band marks the far longer period over which FGF2-G3 stays above its EC<sub>50</sub>. (b) Through the 18&#160;h drug-effect compartment, the longest change interval that still closes is about 36&#160;h, the same for 1, 2 and 3&#160;mm wounds &#8212; so a 24&#160;h change sits just inside it.</figcaption>
+    <figcaption><span class="fid">Figure&#160;12.</span> The dressing-change interval at the 80.9&#160;&#181;M target. (a) One patch holds tissue above target for about 11.8&#160;h (7.7&#8211;15.5&#160;h across the tissue ranges); the shaded band marks the far longer period over which FGF2-G3 stays above its EC<sub>50</sub>. (b) Through the 18&#160;h drug-effect compartment, the longest change interval that still closes is about 36&#160;h, the same for 1, 2 and 3&#160;mm wounds, so a 24&#160;h change sits just inside it.</figcaption>
   </figure>
 
 <section class="widget" id="i1" aria-labelledby="i1-title">
@@ -1581,99 +1536,17 @@ body.noscroll{overflow:hidden}
 </section>
 
 
-  <h3 class="col">The device specification</h3>
-  <div class="col">
-  <p>Combining the delivery and closure models gives an end-to-end device specification. Each patch's
-  11.8&#160;h of cover is passed through the
-  18&#160;h drug-effect delay, which sets a maximum change interval of <b>36&#160;h</b> &#8212; and
-  that interval is a property of <em>the patch, not the wound</em>. Wound size changes only how long
-  treatment must continue, not how often the dressing is changed. Repeat dosing is therefore part of
-  the design, not a fallback for a patch that failed to release slowly.</p>
+  <p><b>Gel thickness and dermal drainage, not gel chemistry, set the coverage window.</b> Thickness is the strongest design lever: 0.5, 1.0, 1.5 and 2.5 mm gels give 5.0, 7.6, 9.4 and 11.8 h above 80.9 &#181;M at the current loading. At fixed area and loading, increasing the thickness from 0.5 to 2.5 mm makes the reservoir 5 times larger and the pure-diffusion release timescale 25 times longer, but extends coverage by only about 2.3 times, because a thicker gel holds the peptide longer while degradation continues inside it. A 4 mm gel gives about 13.7 h. By contrast, reducing k<sub>prot</sub> thirtyfold lengthens the window to 13.0 h, and moderate retention adds several hours, which lies within the 7.7&#8211;15.5 h spread that the tissue parameters produce.</p>
+  <p><b>FGF2-G3 is not the constraint.</b> Even without any retention, the 2.5 mm gel keeps FGF2-G3 above its EC<sub>50</sub> for 5.9 days (141.5 h), about four times the 36 h change interval. The closure model requires both arms to be satisfied at once, but the FGF2-G3 condition is met continuously after the first few minutes and does not constrain the schedule. The FGF2-G3 figure is an upper bound, because receptor uptake is omitted from this solve. Retaining FGF2-G3 for weeks is therefore not expected to improve the current design. V14 sets the schedule.</p>
 
-  <p>The predicted 36&#160;h interval follows from the model's average drug effect over a cycle. It equals the
-  fraction of time a patch keeps tissue above target. Above 2.3&#160;% the wound stops getting worse.
-  To reach the density we count as closed, the average must exceed <b>33&#160;%</b>, so 11.8&#160;h of
-  cover sustains closure for change intervals up to about 36&#160;h. A once-daily change needs
-  7.9&#160;h of cover per patch, and the 2.5&#160;mm patch supplies 11.8&#160;h &#8212; a duty cycle of
-  49&#160;% against a 33&#160;% requirement.</p>
+  <p><b>Sensitivity.</b> Figure 13 reports global Sobol indices for delivered dose using an analytic surrogate. Model 7 inherits those dose sensitivities together with the uncertainty in the target and the transport assumptions described above.</p>
+  <p><b>Output.</b> The device specification is a 2.5 mm alginate gel loaded at the 3 mg/mL (2213 &#181;M) the team has dissolved, far above the 26 &#181;M total loading that the target requires, applied as a fresh patch about once a day for as long as the wound needs treatment: roughly 6.5 days at 1 mm radius to 34.4 days at 5 mm.</p>
 
-  <p class="caveat" style="display:block"><b>This margin is a model prediction.</b> The ratio of
-  11.8&#160;h coverage to the approximately 7.9&#160;h daily requirement gives about a 49&#160;%
-  relative margin. A roughly 33&#160;% coverage shortfall would exhaust it; a 15&#160;% shortfall
-  would still leave about 10&#160;h of cover. The lower end of the 7.7&#8211;15.5&#160;h tissue
-  uncertainty band is below the daily requirement. The 33&#160;% duty threshold itself comes
-  entirely from Tier-4 closure parameters with no planned experiment. The model therefore supports once-daily dosing as a prediction, not as a demonstrated
-  outcome. Further design reductions should wait for measurements of the closure parameters.</p>
-
-  <p>Gel thickness and dermal drainage, rather than gel chemistry, set the single-patch coverage
-  window in this model. Thickness is the strongest design lever: 0.5, 1.0, 1.5 and 2.5&#160;mm gels
-  give 5.0, 7.6, 9.4 and 11.8&#160;h above 80.9&#160;&#181;M at the current loading. At fixed
-  area and loading, increasing thickness from 0.5 to 2.5&#160;mm makes the reservoir 5&#215;
-  larger and the pure-diffusion release timescale 25&#215; longer, but extends coverage by only
-  about 2.3&#215;. A thicker gel holds the peptide longer while degradation continues inside
-  the gel. A 4&#160;mm gel gives about 13.7&#160;h. By contrast, reducing
-  k<sub>prot</sub> thirtyfold lengthens the window to 13.0&#160;h, and moderate retention adds several
-  hours &#8212; within the 7.7&#8211;15.5&#160;h spread the tissue parameters produce.</p>
-
-  <p>Finally, FGF2-G3 is not the constraint. Even without any retention the 2.5&#160;mm gel
-  keeps it above its EC<sub>50</sub> for <b>5.9&#160;days</b>, about five times the change interval. The
-  closure model requires both arms to be satisfied at once, but the FGF2-G3 condition is met
-  continuously after the first few minutes and does not constrain the schedule. Retaining FGF2-G3
-  for weeks is therefore not expected to improve the current design. <b>V14 sets the schedule.</b></p>
-  </div>
-
-  <details class="math"><summary>Retention chemistries &#8212; the equations, and why this build
-  does not use them</summary>
-  <div class="inner">
-    <p>Retention enters as a retardation factor multiplying the time derivative. For a saturable
-    binder such as heparin-functionalised alginate it depends on concentration; for simple
-    partitioning it is a constant:</p>
-<div class="eqwrap"><div class="eqlabel">FGF2-G3 with a saturable binder (heparin-type)</div><div class="eq">R_F(C)\frac{\partial C^{\mathrm g}_F}{\partial t}=D^{\mathrm g}_{\mathrm{eff},F}\frac{\partial^2 C^{\mathrm g}_F}{\partial x^2}-k^{\mathrm g}_{\deg,F}C^{\mathrm g}_F,\qquad R_F(C)=1+\frac{S_{\max}K_{d,\mathrm{hep}}}{(K_{d,\mathrm{hep}}+C)^2}</div></div>
-<div class="eqwrap"><div class="eqlabel">V14 with linear sorption</div><div class="eq">R_V\frac{\partial C^{\mathrm g}_V}{\partial t}=D^{\mathrm g}_{\mathrm{eff},V}\frac{\partial^2 C^{\mathrm g}_V}{\partial x^2}-k^{\mathrm g}_{\deg,V}C^{\mathrm g}_V,\qquad R_V=1+K_{\mathrm{sorb}}</div></div>
-<div class="eqwrap"><div class="eqlabel">The constraint that kills it &#183; free concentration falls as 1/R<sub>V</sub></div><div class="eq">C_{\mathrm{free},0}=\frac{C_{\mathrm{tot},0}}{R_V}\le\frac{C_{\mathrm{sol}}}{R_V}</div></div>
-    <p>The last line sets the retention constraint for this device. It also shows the modelling
-    error that was corrected: the loaded concentration is the <b>total</b>, so the free
-    concentration driving delivery is C<sub>tot</sub>/R<sub>V</sub>. Treating the loading as free
-    puts R<sub>V</sub> times more drug into the model than solubility allows, and over-predicts
-    sustained release by orders of magnitude.</p>
-    <p><b>This build sets R<sub>V</sub>&#160;=&#160;1 and uses none of these.</b> The gel is plain
-    calcium alginate, with no heparin and no sulfation. The equations are recorded because they
-    define the counterfactual this section analyses, and because a future build using covalent
-    tethering would need them.</p>
-  </div></details>
-
-  <h3>4. Experimental Validation Status</h3><p>Model 7 reports a model-derived device specification; the complete loading and wear-interval prescription has not yet been experimentally validated as a device.</p>
-<h4 class="col">2.2 Assumptions and limitations</h4>
-  <div class="tablewrap"><table>
-    <thead><tr><th>Assumption</th><th>Role in the calculation</th><th>What would test it</th></tr></thead>
-    <tbody>
-      <tr><td>Target depth is 500&#160;&#181;m</td><td>Defines the interstitial band whose average concentration is compared with the target.</td><td>Map macrophage and fibroblast locations in wound tissue and revise the active band if needed.</td></tr>
-      <tr><td>V14 released fraction is 0.50</td><td>Scales total loading to the mobile dose; coverage changes linearly with this value.</td><td>Complete a log-time release assay with gel thickness and buffer volume recorded.</td></tr>
-      <tr><td>The target uses an exploratory model-based K<sub>D,P</sub> estimate</td><td>Sets 80.9&#160;&#181;M; delivery and closure results use this exploratory model target.</td><td>Assumes the positive-gate ratio at the tested dose equals relative LPS occupancy; this is an assumption.</td></tr>
-      <tr><td>Closure and effect-compartment parameters are Tier-4</td><td>Sets the predicted 36&#160;h maximum change interval and the approximately 49&#160;% relative daily-change margin.</td><td>Measure fibroblast migration and proliferation, then validate a repeat-dose schedule.</td></tr>
-    </tbody>
-  </table></div>
-
-  <h4 class="col">2.3 Design parameters and derived outputs</h4>
-  <div class="tablewrap"><table>
-    <thead><tr><th>Quantity</th><th>Value used</th><th>Evidence tier and interpretation</th></tr></thead>
-    <tbody>
-      <tr><td>Calculated target, C<sub>V,target</sub></td><td>80.9&#160;&#181;M</td><td>Derived from the exploratory model-based K<sub>D,P</sub> estimate of 5.62&#160;&#181;M under the assumption that the gate ratio equals relative LPS occupancy.</td></tr>
-      <tr><td>Gel thickness, L<sub>gel</sub></td><td>2.5&#160;mm</td><td>As-built design.</td></tr>
-      <tr><td>V14 released fraction, f<sub>rel</sub></td><td>0.50</td><td>Tier-4 assumption; current BCA analysis does not measure this fraction.</td></tr>
-      <tr><td>Demonstrated V14 loading</td><td>3&#160;mg/mL (2213&#160;&#181;M)</td><td>Team formulation; a lower bound on solubility, not a saturation measurement.</td></tr>
-      <tr><td>Target depth, &#948;</td><td>500&#160;&#181;m</td><td>Tier-4 active band used for the design calculation.</td></tr>
-      <tr><td>One-patch coverage; maximum interval</td><td>11.8&#160;h; about 36&#160;h</td><td>Model predictions under Tier-4 closure parameters.</td></tr>
-    </tbody>
-  </table></div>
-
-  <p class="col caveat" style="display:block">The closure side of this inversion rests entirely on
-  Tier-4 closures, and the treated state (FGF2-G3 at EC<sub>50</sub>, V14 at &#968;<sub>50</sub>) is
-  a scenario we chose rather than one we measured. The <em>structure</em> of the result &#8212; hours
-  of cover against weeks of need, and the existence of a maximum change interval &#8212; should hold.
-  The exact interval may not.</p>
-<h3>5. Sensitivity Analysis</h3><p>Figure 13 reports global Sobol indices for delivered dose using an analytic surrogate. Model 7 inherits those dose sensitivities together with uncertainty in the target and transport assumptions described above.</p>
-<h3>6. References</h3><p>Model&#160;7 combines the sources used in the release, transport, receptor and closure models. See the relevant citations for <a href="#ref-grassi">alginate structure</a>, <a href="#ref-slivka">MD2-targeting peptides</a> and <a href="#ref-kim2003">fibroblast response</a>; full citations are listed below.</p>
+  <h3>6. References</h3>
+  <ol class="refs">
+  <li>Freeman, I., Kedem, A., &amp; Cohen, S. (2008). The effect of sulfation of alginate hydrogels on the specific binding and controlled release of heparin-binding proteins. <i>Biomaterials</i>, 29(22), 3260&#8211;3268. <a href="https://doi.org/10.1016/j.biomaterials.2008.04.025">https://doi.org/10.1016/j.biomaterials.2008.04.025</a></li>
+  </ol>
+  <p class="col">The transport, receptor and closure inputs to this section are referenced in Modules 1, 3 and 6.</p>
 </section>
 
 <section class="act wrap" id="global-sensitivity">
